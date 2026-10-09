@@ -1,0 +1,11 @@
+{
+  "folders": [
+    { "path": "." },
+    { "path": "../khensu-core" },
+    { "path": "../khensu-apple" },
+    { "path": "../khensu-tatenan" },
+    { "path": "../khensu-chain" },
+    { "path": "../khensu-devnet" },
+    { "path": "../khensu-site" }
+  ]
+}

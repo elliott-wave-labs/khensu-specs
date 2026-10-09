@@ -51,8 +51,8 @@ function Crescent({ size = 18, color = STAR }: { size?: number; bg?: string; col
   const c = 50;
   const ring = 5;
   const a = 50 - ring / 2;
-  const d = 48;
-  const tipX = -a * Math.sin((20 * Math.PI) / 180);
+  const d = 62;
+  const tipX = 0;
   const r = Math.sqrt(a * a + d * d - 2 * d * tipX);
   const ix = c + tipX;
   const iy = Math.sqrt(a * a - tipX * tipX);

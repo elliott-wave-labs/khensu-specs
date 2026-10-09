@@ -96,7 +96,7 @@ todos:
     content: "Platforms: Linux/Pi and macOS nodes at testnet, Windows node later; Android client 6-9 months after v1; no web client"
     status: pending
   - id: design-mocks
-    content: "Design canvas: iOS screen mocks in the lunar Liquid Glass style plus architecture, charts, comparison tables and links for the plan"
+    content: "Design canvas: iOS screen mocks in the monochrome Liquid Glass style plus architecture, charts, comparison tables and links for the plan"
     status: completed
   - id: audit-launch
     content: Fuzzing for all new decoders, release hashes in the transparency log, hardware keys on Apple/GitHub accounts, external audit, bug bounty, launch

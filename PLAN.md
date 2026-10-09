@@ -492,7 +492,7 @@ A public broadcast network, like Twitter was, that runs itself on the node netwo
 
 ## webE (proposed)
 
-The internet web3 was supposed to be: content delivery, websites and live media run by the people on the node network, with no CDN, no DNS and no metered bandwidth. MOQOM stays a company; khensu.nu is the public network. Open questions are in `OPEN-QUESTIONS.md` section H.
+**webE** (home: `webe.nu`, being registered) is the internet web3 was supposed to be: content delivery, websites and live media run by the people on the node network, with no CDN, no DNS and no metered bandwidth. MOQOM stays a company; khensu.nu is the messenger and webE the network's open web. Open questions are in `OPEN-QUESTIONS.md` section H.
 
 - **Nodes are relays, devices are smart.** Every tatenan node runs a MOQ relay alongside its mix, mailbox and cache roles. Relays only forward and cache; encoding, encryption, ranking, moderation and rendering happen on devices.
 - **Names without name servers.** Sites and streams are named by `name.khensu.nu` handles resolved from the key transparency log over the mixnet (PIR), and by content addresses. No DNS lookup, no registrar, no certificate authority: the handle's log entry carries the site's ML-DSA-87 key and current root hash.

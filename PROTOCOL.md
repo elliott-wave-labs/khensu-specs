@@ -272,7 +272,7 @@ struct {
   MailboxOp op;
   opaque    mailbox_id[32];
   select (op) {
-    case store:         opaque sealed<V>;                       // a Fragment or bulk chunk
+    case store:         opaque sealed<V>; opaque surb<V>;       // Fragment or bulk chunk; StoreReceipt via SURB (6.7)
     case fetch:         uint32 max_items; opaque surbs<V>;      // replies go via SURBs
     case ack:           opaque item_ids<V>;                     // H256 of items to delete
     case register_wake: opaque wake_capability<V>;              // 10.1
@@ -283,7 +283,9 @@ struct {
 } MailboxRequest;
 ```
 
-Each item is replicated to three replicas chosen by rendezvous hashing of `mailbox_id` over the epoch's mailbox nodes, constrained to distinct operators and networks. Retention: 30 days (Free) or 90 days (Plus), determined by the token tier, not by identity.
+Each item is replicated to three replicas chosen by rendezvous hashing of `mailbox_id` over the epoch's mailbox nodes, constrained to distinct operators and networks. Retention: 30 days (Free) or 90 days (Plus), determined by the token tier, not by identity (under review: OPEN-QUESTIONS 9 proposes keeping items until acknowledged).
+
+`item_id = H256(Label("item") || sealed)`. A `store` whose `item_id` is already held is a no-op that returns the same `StoreReceipt`, so retries never create duplicates.
 
 ### 6.3 Sequencer
 
@@ -315,6 +317,62 @@ The small message carries `(file_key, chunk_count, chunk_addrs, size, mime, blur
 ### 6.5 Ratchet tree delivery
 
 The serialized `ratchet_tree` is split into 64 KiB chunks, each stored by `tree_put` under `H256(chunk)`, replicated as in 6.2. The Welcome carries a `TreeManifest { opaque tree_hash[64]; opaque chunk_hashes<V>; }` extension (`0xF0B2`). The joiner fetches with `tree_get` and checks the MLS tree hash.
+
+### 6.6 Offline use
+
+The phone is the durable home of every conversation. History, drafts, the outbox and the memory index live in the encrypted local store, so reading, searching and composing work with no network. Nothing needs a node to display.
+
+### 6.7 Reliable delivery
+
+Delivery is at-least-once on the wire and exactly-once in the app, through durable queues on both ends and idempotent operations everywhere.
+
+**Outbox (sender).**
+- Pressing send writes the `KhensuContent` (with its random `message_id`) to the outbox in the same local transaction that shows it in the chat as **Queued**. It survives app kill, reboot and days offline.
+- When the network is available, the message is encrypted for the group's current epoch, fragmented, and its fragments enter the cover-traffic stream. The encrypted `PrivateMessage` and its fragments are saved with the outbox entry before the first send, so every retry resends identical bytes (same `item_id`, deduplicated by mailboxes).
+- Each fragment's `store` carries a SURB; a replica answers with:
+
+```
+struct {
+  opaque item_id[32];
+  uint64 network_epoch;
+  opaque replica_node_id[32];
+  opaque signature<V>;          // Sign(node_key, "store receipt", fields above)
+} StoreReceipt;
+```
+
+**States shown to the user.**
+
+| State | Meaning |
+| --- | --- |
+| Queued | In the outbox, not yet sent (offline, or waiting for a cover slot) |
+| Sending | Fragments in flight |
+| Sent | Every fragment confirmed by at least 2 of its 3 replicas (`StoreReceipt`) |
+| Delivered | A delivery receipt from at least one of each recipient's devices |
+| Read | A read receipt, if both sides have read receipts on |
+| Failed | Not sent after the retry deadline, or impossible (removed from the group, account tombstoned); tap to retry or delete |
+
+Delivery receipts are MLS messages like read receipts. They can't be turned off, because they drive retries, but they are batched (one per conversation per fetch) and carry no timing beyond the batch.
+
+**Retries.**
+- A fragment without 2 receipts is resent after an exponential backoff with jitter (2 s, 4 s, 8 s ... capped at 10 minutes), always inside cover slots, so retries don't change the traffic pattern.
+- When the network epoch changes, unsent fragments are re-addressed to the new `mailbox_id` with the same bytes.
+- If the group epoch moves past the 3-epoch acceptance window (4) before the message is sent, the content is re-encrypted in the new epoch with the same `message_id`.
+- Messages that are Sent but not Delivered after 24 hours are resent once from the outbox (receivers drop the duplicate).
+- The retry deadline is 7 days, matching the receivers' skipped-key window; then the message is Failed and stays in the chat for a manual retry.
+
+**Inbox (receiver).**
+- Fetch (6.2) returns items until they are acknowledged. The device processes an item and, in one local transaction, stores the plaintext, advances the MLS state (OpenMLS storage lives in the same SQLite database) and records the `item_id`. Only after that transaction commits does it send `ack`. A crash at any point replays the item on the next fetch; nothing is lost, because a message key is never deleted before its plaintext is durable.
+- Duplicates are dropped by `(group_id, sender_leaf, message_id)`, kept for 30 days, and by `item_id`.
+- Messages are shown in sender-timestamp order; MLS generation numbers per sender reveal gaps, and a gap older than 7 days is marked "message not received".
+
+**Durable stream replay.**
+- Mailboxes keep each item until every addressed device acknowledges it (no fixed cut-off, OPEN-QUESTIONS 9); a device that was offline for months replays everything waiting for it, in order, on reconnect.
+- Your own sent messages reach your other devices the same way, because they are members of the same groups.
+- A new device gets older history from the phone-to-phone transfer or the encrypted backup, then continues from the live mailbox stream.
+- Commits are idempotent at the sequencer: resubmitting the same commit returns the same `SequencerReceipt`. A commit that loses to another for the same epoch is rebased: the client processes the winner, then re-proposes its change.
+- Every other write is idempotent by construction: `tree_put` and attachment chunks by content address, payments by nullifier, log entries by `(address, sequence)`, rate-limit proofs by nullifier.
+
+**Offline transport.** With no internet, the Wi-Fi Aware nearby mode carries sealed fragments between phones; receipts and acks follow the same rules when they reach a mailbox.
 
 ## 7. Calls
 

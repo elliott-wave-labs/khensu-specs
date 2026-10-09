@@ -124,6 +124,7 @@ isProject: false
 - [Local search and memory](#local-search-and-memory-a-hindsight-style-engine-on-the-device-ios-26-macos-26)
 - [Push notifications](#push-notifications)
 - [Typing indicators and presence](#typing-indicators-and-presence)
+- [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
 - [Cryptographic design](#cryptographic-design-the-parts-that-must-be-right)
@@ -437,6 +438,17 @@ Calls: a PushKit VoIP push wakes the app and CallKit shows "khensu.nu call" (the
 - **Typing stream.** Each member has an ephemeral typing stream per conversation, encrypted with a key from the MLS exporter for the current epoch. Phones only send events for, and only listen to, the chat on screen. Groups show "Ana and 2 others are typing".
 - **Over the mixnet, like everything else.** Typing events are ordinary fixed-size Outfox packets that replace cover packets in the client's constant-rate stream, so sending one doesn't change how much traffic a phone emits. They are coarse (start, stop, and a refresh every 10 seconds) and arrive with the same few seconds of mix delay as messages, so receivers expire the indicator after 30 seconds of silence. They are never stored in mailboxes and never trigger a push.
 - **Settings.** Turning typing indicators off stops sending yours and showing others', as on Signal. Read receipts are encrypted messages with the same reciprocal switch. "Online" presence is off by default.
+
+## Offline use and reliable delivery (decided)
+
+The app works fully offline and never loses a message. Wire format in `PROTOCOL.md` sections 6.6 and 6.7.
+
+- **Offline first.** History, drafts, search and the memory index live in the encrypted local store, so reading, searching and writing need no network. Messages written offline wait in a durable outbox that survives app kills and reboots.
+- **Send states:** Queued, Sending, Sent (stored on at least 2 of 3 mailbox replicas, confirmed by signed store receipts returned through reply blocks), Delivered (an encrypted delivery receipt from each recipient), Read (if read receipts are on), and Failed with tap to retry.
+- **Retries.** Exponential backoff with jitter, always inside cover-traffic slots, so retrying doesn't change what an observer sees. Retries resend identical bytes; messages that stay undelivered for 24 hours are resent once; after 7 days a message is marked Failed and kept for a manual retry.
+- **Idempotency everywhere.** Mailboxes deduplicate by content hash, receivers by message ID, the sequencer returns the same receipt for a resubmitted commit, and payments, log entries, tree chunks and rate-limit proofs are idempotent by construction.
+- **Durable stream replay.** A device acknowledges a mailbox item only after the plaintext and the advanced MLS state are committed in one local database transaction, so a crash replays the item instead of losing it. Mailboxes keep items until every addressed device acknowledges them, so a phone that was offline for months catches up in order. New devices get history by transfer or backup, then continue from the live stream.
+- **Offline transport.** With no internet, Wi-Fi Aware nearby mode carries sealed packets between phones until one reaches the network.
 
 ## Apple platform features
 

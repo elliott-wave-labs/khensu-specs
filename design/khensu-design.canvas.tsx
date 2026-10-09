@@ -30,8 +30,8 @@ import {
 
 type UINode = Parameters<typeof Stack>[0]["children"];
 
-const PLAN = "/Users/elliott/.cursor/plans/moqom_messenger_b875f80e.plan.md";
-const CAPS = "/Users/elliott/Documents/GitHub/moqom-cloud/khensu-app-id-capabilities.md";
+const PLAN = "/Users/elliott/Documents/GitHub/khensu/khensu-specs/PLAN.md";
+const CAPS = "/Users/elliott/Documents/GitHub/khensu/khensu-specs/APP-ID-CAPABILITIES.md";
 
 // Brand surface for the phone mocks: monochrome on the dark palette.
 // Starlight for accents, silver for your bubbles, ash for quiet fills.

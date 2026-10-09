@@ -44,8 +44,13 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
     - Phones also make dummy bulk uploads and downloads drawn from the same size distribution (more on Wi-Fi and while charging), and ordinary bulk traffic (encrypted backups, tree chunks, sticker and model downloads) looks identical, so "a large transfer happened" says little.
     - Recipients download through the bulk lane at their own time, with automatic download on Wi-Fi and dummy downloads.
     - What remains visible to a global observer: long-term volume (a heavy media user looks like one) and loose correlation between a large upload and a large download elsewhere, weakened by dummies and delays.
-  - **Hidden (per attachment or per chat):** the attachment trickles inside the ticks, one bulk packet per tick (about 32 KB/s; a 2 MB photo takes about a minute), and the link pattern doesn't change at all.
+  - **Hidden (per attachment or per chat):** the attachment trickles through the spare capacity of the normal tick bursts, so the link pattern doesn't change at all. It is slow: a few KB/s, so a 2 MB photo takes several minutes, depending on the burst size (2c). A faster hidden mode would need a bulk packet in every tick for everyone (about 130 MB per open hour each way), which is not recommended at 10B scale.
 - **Status:** Recommended.
+
+### 2c. Tick burst size
+- **Problem:** a signed message is about 4.9 KB, which needs 3 small packets, and the fixed buckets go up to 8. If each tick carries only one small packet, a typical message takes three ticks (6 s) to leave, which isn't real-time.
+- **Recommendation:** each tick carries a fixed burst of 4 small packets (one mailbox fetch plus three slots), so a typical message leaves in a single tick. Cost: about 20 KB/s up while the app is open (about 72 MB per open hour), and four times the cover load on nodes compared with one packet per tick. Battery changes little, since the radio is awake at a 2 s tick anyway; the bigger cost is node bandwidth at 10B scale (see 10 and 31).
+- **Status:** Open.
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.

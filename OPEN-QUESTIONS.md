@@ -45,6 +45,8 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
     - Recipients download through the bulk lane at their own time, with automatic download on Wi-Fi and dummy downloads.
     - What remains visible to a global observer: long-term volume (a heavy media user looks like one) and loose correlation between a large upload and a large download elsewhere, weakened by dummies and delays.
   - **Hidden (per attachment or per chat):** the attachment trickles through the spare capacity of the normal tick bursts, so the link pattern doesn't change at all. It is slow: a few KB/s, so a 2 MB photo takes several minutes, depending on the burst size (2c). A faster hidden mode would need a bulk packet in every tick for everyone (about 130 MB per open hour each way), which is not recommended at 10B scale.
+  - **Stealth through your own node (candidate):** a user's Mac or Pi node already sends constant cover around the clock on mains power and a home connection, so it can afford a large constant bulk rate (for example 1 MB/s). On the home network the phone hands the attachment to its node over the local network, which no outside observer sees; the node sends it inside its constant stream. The recipient's node downloads it the same way and the phone pulls it locally. Totally stealth and fast for anyone with a node on their network. Away from home, stealth attachments either trickle (above) or wait for the home node. This would also be a patent candidate.
+  - **Stealth window (candidate):** phones without a node run a constant bulk stream while on Wi-Fi and charging (overnight), where battery and data cost nothing; stealth attachments queue until then.
 - **Status:** Recommended.
 
 ### 2c. Tick burst size

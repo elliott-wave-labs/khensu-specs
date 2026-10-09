@@ -15,8 +15,15 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 
 ### 2. Cover traffic rate on cellular
 - **What it is:** while the app is open, the phone sends dummy packets at a steady pace and real messages replace dummies, so nobody watching can tell when you actually send. A faster pace means better privacy and lower latency (a message waits at most one gap), but more battery and more load on nodes. The old plan used 1 packet every 2 s on Wi-Fi and every 10 s on cellular, to save data. With no data budget, the only reasons left for a different cellular rate are battery and node capacity.
-- **Recommendation:** 1 small packet every 2 s on every network while the app is open; every 10 s in Low Power Mode. At 10B users, cover traffic is the largest single load on the network (see 10), so the rate stays a tunable consensus parameter.
-- **Status:** Recommended.
+- **Battery.** On cellular, the cost comes from keeping the radio awake, not from the bytes. After each transmission an LTE or 5G modem stays in its high-power state for a carrier-set tail of roughly 5–15 s, so any steady rate faster than about one send every 10 s keeps it awake the whole time the app is open. Published LTE measurements put that at 0.3–1 W, or about 2–7% of an iPhone battery per hour the app is open on cellular (modern modems should be near the low end). Wi-Fi power save costs about 0.5% per hour. Encrypting cover packets costs well under 1% of one CPU core.
+- **Recommendation (revised): nodes carry the cover, phones send fixed bursts.**
+  - **Nodes** send constant cover between themselves around the clock (node-to-node cover and loop packets on mains power), sized so every link carries a steady rate whatever the real load. This keeps the anonymity set large and costs phones nothing.
+  - **Phones** still need a steady pattern on their own link, because node cover can't hide when a phone itself transmits from its carrier or Wi-Fi network. So the phone sends one fixed-size burst per tick: its mailbox fetch plus any outgoing fragments, padded with cover to the same size every time. Fetching has to happen anyway to receive messages, so sending adds almost nothing.
+  - **Tick length** depends only on things an observer could learn anyway: 2 s on Wi-Fi, 20 s on cellular (one radio wake per tick), 60 s in Low Power Mode, below 20% battery or when the phone is hot. No cover at all in the background (iOS suspends the app).
+  - **Energy governor.** The app measures its own radio and CPU energy on the device. If cover reaches 1.5% of the battery in a day, ticks step down to the Low Power rate until the next day.
+  - **Estimated cost:** about 1–2% per hour the app is open on cellular, about 0.5% per hour on Wi-Fi, capped at 1.5% a day by the governor. Typical use of 30–60 minutes a day stays under 1.5%. Device tests in the battery-budget to-do confirm or correct these numbers before launch.
+  - **Trade-off:** on cellular a message waits for the next tick, about 10 s on average plus mixing delay. Tick lengths stay tunable consensus parameters.
+- **Status:** Recommended (revised for battery). PLAN.md and PROTOCOL.md 8.8 still list older, inconsistent rates; they get fixed in the decisions pass.
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.

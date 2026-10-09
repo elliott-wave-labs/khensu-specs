@@ -52,7 +52,22 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
     - **Originals:** full-quality originals and video use your own node, the charging window or the trickle.
     - **Patent candidate:** progressive learned-codec delivery inside constant-rate mixnet cover.
   - **Stealth window (candidate):** phones without a node run a constant bulk stream while on Wi-Fi and charging (overnight), where battery and data cost nothing; stealth attachments queue until then.
-- **Revised recommendation:** stealth is the default for everything. Images use the tiny format inside the ticks; originals and video go through your node, the charging window or the trickle, whichever is fastest. The fast, visible bulk transfer is opt-in per attachment ("send now, not stealthy"), with a clear explanation.
+- **Decided 9 Oct 2026:**
+  - Stealth is a foundation of the whole system, not a setting. Every message, receipt and attachment rides the constant pattern; there is no opt-in, opt-out or "send now, not stealthy" mode. The fast default mode above is dropped.
+  - Images use the tiny format, named **nu-media**, inside the ticks. Originals and video go through your node, the charging window or the trickle, whichever is fastest, and may take a while.
+  - Video in nu-media is a later question.
+- **Status:** **Decided** 9 Oct 2026.
+
+### 2d. Offline mesh
+- **Today's plan:** Wi-Fi Aware nearby mode, opt-in, carrying sealed Outfox packets between phones until one reaches the internet.
+- **What Apple offers:** Wi-Fi Aware (iOS 26, fast direct links), Multipeer Connectivity (Bluetooth plus peer-to-peer Wi-Fi) and Core Bluetooth, which keeps working in the background with limits. Apple provides links, not multi-hop routing, so khensu builds store-and-forward on top (as Briar and Bitchat do).
+- **Recommendation:**
+  - **App open:** Wi-Fi Aware and Bluetooth, carrying the same fixed-size sealed packets on the same constant 2 s tick, so mesh traffic has no pattern either.
+  - **Background:** Bluetooth only, at a low constant rate (enough for text, receipts and nu-media previews); whether Wi-Fi Aware runs in the background is checked in a spike.
+  - **Multi-hop:** each phone holds others' sealed packets (capped, for example 50 MB, oldest first) and passes them on until one reaches the internet or the recipient; packets are deduplicated by `item_id` and expire with the mailbox rules.
+  - **Turns on automatically** when no node is reachable, and off when the internet is back.
+- **The limit stealth can't remove:** anyone with a radio scanner in range can tell that a device nearby is running the mesh, even with rotating random identifiers, and iOS background Bluetooth advertising is detectable by design. Content, sender and recipient stay hidden; local presence does not. This matters most in shutdowns, which is when mesh is needed.
+- **Status:** Recommended.
 - **Status:** Recommended.
 
 ### 2c. Tick burst size
@@ -144,6 +159,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - **So 10B DAU needs about 400,000 fully used gigabit Pis,** or roughly 1 million with headroom, or about 40,000–100,000 server-class nodes at 10–25 Gbit/s.
   - **50,000 Pis carry roughly 1 billion DAU** at full load with no headroom.
   - **Home connections often upload at 20–50 Mbit/s,** a small fraction of gigabit, so a home Pi carries far less.
+  - **Update after 2, 2a, 2b and 2c:** absolute cover with a 2 s tick, a 4-packet burst and a matching constant downstream is about 8 times the load above: roughly 3 million fully used Pis for 10B (about 8 million with headroom), or about 300,000–800,000 server-class nodes. 50,000 Pis carry roughly 100–150 million DAU. Levers: burst size (2c), hop count, packet header size, and faster nodes. To be revisited once 2c is decided.
 - **Encryption doesn't depend on node count:** content is end-to-end encrypted and post-quantum regardless.
 - **Untraceability does:**
   - Messages are unlinkable against single nodes, colluding nodes below the threshold, and a global passive observer, as long as cover traffic runs and the network is large.

@@ -108,7 +108,7 @@ The anonymity set is the set of users sending at similar times. In the early net
 
 ### 4.3 Phones only send cover traffic while the app is open
 
-iOS suspends background apps. A global observer can see when the app is in the foreground. Queued messages leave at the cover rate when it next opens.
+iOS suspends background apps. A global observer can see when the app is in the foreground. While it is, the phone sends one fixed burst every 2 s on every network and in every power state, so nothing inside an open session reveals activity; queued messages leave in the ticks when it next opens. Large originals and video never leave the constant pattern: they go through the user's own node, the charging window or a trickle (`PLAN.md`, Stealth).
 
 ### 4.4 Long-term intersection attacks
 
@@ -131,7 +131,7 @@ Until step-down, the founder threshold key co-signs rule changes and approves va
 | # | Threat | Why out of scope | What we do |
 | --- | --- | --- | --- |
 | 5.1 | Endpoint malware with root on the device | It sees the screen and keystrokes | Enhanced Security (memory tagging), third-party keyboards blocked, Lockdown Mode compatible, minimal attack surface |
-| 5.2 | Timing correlation of live calls by a global observer | A mixnet's delays can't carry live media | Two relays from different operators; direct paths opt-in only; the app says calls are protected from single nodes, not from a global observer |
+| 5.2 | Timing correlation of live calls by a global observer | A mixnet's delays can't carry live media | Stealth call profile (`PROTOCOL.md` 7.1): two relays from different operators, networks and jurisdictions; setup over the mixnet; constant-rate fixed-size media (no speech-pattern leak); padded relay trunks; random 2–8 s padding before and after each call; HTTPS-like transport on UDP 443; no direct internet paths. A global observer can still match call start, end and duration across the two edges over time; the app says so |
 | 5.3 | A global active adversary breaking anonymity | Active attacks on all links defeat any practical mixnet | Content and identity guarantees still hold; loop measurement detects nodes that drop traffic |
 | 5.4 | A malicious app release | We sign the app | Release hashes in the transparency log, reproducible node builds, binary transparency checks in the app for updates, hardware keys on accounts, signing only from locked-down CI |
 | 5.5 | A recipient leaking content | Recipients see plaintext | Disappearing messages, screenshot notice where iOS allows, message franking for reports |

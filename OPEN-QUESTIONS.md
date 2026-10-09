@@ -88,7 +88,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - **Group calls** fan out through relays as MOQ forwarders, with media keys from MLS (post-quantum end to end).
 - **Latency:** two relays near each side add roughly 5–30 ms over a direct path; the target is under 150 ms glass to glass within a region. To be measured.
 - **What remains:** long-term edge correlation by a global observer (5.2 in THREAT-MODEL.md), stated plainly in the app.
-- **Status:** Recommended.
+- **Status:** **Decided** 9 Oct 2026. Written into PLAN.md (Stealth), PROTOCOL.md 7.1 and THREAT-MODEL.md 5.2; MOQOM gets the same profile as an option (`moqom/docs/STEALTH-PROFILE.md`).
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.

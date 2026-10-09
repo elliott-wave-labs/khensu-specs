@@ -377,7 +377,7 @@ Delivery receipts are MLS messages like read receipts. They can't be turned off,
 ## 7. Calls
 
 - SFrame (RFC 9605) with AES-256-GCM-SHA-512; per-sender base keys from `MLS-Exporter("khensu sframe", group_context || uint32(leaf), 32)`.
-- Two relays: caller's entry and callee's entry, from different operators.
+- Two relays: caller's entry and callee's entry, from different operators (7.1).
 - Group calls (more than 2 participants) send `FrameManifest` on a data track:
 
 ```
@@ -391,6 +391,40 @@ struct {
 ```
 
 Interval: 1 s with video, 5 s audio-only. A failed or missing manifest after 2 intervals mutes that sender and shows a warning.
+
+### 7.1 Stealth call profile
+
+Every call uses this profile; there is no other.
+
+**Setup.** Offer, ringing, accept, decline, hangup, SFrame epoch changes and relay choice are `KhensuContent` messages that ride the normal ticks through the mixnet. No call signalling touches a relay. Relays are paid with anonymous access tokens (11).
+
+**Relay choice.** Each side picks its own entry relay from the epoch's node list: low round-trip time from itself, lease covering the epoch, and a different operator, autonomous system and jurisdiction from the other side's relay (announced in the accept). The two relays connect over a trunk. A relay never learns both endpoints' IPs.
+
+**Transport.** WebTransport over HTTP/3, UDP port 443, ALPN `h3` only. No MOQ-specific ALPN is offered on the wire; the MOQT version is negotiated inside the WebTransport session. TLS 1.3 uses ML-KEM-1024 key exchange and the relay's ML-DSA-87 node certificate. Clients send no SNI when dialling a relay by address.
+
+**Constant-rate media.** Each media track sends fixed-size objects at a fixed rate for the whole call, whatever is happening:
+
+| Track | Object size on the wire | Rate | Encoder |
+| --- | --- | --- | --- |
+| Audio | 160 B | 50 per second (20 ms frames) | Opus CBR, 32 kbit/s, DTX off |
+| Video, tier L | 1,200 B | 60 per second | constant rate, about 500 kbit/s |
+| Video, tier M | 1,200 B | 160 per second | constant rate, about 1.5 Mbit/s |
+| Video, tier H | 1,200 B | 400 per second | constant rate, about 3.8 Mbit/s |
+
+- The encoder targets slightly below the tier rate. Its output is split into fixed objects; a frame that doesn't fill its share is padded, and empty slots carry padding objects. Padding sits inside the SFrame ciphertext, so relays can't tell padding from media.
+- Video uses periodic intra refresh instead of keyframes, so there are no size bursts. Keyframe requests are answered by a faster intra-refresh sweep at the same rate.
+- Audio-only calls still send the audio track and no video track; camera off in a video call keeps the video track at its tier with padding.
+- Tier changes for bandwidth happen at most once every 30 s with hysteresis and only between adjacent tiers. A tier change is visible to the local network; it reveals network conditions, not content.
+
+**Edge blurring.** Each phone opens its relay stream and starts constant-rate padding a uniformly random 2–8 s before it expects media (after sending accept, or on ringing), and keeps padding a uniformly random 2–8 s after hangup.
+
+**Trunks.** Relays exchange constant-rate padded traffic between themselves on long-lived WebTransport sessions, sized to their capacity class and independent of load, carrying all calls between them multiplexed. Trunk traffic is fixed-size objects at a fixed rate; when calls end, padding replaces them.
+
+**No direct internet paths.** Clients never connect to each other over the internet. Direct media is allowed only over Wi-Fi Aware or when both devices are on the same Wi-Fi network (discovered over the mixnet-delivered call setup, never by broadcast), still using this profile.
+
+**Group calls.** Relays act as MOQ forwarders: each participant publishes to its own entry relay, relays forward between themselves over trunks, and each participant subscribes through its own entry relay. Every participant's tracks follow the constant-rate rules above.
+
+**Latency target.** Under 150 ms glass to glass within a region, including the two relays.
 
 ## 8. Mix packets (Outfox, extended)
 
@@ -459,15 +493,12 @@ struct {
 
 The recipient keeps the per-hop payload keys indexed by `payload_key_ref`, valid for the current and next network epoch. Mailbox fetch replies, PIR responses and channel fetches use SURBs.
 
-### 8.8 Cover rates (app in foreground)
+### 8.8 Ticks and cover
 
-| Network | Small lane | Bulk lane |
-| --- | --- | --- |
-| Wi-Fi | 1 packet / 2 s | none (bulk only when there is real data) |
-| Cellular | 1 / 5 s | none |
-| Low Power Mode | 1 / 15 s | none |
-
-Bulk traffic is padded to whole packets and paced at the Poisson rate of the small lane multiplied by 4 while a transfer is active.
+- **Phones (app in foreground):** one burst every 2 s on every network and in every power state, with no exceptions. A burst is a fixed number of small packets (`OPEN-QUESTIONS.md` 2c): one mailbox `fetch` plus slots for outgoing fragments, receipts, typing events, PIR queries and nu-media, filled with cover packets when empty. Tick times have a small uniform jitter (±100 ms) so bursts don't align across phones. The downstream carries a fixed number of reply packets per tick, padded with cover replies. No cover in the background.
+- **Nodes:** constant node-to-node cover and loop packets around the clock, at a rate set per capacity class in the epoch header, independent of real load.
+- **Bulk packets** travel only inside constant streams: a user's own node, the Wi-Fi-and-charging window on phones, and call trunks. Phones send no bulk packets outside those.
+- Tick length, burst size and node cover rates are consensus parameters in the epoch header.
 
 ## 9. Directory lookups (PIR)
 

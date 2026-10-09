@@ -63,7 +63,7 @@ todos:
     content: "khensu-apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
     status: pending
   - id: calls
-    content: "Integrate MoqomKit calls over two-hop tatenan relays with SFrame keys from the chat's MLS group, signed frame manifests in group calls (1 s video, 5 s audio), direct paths opt-in per contact"
+    content: "Integrate MoqomKit calls over two-hop tatenan relays with SFrame keys from the chat's MLS group, signed frame manifests in group calls (1 s video, 5 s audio), stealth call profile (constant-rate padded media, setup over the mixnet, padded trunks, edge blurring, WebTransport on 443), no direct internet paths"
     status: pending
   - id: operator-economy
     content: macOS node app and Raspberry Pi 5 image with idle/scheduled/N-hour modes; reputation scoring; token staking as the operator bond, slashed by consensus; operator wallet in the node app showing protocol rewards
@@ -81,7 +81,7 @@ todos:
     content: "Network bootstrap: 9+ genesis nodes across clouds and countries, consensus-enforced private-network threshold, Early network banner in the app"
     status: pending
   - id: battery-budget
-    content: "Battery and data: foreground-only cover traffic, small and bulk packet lanes, Wi-Fi/cellular/Low Power rates, 3% battery and 50 MB cellular daily budget verified with MetricKit"
+    content: "Battery and data: foreground-only 2 s fixed bursts on every network and power state with no cap, nu-media and stealth attachment paths, battery measured with MetricKit to tune codec and burst size"
     status: pending
   - id: discovery-growth
     content: "Discovery and growth: invite links with keys in the URL fragment, group invites, public channel handles, profile links; no phone/email discovery in v1"
@@ -125,6 +125,7 @@ isProject: false
 - [Push notifications](#push-notifications)
 - [Typing indicators and presence](#typing-indicators-and-presence)
 - [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
+- [Stealth](#stealth-decided)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
 - [Cryptographic design](#cryptographic-design-the-parts-that-must-be-right)
@@ -155,7 +156,7 @@ isProject: false
 - Post-quantum from day one, for confidentiality, authentication and consensus. Key exchange is pure ML-KEM-1024 (FIPS 203, the highest security category), with no classical algorithm; signatures everywhere, including the consensus, are ML-DSA-87 (FIPS 204).
 - Decentralized at launch: independent operators run the nodes, the node list is agreed by a rotating committee drawn from those nodes, and the user directory is an append-only transparency log anyone can audit. Founder safeguards protect the network from capture until it is established.
 - Light enough to run a node on a Raspberry Pi 5.
-- iPhone, iPad and Mac first, in the `khensu-*` repos, reusing MoqomKit (calls, direct paths, transport) and moqom-security's device-key proof and token designs; MLS comes from an OpenMLS fork in `khensu-core`.
+- iPhone, iPad and Mac first, in the `khensu-*` repos, reusing MoqomKit (calls and transport, with MOQOM's stealth profile; direct paths only on local links) and moqom-security's device-key proof and token designs; MLS comes from an OpenMLS fork in `khensu-core`.
 
 ## Why it's better than Signal
 
@@ -167,7 +168,7 @@ Signal is the bar, and on content encryption it is very good: the Double Ratchet
 4. **No phone number, ever.** Signal still requires a phone number to register, even with usernames hiding it from contacts, so your carrier and Signal can link the account to a SIM. Here identity is a key in the Secure Enclave plus an optional username. Phone and email lookup are optional and come only with private contact discovery.
 5. **No trust in Intel hardware enclaves.** Signal's contact discovery and PIN-based key backup (Secure Value Recovery) rely on Intel SGX and similar enclaves, and SGX has a history of side-channel breaks. Here there is no contact discovery server to trust, and backups are encrypted with a recovery key only the user holds.
 6. **Key verification that works for every contact, with more witnesses and private lookups.** Signal shipped key transparency as "Automatic Key Verification" in 2026 (on for all users since Android 8.21.6, iOS 8.22.0 and Desktop 8.21.0; [Signal blog, 11 Aug 2026](https://signal.org/blog/automatic-key-verification/)). Its limits, from Signal's own documentation: it works only when you have the contact's phone number, so username-only contacts (the most privacy-conscious users) fall back to comparing safety numbers by hand; it relies on two hand-picked auditors (Cloudflare and Trail of Bits); and clients accept auditor signatures up to seven days old, so a malicious server could keep a split view for up to a week ([Trail of Bits, 11 Aug 2026](https://blog.trailofbits.com/2026/08/11/how-trail-of-bits-helps-verify-the-integrity-of-your-signal-chats/)). Here identity is a key, not a phone number, so every contact is verified automatically; the log is cosigned by a quorum from the public transparency-dev and Sigsum witness networks; entries are signed with ML-DSA-87; clients require cosignatures no older than 24 hours; and lookups go through the mixnet, so the log never learns whose key you checked.
-7. **Calls that hide IPs from everyone, not just the other person.** Signal's "always relay calls" hides your IP from the person you call, but Signal's relay sees both IPs. Here every call goes through two relays run by different operators, so no single machine sees both ends.
+7. **Calls that hide IPs from everyone, not just the other person.** Signal's "always relay calls" hides your IP from the person you call, but Signal's relay sees both IPs. Here every call goes through two relays run by different operators, so no single machine sees both ends, with constant-bitrate padded media, call setup over the mixnet and no direct internet paths, so calls leak neither speech patterns nor IP addresses.
 8. **Group security that heals.** Signal groups use sender keys, which rotate only when membership changes, so a key stolen from one phone keeps decrypting that sender's group messages until then. MLS here has every device refresh its key every 24 hours or 1,000 messages, so a group recovers from a compromised device automatically. Group membership is hidden from the network: the sequencer sees only an opaque group ID and encrypted commits that arrive over the mixnet.
 9. **Encrypted at rest by the Secure Enclave on every platform.** The local message store key is wrapped by the Secure Enclave on iPhone and Mac, not kept in a config file, which is a mistake Signal Desktop made until 2024.
 
@@ -282,7 +283,7 @@ Roles and trust:
 - **Mix nodes** (Loopix-style, three layers, fixed-size Outfox packets using ML-KEM, Poisson delays, cover traffic from clients and nodes). They see only the previous and next hop. Standard Sphinx uses classical X25519, so it is not used.
 - **Mailbox nodes** hold sealed packets per device under unlinkable mailbox IDs, replicated across at least three operators in different networks. They cannot read or attribute anything.
 - **Group sequencers** order MLS commits per group: first commit per epoch wins, as the current delivery service does. The sequencer is chosen deterministically from the group ID over the epoch's node list and has a standby. It can delay or drop (detected and failed over) but cannot forge, since members verify signatures and confirmation tags. A sequencer that signs two different commits for the same group epoch is provably misbehaving and penalized. It sees only an opaque group ID and encrypted commits that arrive over the mixnet, so it never learns who is in a group.
-- **Call relays** carry MOQT media. A call uses two relays (caller's entry and callee's entry) so no single node sees both IPs. Direct paths stay off by default and are opt-in per contact.
+- **Call relays** carry MOQT media under the stealth call profile (see Stealth). A call uses two relays (caller's entry and callee's entry) so no single node sees both IPs. There are no direct internet paths; direct links exist only on Wi-Fi Aware or a shared Wi-Fi network.
 - **Epoch committee** (see Consensus below) agrees and signs each epoch's header. It never sees user traffic.
 - **Key transparency log** maps usernames to identity keys and device lists. It is append-only and publishes checkpoints in the C2SP `tlog-checkpoint` format, cosigned (`tlog-cosignature`) by the existing transparency-dev and Sigsum witness networks, so independent witnesses exist from day one without recruiting. Clients require a quorum of witness cosignatures and verify inclusion and consistency proofs, so even the log operator cannot show different keys to different people.
 - **Credential issuer** blind-signs anonymous access tokens after payment. Nodes check that a token is valid without learning who bought it.
@@ -450,6 +451,26 @@ The app works fully offline and never loses a message. Wire format in `PROTOCOL.
 - **Durable stream replay.** A device acknowledges a mailbox item only after the plaintext and the advanced MLS state are committed in one local database transaction, so a crash replays the item instead of losing it. Mailboxes keep items until every addressed device acknowledges them, so a phone that was offline for months catches up in order. New devices get history by transfer or backup, then continue from the live stream.
 - **Offline transport.** With no internet, Wi-Fi Aware nearby mode carries sealed packets between phones until one reaches the network.
 
+## Stealth (decided)
+
+Stealth on the network is a foundation of the system, not a setting: there is no opt-in, opt-out or "faster but visible" mode for messages, attachments or calls. Decisions in `OPEN-QUESTIONS.md` 2, 2a, 2b and 2e; wire rules in `PROTOCOL.md` sections 7.1 and 8.8.
+
+- **Absolute cover for messages.** Nodes send constant cover between themselves around the clock. While the app is open, each phone sends one fixed-size burst every 2 seconds on every network and in every power state (no Low Power Mode or battery exceptions, no battery cap): its mailbox fetch plus any outgoing fragments, padded to the same size every time, with a matching constant downstream. Every message, receipt, typing event, lookup and retry rides a tick, so an observer of the phone's link sees the same pattern whether you are chatting or idle. Burst size is in `OPEN-QUESTIONS.md` 2c.
+- **Attachments stay inside the cover.**
+  - Images are re-encoded on the device into **nu-media**, a compact learned image format (target 15–40 KB for a full-screen photo) that arrives progressively inside the ticks: a preview in the first tick, complete in about 10 seconds. It is tuned for fidelity, never generated detail, drops all metadata, and weakens the camera sensor fingerprint.
+  - Originals and video go through the fastest stealth path available: your own Mac or Pi node (handed over on the local network, sent inside the node's constant stream), the Wi-Fi-and-charging window, or a trickle through spare tick capacity. They may take a while; they never leave the cover. Video in nu-media is later work.
+- **Stealth calls.** Live media can't take mixing delays, so calls use relays with hardening that adds no latency:
+  - constant bitrate and fixed-size padded packets for audio and video, including silence and still scenes;
+  - call setup (ringing, accept, keys, relay choice) over the mixnet inside the ticks;
+  - each side picks its own relay nearby, from a different operator, network and jurisdiction than the other side's;
+  - relay-to-relay trunks carry constant padded traffic multiplexing many calls;
+  - streams start a random few seconds before a call connects and continue with padding a random few seconds after hangup;
+  - media rides WebTransport over HTTP/3 on UDP 443, so it looks like ordinary HTTPS;
+  - no direct phone-to-phone paths over the internet; direct links only on Wi-Fi Aware or the same Wi-Fi network;
+  - group calls fan out through relays acting as MOQ forwarders.
+  Target under 150 ms glass to glass within a region. What remains is long-term edge correlation by a global observer, stated in the app (THREAT-MODEL 5.2).
+- **Network size.** Absolute cover is the largest load on the network: roughly 100–150 million daily users on 50,000 Pis, and millions of Pi-equivalents (or hundreds of thousands of servers) at 10 billion, grown by operator rewards as usage grows (`OPEN-QUESTIONS.md` 10).
+
 ## Apple platform features
 
 Capabilities and reasons are listed in [APP-ID-CAPABILITIES.md](APP-ID-CAPABILITIES.md). Features that ship:
@@ -585,16 +606,10 @@ Where we're behind and must earn it: a new chain has no track record (QRL has ru
 - **Testnet incentives:** any testnet reward that converts to tokens is an airdrop question for counsel; default to none.
 
 ### 5. Battery and data budget
-- **iOS limits:** iOS suspends background apps, so phones send cover traffic only while the app is open. In the background, the Notification Service Extension only fetches. Queued messages leave at the cover rate when the app next opens, or immediately in the extension if the user replies from a notification.
-- **Two packet sizes,** both mixed: a small packet (about 10 KB on the wire: roughly 8 KB of ML-KEM-1024 headers for 5 hops plus a 2 KB payload) for messages, receipts and typing, and a bulk packet (about 72 KB, with a 64 KB payload) for attachment chunks. Each size has its own cover traffic, so attachments stay in the mixnet.
-- **Rates (to tune on devices):**
-
-| | Wi-Fi | Cellular | Low Power Mode |
-| --- | --- | --- | --- |
-| Small-packet cover, app open | 1 every 2 s (about 18 MB per hour) | 1 every 10 s (about 3.6 MB per hour) | Real traffic only |
-| Bulk lane | On | Off by default; attachments wait for Wi-Fi unless the user taps send now | Off |
-
-- **Budget:** under 3% battery and under 50 MB of cellular data a day for typical use. MetricKit (on the device only) verifies this in beta.
+- **iOS limits:** iOS suspends background apps, so phones send cover traffic only while the app is open. In the background, the Notification Service Extension only fetches. Queued messages leave in the ticks when the app next opens, or in one standard burst from the extension if the user replies from a notification.
+- **Two packet sizes:** a small packet (about 10 KB on the wire: roughly 8 KB of ML-KEM-1024 headers for 5 hops plus a 2 KB payload) for messages, receipts, typing and nu-media, and a bulk packet (about 72 KB, with a 64 KB payload) used only inside constant streams (your own node, the charging window).
+- **Rates (decided, see Stealth):** one fixed burst every 2 seconds on every network and in every power state while the app is open, with a matching constant downstream; no cover in the background. Phones have no visible bulk lane.
+- **Budget:** no cap and no data budget. Estimated 2–7% battery per hour the app is open on cellular and about 0.5% on Wi-Fi; MetricKit (on the device only) measures it in beta to tune the codec and burst size, never to slow the tick.
 
 ### 6. Contact discovery, invites and growth
 - **No phone or email discovery in v1.** It needs SMS verification (a central party) and phone hashes are easy to reverse. People connect by handle, QR code, tap to add, or invite link.
@@ -682,7 +697,7 @@ Timing rule: publishing the code, the arXiv paper or a detailed public descripti
 4. **Mixnet and anonymous credentials:** Outfox, three-layer mixing, cover traffic, the blind-signature issuer, node receipts.
 5. **Directory:** KT log with witnesses, usernames, KeyPackage publishing, lookups over the mixnet. Phone and email discovery deferred until a private contact discovery design is approved.
 6. **Apple clients:** MessengerKit, chat (1:1 and groups up to 1,000 devices), attachments, disappearing messages, safety numbers, multi-device linking by QR code, encrypted local store and backups, the push gateway integration.
-7. **Calls on the network:** MoqomKit calls over two-hop node relays, direct paths opt-in per contact.
+7. **Calls on the network:** MoqomKit calls over two-hop node relays with the stealth call profile; direct links only on Wi-Fi Aware or a shared Wi-Fi network.
 8. **Operator economy:** the macOS node app and Pi image with idle, scheduled and N-hour modes; reputation scoring; token staking and slashing; protocol rewards; burn auction. Shielded payments ship in the same v1 release after legal review.
 9. **Audit and launch:** external crypto, protocol and consensus audit, a bug bounty, supply-chain hardening, then public launch in the genesis stage.
 
@@ -696,7 +711,8 @@ Decided:
 - KT witnesses: the existing transparency-dev and Sigsum witness networks.
 - Groups: TreeKEM before launch, up to 1,000 devices.
 - Signatures: ML-DSA-87 everywhere, with the category-5 MLS suite MOQOM Cloud already uses (changed from ML-DSA-65 on 9 Oct 2026). Key exchange: pure ML-KEM-1024, no classical KEM (chosen over the hybrid recommendation, with the mitigations in Cryptographic design).
-- Routing: every message, receipt and typing event goes through the mixnet; there is no instant path for chat. Calls are the one exception and use two relays run by different operators, because a mixnet's delays can't carry live audio.
+- Routing: every message, receipt and typing event goes through the mixnet; there is no instant path for chat. Calls are the one exception and use two relays run by different operators under the stealth call profile, because a mixnet's delays can't carry live audio.
+- Stealth: a foundation, not a setting. 2 s fixed bursts on every network and power state, nu-media images inside the ticks, stealth paths for originals and video, hardened calls (see Stealth).
 - Consensus: our own lightweight post-quantum chain; weighted sortition of a 21-member committee per epoch; only balances and stakes persist, history is pruned.
 - Token: burn and mint on our own chain; a fixed share of net proceeds is revenue, the rest buys and burns the token for capacity; the protocol mints operator rewards from work receipts; burn auction for launch liquidity. Name, supply and genesis allocation set with counsel.
 - Sybil resistance: reputation multiplied by staked tokens, with slashing.

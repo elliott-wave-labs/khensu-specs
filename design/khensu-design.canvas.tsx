@@ -33,12 +33,12 @@ type UINode = Parameters<typeof Stack>[0]["children"];
 const PLAN = "/Users/elliott/.cursor/plans/moqom_messenger_b875f80e.plan.md";
 const CAPS = "/Users/elliott/Documents/GitHub/moqom-cloud/khensu-app-id-capabilities.md";
 
-// Brand surface for the phone mocks: always the night-sky dark palette,
-// with lapis (blue) and gold (yellow) from the shared dark category palette.
+// Brand surface for the phone mocks: monochrome on the dark palette.
+// Starlight for accents, silver for your bubbles, ash for quiet fills.
 const D = canvasPaletteDark;
-const LAPIS = categoryPaletteDark.blue;
-const GOLD = categoryPaletteDark.yellow;
-const GREEN = categoryPaletteDark.green;
+const STAR = D.foreground;
+const SILVER = D.foregroundSecondary;
+const ASH = D.foregroundTertiary;
 
 const TABS = ["Screens", "Architecture", "Economics", "Network", "Comparisons", "Roadmap", "Links"] as const;
 type Tab = (typeof TABS)[number];
@@ -47,7 +47,7 @@ type Tab = (typeof TABS)[number];
 
 // khensu.nu mark: a ring whose left side fills into a crescent, with no gap between them.
 // The inner edge is an arc of a larger circle offset right, so the tips taper to points on the ring.
-function Crescent({ size = 18, color = GOLD }: { size?: number; bg?: string; color?: string }) {
+function Crescent({ size = 18, color = STAR }: { size?: number; bg?: string; color?: string }) {
   const c = 50;
   const ring = 6;
   const a = 50 - ring / 2;
@@ -84,15 +84,118 @@ function AppIcon({ size = 64 }: { size?: number }) {
   );
 }
 
+// ---------- connected-dots sphere (after moqom.cloud's IndrasNet) ----------
+
+type P3 = { x: number; y: number; z: number };
+
+function sphereNodes(count: number, rotY: number, tilt: number): P3[] {
+  const pts: P3[] = [];
+  const shell = Math.round(count * 0.75);
+  for (let i = 0; i < shell; i++) {
+    const y = 1 - (i / (shell - 1)) * 2;
+    const r = Math.sqrt(1 - y * y);
+    const t = i * Math.PI * (3 - Math.sqrt(5));
+    pts.push({ x: Math.cos(t) * r, y, z: Math.sin(t) * r });
+  }
+  for (let i = 0; pts.length < count; i++) {
+    const h = (k: number) => Math.sin(i * 12.9898 + k * 78.233) * 43758.5453 % 1;
+    const v = { x: h(1), y: h(2), z: h(3) };
+    const len = Math.hypot(v.x, v.y, v.z) || 1;
+    const s = (0.25 + Math.abs(h(4)) * 0.5) / len;
+    pts.push({ x: v.x * s, y: v.y * s, z: v.z * s });
+  }
+  const cy = Math.cos(rotY), sy = Math.sin(rotY), ct = Math.cos(tilt), st = Math.sin(tilt);
+  return pts.map(({ x, y, z }) => {
+    const x1 = x * cy + z * sy;
+    const z1 = -x * sy + z * cy;
+    return { x: x1, y: y * ct - z1 * st, z: y * st + z1 * ct };
+  });
+}
+
+function sphereEdges(pts: P3[], neighbours = 3): Array<[number, number]> {
+  const seen = new Set<string>();
+  const edges: Array<[number, number]> = [];
+  pts.forEach((p, i) => {
+    pts
+      .map((q, j) => [j, (p.x - q.x) ** 2 + (p.y - q.y) ** 2 + (p.z - q.z) ** 2] as const)
+      .filter(([j]) => j !== i)
+      .sort((a, b) => a[1] - b[1])
+      .slice(0, neighbours)
+      .forEach(([j]) => {
+        const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          edges.push([i, j]);
+        }
+      });
+  });
+  return edges;
+}
+
+function DotNet({
+  width,
+  height,
+  radius,
+  count = 72,
+  rotY = 0.6,
+  tilt = 0.3,
+  opacity = 1,
+  lit = [],
+  children,
+}: {
+  width: number;
+  height: number;
+  radius: number;
+  count?: number;
+  rotY?: number;
+  tilt?: number;
+  opacity?: number;
+  lit?: number[];
+  children?: (at: (i: number) => { x: number; y: number; z: number }) => UINode;
+}) {
+  const pts = sphereNodes(count, rotY, tilt);
+  const edges = sphereEdges(pts);
+  const cx = width / 2;
+  const cy = height / 2;
+  const at = (i: number) => ({ x: cx + pts[i].x * radius, y: cy + pts[i].y * radius, z: pts[i].z });
+  const depth = (z: number) => 0.25 + ((z + 1) / 2) * 0.75;
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{ opacity, display: "block" }}>
+      <defs>
+        <radialGradient id="khensu-glow">
+          <stop offset="0" stopColor={STAR} stopOpacity={0.55} />
+          <stop offset="1" stopColor={STAR} stopOpacity={0} />
+        </radialGradient>
+      </defs>
+      {edges.map(([a, b]) => {
+        const pa = at(a);
+        const pb = at(b);
+        return <line key={`${a}-${b}`} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y} stroke={STAR} strokeOpacity={0.14 * depth((pa.z + pb.z) / 2)} strokeWidth={0.7} />;
+      })}
+      {pts.map((_, i) => {
+        const p = at(i);
+        const on = lit.includes(i);
+        return (
+          <g key={i}>
+            {on && <circle cx={p.x} cy={p.y} r={7} fill="url(#khensu-glow)" />}
+            <circle cx={p.x} cy={p.y} r={on ? 1.8 : 0.6 + depth(p.z) * 0.9} fill={STAR} fillOpacity={on ? 1 : depth(p.z) * 0.7} />
+          </g>
+        );
+      })}
+      {children?.(at)}
+    </svg>
+  );
+}
+
 // Moon phase for disappearing timers: fraction 1 = full, 0 = new.
 function MoonPhase({ fraction, size = 12, bg = D.fillSecondary }: { fraction: number; size?: number; bg?: string }) {
   const r = size / 2;
   const offset = (1 - fraction) * size;
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      <circle cx={r} cy={r} r={r} fill={GOLD} />
+      <circle cx={r} cy={r} r={r} fill={STAR} />
       <circle cx={r - offset} cy={r} r={r} fill={bg} />
-      <circle cx={r} cy={r} r={r - 0.5} fill="none" stroke={GOLD} strokeWidth={1} />
+      <circle cx={r} cy={r} r={r - 0.5} fill="none" stroke={STAR} strokeWidth={1} />
     </svg>
   );
 }
@@ -100,7 +203,7 @@ function MoonPhase({ fraction, size = 12, bg = D.fillSecondary }: { fraction: nu
 function GoldCheck({ size = 12 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 12 12">
-      <circle cx={6} cy={6} r={6} fill={GOLD} />
+      <circle cx={6} cy={6} r={6} fill={STAR} />
       <path d="M3.3 6.2 L5.2 8 L8.8 4.2" stroke={D.editor} strokeWidth={1.6} fill="none" strokeLinecap="round" />
     </svg>
   );
@@ -113,8 +216,9 @@ function Avatar({ letter, tint, size = 34 }: { letter: string; tint: string; siz
         width: size,
         height: size,
         borderRadius: size / 2,
-        background: tint,
-        color: D.editor,
+        background: D.fillSecondary,
+        border: `1px solid ${tint}`,
+        color: tint,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -138,7 +242,7 @@ const ph = {
   glass: { background: D.fillSecondary, border: `1px solid ${D.strokeSecondary}` } as CSSProperties,
 };
 
-function Phone({ caption, children, tabBar = true, active = "Chats" }: { caption: string; children: UINode; tabBar?: boolean; active?: string }) {
+function Phone({ caption, children, tabBar = true, active = "Chats", wallpaper = false }: { caption: string; children: UINode; tabBar?: boolean; active?: string; wallpaper?: boolean }) {
   const theme = useHostTheme();
   return (
     <Stack gap={8} style={{ alignItems: "center" }}>
@@ -155,12 +259,17 @@ function Phone({ caption, children, tabBar = true, active = "Chats" }: { caption
           position: "relative",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 20px 4px", ...ph.text, fontWeight: 600 }}>
+        {wallpaper && (
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+            <DotNet width={236} height={360} radius={150} count={110} rotY={1.1} tilt={0.5} opacity={0.8} lit={[7, 31, 58, 90]} />
+          </div>
+        )}
+        <div style={{ position: "relative", display: "flex", justifyContent: "space-between", padding: "10px 20px 4px", ...ph.text, fontWeight: 600 }}>
           <span>9:41</span>
           <div style={{ width: 70, height: 20, borderRadius: 10, background: D.chrome, marginTop: -2 }} />
           <span style={ph.sub}>100%</span>
         </div>
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: tabBar ? "4px 12px 64px" : "4px 12px", gap: 8, overflow: "hidden" }}>{children}</div>
+        <div style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column", padding: tabBar ? "4px 12px 64px" : "4px 12px", gap: 8, overflow: "hidden" }}>{children}</div>
         {tabBar && <TabBar active={active} />}
       </div>
       <Text size="small" tone="secondary" style={{ textAlign: "center", maxWidth: 248 }}>
@@ -265,8 +374,8 @@ function TabBar({ active }: { active: string }) {
               key={name}
               style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "5px 14px", borderRadius: 20, background: on ? D.fillPrimary : "transparent" }}
             >
-              <Glyph name={icon} size={16} color={on ? GOLD : D.foreground} />
-              <span style={{ fontSize: 9, color: on ? GOLD : D.foreground }}>{name}</span>
+              <Glyph name={icon} size={16} color={on ? STAR : D.foreground} />
+              <span style={{ fontSize: 9, color: on ? STAR : D.foreground }}>{name}</span>
             </div>
           );
         })}
@@ -289,7 +398,7 @@ function FolderTabs() {
             borderRadius: 10,
             whiteSpace: "nowrap",
             color: i === 0 ? D.editor : D.foregroundSecondary,
-            background: i === 0 ? GOLD : D.fillTertiary,
+            background: i === 0 ? STAR : D.fillTertiary,
           }}
         >
           {t}
@@ -314,7 +423,7 @@ function ChatRow({ name, msg, time, unread, verified, tint, timer }: { name: str
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
         <span style={ph.faint}>{time}</span>
         {unread ? (
-          <span style={{ fontSize: 9, minWidth: 16, textAlign: "center", padding: "1px 5px", borderRadius: 8, background: GOLD, color: D.editor, fontWeight: 700 }}>{unread}</span>
+          <span style={{ fontSize: 9, minWidth: 16, textAlign: "center", padding: "1px 5px", borderRadius: 8, background: STAR, color: D.editor, fontWeight: 700 }}>{unread}</span>
         ) : null}
       </div>
     </div>
@@ -331,13 +440,13 @@ function ChatsScreen() {
       />
       <FolderTabs />
       <div style={{ borderRadius: 10, padding: "6px 8px", background: D.fillTertiary, border: `1px solid ${D.strokeSecondary}` }}>
-        <span style={{ ...ph.faint, color: GOLD }}>Early network</span>
+        <span style={{ ...ph.faint, color: STAR }}>Early network</span>
         <span style={ph.faint}> · 12 operators, 4 countries. Anonymity grows as more join.</span>
       </div>
-      <ChatRow name="Ana" msg="Lisbon moved to 12–19 May" time="9:38" unread={3} verified tint={LAPIS} />
-      <ChatRow name="Design crew" msg="Mara: new icon set is up" time="9:12" unread={12} tint={categoryPaletteDark.purple} />
-      <ChatRow name="Dad" msg="Voice note · 0:42" time="8:50" verified tint={GREEN} timer={0.6} />
-      <ChatRow name="tatenan operators" msg="Epoch 41,203 header signed" time="Thu" tint={categoryPaletteDark.cyan} />
+      <ChatRow name="Ana" msg="Lisbon moved to 12–19 May" time="9:38" unread={3} verified tint={SILVER} />
+      <ChatRow name="Design crew" msg="Mara: new icon set is up" time="9:12" unread={12} tint={ASH} />
+      <ChatRow name="Dad" msg="Voice note · 0:42" time="8:50" verified tint={SILVER} timer={0.6} />
+      <ChatRow name="tatenan operators" msg="Epoch 41,203 header signed" time="Thu" tint={ASH} />
     </Phone>
   );
 }
@@ -360,23 +469,23 @@ function SwipeScreen() {
         trailing={<><GlassCircle icon="more" /><GlassCircle icon="compose" /></>}
       />
       <FolderTabs />
-      <ChatRow name="Ana" msg="Lisbon moved to 12–19 May" time="9:38" unread={3} verified tint={LAPIS} />
+      <ChatRow name="Ana" msg="Lisbon moved to 12–19 May" time="9:38" unread={3} verified tint={SILVER} />
       <div style={{ display: "flex", margin: "0 -12px", height: 46 }}>
-        <SwipeAction label="Pin" icon="pin" bg={GOLD} fg={D.editor} />
-        <SwipeAction label="Read" icon="read" bg={LAPIS} fg={D.editor} />
+        <SwipeAction label="Pin" icon="pin" bg={STAR} fg={D.editor} />
+        <SwipeAction label="Read" icon="read" bg={SILVER} fg={D.editor} />
         <div style={{ flex: 1, padding: "0 12px", background: D.editor }}>
-          <ChatRow name="Design crew" msg="Mara: new icon set is up" time="9:12" unread={12} tint={categoryPaletteDark.purple} />
+          <ChatRow name="Design crew" msg="Mara: new icon set is up" time="9:12" unread={12} tint={ASH} />
         </div>
       </div>
       <div style={{ display: "flex", margin: "0 -12px", height: 46 }}>
         <div style={{ flex: 1, padding: "0 12px", background: D.editor }}>
-          <ChatRow name="Dad" msg="Voice note · 0:42" time="8:50" verified tint={GREEN} timer={0.6} />
+          <ChatRow name="Dad" msg="Voice note · 0:42" time="8:50" verified tint={SILVER} timer={0.6} />
         </div>
         <SwipeAction label="Mute" icon="mute" bg={D.fillPrimary} />
-        <SwipeAction label="Archive" icon="archive" bg={categoryPaletteDark.purple} fg={D.editor} />
+        <SwipeAction label="Archive" icon="archive" bg={ASH} fg={D.editor} />
       </div>
-      <ChatRow name="tatenan operators" msg="Epoch 41,203 header signed" time="Thu" tint={categoryPaletteDark.cyan} />
-      <ChatRow name="Leo" msg="Sent you 25 · shielded" time="Wed" verified tint={categoryPaletteDark.orange} />
+      <ChatRow name="tatenan operators" msg="Epoch 41,203 header signed" time="Thu" tint={ASH} />
+      <ChatRow name="Leo" msg="Sent you 25 · shielded" time="Wed" verified tint={ASH} />
     </Phone>
   );
 }
@@ -406,7 +515,7 @@ function LongPressScreen() {
       <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 8, marginTop: 70 }}>
         <div style={{ alignSelf: "flex-end", display: "flex", gap: 4, padding: "5px 8px", borderRadius: 18, ...ph.glass }}>
           {reactions.map((r) => (
-            <div key={r} style={{ width: 24, height: 24, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: r === "♥" ? GOLD : D.foreground, background: r === "♥" ? D.fillPrimary : "transparent" }}>
+            <div key={r} style={{ width: 24, height: 24, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: r === "♥" ? STAR : D.foreground, background: r === "♥" ? D.fillPrimary : "transparent" }}>
               {r}
             </div>
           ))}
@@ -435,7 +544,7 @@ function ChatHeader() {
       <GlassCircle icon="back" />
       <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
         <GlassCapsule style={{ gap: 6, padding: "0 10px 0 4px" }}>
-          <Avatar letter="A" tint={LAPIS} size={22} />
+          <Avatar letter="A" tint={SILVER} size={22} />
           <span style={{ ...ph.text, fontWeight: 600 }}>Ana</span>
           <GoldCheck size={10} />
         </GlassCapsule>
@@ -480,7 +589,7 @@ function Bubble({ me, children, meta }: { me?: boolean; children: UINode; meta?:
           maxWidth: "78%",
           padding: "6px 9px",
           borderRadius: 14,
-          background: me ? LAPIS : D.fillSecondary,
+          background: me ? SILVER : D.fillSecondary,
           color: me ? D.editor : D.foreground,
           fontSize: 12,
           lineHeight: "16px",
@@ -501,8 +610,8 @@ function ChatScreen() {
       <Bubble me meta="9:31">Yes, 12–19 May works</Bubble>
       <Bubble meta={<><MoonPhase fraction={0.3} size={9} bg={D.fillSecondary} /> 2h left</>}>Gate code is 4471, delete after</Bubble>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <div style={{ borderRadius: 14, padding: "8px 10px", border: `1px solid ${GOLD}`, background: D.fillTertiary, width: "70%" }}>
-          <div style={{ ...ph.faint, color: GOLD }}>Shielded payment</div>
+        <div style={{ borderRadius: 14, padding: "8px 10px", border: `1px solid ${STAR}`, background: D.fillTertiary, width: "70%" }}>
+          <div style={{ ...ph.faint, color: STAR }}>Shielded payment</div>
           <div style={{ ...ph.text, fontSize: 18, lineHeight: "22px", fontWeight: 700 }}>25</div>
           <div style={ph.faint}>Hidden amount · no lasting record</div>
         </div>
@@ -535,7 +644,7 @@ function SearchScreen() {
       <div style={{ borderRadius: 12, padding: 10, background: D.fillTertiary, border: `1px solid ${D.strokeSecondary}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
           <Crescent size={12} bg={D.fillTertiary} />
-          <span style={{ ...ph.faint, color: GOLD }}>Answer · on-device model</span>
+          <span style={{ ...ph.faint, color: STAR }}>Answer · on-device model</span>
         </div>
         <div style={ph.text}>
           12–19 May. Ana moved it a week on Thursday [1], and you booked a flat near Cais do Sodré [2].
@@ -551,7 +660,7 @@ function SearchScreen() {
       <div style={ph.faint}>Recall · keyword, meaning, graph and time, fused by rank</div>
       {results.map((r) => (
         <div key={r.t} style={{ display: "flex", gap: 6, alignItems: "center", padding: "4px 0", borderBottom: `1px solid ${D.strokeTertiary}` }}>
-          <span style={{ fontSize: 9, width: 46, textAlign: "center", padding: "1px 0", borderRadius: 6, background: D.fillSecondary, color: GOLD }}>{r.k}</span>
+          <span style={{ fontSize: 9, width: 46, textAlign: "center", padding: "1px 0", borderRadius: 6, background: D.fillSecondary, color: STAR }}>{r.k}</span>
           <span style={{ ...ph.sub, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.t}</span>
           <span style={ph.faint}>{r.d}</span>
         </div>
@@ -567,11 +676,11 @@ function WalletScreen() {
       <NavBar title="Wallet" leading={<GlassCircle icon="back" />} trailing={<GlassCircle icon="more" />} />
       <div style={{ borderRadius: 14, padding: 12, background: D.fillTertiary, border: `1px solid ${D.strokeSecondary}` }}>
         <div style={ph.faint}>Shielded balance</div>
-        <div style={{ ...ph.text, fontSize: 22, lineHeight: "26px", fontWeight: 700, color: GOLD }}>30</div>
+        <div style={{ ...ph.text, fontSize: 22, lineHeight: "26px", fontWeight: 700, color: STAR }}>30</div>
         <div style={ph.faint}>Era Oct 2026 · auto-refresh in 12 days</div>
         <div style={{ display: "flex", gap: 4, marginTop: 8, flexWrap: "wrap" }}>
           {notes.map((n, i) => (
-            <span key={i} style={{ fontSize: 10, padding: "2px 7px", borderRadius: 8, border: `1px solid ${GOLD}`, color: GOLD }}>
+            <span key={i} style={{ fontSize: 10, padding: "2px 7px", borderRadius: 8, border: `1px solid ${STAR}`, color: STAR }}>
               {n}
             </span>
           ))}
@@ -579,7 +688,7 @@ function WalletScreen() {
       </div>
       <div style={{ display: "flex", gap: 8 }}>
         {["Send", "Receive", "Deposit"].map((b, i) => (
-          <div key={b} style={{ flex: 1, textAlign: "center", padding: "6px 0", borderRadius: 10, fontSize: 11, fontWeight: 600, background: i === 0 ? GOLD : D.fillSecondary, color: i === 0 ? D.editor : D.foreground }}>
+          <div key={b} style={{ flex: 1, textAlign: "center", padding: "6px 0", borderRadius: 10, fontSize: 11, fontWeight: 600, background: i === 0 ? STAR : D.fillSecondary, color: i === 0 ? D.editor : D.foreground }}>
             {b}
           </div>
         ))}
@@ -592,7 +701,7 @@ function WalletScreen() {
       ].map(([a, b, c]) => (
         <div key={a} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: `1px solid ${D.strokeTertiary}` }}>
           <span style={ph.sub}>{a}</span>
-          <span style={{ ...ph.text, color: b.startsWith("+") ? GREEN : D.foreground }}>{b}</span>
+          <span style={{ ...ph.text, color: b.startsWith("+") ? SILVER : D.foreground }}>{b}</span>
           <span style={ph.faint}>{c}</span>
         </div>
       ))}
@@ -602,40 +711,73 @@ function WalletScreen() {
 }
 
 function CallScreen() {
+  const W = 224;
+  const H = 240;
+  const count = 72;
+  const pts = sphereNodes(count, 0.6, 0.3);
+  const front = pts.map((p, i) => [i, p] as const).filter(([, p]) => p.z > 0.15);
+  const pick = (ax: number, ay: number) =>
+    front.reduce((best, cur) => ((cur[1].x - ax) ** 2 + (cur[1].y - ay) ** 2 < (best[1].x - ax) ** 2 + (best[1].y - ay) ** 2 ? cur : best))[0];
   const people = [
-    { l: "A", a: -60, tint: LAPIS },
-    { l: "M", a: 0, tint: categoryPaletteDark.purple },
-    { l: "L", a: 60, tint: categoryPaletteDark.orange },
-    { l: "D", a: 130, tint: GREEN },
+    { l: "Ana", i: pick(-0.75, -0.45), speaking: true },
+    { l: "Mara", i: pick(0.7, -0.5), speaking: false },
+    { l: "Leo", i: pick(0.75, 0.45), speaking: false },
+    { l: "Dad", i: pick(-0.65, 0.55), speaking: false },
   ];
+  const lit = people.map((p) => p.i);
   return (
-    <Phone caption="Group call: spatial audio places each voice around you, tracked with AirPods head pose" tabBar={false}>
+    <Phone caption="Group call: each voice is a node in space around you; AirPods head pose keeps them fixed as you turn" tabBar={false}>
       <div style={{ textAlign: "center", marginTop: 8 }}>
         <div style={{ ...ph.text, fontWeight: 600 }}>Design crew</div>
         <div style={ph.faint}>4 people · 12:04 · two relays, different operators</div>
       </div>
-      <div style={{ position: "relative", height: 230, marginTop: 8 }}>
-        <div style={{ position: "absolute", left: 32, top: 23, width: 160, height: 160, borderRadius: 80, border: `1px dashed ${D.strokeSecondary}` }} />
-        <div style={{ position: "absolute", left: 92, top: 83 }}>
-          <Avatar letter="You" tint={GOLD} size={40} />
-        </div>
-        {people.map((p) => {
-          const rad = ((p.a - 90) * Math.PI) / 180;
-          const x = 112 + Math.cos(rad) * 80 - 18;
-          const y = 103 + Math.sin(rad) * 80 - 18;
-          return (
-            <div key={p.l} style={{ position: "absolute", left: x, top: y }}>
-              <Avatar letter={p.l} tint={p.tint} size={36} />
-            </div>
-          );
-        })}
+      <div style={{ margin: "4px -12px 0", display: "flex", justifyContent: "center" }}>
+        <DotNet width={W} height={H} radius={92} count={count} lit={lit}>
+          {(at) => (
+            <>
+              {people.map((p) => {
+                const q = at(p.i);
+                const mx = W / 2 + (q.x - W / 2) * 0.55;
+                const my = H / 2 + (q.y - H / 2) * 0.55;
+                return (
+                  <g key={p.l}>
+                    <line x1={W / 2} y1={H / 2} x2={q.x} y2={q.y} stroke={STAR} strokeOpacity={p.speaking ? 0.7 : 0.25} strokeWidth={p.speaking ? 1.1 : 0.7} strokeDasharray={p.speaking ? undefined : "2 3"} />
+                    {p.speaking && <circle cx={mx} cy={my} r={2.2} fill={STAR} />}
+                    {p.speaking && <circle cx={q.x} cy={q.y} r={11} fill="none" stroke={STAR} strokeOpacity={0.35} strokeWidth={0.8} />}
+                    <text x={q.x} y={q.y + (q.y > H / 2 ? 18 : -10)} textAnchor="middle" fontSize={9} fill={p.speaking ? STAR : SILVER}>
+                      {p.l}
+                    </text>
+                  </g>
+                );
+              })}
+              <circle cx={W / 2} cy={H / 2} r={14} fill="url(#khensu-glow)" />
+              <circle cx={W / 2} cy={H / 2} r={3.2} fill={STAR} />
+              <text x={W / 2} y={H / 2 + 17} textAnchor="middle" fontSize={9} fill={STAR}>
+                You
+              </text>
+            </>
+          )}
+        </DotNet>
       </div>
       <div style={{ ...ph.faint, textAlign: "center" }}>Personalized Spatial Audio · head tracking on</div>
       <div style={{ flex: 1 }} />
       <div style={{ display: "flex", justifyContent: "space-around", marginBottom: 16 }}>
-        {["Mute", "Speaker", "Video", "End"].map((b) => (
+        {(
+          [
+            ["Mute", "mic"],
+            ["Speaker", "mute"],
+            ["Video", "video"],
+            ["End", "phone"],
+          ] as Array<[string, GlyphName]>
+        ).map(([b, icon]) => (
           <div key={b} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 20, background: b === "End" ? categoryPaletteDark.red : D.fillSecondary }} />
+            {b === "End" ? (
+              <div style={{ width: 40, height: 40, borderRadius: 20, background: categoryPaletteDark.red, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Glyph name="phone" size={18} color={D.editor} />
+              </div>
+            ) : (
+              <GlassCircle icon={icon} size={40} />
+            )}
             <span style={ph.faint}>{b}</span>
           </div>
         ))}
@@ -646,7 +788,7 @@ function CallScreen() {
 
 function LockScreen() {
   return (
-    <Phone caption="Lock screen in Anonymous mode: no sender, no preview, nothing for Apple to read" tabBar={false}>
+    <Phone caption="Lock screen in Anonymous mode, on the connected-dots wallpaper: no sender, no preview" tabBar={false} wallpaper>
       <div style={{ textAlign: "center", marginTop: 30 }}>
         <div style={ph.sub}>Friday 9 October</div>
         <div style={{ color: D.foreground, fontSize: 22, lineHeight: "26px", fontWeight: 300, letterSpacing: 1 }}>9:41</div>
@@ -675,7 +817,7 @@ function SettingRow({ label, value, gold }: { label: string; value: string; gold
   return (
     <div style={{ display: "flex", justifyContent: "space-between", padding: "7px 10px", borderBottom: `1px solid ${D.strokeTertiary}` }}>
       <span style={ph.text}>{label}</span>
-      <span style={{ ...ph.sub, color: gold ? GOLD : D.foregroundSecondary }}>{value} ›</span>
+      <span style={{ ...ph.sub, color: gold ? STAR : D.foregroundSecondary }}>{value} ›</span>
     </div>
   );
 }
@@ -708,7 +850,7 @@ function ProfileScreen() {
   return (
     <Phone caption="Identity: permanent handle, khensu1 address, four-word check phrase, QR and tap to add" active="Settings">
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, marginTop: 6 }}>
-        <Avatar letter="E" tint={GOLD} size={56} />
+        <Avatar letter="E" tint={STAR} size={56} />
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
           <span style={{ ...ph.text, fontSize: 16, fontWeight: 700 }}>@elliott</span>
           <GoldCheck size={12} />
@@ -724,7 +866,7 @@ function ProfileScreen() {
         <div style={ph.faint}>Address</div>
         <div style={{ ...ph.text, fontFamily: "ui-monospace, monospace", fontSize: 10 }}>khensu1q8f3x…7w2kpz</div>
         <div style={{ ...ph.faint, marginTop: 6 }}>Check phrase</div>
-        <div style={{ ...ph.text, color: GOLD }}>lotus · river · falcon · dawn</div>
+        <div style={{ ...ph.text, color: STAR }}>lotus · river · falcon · dawn</div>
       </div>
       <div style={{ display: "flex", gap: 8 }}>
         {["Share link", "Tap to add", "Devices (3)"].map((b) => (
@@ -743,7 +885,7 @@ function ScreensTab() {
       <Stack gap={4}>
         <H2>iPhone screens</H2>
         <Text tone="secondary">
-          Stock iOS 26 Liquid Glass chrome: large-title navigation bars with glass toolbar buttons, the floating tab bar with its separate search button, native pull-down and context menus, long press and system swipe actions. The lunar identity lives in content: night-sky surfaces, lapis bubbles, gold accents, the crescent mark and moon-phase timers.
+          Stock iOS 26 Liquid Glass chrome: large-title navigation bars with glass toolbar buttons, the floating tab bar with its separate search button, native pull-down and context menus, long press and system swipe actions. The identity is monochrome and spacey: true-black surfaces, silver bubbles, starlight accents, the crescent mark, moon-phase timers, and connected-dot node networks (after moqom.cloud) for calls, the network and wallpapers. Red appears only for destructive actions and ending calls.
         </Text>
       </Stack>
       <Grid columns={4} gap={20} align="start">
@@ -767,10 +909,10 @@ function ScreensTab() {
 
 function IconVariants() {
   const variants: Array<[string, string, string]> = [
-    ["Default", D.editor, GOLD],
-    ["Lapis", LAPIS, D.foreground],
-    ["Light", D.foreground, LAPIS],
-    ["Tinted", D.chrome, D.foregroundSecondary],
+    ["Dark", D.chrome, STAR],
+    ["Graphite", D.fillPrimary, STAR],
+    ["Light", D.foreground, D.editor],
+    ["Tinted", D.chrome, SILVER],
   ];
   return (
     <Card>
@@ -812,10 +954,10 @@ function IconVariants() {
 function BrandStrip() {
   const theme = useHostTheme();
   const swatches: Array<[string, string, string]> = [
-    ["Night sky", D.editor, "Backgrounds, true-black on OLED"],
-    ["Glass", D.fillSecondary, "Tab bar, toolbars, sheets"],
-    ["Lapis", LAPIS, "Your bubbles, links"],
-    ["Gold", GOLD, "Actions, verified, mentions, timers"],
+    ["Void", D.editor, "Backgrounds, true black on OLED"],
+    ["Glass", D.fillSecondary, "Tab bar, toolbars, menus, sheets"],
+    ["Silver", SILVER, "Your bubbles, secondary text"],
+    ["Starlight", STAR, "Actions, verified, unread, timers, nodes"],
   ];
   return (
     <Card>

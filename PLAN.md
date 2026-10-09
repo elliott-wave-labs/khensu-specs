@@ -60,7 +60,7 @@ todos:
     content: "v1 Apple features: Wi-Fi Aware offline nearby relay of sealed packets, tap-to-add/verify (Tap to Share, NFC), Push to Talk over the mixnet, CarPlay calls only (no Siri, so no CarPlay messaging), default messaging/calling app, Communication Notifications in Previews mode, App Attest feeding blind-token issuance, on-device voice (SpeechAnalyzer dictation, AVSpeechSynthesizer read-aloud), Writing Tools off and third-party keyboards blocked in the composer, Declared Age Range teen defaults, StoreKit external purchases; file Apple entitlement requests early"
     status: pending
   - id: apple-client
-    content: "moqom-messenger/apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with the lunar identity (lapis and gold palette, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
+    content: "moqom-messenger/apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
     status: pending
   - id: calls
     content: Integrate MoqomKit calls over two-hop node relays, direct paths opt-in per contact
@@ -307,13 +307,14 @@ Coercion: a setting can require the passcode instead of Face ID for app unlock, 
 
 - **Native first.** SwiftUI on iOS 26 Liquid Glass components (glass tab bar, toolbars, sheets), one codebase for iPhone, iPad and Mac with a three-column split view on iPad and Mac. Dynamic Type, VoiceOver and Reduce Motion supported from the start.
 - **No custom chrome.** Default `NavigationStack` bars with large titles and glass toolbar buttons, the stock `TabView` with a search-role tab, `Menu` for pull-down menus, `.contextMenu` with previews on long press (reactions sit above the menu), `.swipeActions` on chat rows (leading Pin and Read, trailing Mute and Archive) and `.searchable`. The brand shows up only in content: colors, the crescent mark and moon-phase timers.
-- **Lunar identity on top.** Khensu is the Egyptian moon god, "the traveller":
-  - Deep lapis and night-sky backgrounds, with warm gold accents for actions, verified badges and mentions. Light and dark themes, plus a true-black theme for OLED screens.
-  - The app icon is a thin gold ring with a filled crescent sliver on the left, on a night-sky tile, in the default, dark and tinted icon styles.
-  - Moon phases show disappearing-message timers (the moon wanes as a message nears expiry), and a subtle star field appears behind empty states.
+- **Monochrome, spacey identity.** Khensu is the Egyptian moon god, "the traveller":
+  - Monochrome: true-black and graphite surfaces, silver for your bubbles, starlight white for actions, verified badges, unread counts and mentions. Red only for destructive actions and ending calls. Dark and true-black themes first, plus a light theme.
+  - Connected-dot node networks, in the style of moqom.cloud's relay web, are the recurring motif: spatial-audio calls show each voice as a lit node on a sphere around you, the lock-screen and empty-state wallpapers are slowly turning dot networks, and the node app shows the live mixnet the same way. Motion respects Reduce Motion.
+  - The app icon is a white ring whose left side fills into a pointed crescent, with no gap, on a black tile, in the default, dark and tinted icon styles.
+  - Moon phases show disappearing-message timers (the moon wanes as a message nears expiry).
   - Typography: SF Pro for the interface, with a display face for the wordmark only.
 - **Telegram-like layout.** Chat folders as tabs at the top of the chat list (All, Personal, Groups, Channels, Unread, custom folders); swipe to pin, mute, archive or mark read; replies, reactions, threads, polls, stickers and voice and video notes in the chat view. Bottom tabs: Chats, Calls, Search ("Ask khensu"), Settings.
-- **Visible but quiet security.** A gold check on verified contacts, the four-word check phrase on profiles, and a Face ID unlock screen styled like the lock screen. There's no crypto jargon in the main interface; details live under "Encryption" on each chat.
+- **Visible but quiet security.** A white check on verified contacts, the four-word check phrase on profiles, and a Face ID unlock screen styled like the lock screen. There's no crypto jargon in the main interface; details live under "Encryption" on each chat.
 - **Node app (`nu.khensu.tatenan`).** A macOS menu-bar app in the same palette, showing node status, schedule and earnings.
 
 ## Local search and memory: a Hindsight-style engine on the device (iOS 26+, macOS 26+)

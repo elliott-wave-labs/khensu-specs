@@ -159,7 +159,7 @@ isProject: false
 - Post-quantum from day one, for confidentiality, authentication and consensus. Key exchange is pure ML-KEM-1024 (FIPS 203, the highest security category), with no classical algorithm; signatures everywhere, including the consensus, are ML-DSA-87 (FIPS 204).
 - Decentralized at launch: independent operators run the nodes, the node list is agreed by a rotating committee drawn from those nodes, and the user directory is an append-only transparency log anyone can audit. Founder safeguards protect the network from capture until it is established.
 - Light enough to run a node on a Raspberry Pi 5.
-- iPhone, iPad and Mac first, in the `khensu-*` repos, reusing MoqomKit (calls and transport, with MOQOM's stealth profile; direct paths only on local links) and moqom-security's device-key proof and token designs; MLS comes from an OpenMLS fork in `khensu-core`.
+- iPhone, iPad and Mac first, in the `khensu-*` repos, reusing MoqomKit (calls and transport, with khensu's stealth profile added in khensu repos; direct paths only on local links) and moqom-security's device-key proof and token designs; MLS comes from an OpenMLS fork in `khensu-core`.
 
 ## Why it's better than Signal
 
@@ -494,12 +494,10 @@ A public broadcast network, like Twitter was, that runs itself on the node netwo
 
 **webE** (home: `khensu.nu`) is the internet web3 was supposed to be: content delivery, websites and live media run by the people on the node network, with no CDN, no DNS and no metered bandwidth. MOQOM stays a company; khensu.nu is the messenger and webE the network's open web. Open questions are in `OPEN-QUESTIONS.md` section H.
 
-- **Nodes are relays, devices are smart.** Every tatenan node runs a MOQ relay alongside its mix, mailbox and cache roles. Relays only forward and cache; encoding, encryption, ranking, moderation and rendering happen on devices.
+- **Nodes are relays, devices are smart.** Every tatenan node runs a MOQ relay alongside its mix, mailbox and cache roles. The relay is an evolution of MOQOM built only in khensu repos from MOQOM's Apache-2.0 crates (decided); MOQOM stays a separate product aimed at replacing Agora or being sold to it. Relays only forward and cache; encoding, encryption, ranking, moderation and rendering happen on devices.
 - **Names without name servers.** Sites and streams are named by `name.khensu.nu` handles resolved from the key transparency log over the mixnet (PIR), and by content addresses. No DNS lookup, no registrar, no certificate authority: the handle's log entry carries the site's ML-DSA-87 key and current root hash.
 - **Sites.** A site is a signed, content-addressed bundle (static files plus optional WebAssembly), published by its owner's devices, erasure-coded across `channel_cache` nodes and served by relays. Updates are new signed roots. Dynamic features run in the browser or through the owner's own node.
-- **Two delivery modes, chosen by the publisher:**
-  - **Stealth:** fetched inside the stealth ticks and the user's node stream, so nobody learns who read what. Slow for large pages, like stealth attachments.
-  - **Public:** fetched from the nearest relays over MOQ at CDN speed, for content meant to reach everyone (news, public streams, software). The content is public; a relay sees which public object an IP fetched, like any CDN.
+- **Public content, stealthy access (decided).** Content can be public, but reading it is always stealthy because it sits on the stealth network. Fetches go through two relays like calls: the entry relay knows who but not what (the request is encrypted to the exit relay), the exit relay or cache knows what but not who, the hop between them rides a padded trunk, and responses are padded to size buckets. Small objects can ride the stealth ticks. Speed stays close to a CDN. Private content is end-to-end encrypted on top. Code mapping in `design/stealth-relay.md`.
 - **Live media.** Public broadcasts and live streams are MOQ tracks fanned out by node relays (MOQOM's core, at sub-second latency); private streams are end-to-end encrypted with keys sealed to subscribers.
 - **No metered bandwidth.** Users never pay per byte. Operators are paid by the protocol from work receipts (burn and mint), so more usage means more operator income and more nodes.
 - **Browsers.**

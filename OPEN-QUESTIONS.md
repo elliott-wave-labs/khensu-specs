@@ -88,7 +88,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - **Group calls** fan out through relays as MOQ forwarders, with media keys from MLS (post-quantum end to end).
 - **Latency:** two relays near each side add roughly 5–30 ms over a direct path; the target is under 150 ms glass to glass within a region. To be measured.
 - **What remains:** long-term edge correlation by a global observer (5.2 in THREAT-MODEL.md), stated plainly in the app.
-- **Status:** **Decided** 9 Oct 2026. Written into PLAN.md (Stealth), PROTOCOL.md 7.1 and THREAT-MODEL.md 5.2; MOQOM gets the same profile as an option (`moqom/docs/STEALTH-PROFILE.md`).
+- **Status:** **Decided** 9 Oct 2026. Written into PLAN.md (Stealth), PROTOCOL.md 7.1 and THREAT-MODEL.md 5.2; code mapping in `design/stealth-relay.md`. MOQOM itself is not changed.
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.
@@ -256,8 +256,8 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
     - (a) MOQOM releases a forwarding-only relay core under Apache-2.0 for nodes; MOQOM Cloud keeps its product features (console, recording, metering, multi-tenant control plane) proprietary. Rec.
     - (b) nodes ship the proprietary relay as a separate licensed binary, which breaks reproducible, fully open nodes.
     - (c) tatenan writes its own relay on the Apache MOQOM transport, as planned.
-    **Open.**
-49. **Reader privacy for public content.** Public mode is fast but a relay sees which public object an IP fetched. Options: accept it for public content (rec, with the publisher choosing the mode), route public fetches through the user's own node, or a fast lane through two relays like calls. **Open.**
+    **Decided 9 Oct 2026: (c).** khensu's relay is an evolution of MOQOM built only in khensu repos from MOQOM's Apache-2.0 crates. None of the stealth, webE or nu-media work goes into MOQOM, which stays a separate product aimed at replacing Agora or being sold to it.
+49. **Reader privacy for public content.** **Decided 9 Oct 2026:** public content isn't secret, but access to it is stealthy because it sits on the stealth network. Public fetches go through two relays like calls (entry relay knows who, not what; exit relay knows what, not who), over padded trunks with responses padded to size buckets; small objects can ride the ticks. Speed stays close to a CDN. Code mapping in `design/stealth-relay.md` rule 8.
 50. **Site model.** Static bundles plus WebAssembly only (rec at launch), or server-side code on the owner's node. **Open.**
 51. **Browser route.** Extension plus local daemon first, Chromium patch second (rec); upstreaming to Chromium versus a khensu browser build. **Open.**
 52. **Codec name and scope.** Confirm "nu-media" for images, video and later 3D. Confirm the Microsoft codec meant (the DCVC family from Microsoft Research, including DCVC-RT?). **Open.**

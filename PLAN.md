@@ -126,6 +126,7 @@ isProject: false
 - [Typing indicators and presence](#typing-indicators-and-presence)
 - [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
 - [Stealth](#stealth-decided)
+- [Public square](#public-square-proposed)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
 - [Cryptographic design](#cryptographic-design-the-parts-that-must-be-right)
@@ -470,6 +471,22 @@ Stealth on the network is a foundation of the system, not a setting: there is no
   - group calls fan out through relays acting as MOQ forwarders.
   Target under 150 ms glass to glass within a region. What remains is long-term edge correlation by a global observer, stated in the app (THREAT-MODEL 5.2).
 - **Network size.** Absolute cover is the largest load on the network: roughly 100–150 million daily users on 50,000 Pis, and millions of Pi-equivalents (or hundreds of thousands of servers) at 10 billion, grown by operator rewards as usage grows (`OPEN-QUESTIONS.md` 10).
+
+## Public square (proposed)
+
+A public broadcast network, like Twitter was, that runs itself on the node network: free speech, private reading and posting, moderation on each person's device, and open consensus labels for facts, opinion, fraud and safety. Built to help people organise around causes, actions and interests, and to keep working when a government shuts the internet down. Open questions are in `OPEN-QUESTIONS.md` section G.
+
+- **Posting.** Posts come from personas (hidden profiles or public handles), are signed with the persona's ML-DSA-87 key, and ride the stealth ticks into the mixnet like any message. Nobody, including us, can link a persona to a person unless its owner does. Posts are public, content-addressed, erasure-coded and cached across `channel_cache` nodes; popular posts are replicated more widely. Images use nu-media.
+- **Reading.** Following, timelines, replies and search fetch through the mixnet inside the ticks, with PIR for indexes, so no node learns who reads what. The home feed is ranked on the device by the user's own rules and on-device models. There is no central ranking algorithm and no ad targeting, because there is nothing about readers to target with.
+- **Trending without tracking.** Likes, reposts and view counts are anonymous tallies: one rate-limited proof per person per post, counted by nodes, attributable to no one. Trends are computed from those tallies by every device the same way.
+- **Moderation on the device.** Each person chooses what they see: their own filters, on-device models (Foundation Models, Sensitive Content Analysis), and any number of subscribable label lists published by anyone (communities, newsrooms, fact-checkers), as Bluesky's composable moderation does. Nothing is removed from the network for being unpopular, offensive or controversial.
+- **Consensus labels.** Anyone can propose a label on a post: factual claim with sources, opinion, misleading, fraud or scam, spam, adult, graphic violence. Anonymous, Sybil-resistant raters (one rating credential per person, backed by stake and reputation) rate proposals; a bridging algorithm, like X's Community Notes, only shows a label when raters who usually disagree agree on it. Ratings and the algorithm are public and deterministic, so every device computes and verifies the same labels. Labels inform; they don't delete.
+- **The narrow exception.** Child sexual abuse material and other content illegal everywhere is not speech. Node operators refuse to cache content addresses on a consensus-maintained list of verified hashes for that content only (from NCMEC, IWF and peers), and the app blocks known hashes on display. The list is public, append-only and auditable, so it can't silently grow into political censorship. Apple's App Review rule 1.2 for user-generated content (filtering, reporting, blocking, timely response) is met by on-device filters, reports with franking, blocking and this list.
+- **Organising.** Public causes and interest hubs (followable, with their own label lists), events with time and place shared only to joiners, polls, and anonymous pledges with thresholds ("I'll join if 10,000 others do", revealed only if the threshold is met). Coordination for a cause moves into encrypted groups (up to 1,000 devices) and private channels.
+- **Spam and Sybil resistance.** Posting and rating use anonymous rate-limit proofs per persona per epoch; new personas earn reach slowly; stake and reputation raise limits. No phone numbers, no identity checks.
+- **When the internet is shut down.** Public posts need no recipient, so they spread by gossip over the offline mesh (Wi-Fi Aware and Bluetooth): every phone carries recent posts from the hubs and people it follows and exchanges them with phones nearby, and any phone or node that reaches the internet, a satellite link or a bridge syncs them with the global network. Reach inside a shutdown is limited by how fast phones move and meet; nothing can stop that spread except removing the phones.
+- **Runs itself.** No company servers: nodes cache, count and serve, paid by burn and mint; label rules and the illegal-content list change only through the governance process.
+- **Patent candidates:** stealth-tick posting with PIR reading, anonymous Sybil-resistant bridging labels computed on every device, threshold pledges with anonymous tallies, mesh gossip of a public feed under shutdown.
 
 ## Apple platform features
 

@@ -239,6 +239,17 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 35. **Push gateway at 10B.** It stays one logical service (APNs is tied to our team key), stateless and horizontally scaled across regions; billions of wakes a day is APNs-scale traffic. It's still the one central dependency. **Open.**
 36. **Key transparency log at 10B.** About 100 billion entries a year (estimate); inclusion proofs of about 37 hashes; witnesses cosign checkpoints, not entries. The log becomes a sharded, multi-operator log (several logs, one checkpoint each, all witnessed). **Open.**
 
+## G. Public square (proposed 9 Oct 2026; design in `PLAN.md`, Public square)
+
+40. **Illegal-content exception.** Rec: node operators refuse to cache, and the app refuses to display, content whose hash is on a public, append-only, consensus-maintained list limited to child sexual abuse material and content illegal everywhere (hashes from NCMEC, IWF and peers). Without it, operators carry legal risk for hosting it, the App Store rejects the app (rule 1.2), and the network becomes a target for shutdown. Everything else is handled on each device. **Open.**
+41. **Rater Sybil resistance.** One rating credential per person without identity checks. Options: stake plus reputation (rec at launch), invitation trees, an optional proof-of-personhood credential later. **Open.**
+42. **Label set.** Rec: factual claim with sources, opinion, misleading, fraud or scam, spam, adult, graphic violence, satire, AI-generated. **Open.**
+43. **Name** for the public square in the app. **Open.**
+44. **Persona model.** Rec: every account can post from its public handle or from any number of unlinkable personas, each with its own reach history. **Open.**
+45. **Reading at 10B.** Timeline fetches inside the ticks: how many feeds and posts a phone can refresh per minute at the 2c burst size, and whether hot posts are pushed to phones as part of the downstream. **Open.**
+46. **Shutdown sync.** Satellite (Starlink and others) and cross-border mesh bridges as upstream paths; how much feed each phone carries (rec 200 MB, recent and followed first). **Open.**
+47. **Threshold pledges.** Rec: anonymous tallies with a reveal only when the threshold is met, built on the same rate-limit proofs. **Open.**
+
 ## F. Housekeeping
 
 37. **`PROTOCOL.md` sections 13 and 14** say "frozen in `PAYMENTS.md`" and "each frozen in its own spec"; those files don't exist yet. Reword to "to be written". **Open.**

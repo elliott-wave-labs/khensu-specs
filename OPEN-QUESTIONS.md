@@ -19,9 +19,8 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 - **Recommendation (revised): nodes carry the cover, phones send fixed bursts.**
   - **Nodes** send constant cover between themselves around the clock (node-to-node cover and loop packets on mains power), sized so every link carries a steady rate whatever the real load. This keeps the anonymity set large and costs phones nothing.
   - **Phones** still need a steady pattern on their own link, because node cover can't hide when a phone itself transmits from its carrier or Wi-Fi network. So the phone sends one fixed-size burst per tick: its mailbox fetch plus any outgoing fragments, padded with cover to the same size every time. Fetching has to happen anyway to receive messages, so sending adds almost nothing.
-  - **Tick length** depends only on things an observer could learn anyway: 2 s on Wi-Fi, 20 s on cellular (one radio wake per tick), 60 s in Low Power Mode, below 20% battery or when the phone is hot. No cover at all in the background (iOS suspends the app).
-  - **Energy governor.** The app measures its own radio and CPU energy on the device. If cover reaches 1.5% of the battery in a day, ticks step down to the Low Power rate until the next day.
-  - **Estimated cost:** about 1–2% per hour the app is open on cellular, about 0.5% per hour on Wi-Fi, capped at 1.5% a day by the governor. Typical use of 30–60 minutes a day stays under 1.5%. Device tests in the battery-budget to-do confirm or correct these numbers before launch.
+  - **Tick length:** 2 s on every network and in every power state (decided in 2a). No cover at all in the background (iOS suspends the app).
+  - **Estimated cost at a 2 s tick:** about 2–7% battery per hour the app is open on cellular (the radio never sleeps while open) and about 0.5% per hour on Wi-Fi, with no cap. The app still measures its own energy use on the device, for reporting only. Device tests in the battery-budget to-do confirm or correct these numbers before launch.
   - **Trade-off:** on cellular a message waits for the next tick, about 10 s on average plus mixing delay. Tick lengths stay tunable consensus parameters.
 - **Decided 9 Oct 2026:**
   - Protection against a global passive observer is required; on-demand-only sending is rejected, and there is no setting to switch to it.
@@ -33,7 +32,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 ### 2a. Cellular tick length
 - **Question:** 2 s on cellular, the same as Wi-Fi, or a longer tick?
 - **What changes:** cover quality is the same at any fixed tick, because the pattern never depends on what you do. The tick sets latency and battery: at 2 s the cellular radio never sleeps while the app is open (estimated 2–7% battery per hour open); at 20 s it wakes once per tick (estimated 1–2% per hour) and a message waits about 10 s on average.
-- **Status:** **Decided** 9 Oct 2026: 2 s ticks on every network. Messages should feel real-time; a delay of one to a few seconds across tick and hops is acceptable. Low Power Mode keeps the 60 s tick.
+- **Status:** **Decided** 9 Oct 2026: 2 s ticks on every network. Messages should feel real-time; a delay of one to a few seconds across tick and hops is acceptable. No exceptions: the tick stays at 2 s in Low Power Mode, at low battery and when the phone is hot.
 
 ### 2b. Attachments and the cover pattern
 - **Problem:** the small-lane tick carries about 2 KB per 2 s, far too slow for photos and video. Sending bulk data faster than the tick shows an observer of the phone's link that something large moved. Hiding bulk transfers in time with real-time speed would need every phone to stream several hundred KB/s around the clock while the app is open (about 1 GB per hour), which no phone or 10B-user network can carry.

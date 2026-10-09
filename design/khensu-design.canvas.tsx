@@ -49,7 +49,7 @@ type Tab = (typeof TABS)[number];
 // The inner edge is an arc of a larger circle offset right, so its ends meet the ring in points.
 function Crescent({ size = 18, color = STAR }: { size?: number; bg?: string; color?: string }) {
   const c = 50;
-  const ring = 6;
+  const ring = 5;
   const a = 50 - ring / 2;
   const d = 60;
   const tipX = -a * Math.sin((20 * Math.PI) / 180);

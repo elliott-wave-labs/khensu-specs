@@ -17,7 +17,9 @@ The Raspberry Pi node needs nothing from Apple.
 
 **Ask** = Apple must approve a request before the capability works in a shipping build. Tick the box now anyway, and send the request early, because approvals can take weeks.
 
-## Enable now: core
+## Enable now
+
+Everything here ships in v1; there is no separate core release.
 
 | Capability | What it does | Why khensu.nu needs it |
 | --- | --- | --- |
@@ -28,11 +30,6 @@ The Raspberry Pi node needs nothing from Apple.
 | **Push Notifications** (no Broadcast) | APNs alerts, plus PushKit VoIP pushes for calls | The anonymous "New message" wake and incoming calls. Leave *Broadcast Capability* off. |
 | **In-App Purchase** | StoreKit purchases and subscriptions | Already on by default. Needed for paid tiers and supporter subscriptions. |
 | **Sensitive Content Analysis** | Apple's on-device nudity detection for images and video | Blurs unsolicited explicit images from strangers. It runs fully on the device and also respects the user's Sensitive Content Warning and Communication Safety (child account) settings. |
-
-## Enable now: v1 features
-
-| Capability | What it does | How khensu.nu uses it in v1 |
-| --- | --- | --- |
 | **App Attest** | The device proves the app is genuine and unmodified, using a key in the Secure Enclave | Anti-spam: the credential issuer checks the attestation once, then issues **blind** tokens, so Apple's attestation can't be linked to later messages. |
 | **Declared Age Range** | Asks the OS for the user's age bracket without seeing a birthdate | Age-assurance laws (several US states, UK, Australia) now reach messaging apps. Used to apply teen defaults (no messages from strangers, sensitive content blurred). |
 | **Default Messaging App** / **Default Calling App** | Lets users pick khensu.nu as the system default for messages and calls (region-limited, starting with the EU) | Offered in Settings where the OS allows it. **Ask**: Apple's eligibility requirements apply. |
@@ -114,7 +111,7 @@ If testing shows a real need (for example, an on-device spam classifier in Core 
 | --- | --- | --- |
 | `nu.khensu.ptah` | iOS + macOS app (universal purchase) | The "Enable now" list above |
 | `nu.khensu.ptah.notification-service` | Notification Service Extension | App Groups, Data Protection, Enhanced Security |
-| `nu.khensu.ptah.share` | Share Extension (later) | App Groups, Data Protection, Enhanced Security |
+| `nu.khensu.ptah.share` | Share Extension | App Groups, Data Protection, Enhanced Security |
 | `group.nu.khensu.ptah` | App Group | Shared by the app and its extensions |
 | `nu.khensu.tatenan` | macOS node app (Developer ID, outside the Mac App Store) | None required; Hardened Runtime and notarization are set in Xcode |
 | APNs auth key (.p8) | Key | Used only by the push gateway at `push.khensu.nu`; store it in Secret Manager, never in the app |

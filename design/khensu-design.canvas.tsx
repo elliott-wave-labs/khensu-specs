@@ -1402,15 +1402,17 @@ function RoadmapTab() {
       </Grid>
       <Grid columns={2} gap={16}>
         <Card>
-          <CardHeader trailing={<Pill size="sm">v1</Pill>}>Must ship</CardHeader>
+          <CardHeader trailing={<Pill size="sm">v1</Pill>}>One release, no tiers</CardHeader>
           <CardBody>
-            <Text size="small">Messaging, groups, calls, mixnet, key transparency, identity and handles, push, typing, on-device memory, token and burn auction.</Text>
+            <Text size="small">
+              Everything ships together: messaging, groups, calls, mixnet, key transparency, identity and handles, push, typing, on-device memory and knowledge pages, token and burn auction, shielded payments, Wi-Fi Aware offline mode, CarPlay calls, Push to Talk. If the schedule slips, the date moves, not features.
+            </Text>
           </CardBody>
         </Card>
         <Card>
-          <CardHeader trailing={<Pill size="sm">v1.1 if needed</Pill>}>Can slip</CardHeader>
+          <CardHeader trailing={<Pill size="sm">outside approval</Pill>}>Switches on when approved</CardHeader>
           <CardBody>
-            <Text size="small">Shielded payments, Wi-Fi Aware offline mode, CarPlay, Push to Talk, knowledge pages.</Text>
+            <Text size="small">Payments region by region after legal review; CarPlay, default messaging and calling app, and external purchase links once Apple grants the entitlements.</Text>
           </CardBody>
         </Card>
       </Grid>
@@ -1428,18 +1430,18 @@ const PLAN_SECTIONS: Array<[string, number]> = [
   ["Consensus", 238],
   ["Governance and founder safeguards", 256],
   ["Identity, addresses and handles", 274],
-  ["App design", 305],
-  ["Local search and memory", 317],
-  ["Push notifications", 351],
-  ["Apple platform features in v1", 376],
-  ["Mix packet format: Outfox", 394],
-  ["Cryptographic design", 408],
-  ["Money", 433],
-  ["Shielded payments", 452],
-  ["Compared with post-quantum coins", 464],
-  ["Launch readiness", 479],
-  ["Milestones", 562],
-  ["Decisions", 574],
+  ["App design", 316],
+  ["Local search and memory", 330],
+  ["Push notifications", 364],
+  ["Apple platform features", 389],
+  ["Mix packet format: Outfox", 407],
+  ["Cryptographic design", 421],
+  ["Money", 446],
+  ["Shielded payments", 465],
+  ["Compared with post-quantum coins", 477],
+  ["Launch readiness", 492],
+  ["Milestones", 575],
+  ["Decisions", 587],
 ];
 
 const EXTERNAL: Array<[string, string, string]> = [

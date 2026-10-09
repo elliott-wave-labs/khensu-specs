@@ -27,7 +27,7 @@ todos:
     content: "Token on our chain: ML-DSA-65 accounts, transfers, stake/unstake and slashing, protocol mint to operators from work receipts with a declining emission schedule, burn for capacity credits, per-epoch burn auction for launch liquidity; genesis allocation and token name set with counsel"
     status: pending
   - id: shielded-payments
-    content: "Shielded payments in v1: STARK-proved note pool with ML-KEM-1024 note encryption, fixed denominations, eras that expire and drop their spent lists, transfers as mixnet messages, on-device proving on iPhone and Mac; external audit"
+    content: "Shielded payments: STARK-proved note pool with ML-KEM-1024 note encryption, fixed denominations, eras that expire and drop their spent lists, transfers as mixnet messages, on-device proving on iPhone and Mac; external audit"
     status: pending
   - id: legal-review
     content: "Counsel sign-off before mint and before payments launch: token classification under the March 2026 SEC/CFTC interpretation, Regulation Crypto Assets if any sale, money-transmission analysis of the shielded pool, MiCA white paper, App Store 3.1.5 region licensing, sanctions screening at pool entry and exit"
@@ -57,7 +57,7 @@ todos:
     content: "Typing indicator stream: per-member ephemeral MOQ track encrypted with an MLS exporter key, fixed-size Outfox packets sent in place of cover traffic, start/stop events with 10 s refresh and 30 s expiry, never stored; reciprocal switches for typing and read receipts; presence off by default"
     status: pending
   - id: apple-platform-v1
-    content: "v1 Apple features: Wi-Fi Aware offline nearby relay of sealed packets, tap-to-add/verify (Tap to Share, NFC), Push to Talk over the mixnet, CarPlay calls only (no Siri, so no CarPlay messaging), default messaging/calling app, Communication Notifications in Previews mode, App Attest feeding blind-token issuance, on-device voice (SpeechAnalyzer dictation, AVSpeechSynthesizer read-aloud), Writing Tools off and third-party keyboards blocked in the composer, Declared Age Range teen defaults, StoreKit external purchases; file Apple entitlement requests early"
+    content: "Apple features: Wi-Fi Aware offline nearby relay of sealed packets, tap-to-add/verify (Tap to Share, NFC), Push to Talk over the mixnet, CarPlay calls only (no Siri, so no CarPlay messaging), default messaging/calling app, Communication Notifications in Previews mode, App Attest feeding blind-token issuance, on-device voice (SpeechAnalyzer dictation, AVSpeechSynthesizer read-aloud), Writing Tools off and third-party keyboards blocked in the composer, Declared Age Range teen defaults, StoreKit external purchases; file Apple entitlement requests early"
     status: pending
   - id: apple-client
     content: "moqom-messenger/apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
@@ -359,7 +359,7 @@ flowchart LR
   - The index is never backed up or synced. A new or linked device rebuilds it from the restored messages.
   - A per-chat switch excludes a chat from memory. Members are told this only controls their own device, since anyone who can read a chat can index it.
 - **Devices:** keyword and semantic search work on every iOS 26 device. Facts, observations, reflect and "Catch me up" need Apple Intelligence (iPhone 15 Pro and later, M-series Macs and iPads); other devices just don't show those features.
-- **Later:** Hindsight's mental models and knowledge pages, such as a pinned "Lisbon trip" page that updates itself, and a small Core ML cross-encoder reranker if recall quality needs it.
+- **Also in v1:** Hindsight's mental models and knowledge pages, such as a pinned "Lisbon trip" page that updates itself. A small Core ML cross-encoder reranker is added only if recall quality needs it.
 
 ## Push notifications
 
@@ -386,9 +386,9 @@ Calls: a PushKit VoIP push wakes the app and CallKit shows "khensu.nu call" (the
 - **Over the mixnet, like everything else.** Typing events are ordinary fixed-size Outfox packets that replace cover packets in the client's constant-rate stream, so sending one doesn't change how much traffic a phone emits. They are coarse (start, stop, and a refresh every 10 seconds) and arrive with the same few seconds of mix delay as messages, so receivers expire the indicator after 30 seconds of silence. They are never stored in mailboxes and never trigger a push.
 - **Settings.** Turning typing indicators off stops sending yours and showing others', as on Signal. Read receipts are encrypted messages with the same reciprocal switch. "Online" presence is off by default.
 
-## Apple platform features in v1
+## Apple platform features
 
-Capabilities and reasons are listed in [khensu-app-id-capabilities.md](khensu-app-id-capabilities.md). Features that ship in v1:
+Capabilities and reasons are listed in [APP-ID-CAPABILITIES.md](APP-ID-CAPABILITIES.md). Features that ship:
 
 - **Offline nearby mode (Wi-Fi Aware).** When there's no internet, phones carry each other's sealed Outfox packets and hand them to the mixnet once any of them reaches the internet. Content stays end-to-end encrypted and carriers can't tell sender or recipient, but nearby phones can tell a khensu.nu user is close by, so this mode is opt-in.
 - **Tap to add and verify.** Touch phones (Tap to Share / NFC) to exchange addresses and confirm safety numbers, alongside QR codes.
@@ -462,7 +462,7 @@ A single open-source Rust binary `moqom-node`. Operators pick roles; the epoch h
   - Counsel signs off before anything is minted.
 - **Also:** enterprise and self-hosted networks are paid in dollars.
 
-## Shielded payments over the mixnet (v1, decided)
+## Shielded payments over the mixnet (decided)
 
 Users send money to each other with no record of who paid whom, and no lasting record at all beyond what prevents double-spending.
 
@@ -553,14 +553,14 @@ Where we're behind and must earn it: a new chain has no track record (QRL has ru
 - **Nodes:** Linux (Raspberry Pi image and Docker) at testnet; macOS app at testnet; Windows app about 6 months later.
 - **Clients:** iOS, iPadOS and macOS at v1; Android about 6 to 9 months after v1 (StrongBox keys, BiometricPrompt, UnifiedPush or FCM wake-only). There's no web client: web apps re-download their code on every visit, so the server could ship a backdoor at any time. Linux and Windows desktop clients follow Android.
 
-### 10. Team, budget, timeline and scope cuts
+### 10. Team, budget and timeline
 - **Phases (estimate):**
   - Months 0–3: threat model, protocol spec, legal and export work, design mocks.
   - Months 3–12: MLS hardening and TreeKEM, node core, consensus testnet, app alpha.
   - Months 12–18: mixnet, Outfox paper, shielded payments, key transparency, audits.
   - Months 18–24: public testnet, mainnet, App Store launch.
 - **Team:** 2 iOS engineers, 2 protocol engineers (Go and Rust), 1 cryptographer, 1 zero-knowledge and chain engineer, 1 SRE, a designer, plus part-time counsel. Roughly $2.5M–$4M over 24 months including audits ($300k–$1M across MLS, chain, shielded pool and app).
-- **What can slip to v1.1 if the schedule needs it:** shielded payments, Wi-Fi Aware offline mode, CarPlay, Push to Talk, knowledge pages. Messaging, calls, the mixnet, key transparency and the token stay in v1.
+- **One release, no tiers.** Everything in this plan ships together in v1; there is no smaller "core" release first. If the schedule slips, the launch date moves, not features. Payments still switch on region by region after legal review, and CarPlay and default-app features depend on Apple approving the entitlement requests.
 
 ## Repository layout
 
@@ -595,7 +595,7 @@ Decided:
 - Consensus: our own lightweight post-quantum chain; weighted sortition of a 21-member committee per epoch; only balances and stakes persist, history is pruned.
 - Token: burn and mint on our own chain; a fixed share of net proceeds is revenue, the rest buys and burns the token for capacity; the protocol mints operator rewards from work receipts; burn auction for launch liquidity. Name, supply and genesis allocation set with counsel.
 - Sybil resistance: reputation multiplied by staked tokens, with slashing.
-- Payments: non-custodial shielded pool with STARK proofs and ML-KEM-1024 note encryption, expiring eras, transfers over the mixnet; ships in v1, region by region after legal review.
+- Payments: non-custodial shielded pool with STARK proofs and ML-KEM-1024 note encryption, expiring eras, transfers over the mixnet; ships in v1 like everything else, switched on region by region after legal review.
 - Rule changes: founder plus 2/3 of the committee, 30-day timelock with veto, 48-hour tighten-only emergencies.
 - Founder safeguards: 3-of-5 ML-DSA threshold key; staged powers; step-down signed by the founder once thresholds have held for 90 days.
 - Hardware: Raspberry Pi 5 with NVMe minimum; Pi 4 for mixing only.

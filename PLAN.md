@@ -127,6 +127,8 @@ isProject: false
 - [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
 - [Stealth](#stealth-decided)
 - [Public square](#public-square-proposed)
+- [webE](#webe-proposed)
+- [nu-media](#nu-media-proposed)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
 - [Cryptographic design](#cryptographic-design-the-parts-that-must-be-right)
@@ -487,6 +489,38 @@ A public broadcast network, like Twitter was, that runs itself on the node netwo
 - **When the internet is shut down.** Public posts need no recipient, so they spread by gossip over the offline mesh (Wi-Fi Aware and Bluetooth): every phone carries recent posts from the hubs and people it follows and exchanges them with phones nearby, and any phone or node that reaches the internet, a satellite link or a bridge syncs them with the global network. Reach inside a shutdown is limited by how fast phones move and meet; nothing can stop that spread except removing the phones.
 - **Runs itself.** No company servers: nodes cache, count and serve, paid by burn and mint; label rules and the illegal-content list change only through the governance process.
 - **Patent candidates:** stealth-tick posting with PIR reading, anonymous Sybil-resistant bridging labels computed on every device, threshold pledges with anonymous tallies, mesh gossip of a public feed under shutdown.
+
+## webE (proposed)
+
+The internet web3 was supposed to be: content delivery, websites and live media run by the people on the node network, with no CDN, no DNS and no metered bandwidth. MOQOM stays a company; khensu.nu is the public network. Open questions are in `OPEN-QUESTIONS.md` section H.
+
+- **Nodes are relays, devices are smart.** Every tatenan node runs a MOQ relay alongside its mix, mailbox and cache roles. Relays only forward and cache; encoding, encryption, ranking, moderation and rendering happen on devices.
+- **Names without name servers.** Sites and streams are named by `name.khensu.nu` handles resolved from the key transparency log over the mixnet (PIR), and by content addresses. No DNS lookup, no registrar, no certificate authority: the handle's log entry carries the site's ML-DSA-87 key and current root hash.
+- **Sites.** A site is a signed, content-addressed bundle (static files plus optional WebAssembly), published by its owner's devices, erasure-coded across `channel_cache` nodes and served by relays. Updates are new signed roots. Dynamic features run in the browser or through the owner's own node.
+- **Two delivery modes, chosen by the publisher:**
+  - **Stealth:** fetched inside the stealth ticks and the user's node stream, so nobody learns who read what. Slow for large pages, like stealth attachments.
+  - **Public:** fetched from the nearest relays over MOQ at CDN speed, for content meant to reach everyone (news, public streams, software). The content is public; a relay sees which public object an IP fetched, like any CDN.
+- **Live media.** Public broadcasts and live streams are MOQ tracks fanned out by node relays (MOQOM's core, at sub-second latency); private streams are end-to-end encrypted with keys sealed to subscribers.
+- **No metered bandwidth.** Users never pay per byte. Operators are paid by the protocol from work receipts (burn and mint), so more usage means more operator income and more nodes.
+- **Browsers.**
+  - **Chromium extension:** resolves `name.khensu.nu` and content addresses and fetches through a local khensu daemon (native messaging), because extensions can't run the mixnet or ML-KEM transport themselves.
+  - **Chromium patch:** a native `khensu` network service and URL handling, with Tor-Browser-style fingerprinting defences for stealth sites (fixed window sizes, no WebRTC, restricted APIs), since scripts on a page can otherwise reveal the reader.
+  - The khensu.nu app includes a viewer for sites on iPhone, iPad and Mac.
+- **Standards.** Internet-Drafts for the post-quantum mix packet format (the Outfox paper), handle resolution from a transparency log, content-addressed signed site bundles over MOQ, and the stealth MOQ profile, building on MOQOM's existing IETF MOQ work.
+- **Prior art to position against:** IPFS, Tor onion services, I2P, Freenet/Hyphanet, Veilid, Lokinet, Handshake. The difference: post-quantum throughout, stealth by default, live media at MOQ latency, and operators paid for work.
+
+## nu-media (proposed)
+
+One learned media format for images, video and later 3D, encoded and decoded on devices. Microsoft's research neural video codecs didn't work well for us; nu-media is our own.
+
+- **Images:** as in Stealth: 15–40 KB full-screen photos, progressive, fidelity over invented detail, integer networks so every device decodes identically.
+- **Video, hybrid design:**
+  - The base layer uses the phone's hardware video encoder (HEVC, AV1 where supported) at constant bitrate, so it runs in real time on every iOS 26 device and inside the stealth call profile.
+  - A learned enhancement runs on the Neural Engine at the receiver, outside the coding loop, so it can't drift and doesn't need bit-exact decoding across devices: super-resolution, artefact removal and frame interpolation.
+  - A learned residual layer, inside the loop and in integer arithmetic, adds detail on devices that can run it in real time.
+- **Device tiers:** works on every iOS 26 device; tuned for iPhone 18 Pro on iOS 27 as the "portal" tier (highest resolution, frame rate and enhancement, lowest latency). Exact tier numbers come from device measurements.
+- **Later:** spatial video, depth from LiDAR, 3D body capture, Gaussian-splat and holographic formats for AR, delivered through the same relays.
+- **Patent candidates:** progressive learned delivery inside constant-rate cover; receiver-side learned enhancement tuned for constant-bitrate stealth calls.
 
 ## Apple platform features
 

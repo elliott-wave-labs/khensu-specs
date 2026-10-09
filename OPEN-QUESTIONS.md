@@ -250,6 +250,21 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 46. **Shutdown sync.** Satellite (Starlink and others) and cross-border mesh bridges as upstream paths; how much feed each phone carries (rec 200 MB, recent and followed first). **Open.**
 47. **Threshold pledges.** Rec: anonymous tallies with a reveal only when the threshold is met, built on the same rate-limit proofs. **Open.**
 
+## H. webE and nu-media (proposed 9 Oct 2026; design in `PLAN.md`)
+
+48. **MOQOM relay in khensu nodes.** `moqom-relay` is proprietary, nodes are AGPL, and the rule today is that tatenan copies nothing from it. Options:
+    - (a) MOQOM releases a forwarding-only relay core under Apache-2.0 for nodes; MOQOM Cloud keeps its product features (console, recording, metering, multi-tenant control plane) proprietary. Rec.
+    - (b) nodes ship the proprietary relay as a separate licensed binary, which breaks reproducible, fully open nodes.
+    - (c) tatenan writes its own relay on the Apache MOQOM transport, as planned.
+    **Open.**
+49. **Reader privacy for public content.** Public mode is fast but a relay sees which public object an IP fetched. Options: accept it for public content (rec, with the publisher choosing the mode), route public fetches through the user's own node, or a fast lane through two relays like calls. **Open.**
+50. **Site model.** Static bundles plus WebAssembly only (rec at launch), or server-side code on the owner's node. **Open.**
+51. **Browser route.** Extension plus local daemon first, Chromium patch second (rec); upstreaming to Chromium versus a khensu browser build. **Open.**
+52. **Codec name and scope.** Confirm "nu-media" for images, video and later 3D. Confirm the Microsoft codec meant (the DCVC family from Microsoft Research, including DCVC-RT?). **Open.**
+53. **Video codec spike.** Measure the hybrid design on iPhone 18 Pro (iOS 27) and an iOS 26 baseline device: quality at each stealth call tier, Neural Engine time per frame, battery, glass-to-glass latency. **Open.**
+54. **IETF plan.** Which drafts first: Outfox-PQ packet format, stealth MOQ profile, transparency-log naming, signed site bundles. **Open.**
+55. **New repos.** `khensu-browser` (extension, daemon, Chromium patch) and `nu-media` (codec, Apache-2.0 like `khensu-core`?). **Open.**
+
 ## F. Housekeeping
 
 37. **`PROTOCOL.md` sections 13 and 14** say "frozen in `PAYMENTS.md`" and "each frozen in its own spec"; those files don't exist yet. Reword to "to be written". **Open.**

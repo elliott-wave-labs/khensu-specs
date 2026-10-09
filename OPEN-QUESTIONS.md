@@ -45,7 +45,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
     - What remains visible to a global observer: long-term volume (a heavy media user looks like one) and loose correlation between a large upload and a large download elsewhere, weakened by dummies and delays.
   - **Hidden (per attachment or per chat):** the attachment trickles through the spare capacity of the normal tick bursts, so the link pattern doesn't change at all. It is slow: a few KB/s, so a 2 MB photo takes several minutes, depending on the burst size (2c). A faster hidden mode would need a bulk packet in every tick for everyone (about 130 MB per open hour each way), which is not recommended at 10B scale.
   - **Stealth through your own node (candidate):** a user's Mac or Pi node already sends constant cover around the clock on mains power and a home connection, so it can afford a large constant bulk rate (for example 1 MB/s). On the home network the phone hands the attachment to its node over the local network, which no outside observer sees; the node sends it inside its constant stream. The recipient's node downloads it the same way and the phone pulls it locally. Totally stealth and fast for anyone with a node on their network. Away from home, stealth attachments either trickle (above) or wait for the home node. This would also be a patent candidate.
-  - **Tiny stealth images (candidate, khensu image format):** photos are re-encoded on the device into a custom compact format small enough to ride the normal ticks.
+  - **Tiny stealth images (nu-media):** photos are re-encoded on the device into a custom compact format small enough to ride the normal ticks.
     - **Codec:** a learned image codec running on the Neural Engine, tuned for fidelity rather than generated detail (generative codecs invent faces and text, which is unacceptable for testimony and evidence), with text regions kept sharp. Target about 15–40 KB for a full-screen photo, against 25–60 KB for AVIF or JPEG XL at the same quality and 2–4 MB for the camera original. The networks use integer arithmetic so every device decodes identically.
     - **Progressive:** a recognisable preview of about 2 KB arrives in the first tick and sharpens over the following ticks. At about 3 KB/s of spare tick capacity (with the burst size in 2c), a 30 KB photo is complete in about 10 s, with no change to the link pattern.
     - **Privacy side effects:** all metadata (location, device, time) is dropped, and re-encoding weakens the camera sensor fingerprint that can link a photo to the phone that took it.
@@ -68,12 +68,27 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - **Turns on automatically** when no node is reachable, and off when the internet is back.
 - **The limit stealth can't remove:** anyone with a radio scanner in range can tell that a device nearby is running the mesh, even with rotating random identifiers, and iOS background Bluetooth advertising is detectable by design. Content, sender and recipient stay hidden; local presence does not. This matters most in shutdowns, which is when mesh is needed.
 - **Status:** Recommended.
-- **Status:** Recommended.
 
 ### 2c. Tick burst size
 - **Problem:** a signed message is about 4.9 KB, which needs 3 small packets, and the fixed buckets go up to 8. If each tick carries only one small packet, a typical message takes three ticks (6 s) to leave, which isn't real-time.
 - **Recommendation:** each tick carries a fixed burst of 4 small packets (one mailbox fetch plus three slots), so a typical message leaves in a single tick. Cost: about 20 KB/s up while the app is open (about 72 MB per open hour), and four times the cover load on nodes compared with one packet per tick. Battery changes little, since the radio is awake at a 2 s tick anyway; the bigger cost is node bandwidth at 10B scale (see 10 and 31).
 - **Status:** Open.
+
+### 2e. Live calls: stealth at MOQOM latency
+- **Today's plan:** calls carry MOQT media through two relays from different operators (caller's entry and callee's entry), so no single machine sees both IPs; direct paths are opt-in per contact.
+- **What it protects:** single relays, nodes, operators and local observers learn nothing about who is calling whom. A global observer can still match the two edges (Alice's stream to relay A and Bob's stream from relay B start, stop and run at the same moments). Removing that needs mixing delays, which live media can't take.
+- **Recommendation (adds stealth without adding latency):**
+  - **Constant bitrate, fixed packet size.** Audio and video are encoded at a constant rate and padded to fixed-size packets, including silence and still scenes. Variable bitrate leaks speech: published attacks recover spoken phrases from encrypted packet sizes.
+  - **Call setup over the mixnet.** Ringing, accept, keys and relay choice ride the normal ticks, so no node sees who called whom; relays are paid with anonymous credentials.
+  - **Each side picks its own relay** near itself, from a different operator, AS and jurisdiction than the other side's relay.
+  - **Relay trunks.** Relays exchange constant, padded traffic between themselves and carry many calls on each trunk, so the relay-to-relay leg can't be separated into calls.
+  - **Blurred edges.** Each phone starts its stream to its relay a random few seconds before the call connects and keeps it running with padding a random few seconds after hangup, so start and stop times don't line up exactly.
+  - **Looks like ordinary web traffic.** Media rides QUIC on port 443 (as MOQ over WebTransport does), so a local observer sees an HTTPS-like stream to an IP, not a recognisable call protocol.
+  - **No direct internet paths.** Direct phone-to-phone over the internet reveals each side's IP to the other, so it is removed (stealth has no opt-out). Direct links stay only on local links with no internet observer: Wi-Fi Aware and the same Wi-Fi network.
+  - **Group calls** fan out through relays as MOQ forwarders, with media keys from MLS (post-quantum end to end).
+- **Latency:** two relays near each side add roughly 5–30 ms over a direct path; the target is under 150 ms glass to glass within a region. To be measured.
+- **What remains:** long-term edge correlation by a global observer (5.2 in THREAT-MODEL.md), stated plainly in the app.
+- **Status:** Recommended.
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.

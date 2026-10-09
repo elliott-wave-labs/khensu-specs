@@ -109,6 +109,44 @@ isProject: false
 
 # khensu.nu: decentralized, post-quantum Signal replacement on MOQOM
 
+## Contents
+
+- [Goals and non-negotiables](#goals-and-non-negotiables)
+- [Why it's better than Signal](#why-its-better-than-signal)
+- [Telegram's features, end-to-end encrypted](#telegrams-features-end-to-end-encrypted)
+- [What exists and what has to change](#what-exists-and-what-has-to-change)
+- [Architecture](#architecture)
+- [Consensus: our own lightweight post-quantum chain](#consensus-our-own-lightweight-post-quantum-chain)
+- [Governance and founder safeguards](#governance-and-founder-safeguards)
+- [Identity, addresses and handles](#identity-addresses-and-handles-decided)
+- [On-device biometrics (Face ID, Touch ID)](#on-device-biometrics-face-id-touch-id)
+- [App design](#app-design-decided)
+- [Local search and memory](#local-search-and-memory-a-hindsight-style-engine-on-the-device-ios-26-macos-26)
+- [Push notifications](#push-notifications)
+- [Typing indicators and presence](#typing-indicators-and-presence)
+- [Apple platform features](#apple-platform-features)
+- [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
+- [Cryptographic design](#cryptographic-design-the-parts-that-must-be-right)
+- [Node software, hardware and schedules](#node-software-hardware-and-schedules)
+- [Money](#money)
+- [Shielded payments over the mixnet](#shielded-payments-over-the-mixnet-decided)
+- [Compared with existing post-quantum coins](#compared-with-existing-post-quantum-coins)
+- [Launch readiness](#launch-readiness)
+  - [1. Encryption export compliance](#1-encryption-export-compliance)
+  - [2. Legal entities and documents](#2-legal-entities-and-documents)
+  - [3. Trust and safety without reading messages](#3-trust-and-safety-without-reading-messages)
+  - [4. Network bootstrap and minimum anonymity](#4-network-bootstrap-and-minimum-anonymity)
+  - [5. Battery and data budget](#5-battery-and-data-budget)
+  - [6. Contact discovery, invites and growth](#6-contact-discovery-invites-and-growth)
+  - [7. Pricing and token numbers](#7-pricing-and-token-numbers-starting-proposal)
+  - [8. Operations without telemetry](#8-operations-without-telemetry)
+  - [9. Platforms](#9-platforms)
+  - [10. Team, budget and timeline](#10-team-budget-and-timeline)
+- [Repository layout](#repository-layout-decided)
+- [Documentation and patent assessments](#documentation-and-patent-assessments-decided)
+- [Milestones](#milestones)
+- [Decisions](#decisions)
+
 ## Goals and non-negotiables
 
 - Every byte a user creates is end-to-end encrypted: messages, attachments, calls, profile names and avatars, group names, read receipts, typing indicators and backups. No server, node, validator or you ever holds a key that decrypts them.

@@ -72,7 +72,7 @@ function AppIcon({ size = 64 }: { size?: number }) {
         width: size,
         height: size,
         borderRadius: size * 0.225,
-        background: D.editor,
+        background: D.chrome,
         border: `1px solid ${D.strokeSecondary}`,
         display: "flex",
         alignItems: "center",

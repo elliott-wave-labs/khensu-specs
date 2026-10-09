@@ -373,7 +373,7 @@ Panic wipe: iOS doesn't let third-party apps read side-button or volume-button p
 - **Monochrome, spacey identity.** Khensu is the Egyptian moon god, "the traveller":
   - Monochrome: true-black and graphite surfaces, silver for your bubbles, starlight white for actions, verified badges, unread counts and mentions. Red only for destructive actions and ending calls. Dark and true-black themes first, plus a light theme.
   - Connected-dot node networks, in the style of moqom.cloud's relay web, are the recurring motif: spatial-audio calls show each voice as a lit node on a sphere around you, the lock-screen and empty-state wallpapers are slowly turning dot networks, and the node app shows the live mixnet the same way. Motion respects Reduce Motion.
-  - The app icon is a white ring whose left side fills into a pointed crescent, with no gap, on a black tile, in the default, dark and tinted icon styles.
+  - The app icon is a thin white ring with a second, unfilled arc just inside its left half, nearly a half circle of the same size, meeting the ring at top and bottom centre, so it reads as two circles forming a crescent line. The dark tile is the master and the default icon; light, tinted and clear styles derive from it.
   - Moon phases show disappearing-message timers (the moon wanes as a message nears expiry).
   - Typography: SF Pro for the interface, with a display face for the wordmark only.
 - **Telegram-like layout.** Chat folders as tabs at the top of the chat list (All, Personal, Groups, Channels, Unread, custom folders); swipe to pin, mute, archive or mark read; replies, reactions, threads, polls, stickers and voice and video notes in the chat view. Bottom tabs: Chats, Calls, Search ("Ask khensu"), Settings.

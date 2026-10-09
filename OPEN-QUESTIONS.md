@@ -11,7 +11,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 ### 1. Scale target
 - **Direction:** support 10 billion daily active users.
 - **Recommendation:** treat this as 10 billion daily active *accounts* (more than the world's population, so it covers personas, several devices and machine accounts), with no central component whose cost grows faster than linearly. Every number below is sized for 10B.
-- **Status:** Recommended.
+- **Status:** **Decided** 9 Oct 2026: 10B daily active accounts at launch, and the design must keep scaling beyond that.
 
 ### 2. Cover traffic rate on cellular
 - **What it is:** while the app is open, the phone sends dummy packets at a steady pace and real messages replace dummies, so nobody watching can tell when you actually send. A faster pace means better privacy and lower latency (a message waits at most one gap), but more battery and more load on nodes. The old plan used 1 packet every 2 s on Wi-Fi and every 10 s on cellular, to save data. With no data budget, the only reasons left for a different cellular rate are battery and node capacity.
@@ -23,7 +23,17 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - **Energy governor.** The app measures its own radio and CPU energy on the device. If cover reaches 1.5% of the battery in a day, ticks step down to the Low Power rate until the next day.
   - **Estimated cost:** about 1–2% per hour the app is open on cellular, about 0.5% per hour on Wi-Fi, capped at 1.5% a day by the governor. Typical use of 30–60 minutes a day stays under 1.5%. Device tests in the battery-budget to-do confirm or correct these numbers before launch.
   - **Trade-off:** on cellular a message waits for the next tick, about 10 s on average plus mixing delay. Tick lengths stay tunable consensus parameters.
-- **Status:** Recommended (revised for battery). PLAN.md and PROTOCOL.md 8.8 still list older, inconsistent rates; they get fixed in the decisions pass.
+- **Decided 9 Oct 2026:**
+  - Protection against a global passive observer is required; on-demand-only sending is rejected, and there is no setting to switch to it.
+  - Nodes carry constant cover between themselves; phones send one fixed burst per tick while the app is open, and every real send rides a tick.
+  - No battery cap: the energy governor is removed so cover never degrades.
+- **Still open:** the cellular tick length (2a below).
+- **Status:** Partly decided. PLAN.md and PROTOCOL.md 8.8 still list older, inconsistent rates; they get fixed in the decisions pass.
+
+### 2a. Cellular tick length
+- **Question:** 2 s on cellular, the same as Wi-Fi, or a longer tick?
+- **What changes:** cover quality is the same at any fixed tick, because the pattern never depends on what you do. The tick sets latency and battery: at 2 s the cellular radio never sleeps while the app is open (estimated 2–7% battery per hour open); at 20 s it wakes once per tick (estimated 1–2% per hour) and a message waits about 10 s on average.
+- **Status:** Open.
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.
@@ -33,7 +43,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - What leaks: a mirror learns "an unknown person looked up one of these 10 million handles". The mixnet hides who asked; scheduled dummy queries (7) hide when.
   - Lookups stay rare: invite links and QR codes carry keys, credentials prove themselves (5), and contacts' key changes arrive inside the conversation.
 - **Patents:** mixnet-delivered sharded PIR with log proofs and scheduled dummy lookups goes into `PATENTS.md` as a candidate. The disclosure rule applies: assess before any public description.
-- **Status:** Recommended.
+- **Status:** **Decided** 9 Oct 2026.
 
 ### 4. Handle privacy in the log
 - **Question:** which is more secure and future-proof, a VRF or hash commitments plus PIR?

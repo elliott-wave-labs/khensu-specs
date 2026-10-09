@@ -33,7 +33,19 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 ### 2a. Cellular tick length
 - **Question:** 2 s on cellular, the same as Wi-Fi, or a longer tick?
 - **What changes:** cover quality is the same at any fixed tick, because the pattern never depends on what you do. The tick sets latency and battery: at 2 s the cellular radio never sleeps while the app is open (estimated 2–7% battery per hour open); at 20 s it wakes once per tick (estimated 1–2% per hour) and a message waits about 10 s on average.
-- **Status:** Open.
+- **Status:** **Decided** 9 Oct 2026: 2 s ticks on every network. Messages should feel real-time; a delay of one to a few seconds across tick and hops is acceptable. Low Power Mode keeps the 60 s tick.
+
+### 2b. Attachments and the cover pattern
+- **Problem:** the small-lane tick carries about 2 KB per 2 s, far too slow for photos and video. Sending bulk data faster than the tick shows an observer of the phone's link that something large moved. Hiding bulk transfers in time with real-time speed would need every phone to stream several hundred KB/s around the clock while the app is open (about 1 GB per hour), which no phone or 10B-user network can carry.
+- **Recommendation (two modes):**
+  - **Default (fast):** an observer can see that the phone moved a large amount of data, but not to whom, when the message was sent, or the exact size.
+    - Uploads start as soon as an attachment is picked, before send; the message itself (key and hash) rides a normal tick, so upload time is not send time.
+    - Attachments are padded to size buckets (powers of two above 64 KB), erasure-coded, and sent as bulk packets through the mixnet with mixing delays, so no node can link upload to recipient.
+    - Phones also make dummy bulk uploads and downloads drawn from the same size distribution (more on Wi-Fi and while charging), and ordinary bulk traffic (encrypted backups, tree chunks, sticker and model downloads) looks identical, so "a large transfer happened" says little.
+    - Recipients download through the bulk lane at their own time, with automatic download on Wi-Fi and dummy downloads.
+    - What remains visible to a global observer: long-term volume (a heavy media user looks like one) and loose correlation between a large upload and a large download elsewhere, weakened by dummies and delays.
+  - **Hidden (per attachment or per chat):** the attachment trickles inside the ticks, one bulk packet per tick (about 32 KB/s; a 2 MB photo takes about a minute), and the link pattern doesn't change at all.
+- **Status:** Recommended.
 
 ### 3. Directory lookups at global scale
 - **Direction:** complete global scale at launch; the node delivery system is likely patentable.

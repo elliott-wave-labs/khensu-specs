@@ -303,6 +303,12 @@ Receiving while locked: incoming packets go into a queue file with `NSFileProtec
 
 Coercion: a setting can require the passcode instead of Face ID for app unlock, because a face can be forced in a way a passcode can't. iOS's emergency SOS gesture already disables biometrics until the next passcode entry, and the app explains this. Touch ID on Macs (Apple silicon, or a Magic Keyboard with Touch ID) uses the same policies; Android's StrongBox with BiometricPrompt is the equivalent later.
 
+Panic wipe: iOS doesn't let third-party apps read side-button or volume-button press patterns (the Side Button Access entitlement is only for launching voice assistants in Japan). Instead:
+- A "Panic" App Intent that the user can put on the Action Button, a Control Center or Lock Screen control, or a Back Tap shortcut. App Intents run on the device; this doesn't involve Siri.
+- A duress passcode on the app unlock screen that wipes while appearing to open an empty app.
+- An optional wipe after a set number of failed app-unlock attempts.
+- The wipe is a crypto-erase: delete the Secure Enclave key that wraps the database key and the identity and device keys, so the encrypted store becomes unreadable at once, then delete the files. Behavior when triggered while the phone is locked (the keychain may refuse deletes) must be tested on devices; the fallback is to lock the app and finish the wipe on the next unlock without showing anything first.
+
 ## App design (decided)
 
 - **Native first.** SwiftUI on iOS 26 Liquid Glass components (glass tab bar, toolbars, sheets), one codebase for iPhone, iPad and Mac with a three-column split view on iPad and Mac. Dynamic Type, VoiceOver and Reduce Motion supported from the start.

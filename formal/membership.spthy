@@ -1,0 +1,60 @@
+/*
+ * khensu.nu: add and remove (PROTOCOL.md 4), abstracted from TreeKEM.
+ *
+ * Epoch secrets chain as es' = h(es, commit_secret); the commit secret is
+ * encrypted only to the members who stay. A removed member keeps everything
+ * it knew; a joiner gets only the new epoch secret.
+ *
+ * Properties:
+ *   removed_excluded  the epoch after a removal is secret from the removed
+ *                     member, even with its keys and all earlier secrets
+ *   joiner_no_past    a joiner, even fully compromised, can't learn the
+ *                     epoch before it joined
+ */
+theory Membership
+begin
+
+builtins: asymmetric-encryption, hashing
+
+restriction Inequality:
+  "All x y #i. Neq(x, y) @ i ==> not (x = y)"
+
+restriction UniqueLeaf:
+  "All X #i #j. LeafFor(X) @ i & LeafFor(X) @ j ==> #i = #j"
+
+rule Leaf:
+  [ Fr(~sk) ]
+  --[ LeafFor($X) ]->
+  [ !LeafSk($X, ~sk), !LeafPk($X, pk(~sk)), Out(pk(~sk)) ]
+
+rule Compromise_Leaf:
+  [ !LeafSk(X, sk) ] --[ Compromise(X) ]-> [ Out(sk) ]
+
+rule Create:
+  [ !LeafPk(B, pkB), !LeafPk(C, pkC), Fr(~es1) ]
+  --[ Created($A, B, C, ~es1), Neq($A, B), Neq($A, C), Neq(B, C) ]->
+  [ Out(<aenc(~es1, pkB), aenc(~es1, pkC)>), St1($A, B, C, ~es1) ]
+
+rule Remove:
+  [ St1(A, B, C, es1), !LeafPk(B, pkB), Fr(~cs) ]
+  --[ Removed(A, B, C, h(<es1, ~cs>)) ]->
+  [ Out(aenc(~cs, pkB)), St2(A, B, h(<es1, ~cs>)) ]
+
+rule Add:
+  [ St2(A, B, es2), !LeafPk(B, pkB), !LeafPk(D, pkD), Fr(~cs2) ]
+  --[ Added(A, D, es2, h(<es2, ~cs2>)), Neq(D, B), Neq(D, A) ]->
+  [ Out(<aenc(~cs2, pkB), aenc(h(<es2, ~cs2>), pkD)>) ]
+
+lemma executable:
+  exists-trace "Ex A D es2 es3 #i. Added(A, D, es2, es3) @ i"
+
+lemma removed_excluded:
+  "All A B C es2 #i. Removed(A, B, C, es2) @ i & not (Ex #j. Compromise(B) @ j)
+     ==> not (Ex #k. K(es2) @ k)"
+
+lemma joiner_no_past:
+  "All A B C D es2 es3 #i #j. Removed(A, B, C, es2) @ i & Added(A, D, es2, es3) @ j
+     & not (Ex #k. Compromise(B) @ k)
+     ==> not (Ex #l. K(es2) @ l)"
+
+end

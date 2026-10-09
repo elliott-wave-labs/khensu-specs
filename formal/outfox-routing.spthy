@@ -1,0 +1,68 @@
+/*
+ * khensu.nu: Outfox routing (PROTOCOL.md 8), one mix plus destination.
+ *
+ * Each hop decapsulates its own key, learns only the next hop, and strips one
+ * payload layer. AEAD on the routing block stops tampering.
+ *
+ * Properties:
+ *   payload_secret   the message is secret unless the destination is corrupt,
+ *                    even when every mix is corrupt
+ *   route_integrity  an honest packet goes where its sender routed it, unless
+ *                    the hop that forwarded it is corrupt
+ *   replay_once      (by restriction) a node processes each replay tag once
+ *
+ * Unlinkability is an indistinguishability property and is argued in the
+ * Outfox paper, not here.
+ */
+theory OutfoxRouting
+begin
+
+builtins: asymmetric-encryption, symmetric-encryption, hashing
+
+restriction Inequality:
+  "All x y #i. Neq(x, y) @ i ==> not (x = y)"
+
+restriction UniqueNode:
+  "All N #i #j. NodeKey(N) @ i & NodeKey(N) @ j ==> #i = #j"
+
+restriction ReplayOnce:
+  "All N t #i #j. Tag(N, t) @ i & Tag(N, t) @ j ==> #i = #j"
+
+rule Node_Key:
+  [ Fr(~sk) ]
+  --[ NodeKey($N) ]->
+  [ !NodeSk($N, ~sk), !NodePk($N, pk(~sk)), Out(pk(~sk)) ]
+
+rule Corrupt_Node:
+  [ !NodeSk(N, sk) ] --[ Corrupt(N) ]-> [ Out(sk) ]
+
+rule Send_Packet:
+  let hdrD = <aenc(~kD, pkD), senc(<'final', 'none'>, ~kD)>
+      hdr1 = <aenc(~k1, pk1), senc(<D, hdrD>, ~k1)>
+  in
+  [ !NodePk(N1, pk1), !NodePk(D, pkD), Fr(~k1), Fr(~kD), Fr(~m) ]
+  --[ SendMsg(~m, D), Built(~k1, D), Neq(N1, D) ]->
+  [ Out(<N1, hdr1, senc(senc(~m, ~kD), ~k1)>) ]
+
+rule Mix_Process:
+  [ !NodeSk(N, sk), In(<N, <aenc(k, pk(sk)), senc(<nxt, hdr>, k)>, senc(inner, k)>) ]
+  --[ Forward(N, nxt, k), Tag(N, h(k)) ]->
+  [ Out(<nxt, hdr, inner>) ]
+
+rule Destination:
+  [ !NodeSk(D, sk), In(<D, <aenc(k, pk(sk)), senc(<'final', 'none'>, k)>, senc(m, k)>) ]
+  --[ Deliver(D, m), Tag(D, h(k)) ]->
+  [ ]
+
+lemma executable:
+  exists-trace "Ex D m #i #j. SendMsg(m, D) @ i & Deliver(D, m) @ j & not (Ex N #k. Corrupt(N) @ k)"
+
+lemma payload_secret:
+  "All m D #i. SendMsg(m, D) @ i & not (Ex #j. Corrupt(D) @ j)
+     ==> not (Ex #k. K(m) @ k)"
+
+lemma route_integrity:
+  "All N nxt k nxt2 #i #j. Forward(N, nxt, k) @ i & Built(k, nxt2) @ j
+     ==> nxt = nxt2 | (Ex #c. Corrupt(N) @ c)"
+
+end

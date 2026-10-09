@@ -1,0 +1,66 @@
+/*
+ * khensu.nu: epoch-header safety (PROTOCOL.md 12.2), scaled down.
+ *
+ * The real committee is 21 members with a 14-signature quorum. Any two
+ * quorums overlap in at least 2 x 14 - 21 = 7 members, so with at most 6
+ * faulty members the overlap always holds an honest one. Here: 3 members,
+ * quorum 2, overlap 1, tolerating 0 faulty for safety (the lemma shows two
+ * corrupt members are needed to break it, i.e. one is not enough).
+ *
+ * Property:
+ *   safety  a light client never accepts two different headers for one epoch
+ *           unless two distinct members are corrupt
+ */
+theory EpochHeader
+begin
+
+builtins: signing
+
+restriction Equality:
+  "All x y #i. Eq(x, y) @ i ==> x = y"
+
+restriction SingleSetup:
+  "All #i #j. Setup() @ i & Setup() @ j ==> #i = #j"
+
+/* Honest members sign at most one header per epoch. */
+restriction OneHeaderPerEpoch:
+  "All m e h1 h2 #a #b. SignHdr(m, e, h1) @ a & SignHdr(m, e, h2) @ b ==> h1 = h2"
+
+rule Setup:
+  [ Fr(~k1), Fr(~k2), Fr(~k3) ]
+  --[ Setup() ]->
+  [ !Committee(pk(~k1), pk(~k2), pk(~k3)),
+    !Key('m1', ~k1), !Key('m2', ~k2), !Key('m3', ~k3),
+    Out(<pk(~k1), pk(~k2), pk(~k3)>) ]
+
+rule Sign_Header:
+  [ !Key(m, k), In(<e, h>) ]
+  --[ SignHdr(m, e, h) ]->
+  [ Out(sign(<'hdr', e, h>, k)) ]
+
+rule Corrupt:
+  [ !Key(m, k) ] --[ Corrupt(m) ]-> [ Out(k) ]
+
+rule Accept_12:
+  [ !Committee(p1, p2, p3), In(<e, h, s1, s2>) ]
+  --[ Accept(e, h), Eq(verify(s1, <'hdr', e, h>, p1), true), Eq(verify(s2, <'hdr', e, h>, p2), true) ]->
+  [ ]
+
+rule Accept_13:
+  [ !Committee(p1, p2, p3), In(<e, h, s1, s3>) ]
+  --[ Accept(e, h), Eq(verify(s1, <'hdr', e, h>, p1), true), Eq(verify(s3, <'hdr', e, h>, p3), true) ]->
+  [ ]
+
+rule Accept_23:
+  [ !Committee(p1, p2, p3), In(<e, h, s2, s3>) ]
+  --[ Accept(e, h), Eq(verify(s2, <'hdr', e, h>, p2), true), Eq(verify(s3, <'hdr', e, h>, p3), true) ]->
+  [ ]
+
+lemma executable:
+  exists-trace "Ex e h #i. Accept(e, h) @ i & not (Ex m #j. Corrupt(m) @ j)"
+
+lemma safety:
+  "All e h1 h2 #i #j. Accept(e, h1) @ i & Accept(e, h2) @ j
+     ==> h1 = h2 | (Ex a b #k #l. Corrupt(a) @ k & Corrupt(b) @ l & not (a = b))"
+
+end

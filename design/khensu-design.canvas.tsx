@@ -45,8 +45,8 @@ type Tab = (typeof TABS)[number];
 
 // ---------- small brand glyphs ----------
 
-// khensu.nu mark: a ring whose left side fills into a crescent, with no gap between them.
-// The inner edge is an arc of a larger circle offset right, so the tips taper to points on the ring.
+// khensu.nu mark: a ring with the crescent's inner edge drawn as an unfilled line of the same weight.
+// The inner edge is an arc of a larger circle offset right, so its ends meet the ring in points.
 function Crescent({ size = 18, color = STAR }: { size?: number; bg?: string; color?: string }) {
   const c = 50;
   const ring = 6;
@@ -56,11 +56,11 @@ function Crescent({ size = 18, color = STAR }: { size?: number; bg?: string; col
   const r = Math.sqrt(a * a + d * d - 2 * d * tipX);
   const ix = c + tipX;
   const iy = Math.sqrt(a * a - tipX * tipX);
-  const sliver = `M ${ix} ${c - iy} A ${a} ${a} 0 0 0 ${ix} ${c + iy} A ${r} ${r} 0 0 1 ${ix} ${c - iy} Z`;
+  const innerEdge = `M ${ix} ${c - iy} A ${r} ${r} 0 0 0 ${ix} ${c + iy}`;
   return (
     <svg width={size} height={size} viewBox="0 0 100 100">
-      <circle cx={c} cy={c} r={50 - ring / 2} fill="none" stroke={color} strokeWidth={ring} />
-      <path d={sliver} fill={color} />
+      <circle cx={c} cy={c} r={a} fill="none" stroke={color} strokeWidth={ring} />
+      <path d={innerEdge} fill="none" stroke={color} strokeWidth={ring} strokeLinecap="round" />
     </svg>
   );
 }

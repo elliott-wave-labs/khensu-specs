@@ -1,0 +1,74 @@
+/*
+ * khensu.nu: rotating signature keys with delayed reveal (PROTOCOL.md 4.1).
+ *
+ * The group key stands in for MLS. Each period key is bound to its owner in
+ * the transparency log. After the period, the private key is revealed; from
+ * then on receivers reject anything signed with it.
+ *
+ * Properties:
+ *   auth             accepted messages were sent by the bound owner, even if
+ *                    the group key leaks
+ *   secrecy          messages stay secret while the group key is safe
+ *   forgeable_after  after reveal, valid signatures on unsent messages exist,
+ *                    so an old signature proves nothing to an outsider
+ */
+theory DelayedReveal
+begin
+
+builtins: signing, symmetric-encryption
+
+restriction Equality:
+  "All x y #i. Eq(x, y) @ i ==> x = y"
+
+/* Receivers reject a key once its reveal window has started. */
+restriction AcceptBeforeReveal:
+  "All A m pk #i #j. Accept(A, m, pk) @ i & Revealed(pk) @ j ==> #i < #j"
+
+rule Setup_Group:
+  [ Fr(~gk) ] --[ GroupKey(~gk) ]-> [ !GK(~gk) ]
+
+rule Leak_GroupKey:
+  [ !GK(gk) ] --[ GKLeaked(gk) ]-> [ Out(gk) ]
+
+rule New_Period_Key:
+  [ Fr(~sk) ]
+  --[ PeriodKey($A, pk(~sk)) ]->
+  [ !Log($A, pk(~sk)), Active($A, ~sk), Out(pk(~sk)) ]
+
+rule Send:
+  [ Active(A, sk), !GK(gk), Fr(~m) ]
+  --[ Send(A, ~m, pk(sk)), Sent(~m, gk) ]->
+  [ Active(A, sk), Out(senc(<~m, sign(~m, sk)>, gk)) ]
+
+rule Retire_And_Reveal:
+  [ Active(A, sk) ]
+  --[ Revealed(pk(sk)) ]->
+  [ Out(sk) ]
+
+rule Receive:
+  [ !GK(gk), !Log(A, pkA), In(senc(<m, s>, gk)) ]
+  --[ Accept(A, m, pkA), Eq(verify(s, m, pkA), true) ]->
+  [ ]
+
+/* An outsider checking a signature against the log. */
+rule Judge:
+  [ !Log(A, pkA), In(<m, s>) ]
+  --[ LooksValid(A, m, pkA), Eq(verify(s, m, pkA), true) ]->
+  [ ]
+
+lemma executable:
+  exists-trace "Ex A m pk #i. Accept(A, m, pk) @ i"
+
+lemma auth:
+  "All A m pk #i. Accept(A, m, pk) @ i ==> (Ex #j. Send(A, m, pk) @ j & #j < #i)"
+
+lemma secrecy:
+  "All m gk #i. Sent(m, gk) @ i & not (Ex #j. GKLeaked(gk) @ j)
+     ==> not (Ex #k. K(m) @ k)"
+
+lemma forgeable_after:
+  exists-trace
+  "Ex A m pk #i #j. Revealed(pk) @ i & LooksValid(A, m, pk) @ j
+     & not (Ex #k. Send(A, m, pk) @ k)"
+
+end

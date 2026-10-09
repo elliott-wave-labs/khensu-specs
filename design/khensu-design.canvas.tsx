@@ -1117,7 +1117,7 @@ function ArchitectureTab() {
       />
       <Grid columns={3} gap={16}>
         <Stat value="ML-KEM-1024" label="Key exchange (pure post-quantum)" />
-        <Stat value="ML-DSA-65" label="Signatures everywhere, incl. consensus" />
+        <Stat value="ML-DSA-87" label="Signatures everywhere, incl. consensus" />
         <Stat value="1,000" label="Max devices per group (TreeKEM)" />
       </Grid>
     </Stack>
@@ -1281,7 +1281,7 @@ function ComparisonsTab() {
         rows={[
           ["Identity", "Phone number (usernames optional)", "Phone number", "Key pair; optional permanent handle; no phone or email"],
           ["Default encryption", "End-to-end, PQXDH + SPQR", "Server-side; E2EE only in 1:1 secret chats", "End-to-end for everything, pure ML-KEM-1024"],
-          ["Identity signatures", "Classical", "Classical", "ML-DSA-65"],
+          ["Identity signatures", "Classical", "Classical", "ML-DSA-87"],
           ["Who-talks-to-whom", "Server sees recipient, IP, timing", "Server sees everything", "Three-layer mixnet with cover traffic"],
           ["Group size (E2EE)", "1,000", "Not E2EE", "1,000 devices, TreeKEM"],
           ["Call IP privacy", "Relay sees both IPs", "Peer-to-peer or server", "Two relays, different operators"],
@@ -1295,7 +1295,7 @@ function ComparisonsTab() {
       <Table
         headers={["", "QRL", "Algorand", "Abelian", "Zcash / Monero", "khensu.nu chain"]}
         rows={[
-          ["Signatures", "XMSS (stateful)", "Falcon opt-in, Ed25519 default", "Lattice (custom)", "Classical", "ML-DSA-65, stateless, incl. consensus"],
+          ["Signatures", "XMSS (stateful)", "Falcon opt-in, Ed25519 default", "Lattice (custom)", "Classical", "ML-DSA-87, stateless, incl. consensus"],
           ["Payment privacy", "None", "None", "Lattice-based", "Classical (archived notes decryptable later)", "STARK + ML-KEM-1024"],
           ["Network privacy", "None", "None", "None", "Partial (Dandelion++)", "Post-quantum mixnet"],
           ["History", "Permanent", "Permanent", "Permanent", "Permanent", "Shielded eras deleted"],
@@ -1304,7 +1304,7 @@ function ComparisonsTab() {
         ]}
       />
       <Callout tone="neutral" title="Where we start behind">
-        No track record (QRL since 2018), no liquidity until the burn auction and listings, and bigger transactions (3.3 KB signatures, tens of KB of proof). Formal models, audits and a long public testnet close the gap.
+        No track record (QRL since 2018), no liquidity until the burn auction and listings, and bigger transactions (4.6 KB signatures, tens of KB of proof). Formal models, audits and a long public testnet close the gap.
       </Callout>
     </Stack>
   );
@@ -1423,25 +1423,28 @@ function RoadmapTab() {
 // ---------- links ----------
 
 const PLAN_SECTIONS: Array<[string, number]> = [
-  ["Goals and non-negotiables", 109],
-  ["Why it's better than Signal", 118],
-  ["Telegram's features, end-to-end encrypted", 138],
-  ["Architecture", 189],
-  ["Consensus", 238],
-  ["Governance and founder safeguards", 256],
-  ["Identity, addresses and handles", 274],
-  ["App design", 316],
-  ["Local search and memory", 330],
-  ["Push notifications", 364],
-  ["Apple platform features", 389],
-  ["Mix packet format: Outfox", 407],
-  ["Cryptographic design", 421],
-  ["Money", 446],
-  ["Shielded payments", 465],
-  ["Compared with post-quantum coins", 477],
-  ["Launch readiness", 492],
-  ["Milestones", 575],
-  ["Decisions", 587],
+  ["Goals and non-negotiables", 112],
+  ["Why it's better than Signal", 121],
+  ["Telegram's features, end-to-end encrypted", 141],
+  ["What exists and the gaps", 173],
+  ["Architecture", 203],
+  ["Consensus", 252],
+  ["Governance and founder safeguards", 270],
+  ["Identity, addresses and handles", 288],
+  ["App design", 330],
+  ["Local search and memory", 344],
+  ["Push notifications", 378],
+  ["Apple platform features", 403],
+  ["Mix packet format: Outfox", 421],
+  ["Cryptographic design", 435],
+  ["Money", 466],
+  ["Shielded payments", 485],
+  ["Compared with post-quantum coins", 497],
+  ["Launch readiness", 512],
+  ["Repository layout", 585],
+  ["Documentation and patents", 600],
+  ["Milestones", 627],
+  ["Decisions", 639],
 ];
 
 const EXTERNAL: Array<[string, string, string]> = [

@@ -3,28 +3,28 @@ name: MOQOM Messenger
 overview: "A Signal replacement built on MOQOM: post-quantum MLS end-to-end encryption for every message, call, attachment and profile, carried by an open, decentralized network of operator nodes (always-on, scheduled, N-hour and idle-time, down to a Raspberry Pi 5) with a post-quantum mixnet that hides who talks to whom. The node list comes from our own lightweight consensus (a rotating committee drawn by lottery, no permanent ledger), with founder safeguards until the network is established. You keep a fixed share of subscription proceeds; the rest buys and burns the network's post-quantum token for capacity, and the protocol mints rewards to operators (burn and mint). Users can send money anonymously over the mixnet through a STARK-based shielded pool whose records expire."
 todos:
   - id: threat-model
-    content: "Write moqom-messenger/docs/THREAT-MODEL.md and PROTOCOL.md: adversaries, guarantees (including founder trust during launch), wire formats for messages, Outfox packets, mailbox IDs, leases, receipts, epoch headers"
+    content: "Write khensu-specs THREAT-MODEL.md and PROTOCOL.md: adversaries, guarantees (including founder trust during launch), wire formats for messages, Outfox packets, mailbox IDs, leases, receipts, epoch headers"
     status: pending
   - id: mls-hardening
-    content: "moqom-security: ML-KEM-1024 + ML-DSA-65 suite (pure post-quantum, no classical KEM), PrivateMessage with secret tree, identity-signed device credentials, Update policy; vectors in Swift/Go/Rust"
+    content: "khensu-core: OpenMLS fork with MLS_256_MLKEM1024_AES256GCM_SHA512_MLDSA87 via a libcrux provider, PrivateMessage with secret tree (1,000-generation / 7-day skipped-key window), khensu credentials pointing into the transparency log, rotating signature keys with erasure and 7-day delayed reveal, Update every 24 h or 1,000 messages, multi-packet message framing; mlswg vectors"
     status: pending
   - id: treekem
-    content: "moqom-security: RFC 9420 ratchet tree (TreeKEM) in Swift/Go/Rust, passing mlswg tree-math, tree-validation, treekem and secret-tree vectors; groups up to 1,000 devices"
+    content: "khensu-core: OpenMLS ratchet tree (TreeKEM) with the new suite, passing mlswg tree-math, tree-validation, treekem, secret-tree and message-protection vectors; groups up to 1,000 devices; Welcome without the tree and content-addressed tree chunks over the bulk lane"
     status: pending
   - id: licensing
-    content: "AGPL-3.0 headers and LICENSING.md for moqom-messenger node and apps, Apache-2.0 for protocol libraries, CLA bot for outside contributions, separate grant for the App Store build"
+    content: "Licences per repo (core Apache-2.0, specs CC BY 4.0, everything else AGPL-3.0), LICENSING.md and headers, CLA bot on every repo, separate grant for the App Store build, check that tatenan copies nothing from the proprietary moqom-relay"
     status: pending
   - id: formal-model
     content: Tamarin/ProVerif model of add, message, remove, Outfox routing and the epoch-header consensus; fix any findings in the specs
     status: pending
   - id: node-core
-    content: "moqom-messenger/node: open-source moqom-node with mailbox, sequencer and relay roles, signed leases and draining, on moqom-proto/transport/client; runs on Raspberry Pi 5"
+    content: "khensu-tatenan: open tatenan node with mailbox (3 replicas, 30/90-day retention), sequencer (signed commit receipts, standby handover) and relay roles, signed leases and draining, on moqom-proto/transport/client; runs on Raspberry Pi 5"
     status: pending
   - id: consensus
-    content: "Own consensus layer in moqom-node: weighted sortition (reputation x stake) of a 21-member BFT committee per epoch, ML-DSA-65 epoch headers, light-node header checks, account state root with pruned history, loop-traffic measurement scored by median"
+    content: "khensu-chain consensus layer (run by tatenan nodes): weighted sortition (reputation x stake) of a 21-member BFT committee per epoch, ML-DSA-87 epoch headers, light-node header checks, account state root with pruned history, loop-traffic measurement scored by median"
     status: pending
   - id: token-chain
-    content: "Token on our chain: ML-DSA-65 accounts, transfers, stake/unstake and slashing, protocol mint to operators from work receipts with a declining emission schedule, burn for capacity credits, per-epoch burn auction for launch liquidity; genesis allocation and token name set with counsel"
+    content: "Token on our chain: ML-DSA-87 accounts, transfers, stake/unstake and slashing, protocol mint to operators from work receipts with a declining emission schedule, burn for capacity credits, per-epoch burn auction for launch liquidity; genesis allocation and token name set with counsel"
     status: pending
   - id: shielded-payments
     content: "Shielded payments: STARK-proved note pool with ML-KEM-1024 note encryption, fixed denominations, eras that expire and drop their spent lists, transfers as mixnet messages, on-device proving on iPhone and Mac; external audit"
@@ -60,10 +60,10 @@ todos:
     content: "Apple features: Wi-Fi Aware offline nearby relay of sealed packets, tap-to-add/verify (Tap to Share, NFC), Push to Talk over the mixnet, CarPlay calls only (no Siri, so no CarPlay messaging), default messaging/calling app, Communication Notifications in Previews mode, App Attest feeding blind-token issuance, on-device voice (SpeechAnalyzer dictation, AVSpeechSynthesizer read-aloud), Writing Tools off and third-party keyboards blocked in the composer, Declared Age Range teen defaults, StoreKit external purchases; file Apple entitlement requests early"
     status: pending
   - id: apple-client
-    content: "moqom-messenger/apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
+    content: "khensu-apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
     status: pending
   - id: calls
-    content: Integrate MoqomKit calls over two-hop node relays, direct paths opt-in per contact
+    content: "Integrate MoqomKit calls over two-hop tatenan relays with SFrame keys from the chat's MLS group, signed frame manifests in group calls (1 s video, 5 s audio), direct paths opt-in per contact"
     status: pending
   - id: operator-economy
     content: macOS node app and Raspberry Pi 5 image with idle/scheduled/N-hour modes; reputation scoring; token staking as the operator bond, slashed by consensus; operator wallet in the node app showing protocol rewards
@@ -98,6 +98,9 @@ todos:
   - id: design-mocks
     content: "Design canvas: iOS screen mocks in the monochrome Liquid Glass style plus architecture, charts, comparison tables and links for the plan"
     status: completed
+  - id: docs-patents
+    content: "After each component is built: full design document in khensu-specs and a patent assessment in PATENTS.md (novelty vs prior art, search summary, claim themes, file / publish / neither), starting with KhensuMemory; done before any repo goes public or the Outfox paper is submitted"
+    status: pending
   - id: audit-launch
     content: Fuzzing for all new decoders, release hashes in the transparency log, hardware keys on Apple/GitHub accounts, external audit, bug bounty, launch
     status: pending
@@ -110,21 +113,21 @@ isProject: false
 
 - Every byte a user creates is end-to-end encrypted: messages, attachments, calls, profile names and avatars, group names, read receipts, typing indicators and backups. No server, node, validator or you ever holds a key that decrypts them.
 - Metadata is protected, not just content. No single node, and not you, learns who talks to whom, when, or how often (every message, receipt and typing event goes through the post-quantum mixnet, with no faster path; calls use two-hop relays).
-- Post-quantum from day one, for confidentiality, authentication and consensus. Key exchange is pure ML-KEM-1024 (FIPS 203, the highest security category), with no classical algorithm; signatures everywhere, including the consensus, are ML-DSA-65 (FIPS 204).
+- Post-quantum from day one, for confidentiality, authentication and consensus. Key exchange is pure ML-KEM-1024 (FIPS 203, the highest security category), with no classical algorithm; signatures everywhere, including the consensus, are ML-DSA-87 (FIPS 204).
 - Decentralized at launch: independent operators run the nodes, the node list is agreed by a rotating committee drawn from those nodes, and the user directory is an append-only transparency log anyone can audit. Founder safeguards protect the network from capture until it is established.
 - Light enough to run a node on a Raspberry Pi 5.
-- iOS and macOS first, in a new top-level `moqom-messenger/`, reusing `moqom-security` (MLS, proof, token) and MoqomKit (calls, direct paths, transport).
+- iPhone, iPad and Mac first, in the `khensu-*` repos, reusing MoqomKit (calls, direct paths, transport) and moqom-security's device-key proof and token designs; MLS comes from an OpenMLS fork in `khensu-core`.
 
 ## Why it's better than Signal
 
 Signal is the bar, and on content encryption it is very good: the Double Ratchet, PQXDH (hybrid X25519 + ML-KEM for the first key agreement), SPQR (post-quantum added to the ongoing ratchet), sealed sender, and zero-knowledge group credentials that keep group membership hidden from its servers, all with published formal analyses. The advantages below are specific; each one is a requirement this plan must meet, not marketing.
 
-1. **Post-quantum authentication, not just post-quantum secrecy.** Signal's identity keys and signatures are Curve25519/XEdDSA, which are classical. A future quantum computer could not read recorded Signal messages, but it could impersonate a contact or forge identity keys. Here every identity key, device credential, KeyPackage, commit, message signature and consensus vote is ML-DSA-65, so impersonation is quantum-resistant too.
+1. **Post-quantum authentication, not just post-quantum secrecy.** Signal's identity keys and signatures are Curve25519/XEdDSA, which are classical. A future quantum computer could not read recorded Signal messages, but it could impersonate a contact or forge identity keys. Here every identity key, device credential, KeyPackage, commit, message signature and consensus vote is ML-DSA-87, so impersonation is quantum-resistant too.
 2. **The network hides who talks to whom; Signal's server sees much of it.** Sealed sender hides the sender of a message from Signal, but Signal still sees the recipient, the sender's IP address, and exact timing. Published research (Martiny et al., NDSS 2021) shows that over time those let a server link senders to recipients anyway. Here messages go through a three-layer mixnet with random delays and constant cover traffic, using a post-quantum packet format (Outfox with ML-KEM), mailboxes are unlinkable and rotate every epoch, and no node, validator, or you sees sender, recipient and timing together.
 3. **No single operator to compel, breach, block or shut down.** Signal runs every server, so one legal order, one breach, one funding crisis, or one national firewall rule (Signal has been blocked in Iran, China, Russia and elsewhere) affects everyone. Here independent operators in many countries run the nodes, a different randomly drawn committee agrees the node list each epoch, and blocking means blocking thousands of changing node addresses, many of them on home connections.
 4. **No phone number, ever.** Signal still requires a phone number to register, even with usernames hiding it from contacts, so your carrier and Signal can link the account to a SIM. Here identity is a key in the Secure Enclave plus an optional username. Phone and email lookup are optional and come only with private contact discovery.
 5. **No trust in Intel hardware enclaves.** Signal's contact discovery and PIN-based key backup (Secure Value Recovery) rely on Intel SGX and similar enclaves, and SGX has a history of side-channel breaks. Here there is no contact discovery server to trust, and backups are encrypted with a recovery key only the user holds.
-6. **Key verification that works for every contact, with more witnesses and private lookups.** Signal shipped key transparency as "Automatic Key Verification" in 2026 (on for all users since Android 8.21.6, iOS 8.22.0 and Desktop 8.21.0; [Signal blog, 11 Aug 2026](https://signal.org/blog/automatic-key-verification/)). Its limits, from Signal's own documentation: it works only when you have the contact's phone number, so username-only contacts (the most privacy-conscious users) fall back to comparing safety numbers by hand; it relies on two hand-picked auditors (Cloudflare and Trail of Bits); and clients accept auditor signatures up to seven days old, so a malicious server could keep a split view for up to a week ([Trail of Bits, 11 Aug 2026](https://blog.trailofbits.com/2026/08/11/how-trail-of-bits-helps-verify-the-integrity-of-your-signal-chats/)). Here identity is a key, not a phone number, so every contact is verified automatically; the log is cosigned by a quorum from the public transparency-dev and Sigsum witness networks; entries are signed with ML-DSA-65; clients require cosignatures no older than 24 hours; and lookups go through the mixnet, so the log never learns whose key you checked.
+6. **Key verification that works for every contact, with more witnesses and private lookups.** Signal shipped key transparency as "Automatic Key Verification" in 2026 (on for all users since Android 8.21.6, iOS 8.22.0 and Desktop 8.21.0; [Signal blog, 11 Aug 2026](https://signal.org/blog/automatic-key-verification/)). Its limits, from Signal's own documentation: it works only when you have the contact's phone number, so username-only contacts (the most privacy-conscious users) fall back to comparing safety numbers by hand; it relies on two hand-picked auditors (Cloudflare and Trail of Bits); and clients accept auditor signatures up to seven days old, so a malicious server could keep a split view for up to a week ([Trail of Bits, 11 Aug 2026](https://blog.trailofbits.com/2026/08/11/how-trail-of-bits-helps-verify-the-integrity-of-your-signal-chats/)). Here identity is a key, not a phone number, so every contact is verified automatically; the log is cosigned by a quorum from the public transparency-dev and Sigsum witness networks; entries are signed with ML-DSA-87; clients require cosignatures no older than 24 hours; and lookups go through the mixnet, so the log never learns whose key you checked.
 7. **Calls that hide IPs from everyone, not just the other person.** Signal's "always relay calls" hides your IP from the person you call, but Signal's relay sees both IPs. Here every call goes through two relays run by different operators, so no single machine sees both ends.
 8. **Group security that heals.** Signal groups use sender keys, which rotate only when membership changes, so a key stolen from one phone keeps decrypting that sender's group messages until then. MLS here has every device refresh its key every 24 hours or 1,000 messages, so a group recovers from a compromised device automatically. Group membership is hidden from the network: the sequencer sees only an opaque group ID and encrypted commits that arrive over the mixnet.
 9. **Encrypted at rest by the Secure Enclave on every platform.** The local message store key is wrapped by the Secure Enclave on iPhone and Mac, not kept in a config file, which is a mistake Signal Desktop made until 2024.
@@ -176,15 +179,26 @@ Reusable today:
 - Record format for app-data tracks: [moqom-pq/docs/data-format.md](moqom-pq/docs/data-format.md).
 - Fiat money layer (Stripe purchases for MOQOM Cloud customers, burn auction seller payouts): [motom/docs/README.md](motom/docs/README.md).
 
-Gaps that block "solid everywhere" (from [moqom-pq/docs/E2EE-KEY-MANAGEMENT.md](moqom-pq/docs/E2EE-KEY-MANAGEMENT.md) "Not done" and the MLS subset list):
-- No `PrivateMessage` / secret tree: no per-message keys, so no forward secrecy inside an epoch. Messaging needs it.
-- No per-sender signatures on application data (SFrame has none). Every message must be signed inside the ciphertext.
-- Basic credentials only (`username/device`). Needs identity-key-signed device credentials tied to the transparency log.
-- Flat member list (linear commits). Replaced by the RFC 9420 ratchet tree (TreeKEM) before launch, so groups reach 1,000 devices and the library passes the MLS working group's public `tree-math`, `tree-validation`, `treekem`, `secret-tree` and `message-protection` vectors, which it can't use today.
-- The delivery service is room-scoped and ephemeral (groups dropped when nobody is online, messages pruned after 10 minutes). Conversations must be persistent and ordered without a central server.
-- `moqom-relay` is proprietary ([moqom-engine-pq/LICENSING.md](moqom-engine-pq/LICENSING.md)). Operators and auditors need open node code, so the node is a new binary built on the Apache crates (`moqom-proto`, `moqom-transport`, `moqom-client`), not on the relay.
+Gaps that block "solid everywhere" (from [moqom-pq/docs/E2EE-KEY-MANAGEMENT.md](moqom-pq/docs/E2EE-KEY-MANAGEMENT.md) "Not done" and the MLS subset list), and how each is closed:
 
-Licensing (decided): the node and the apps are AGPL-3.0, as Signal's server and apps are, so a modified node or app has to publish its changes and nobody can run a closed fork of the network. Protocol libraries (`moqom-security`, Outfox, credentials, consensus wire format, vectors) stay Apache-2.0 so independent implementations can exist. Outside contributors sign a CLA, which keeps you able to publish the iOS build under a separate grant (Apple's terms conflict with AGPL) and to sell commercial licences.
+**MLS implementation base (decided).** `khensu-core` forks OpenMLS (Rust, MIT), which already implements RFC 9420 in full and passes the MLS working group's vectors, and adds `MLS_256_MLKEM1024_AES256GCM_SHA512_MLDSA87` through a libcrux crypto provider (formally verified ML-KEM and ML-DSA). One MLS implementation serves the app (through UniFFI) and the node. moqom-security's Swift and Go MLS stay with MOQOM Cloud; khensu doesn't depend on them. Our fork stays close to upstream so security fixes merge cleanly, and the suite provider is offered upstream.
+
+1. **No `PrivateMessage` or secret tree, so no forward secrecy inside an epoch.** Closed by OpenMLS's RFC 9420 secret tree and `PrivateMessage`: a separate ratchet per sender, a fresh key per message, each key deleted after use. Because the mixnet reorders and delays, receivers keep skipped keys for at most 1,000 generations per sender and 7 days, then delete them. Messages from up to 3 earlier epochs are accepted within the same 7 days, so a commit doesn't strand messages already in flight. Passes the `secret-tree` and `message-protection` vectors.
+2. **No per-sender signatures on application data.** Closed in messaging by MLS's own framing: every message is signed with the sender's ML-DSA-87 leaf key inside the ciphertext, with rotating keys and delayed reveal (see Cryptographic design). Calls carry media in SFrame, and SFrame keys derived from the group are shared, so in group calls any member could otherwise fake another member's frames. Group calls therefore add a signed manifest: each sender signs a hash of its recent frames' authentication tags with its leaf key, once per second for video and every 5 seconds for audio only (about 37 kbit/s or 7.4 kbit/s of overhead). Receivers play frames immediately, check each manifest when it arrives, and drop and flag a sender whose manifest fails. One-to-one calls need no manifest, because only the two devices on the call hold the keys.
+3. **Basic credentials only (`username/device`).** Replaced by a khensu credential type: the account address, a device index, the device's ML-DSA-87 signature key, and a pointer to the transparency log entry where an identity device signed that key. Members check the log entry, its inclusion proof and a quorum of witness cosignatures when a device joins and at every epoch change. A device revoked in the log is removed from each group by the next commit any member makes. Groups reject basic credentials.
+4. **Flat member list with linear commits.** Replaced by OpenMLS's ratchet tree (TreeKEM), passing `tree-math`, `tree-validation`, `treekem`, `secret-tree` and `message-protection`, with groups capped at 1,000 devices. Sizes with ML-KEM-1024 and ML-DSA-87:
+   - A commit carrying a full update path in a 1,000-device group is about 45 KB, so it fits one bulk packet.
+   - Each leaf is about 9 KB, because the credential points into the log rather than embedding the identity key and its signature. The full tree is about 520 KB for a 50-device group and about 10.5 MB at 1,000 devices.
+   - Welcome messages leave the tree out (RFC 9420 allows this). New members fetch it as content-addressed, padded chunks from mailbox nodes over the bulk lane and check it against the group's tree hash. Joining a 1,000-device group takes a few minutes on cellular; most groups are far smaller.
+5. **The delivery service is room-scoped and ephemeral.** Replaced by persistent, ordered delivery with no central server:
+   - Group state lives on members' devices. Nothing is dropped when nobody is online.
+   - Commits are ordered by the group's sequencer (architecture below). It returns a signed receipt for each accepted commit (group, epoch, hash), and two receipts for the same epoch are proof that the sequencer misbehaved. Sequencer duty passes to the standby at epoch boundaries, along with the latest receipt.
+   - Application messages need no global order: MLS orders them by epoch and generation, and the app sorts by the sender's timestamp inside the ciphertext.
+   - Every packet for a device waits on three mailbox replicas, run by different operators, until the device fetches it: up to 30 days on Free and 90 days on Plus. A device away longer rejoins its groups by external commit, signed by one of its identity devices.
+   - The 10-minute prune and the "group dropped when empty" behaviour go away.
+6. **`moqom-relay` is proprietary** ([moqom-engine-pq/LICENSING.md](moqom-engine-pq/LICENSING.md)). The node is `tatenan` in `khensu-tatenan`: a new open binary built on the Apache crates (`moqom-proto`, `moqom-transport`, `moqom-client`) that never links the relay. Its call-relay role reimplements forwarding from the MoQ transport spec. Before the code goes public, a licence check confirms nothing from the proprietary relay was copied.
+
+**Licensing (decided).** The node, the chain node, the services and the apps are AGPL-3.0, as Signal's server and apps are, so a modified node or app has to publish its changes and nobody can run a closed fork of the network. The protocol libraries in `khensu-core` (the MLS suite and provider, Outfox, credentials, the consensus wire format, test vectors) are Apache-2.0, so independent implementations can exist. The specs are CC BY 4.0. Outside contributors sign a CLA through a CLA bot on every repo, which keeps you able to publish the iOS build under a separate grant (Apple's terms conflict with AGPL) and to sell commercial licences.
 
 ## Architecture
 
@@ -247,7 +261,7 @@ Nodes relay and replicate data. Consensus agrees on these things per epoch (one 
 
 Design:
 - **Sortition.** Every eligible node is in a weighted lottery each epoch, and about 21 are drawn to form that epoch's committee. Eligible means a lease covering the whole epoch, enough reputation, and good measured reliability. A Pi 5 on an always-on or scheduled lease qualifies; idle-time machines do not. The draw uses randomness from the previous epoch's header and caps how many seats any one operator, network provider (autonomous system) or country can hold.
-- **BFT agreement.** The committee runs a HotStuff-family protocol and produces one epoch header signed by at least 2/3 of its members with ML-DSA-65. The consensus is post-quantum, which Ethereum and most chains are not.
+- **BFT agreement.** The committee runs a HotStuff-family protocol and produces one epoch header signed by at least 2/3 of its members with ML-DSA-87. The consensus is post-quantum, which Ethereum and most chains are not.
 - **Light nodes and clients.** Everyone else checks about 14 ML-DSA signatures per epoch and keeps only the current node list (a few hundred KB for 10,000 nodes). The full list is fetched from any node or mirror and checked against the header's root, so mirrors are untrusted.
 - **State, not history.** Validators keep the current account state (balances, stakes) and the current shielded eras, plus the last few epochs of blocks for disputes. Older blocks are dropped; a new node syncs from a committee-signed state snapshot. Anyone may archive history; the network does not need it, and shielded transfers reveal nothing even when archived.
 - **Measurement.** Loop cover traffic (packets a node routes back to itself) doubles as measurement and looks exactly like real traffic. A random, weighted set of measurers each epoch sign reports; a node's score is the median across measurers; measurers far from consensus lose reputation and bond.
@@ -260,7 +274,7 @@ Rule changes (fees, eligibility, penalties, cipher suites):
 - Take effect only after a 30-day timelock, during which the committee can veto.
 - Emergency fixes take 48 hours but may only tighten rules (disable a cipher, raise requirements). Nothing that loosens rules or touches money can use the fast path.
 
-Founder key: a 3-of-5 threshold of ML-DSA-65 keys on separate hardware: two offline (air-gapped laptops, backups in separate safes), one in a cloud HSM if it supports ML-DSA (check Google Cloud KMS), and two with trusted people or counsel for recovery. Any 3 shares can revoke and replace the founder key, behind the timelock. The founder key is pinned in the app with the genesis validator keys. Because founder changes also wait the 30-day timelock, a thief with 3 shares still cannot loosen rules or move money before the key is rotated.
+Founder key: a 3-of-5 threshold of ML-DSA-87 keys on separate hardware: two offline (air-gapped laptops, backups in separate safes), one in a cloud HSM if it supports ML-DSA (check Google Cloud KMS), and two with trusted people or counsel for recovery. Any 3 shares can revoke and replace the founder key, behind the timelock. The founder key is pinned in the app with the genesis validator keys. Because founder changes also wait the 30-day timelock, a thief with 3 shares still cannot loosen rules or move money before the key is rotated.
 
 Founder powers by stage:
 1. **Genesis.** The committee is drawn only from validators you run and partners you approve. Your co-signature is needed for every committee admission and every rule change.
@@ -420,10 +434,16 @@ Paper: "Justin Elliott Staffer, Elliott Wave LLC". It is written after the imple
 
 ## Cryptographic design (the parts that must be right)
 
-- **Cipher suite (decided: pure post-quantum).** Messenger groups use ML-KEM-1024, AES-256-GCM, SHA-384 and ML-DSA-65 signatures. Today `0xF0AA` is ML-KEM-768 + ML-DSA-65 and `0xF0A1` is X-Wing + Ed25519, so this is one new suite in all three MLS implementations, with vectors (a private-use value unless draft-ietf-mls-pq-ciphersuites defines it). The mixnet's Outfox headers use ML-KEM-1024 too. To verify: the key transparency log's VRF, since standard VRFs (ECVRF, RFC 9381) are classical and there is no standardized post-quantum VRF yet. A break would only expose lookup privacy, not messages.
+- **Cipher suite (decided: pure post-quantum, category 5 throughout).** Messenger groups use `MLS_256_MLKEM1024_AES256GCM_SHA512_MLDSA87`, the category-5 suite from the IETF post-quantum MLS cipher suites draft and the same suite MOQOM Cloud already uses, so calls and messaging share one suite and one set of vectors. (The older moqom-security suites, `0xF0AA` ML-KEM-768 + ML-DSA-65 and `0xF0A1` X-Wing + Ed25519, are not used.) The codepoint follows the draft; if the draft changes before launch we pin a private-use value and migrate with one commit per group. The mixnet's Outfox headers use ML-KEM-1024 too. To verify: the key transparency log's VRF, since standard VRFs (ECVRF, RFC 9381) are classical and there is no standardized post-quantum VRF yet. A break would only expose lookup privacy, not messages.
 - **Cost of no classical fallback, and how we cover it.** With no X25519 alongside, an implementation bug in ML-KEM (like the 2024 KyberSlash timing leak) would expose messages directly. So: use a formally verified ML-KEM-1024 implementation in each language where one exists (for example libcrux or mlkem-native) rather than hand-written code; run NIST's test vectors plus Wycheproof-style negative tests; check constant-time behaviour on iPhone and Pi 5; fuzz every decoder. ML-KEM-1024 keys are 1,568 bytes and ciphertexts 1,568 bytes (vs 1,184 and 1,088 for ML-KEM-768), which only matters for KeyPackages and mix headers.
-- **Signatures.** ML-DSA-65 only, by earlier decision. If ML-DSA were broken, an attacker could impersonate going forward, but recorded traffic stays confidential because ML-KEM protects it.
-- **Identity.** Per account: an identity key held in the Secure Enclave. Per device: a device key signed by the identity key (the MLS credential). The KT log binds username to identity key. The safety number is the fingerprint of the identity key, checked against the KT proof.
+- **Signatures.** ML-DSA-87 everywhere (messages, credentials, identity, consensus, transactions), matching ML-KEM-1024's security category. Sizes: 4,627-byte signatures and 2,592-byte public keys (vs 3,309 and 1,952 for ML-DSA-65). If ML-DSA were broken, an attacker could impersonate going forward, but recorded traffic stays confidential because ML-KEM protects it.
+- **Sender authentication that the network can't see, with rotating keys (decided).**
+  - Every message is signed by the sender device's MLS signature key, and the signature sits inside the `PrivateMessage` encryption, so only group members can see or check it. Nodes see neither the signature nor the sender (sealed sending, below).
+  - The signature key is bound to the person by the device credential (signed by an identity device and listed in the transparency log), so the recipient knows exactly which person and device sent each message.
+  - Signature keys rotate with every Update commit: every 24 hours or 1,000 messages, whichever comes first, and immediately after a device is added or removed. The old private key is erased on rotation, so a phone seized later can't sign anything as you for earlier periods.
+  - Delayed key reveal: 7 days after a rotation, when the late-message window for that key has closed, the device sends the retired private signature key to the group inside an ordinary encrypted message. From then on any member could have produced those old signatures, so a saved transcript proves nothing to an outsider, while every message was authenticated when it arrived. Clients reject anything signed with a retired key after its window, so the revealed key can't be used to inject messages. This design is checked in the Tamarin model before it ships; if the analysis finds a problem, we keep rotation and erasure and drop the reveal.
+- **Message size with ML-DSA-87.** A signed message is about 4.9 KB plus its text, more than one small packet's 2 KB payload. Messages are split across 3 or more small packets (padded to fixed buckets of 3, 4, 6 or 8 packets), sent in place of cover packets, and reassembled by the recipient. Cover traffic dominates bandwidth, so this mostly adds a few seconds of latency, not data. Typing events and delivery receipts use keys from the MLS exporter with no signature, so they fit in one packet.
+- **Identity.** Per account: a set of identity devices, each with its own non-exportable ML-DSA-87 identity key in the Secure Enclave, listed in the KT log under the account address (see Identity devices). Per device: an MLS signature key signed by an identity device, referenced by the khensu credential. The safety number is the fingerprint of the account's current identity key set, checked against the KT proof, so linking a new device through an existing one doesn't change it, but restoring from the recovery kit does.
 - **Messages.** MLS `PrivateMessage` with the secret tree: per-message keys deleted after use, a sender signature inside the ciphertext, a generation counter for replay protection, and padding to fixed size buckets. Each device sends an Update commit every 24 hours or 1,000 messages, for post-compromise security.
 - **Sealed sending.** The outer packet carries no sender. The mailbox ID is derived per conversation and rotated per epoch from the MLS exporter, so mailboxes cannot be linked across epochs.
 - **Adding offline contacts.** Directory-published one-time KeyPackages plus a last-resort package (the current `PUT/claim` design, moved onto the KT log and nodes), each signed by the device credential.
@@ -433,7 +453,7 @@ Paper: "Justin Elliott Staffer, Elliott Wave LLC". It is written after the imple
 
 ## Node software, hardware and schedules
 
-A single open-source Rust binary `moqom-node`. Operators pick roles; the epoch header assigns work based on signed leases.
+A single open-source Rust binary, `tatenan`. Operators pick roles; the epoch header assigns work based on signed leases.
 
 - **Hardware (decided).** Minimum is a Raspberry Pi 5 with an NVMe SSD for all roles; a Pi 4 only for mixing, because it lacks ARM's hardware AES instructions and the suite uses AES-256-GCM. No AI HAT is needed: consensus is limited by messages and network delay, and the cryptography runs on the CPU. A Pi 5 with an AI HAT+ or AI HAT+ 2 can still run a node, but both the HAT and an NVMe HAT need the Pi 5's single PCIe connector: put the SSD in a USB 3 enclosure (which gets its own bandwidth through the RP1 chip) or use a PCIe switch board (shared bandwidth, 5 W power limit on the connector). Use the official 27 W power supply and active cooler. Microcontrollers are out of scope (not enough memory for QUIC plus post-quantum TLS). Ship a ready-to-flash Pi image alongside the macOS app.
 - **Lease modes:** always-on (long, auto-renewing), scheduled (recurring windows), N-hours (one fixed lease), idle-time (short, renewed while idle, using HID idle time, AC power, thermal state, and unmetered network, with a sleep assertion on opt-in; the same launchd pattern as hindsight-code-brain).
@@ -480,14 +500,14 @@ Existing post-quantum coins each solve one layer. khensu.nu's chain is designed 
 
 | | QRL | Algorand | Abelian | Zcash / Monero | khensu.nu chain |
 | --- | --- | --- | --- | --- | --- |
-| Signatures | XMSS (stateful: an address can only sign a fixed number of times) | Falcon opt-in; accounts still Ed25519 | Lattice (custom) | Classical | ML-DSA-65 (FIPS 204, stateless) everywhere, including consensus |
+| Signatures | XMSS (stateful: an address can only sign a fixed number of times) | Falcon opt-in; accounts still Ed25519 | Lattice (custom) | Classical | ML-DSA-87 (FIPS 204, stateless) everywhere, including consensus |
 | Payment privacy | None | None | Yes, lattice-based | Yes, but classical: a future quantum computer could decrypt archived note data | STARK proofs (hash-based) plus ML-KEM-1024 note encryption |
 | Network privacy (who sent it, IP) | None | None | None | Partial (Dandelion++ in Monero) | Post-quantum mixnet with cover traffic |
 | History | Permanent | Permanent | Permanent | Permanent: anything broken later exposes all of history | Shielded eras deleted; only balances persist |
 | Demand | Speculative | Smart contracts | Payments | Payments | Burned for real media and messaging capacity |
 | Node hardware | Server | Server | Server | Server | Raspberry Pi 5; light clients check about 14 signatures per epoch |
 
-Where we're behind and must earn it: a new chain has no track record (QRL has run since 2018), no liquidity until the burn auction and listings, and larger transactions (ML-DSA-65 signatures are 3.3 KB and STARK proofs tens of KB, so proofs are aggregated per block and dropped with old blocks). The plan's answer is formal models, external audits of the chain and the pool, and a long public testnet before mainnet.
+Where we're behind and must earn it: a new chain has no track record (QRL has run since 2018), no liquidity until the burn auction and listings, and larger transactions (ML-DSA-87 signatures are 4.6 KB and STARK proofs tens of KB, so proofs are aggregated per block and dropped with old blocks). The plan's answer is formal models, external audits of the chain and the pool, and a long public testnet before mainnet.
 
 ## Launch readiness
 
@@ -562,21 +582,53 @@ Where we're behind and must earn it: a new chain has no track record (QRL has ru
 - **Team:** 2 iOS engineers, 2 protocol engineers (Go and Rust), 1 cryptographer, 1 zero-knowledge and chain engineer, 1 SRE, a designer, plus part-time counsel. Roughly $2.5M–$4M over 24 months including audits ($300k–$1M across MLS, chain, shielded pool and app).
 - **One release, no tiers.** Everything in this plan ships together in v1; there is no smaller "core" release first. If the schedule slips, the launch date moves, not features. Payments still switch on region by region after legal review, and CarPlay and default-app features depend on Apple approving the entitlement requests.
 
-## Repository layout
+## Repository layout (decided)
 
-- `moqom-messenger/docs/` – `THREAT-MODEL.md`, `PROTOCOL.md` (wire formats), `NODE.md`, `CONSENSUS.md`, `GOVERNANCE.md`, `KEY-TRANSPARENCY.md`, `CREDENTIALS.md`, `PUSH.md`
-- `moqom-messenger/node/` – Rust workspace: `moqom-node` binary; crates `outfox`, `mix`, `mailbox`, `sequencer`, `lease`, `consensus` (sortition, BFT, epoch headers, light verification), `measure`, `receipts`, `governance`
-- `moqom-messenger/services/` – Go: KT log, credential issuer, push gateway, MOTOM integration for fiat purchases and burn auction payouts (Go to match `moqom-pq` and `motom`)
-- `moqom-messenger/apple/` – `MessengerKit` Swift package plus the iOS and macOS apps and the macOS node app
-- `moqom-messenger/pi/` – reproducible Raspberry Pi 5 image build
-- `moqom-messenger/vectors/` – Outfox, mailbox ID, epoch header, sortition, receipts and credentials vectors, checked in Rust, Go and Swift
-- `moqom-security/` – the new suite, TreeKEM, `PrivateMessage` with the secret tree, signed credentials, and their vectors in all three languages
+Separate private repos under `elliott-wave-labs`, cloned side by side in `~/Documents/GitHub/khensu/`, made public at launch after the patent decisions:
+
+| Repo | Licence | Contents |
+| --- | --- | --- |
+| `khensu-specs` | CC BY 4.0 | This plan, `THREAT-MODEL.md`, `PROTOCOL.md` (wire formats), `NODE.md`, `CONSENSUS.md`, `GOVERNANCE.md`, `KEY-TRANSPARENCY.md`, `CREDENTIALS.md`, `PUSH.md`, `PATENTS.md`, the App ID guide, the design canvas |
+| `khensu-core` | Apache-2.0 | Rust: OpenMLS fork with the ML-KEM-1024 + ML-DSA-87 provider, khensu credentials, Outfox, mailbox IDs, consensus wire format, shielded-note formats, KhensuMemory's index engine, test vectors; UniFFI bindings built as an XCFramework |
+| `khensu-apple` | AGPL-3.0 (App Store build under a separate grant) | `MessengerKit` plus the iPhone, iPad and Mac apps, the Notification Service Extension, the Share Extension and the macOS node app (`nu.khensu.tatenan`) |
+| `khensu-tatenan` | AGPL-3.0 | The `tatenan` node binary: crates `mix`, `mailbox`, `sequencer`, `relay`, `lease`, `measure`, `receipts`; Raspberry Pi 5 image build |
+| `khensu-chain` | AGPL-3.0 | Consensus (sortition, BFT, epoch headers, light verification), token, staking and slashing, governance, shielded pool and STARK prover/verifier |
+| `khensu-services` | AGPL-3.0 | Go: key transparency log, anonymous credential issuer, push gateway, MOTOM integration for fiat purchases and burn auction payouts (Go to match `moqom-pq` and `motom`) |
+| `khensu-devnet` | AGPL-3.0 | Runs nodes, mixnet, chain and services on one machine for development and CI |
+| `khensu-site` | AGPL-3.0 | `khensu.nu` and `tatenan.khensu.nu` |
+
+## Documentation and patent assessments (decided)
+
+Every component gets two documents once it's built, written from the real code and measurements rather than the plan:
+- **A full design document** in `khensu-specs` covering purpose, architecture, data formats, algorithms, security properties and limits, performance on iPhone, Mac and Pi 5, and test coverage.
+- **A patent assessment** in `PATENTS.md` with:
+  - what is new compared with published prior art (for KhensuMemory that includes Hindsight itself, which is MIT-licensed and public);
+  - a prior-art search summary;
+  - draft claim themes;
+  - a recommendation to file, to publish defensively, or to do neither.
+  Patent counsel makes the filing decision.
+
+Components covered:
+- KhensuMemory, the on-device Hindsight-style memory engine;
+- the Outfox extensions;
+- rotating signatures with delayed key reveal;
+- signed manifests for group calls;
+- the expiring-era shielded pool;
+- burn and mint driven by work receipts;
+- reputation-and-stake sortition with loop measurement;
+- lease-based scheduling for idle-time and N-hour nodes;
+- anonymous push wake capabilities;
+- identity devices with the 72-hour removal window;
+- out-of-band tree delivery for large post-quantum groups;
+- the panic wipe.
+
+Timing rule: publishing the code, the arXiv paper or a detailed public description counts as disclosure. That starts the 12-month US grace period and ends patentability in most other countries. So each assessment is done, and any filing made, before its repo goes public or the paper is submitted. Repos stay private until then.
 
 ## Milestones
 
 1. **Specs and threat model.** The adversaries covered (a global passive observer, malicious nodes up to a threshold, a captured committee minority, a malicious log, a stolen founder share, a seized device, a quantum adversary harvesting now to decrypt later) and the ones explicitly out of scope (endpoint malware, a global active adversary for live calls). Wire formats frozen before code.
-2. **MLS hardening in `moqom-security`:** the ML-KEM-1024 + ML-DSA-65 suite with verified ML-KEM implementations, the ratchet tree (TreeKEM), PrivateMessage and secret tree, signed credentials, Update policy. Vectors in three languages plus the public mlswg tree and message vectors, Tamarin model.
-3. **Network core:** `moqom-node` with mailbox, sequencer and relay roles, leases and draining; the consensus layer (sortition, BFT, epoch headers, measurement); founder key ceremony and genesis; a testnet with at least 3 outside operators, including Pi 5 nodes.
+2. **MLS in `khensu-core`:** the OpenMLS fork with the ML-KEM-1024 + ML-DSA-87 suite on libcrux, the ratchet tree (TreeKEM), PrivateMessage and secret tree, khensu credentials, rotating signature keys with delayed reveal, Update policy, out-of-band tree delivery. The public mlswg vectors plus our own, and the Tamarin model.
+3. **Network core:** `tatenan` with mailbox, sequencer and relay roles, leases and draining; the consensus layer (sortition, BFT, epoch headers, measurement); founder key ceremony and genesis; a testnet with at least 3 outside operators, including Pi 5 nodes.
 4. **Mixnet and anonymous credentials:** Outfox, three-layer mixing, cover traffic, the blind-signature issuer, node receipts.
 5. **Directory:** KT log with witnesses, usernames, KeyPackage publishing, lookups over the mixnet. Phone and email discovery deferred until a private contact discovery design is approved.
 6. **Apple clients:** MessengerKit, chat (1:1 and groups up to 1,000 devices), attachments, disappearing messages, safety numbers, multi-device linking by QR code, encrypted local store and backups, the push gateway integration.
@@ -587,10 +639,13 @@ Where we're behind and must earn it: a new chain has no track record (QRL has ru
 ## Decisions
 
 Decided:
-- Licence: AGPL-3.0 node and apps with a CLA, Apache-2.0 protocol libraries.
+- Licence: AGPL-3.0 node, chain, services and apps with a CLA; Apache-2.0 protocol libraries in `khensu-core`; CC BY 4.0 specs.
+- MLS: fork OpenMLS with our suite on libcrux; one Rust implementation shared by app and node.
+- Sender authentication: signatures inside the ciphertext only, signature keys rotated every 24 hours or 1,000 messages and erased, retired keys revealed to the group after 7 days (pending the Tamarin check).
+- Documentation and patents: a full design document and a patent assessment for every component once built, before anything goes public.
 - KT witnesses: the existing transparency-dev and Sigsum witness networks.
 - Groups: TreeKEM before launch, up to 1,000 devices.
-- Signatures: ML-DSA-65 only. Key exchange: pure ML-KEM-1024, no classical KEM (chosen over the hybrid recommendation, with the mitigations in Cryptographic design).
+- Signatures: ML-DSA-87 everywhere, with the category-5 MLS suite MOQOM Cloud already uses (changed from ML-DSA-65 on 9 Oct 2026). Key exchange: pure ML-KEM-1024, no classical KEM (chosen over the hybrid recommendation, with the mitigations in Cryptographic design).
 - Routing: every message, receipt and typing event goes through the mixnet; there is no instant path for chat. Calls are the one exception and use two relays run by different operators, because a mixnet's delays can't carry live audio.
 - Consensus: our own lightweight post-quantum chain; weighted sortition of a 21-member committee per epoch; only balances and stakes persist, history is pruned.
 - Token: burn and mint on our own chain; a fixed share of net proceeds is revenue, the rest buys and burns the token for capacity; the protocol mints operator rewards from work receipts; burn auction for launch liquidity. Name, supply and genesis allocation set with counsel.
@@ -600,7 +655,7 @@ Decided:
 - Founder safeguards: 3-of-5 ML-DSA threshold key; staged powers; step-down signed by the founder once thresholds have held for 90 days.
 - Hardware: Raspberry Pi 5 with NVMe minimum; Pi 4 for mixing only.
 - Mix packets: Outfox with our extensions, published as an arXiv paper after a patent decision.
-- Names: the app is **khensu.nu** (website `khensu.nu`, already owned), iOS and macOS bundle ID `nu.khensu.ptah`, node network and operator site at `tatenan.khensu.nu`; code name `moqom-messenger`. Addresses use the bech32m prefix `khensu`; permanent handles are `name.khensu.nu` (resolvable in ENS through a DNSSEC import of `khensu.nu`). Trademark and App Store name searches for "khensu" still to run.
+- Names: the app is **khensu.nu** (website `khensu.nu`, already owned), iOS and macOS bundle ID `nu.khensu.ptah`, node network and operator site at `tatenan.khensu.nu`; repos `khensu-*` (formerly code-named `moqom-messenger`). Addresses use the bech32m prefix `khensu`; permanent handles are `name.khensu.nu` (resolvable in ENS through a DNSSEC import of `khensu.nu`). Trademark and App Store name searches for "khensu" still to run.
 - Groups: capped at 1,000 devices; no larger groups.
 - Minimum OS: iOS 26 and macOS 26; iOS 27 features used when available.
 - Search and memory: a Hindsight-style engine running entirely on the device with Foundation Models; the Private Cloud Compute entitlement is never requested.

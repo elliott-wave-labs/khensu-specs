@@ -60,7 +60,7 @@ todos:
     content: "Apple features: Wi-Fi Aware offline nearby relay of sealed packets, tap-to-add/verify (Tap to Share, NFC), Push to Talk over the mixnet, CarPlay calls only (no Siri, so no CarPlay messaging), default messaging/calling app, Communication Notifications in Previews mode, App Attest feeding blind-token issuance, on-device voice (SpeechAnalyzer dictation, AVSpeechSynthesizer read-aloud), Writing Tools off and third-party keyboards blocked in the composer, Declared Age Range teen defaults, StoreKit external purchases; file Apple entitlement requests early"
     status: pending
   - id: apple-client
-    content: "khensu-apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
+    content: "khensu-apple: khensu.nu app (bundle nu.khensu.ptah), SwiftUI on Liquid Glass with a monochrome, spacey identity (connected-dot networks, crescent icon, moon-phase timers) and a Telegram-like layout (folder tabs, swipe actions, Chats/Feed/Calls/Search/Settings tabs), MessengerKit and iOS/macOS apps: Face ID/Touch ID access policies per key, app lock, CompleteUnlessOpen incoming queue, passcode-only coercion setting; 1:1 and group chat, attachments, disappearing messages, safety numbers, QR device linking, encrypted store and backups, wake-only push gateway"
     status: pending
   - id: calls
     content: "Integrate MoqomKit calls over two-hop tatenan relays with SFrame keys from the chat's MLS group, signed frame manifests in group calls (1 s video, 5 s audio), stealth call profile (constant-rate padded media, setup over the mixnet, padded trunks, edge blurring, WebTransport on 443), no direct internet paths"
@@ -104,6 +104,39 @@ todos:
   - id: audit-launch
     content: Fuzzing for all new decoders, release hashes in the transparency log, hardware keys on Apple/GitHub accounts, external audit, bug bounty, launch
     status: pending
+  - id: webe-naming
+    content: "webE naming: NameRecord in the key transparency log, PIR resolution with proofs, webe:// and https://name.khensu.nu URLs, publish keys (WEBE.md 3)"
+    status: pending
+  - id: webe-objects
+    content: "webE objects and storage: 64 KiB content-addressed chunks, chunk lists, signed site manifests, erasure coding across 6+ operators on channel_cache nodes, owner-node pinning, anonymous publish quotas, illegal-content hash list (WEBE.md 4, 6)"
+    status: pending
+  - id: webe-fetch
+    content: "Two-relay stealth fetch in khensu-tatenan and khensu-core: ML-KEM-1024 sealed requests to the exit relay, padded trunks, size-bucketed responses, small objects through the ticks (WEBE.md 5, design/stealth-relay.md rule 8)"
+    status: pending
+  - id: stealth-relay
+    content: "khensu relay evolved from MOQOM's Apache-2.0 crates, in khensu repos only: constant-rate padded media, padded trunks, edge blurring, WebTransport h3 on 443, relay-only with local-link direct (design/stealth-relay.md)"
+    status: pending
+  - id: webe-sites
+    content: "webE sites: in-app viewer (WKWebView with a webe:// scheme handler), site publishing from the app and the Mac node, strict site policy (WEBE.md 7, 11)"
+    status: pending
+  - id: feed
+    content: "Feed tab: personas posting over the stealth ticks, FeedEntry hash chains, live feed tracks, on-device timelines and ranking, anonymous tallies for likes/reposts/views, label proposals, subscribable label lists, bridging consensus labels, threshold pledges (WEBE.md 8, 10; PLAN Public square)"
+    status: pending
+  - id: forums
+    content: "Public forums in the Feed tab: ForumManifest, moderator label lists applied on devices with an unfiltered view, private forums as encrypted groups (WEBE.md 9)"
+    status: pending
+  - id: mesh
+    content: "Offline mesh: Wi-Fi Aware and Bluetooth store-and-forward of sealed packets and public feed gossip, constant tick on the mesh, automatic when no node is reachable (OPEN-QUESTIONS 2d)"
+    status: pending
+  - id: nu-media
+    content: "nu-media: learned image codec (integer networks, progressive, fidelity first) and hybrid video codec (hardware CBR base, Neural Engine enhancement), tuned for iPhone 18 Pro on iOS 27 and working on every iOS 26 device"
+    status: pending
+  - id: webe-browser
+    content: "Chromium extension with a local khensu daemon over native messaging, then a Chromium patch with a native webE network service and stealth defences (WEBE.md 11.2)"
+    status: pending
+  - id: webe-ietf
+    content: "Internet-Drafts after patent assessment: Outfox ML-KEM packet format, stealth MOQ profile, transparency-log naming, signed content-addressed sites and feeds over MOQ, two-relay stealth fetch (WEBE.md 12)"
+    status: pending
 isProject: false
 ---
 
@@ -126,8 +159,8 @@ isProject: false
 - [Typing indicators and presence](#typing-indicators-and-presence)
 - [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
 - [Stealth](#stealth-decided)
-- [Public square](#public-square-proposed)
-- [webE](#webe-proposed)
+- [Public square](#public-square-day-one)
+- [webE](#webe-day-one)
 - [nu-media](#nu-media-proposed)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
@@ -380,7 +413,7 @@ Panic wipe: iOS doesn't let third-party apps read side-button or volume-button p
   - The app icon is a thin white ring with a second, unfilled arc just inside its left half, nearly a half circle of the same size, meeting the ring at top and bottom centre, so it reads as two circles forming a crescent line. The dark tile is the master and the default icon; light, tinted and clear styles derive from it.
   - Moon phases show disappearing-message timers (the moon wanes as a message nears expiry).
   - Typography: SF Pro for the interface, with a display face for the wordmark only.
-- **Telegram-like layout.** Chat folders as tabs at the top of the chat list (All, Personal, Groups, Channels, Unread, custom folders); swipe to pin, mute, archive or mark read; replies, reactions, threads, polls, stickers and voice and video notes in the chat view. Bottom tabs: Chats, Calls, Search ("Ask khensu"), Settings.
+- **Telegram-like layout.** Chat folders as tabs at the top of the chat list (All, Personal, Groups, Channels, Unread, custom folders); swipe to pin, mute, archive or mark read; replies, reactions, threads, polls, stickers and voice and video notes in the chat view. Bottom tabs: Chats, Feed (the public square and forums on webE), Calls, Search ("Ask khensu"), Settings.
 - **Visible but quiet security.** A white check on verified contacts, the four-word check phrase on profiles, and a Face ID unlock screen styled like the lock screen. There's no crypto jargon in the main interface; details live under "Encryption" on each chat.
 - **Node app (`nu.khensu.tatenan`).** A macOS menu-bar app in the same palette, showing node status, schedule and earnings.
 
@@ -472,11 +505,11 @@ Stealth on the network is a foundation of the system, not a setting: there is no
   - no direct phone-to-phone paths over the internet; direct links only on Wi-Fi Aware or the same Wi-Fi network;
   - group calls fan out through relays acting as MOQ forwarders.
   Target under 150 ms glass to glass within a region. What remains is long-term edge correlation by a global observer, stated in the app (THREAT-MODEL 5.2).
-- **Network size.** Absolute cover is the largest load on the network: roughly 100–150 million daily users on 50,000 Pis, and millions of Pi-equivalents (or hundreds of thousands of servers) at 10 billion, grown by operator rewards as usage grows (`OPEN-QUESTIONS.md` 10).
+- **Network size and who runs it.** Absolute cover is the largest load on the network, and the limit is upload bandwidth, not CPU. Anyone with a data connection can run a node on a Pi, laptop or desktop (always-on or idle-time, giving 50% of spare capacity) and earns from token burning in proportion to verified relay work. Estimates (`OPEN-QUESTIONS.md` 10): 50,000 gigabit Pis carry about 85 million daily users; 10 billion needs about 1.75 Pbit/s at peak, which is met if about 1.5–3% of users run a node on ordinary home broadband, or by about 6 million gigabit Pis, or a mix. iPhones can't relay in the background, so phones aren't nodes.
 
-## Public square (proposed)
+## Public square (day one)
 
-A public broadcast network, like Twitter was, that runs itself on the node network: free speech, private reading and posting, moderation on each person's device, and open consensus labels for facts, opinion, fraud and safety. Built to help people organise around causes, actions and interests, and to keep working when a government shuts the internet down. Open questions are in `OPEN-QUESTIONS.md` section G.
+The Feed tab in the khensu.nu app, with public forums inside it, running on webE (`WEBE.md` sections 8–10) and built in tandem with the messenger. A public broadcast network, like Twitter or Mastodon, that runs itself on the node network: free speech, private reading and posting, moderation on each person's device, and open consensus labels for facts, opinion, fraud and safety. Built to help people organise around causes, actions and interests, and to keep working when a government shuts the internet down. Open questions are in `OPEN-QUESTIONS.md` section G.
 
 - **Posting.** Posts come from personas (hidden profiles or public handles), are signed with the persona's ML-DSA-87 key, and ride the stealth ticks into the mixnet like any message. Nobody, including us, can link a persona to a person unless its owner does. Posts are public, content-addressed, erasure-coded and cached across `channel_cache` nodes; popular posts are replicated more widely. Images use nu-media.
 - **Reading.** Following, timelines, replies and search fetch through the mixnet inside the ticks, with PIR for indexes, so no node learns who reads what. The home feed is ranked on the device by the user's own rules and on-device models. There is no central ranking algorithm and no ad targeting, because there is nothing about readers to target with.
@@ -490,9 +523,9 @@ A public broadcast network, like Twitter was, that runs itself on the node netwo
 - **Runs itself.** No company servers: nodes cache, count and serve, paid by burn and mint; label rules and the illegal-content list change only through the governance process.
 - **Patent candidates:** stealth-tick posting with PIR reading, anonymous Sybil-resistant bridging labels computed on every device, threshold pledges with anonymous tallies, mesh gossip of a public feed under shutdown.
 
-## webE (proposed)
+## webE (day one)
 
-**webE** (home: `khensu.nu`) is the internet web3 was supposed to be: content delivery, websites and live media run by the people on the node network, with no CDN, no DNS and no metered bandwidth. MOQOM stays a company; khensu.nu is the messenger and webE the network's open web. Open questions are in `OPEN-QUESTIONS.md` section H.
+**webE** (home: `khensu.nu`) is the internet web3 was supposed to be: content delivery, websites, public feeds, forums and live media run by the people on the node network, with its own naming instead of DNS, no CDN and no metered bandwidth. It is a new set of open standards (`WEBE.md`, draft 0.1, to become Internet-Drafts). The khensu.nu app is the first webE application: primarily a messenger, with a Feed tab, public forums and site hosting from day one. Everything is built on webE from the start, and webE is built in tandem with the app. MOQOM stays a company. Open questions are in `OPEN-QUESTIONS.md` section H.
 
 - **Nodes are relays, devices are smart.** Every tatenan node runs a MOQ relay alongside its mix, mailbox and cache roles. The relay is an evolution of MOQOM built only in khensu repos from MOQOM's Apache-2.0 crates (decided); MOQOM stays a separate product aimed at replacing Agora or being sold to it. Relays only forward and cache; encoding, encryption, ranking, moderation and rendering happen on devices.
 - **Names without name servers.** Sites and streams are named by `name.khensu.nu` handles resolved from the key transparency log over the mixnet (PIR), and by content addresses. No DNS lookup, no registrar, no certificate authority: the handle's log entry carries the site's ML-DSA-87 key and current root hash.
@@ -762,7 +795,8 @@ Decided:
 - Signatures: ML-DSA-87 everywhere, with the category-5 MLS suite MOQOM Cloud already uses (changed from ML-DSA-65 on 9 Oct 2026). Key exchange: pure ML-KEM-1024, no classical KEM (chosen over the hybrid recommendation, with the mitigations in Cryptographic design).
 - Routing: every message, receipt and typing event goes through the mixnet; there is no instant path for chat. Calls are the one exception and use two relays run by different operators under the stealth call profile, because a mixnet's delays can't carry live audio.
 - Stealth: a foundation, not a setting. 2 s fixed bursts on every network and power state, nu-media images inside the ticks, stealth paths for originals and video, hardened calls (see Stealth).
-- Consensus: our own lightweight post-quantum chain; weighted sortition of a 21-member committee per epoch; only balances and stakes persist, history is pruned.
+- Blockchain only for payments: webE, the node network and content delivery don't run on a blockchain. A 21-member committee drawn by weighted sortition each epoch agrees the node list, parameters and work-receipt totals, with no permanent ledger. Our own lightweight post-quantum chain is used only for payments: the token, burn and mint, balances, stakes and the shielded pool; history is pruned.
+- Node earnings: everyone who runs a node (Pi, laptop, desktop or server; always-on or idle-time) earns from token burning, in proportion to verified relay, storage and serving work. No mining and no proof of work.
 - Token: burn and mint on our own chain; a fixed share of net proceeds is revenue, the rest buys and burns the token for capacity; the protocol mints operator rewards from work receipts; burn auction for launch liquidity. Name, supply and genesis allocation set with counsel.
 - Sybil resistance: reputation multiplied by staked tokens, with slashing.
 - Payments: non-custodial shielded pool with STARK proofs and ML-KEM-1024 note encryption, expiring eras, transfers over the mixnet; ships in v1 like everything else, switched on region by region after legal review.

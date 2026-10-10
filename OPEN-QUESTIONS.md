@@ -174,7 +174,27 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
   - **So 10B DAU needs about 400,000 fully used gigabit Pis,** or roughly 1 million with headroom, or about 40,000–100,000 server-class nodes at 10–25 Gbit/s.
   - **50,000 Pis carry roughly 1 billion DAU** at full load with no headroom.
   - **Home connections often upload at 20–50 Mbit/s,** a small fraction of gigabit, so a home Pi carries far less.
-  - **Update after 2, 2a, 2b and 2c:** absolute cover with a 2 s tick, a 4-packet burst and a matching constant downstream is about 8 times the load above: roughly 3 million fully used Pis for 10B (about 8 million with headroom), or about 300,000–800,000 server-class nodes. 50,000 Pis carry roughly 100–150 million DAU. Levers: burst size (2c), hop count, packet header size, and faster nodes. To be revisited once 2c is decided.
+  - **Revised 9 Oct 2026 for absolute cover** (2 s tick, 4-packet burst, matching downstream; all estimates):
+    - **Per phone with the app open:** about 20 KB/s up and 20 KB/s down; each packet crosses 5 hops, so the network forwards about 1.6 Mbit/s in each direction per open phone, plus about 50% for node-to-node cover, loops and replication: about 2.5 Mbit/s of node capacity per open phone.
+    - **Concurrency:** 10B DAU with 1 hour of app-open time a day is about 420 million phones open on average and about 700 million at peak.
+    - **Total at 10B:** about 1 Pbit/s average and 1.75 Pbit/s at peak, in each direction. The limit is upload bandwidth, not CPU: a Pi 5 can process far more packets than a gigabit line carries.
+    - **Capacity counts per internet connection, not per device:** five idle laptops in one home share one upload link.
+
+    | Contributor (50% of spare capacity) | Share it gives | Open phones carried at peak | DAU carried (1 h/day) | Needed for 10B |
+    | --- | --- | --- | --- | --- |
+    | Pi 5 on gigabit fiber, always on | 500 Mbit/s | about 200 | about 1,700 | about 6 million |
+    | Laptop or desktop on gigabit fiber, idle 12 h a day | 500 Mbit/s, half the day | about 100 averaged | about 850 | about 12 million |
+    | Typical home broadband (40 Mbit/s up), always on | 20 Mbit/s | about 8 | about 70 | about 145 million |
+    | Typical home broadband, idle 12 h a day | 20 Mbit/s, half the day | about 4 averaged | about 35 | about 290 million |
+    | Server on 10 Gbit/s at 70% | 7 Gbit/s | about 2,800 | about 24,000 | about 420,000 |
+
+    - **The network carries itself if about 1.5–3% of users run a node** on ordinary home broadband (always-on or idle-time), or about 0.06% run a gigabit Pi. A mix of all contributor types is expected.
+    - **50,000 gigabit Pis at a 50% share carry about 85 million DAU** (about 170 million at full use): a strong launch, not 10B.
+    - **Phones:** iOS can't run a relay in the background, so iPhones aren't nodes (they can carry mesh traffic while the app is open). Android phones on Wi-Fi while charging could be idle-time nodes later. Cellular connections are never used for relaying.
+    - **Reachability:** home nodes behind carrier-grade NAT can't accept inbound connections; they take roles that only dial out (mailbox replica, cache, cover) or use IPv6. Perhaps 50–70% of home connections can mix; to be measured.
+  - **Earnings (illustration only, not a promise; pricing-token-numbers to-do and counsel):** operators are paid in proportion to verified relay work (receipts), not for hashing or staking. If 5% of daily users paid $4.99 a month and half of net proceeds went to operators, that is about $0.12 per DAU per month to operators: about $200 a month for a gigabit Pi at a 50% share (it uses about $1 of electricity), about $8 a month for a typical home connection. Real numbers depend on pricing, the token and how many nodes compete for the work. Earnings statements about a token are legally sensitive; final wording with counsel.
+  - **Unlike a blockchain:** nodes earn for useful work (forwarding, storing, serving), proven by unlinkable receipts. There is no mining, no proof of work, no energy race, and no global ledger of everyone's activity. webE and the node network don't run on a blockchain; the chain is used only for payments (token, burn and mint, balances, stakes, shielded pool), and every node earns from token burning.
+  - **Levers:** burst size (2c), hop count, packet header size, and the share of capacity each node contributes.
 - **Encryption doesn't depend on node count:** content is end-to-end encrypted and post-quantum regardless.
 - **Untraceability does:**
   - Messages are unlinkable against single nodes, colluding nodes below the threshold, and a global passive observer, as long as cover traffic runs and the network is large.
@@ -264,6 +284,9 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 53. **Video codec spike.** Measure the hybrid design on iPhone 18 Pro (iOS 27) and an iOS 26 baseline device: quality at each stealth call tier, Neural Engine time per frame, battery, glass-to-glass latency. **Open.**
 54. **IETF plan.** Which drafts first: Outfox-PQ packet format, stealth MOQ profile, transparency-log naming, signed site bundles. **Open.**
 55. **New repos.** `khensu-browser` (extension, daemon, Chromium patch) and `nu-media` (codec, Apache-2.0 like `khensu-core`?). **Open.**
+
+56. **Gateways.** Allow operators to run non-stealthy gateways that serve public webE content to ordinary browsers under `*.khensu.nu` (with a banner), or none at all. Rec: allow, off by default for operators. **Open.**
+57. **Publish quotas.** Anonymous storage quota per persona per epoch, and how stake raises it. Rec: 100 MB per persona per month free, more with stake. **Open.**
 
 ## F. Housekeeping
 

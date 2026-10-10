@@ -59,13 +59,22 @@ Phones' built-in satellite features only reach the networks Apple or the carrier
 ## 6. Hardware: the khensu shell
 
 - **Shape.** A curved, organic shell that fills the back of the phone up to the height of the camera bump, so the back becomes flat and the shell looks like part of the phone. Phones without a camera bump get a full back cover. Held by a MagSafe-compatible magnet ring plus a micro-suction layer.
-- **Volume and battery (estimate).** On a Pro-size iPhone the area around the bump at about 3.5 mm thick is roughly 25–30 cm³, enough for about 8–10 Wh of thin lithium-polymer cells (about 2,000–2,600 mAh) beside the board and radios. A large-capacity version is thicker.
-- **Power.** The shell runs on its own battery. MagSafe on iPhone only receives power, so the fallback to the phone's battery uses USB-C (iPhone 15 and later can supply about 4.5 W): the full-cover and case versions include a USB-C plug. A Qi2 pass-through coil keeps MagSafe charging of the phone through the shell.
+- **Styles and battery (from the CAD model in `hardware/shell`).** Cells fill the cavity around the MagSafe ring, the board and the antenna window, at about 0.45 Wh/cm³. Phone dimensions are placeholders until Apple's accessory drawings replace them.
+
+  | Style | Pro phone (camera plateau) | Standard phone (camera island) |
+  | --- | --- | --- |
+  | Card (Pocket-size, 56 × 86 × 5.2 mm) | 4.1 Wh, 48 g | 4.1 Wh, 48 g |
+  | Fill (below the bump) | 2.2 Wh, 3.5 mm, flush | 2.0 Wh, 3.4 mm, 0.8 mm proud |
+  | Wrap (whole back around the bump) | 2.8 Wh, 3.5 mm, flush | 4.8 Wh, 3.4 mm, 0.8 mm proud |
+  | Wrap XL (3 mm proud) | 11.4 Wh, 95 g | 17.0 Wh, 130 g |
+
+  The slim styles can't be thinner than about 3.4 mm (suction film, base, board, skin), so on phones with a lower bump they sit slightly proud of it. The board and radios draw roughly 1 W while relaying (estimate), so a slim shell relays for 2–5 hours alone and then falls back to the phone; the XL relays all day.
+- **Power.** The shell runs on its own battery. MagSafe on iPhone only receives power, so the fallback to the phone's battery uses USB-C (iPhone 15 and later can supply about 4.5 W): the fill, wrap and case versions include a USB-C plug. The shell charges from a Qi2 receiver coil on its outer face, like Apple's MagSafe battery, and charges the phone over USB-C. The card has no plug and covers the phone's MagSafe coil, so the phone charges with the card removed.
 - **Radios.** Bluetooth LE and Wi-Fi (to the phone and nearby devices), Wi-Fi HaLow (neighbourhood), optional satellite in the large version.
 - **Board.** A low-power system-on-module with the radios; full node software (tatenan) in a reduced profile.
 - **Materials and versions.** Slim, large-capacity, titanium, shockproof case and dive case. Titanium blocks radio and wireless charging, so the titanium version needs antenna windows (like the bands on the phone itself) and a non-metal area over the coil. The dive case protects the phone; radio doesn't travel underwater, so the mesh works only at the surface.
 - **Per-model shells.** One core module (board, radios, battery) with model-specific shells, because every camera bump is different.
-- **Heat.** Radios and battery sit against the phone; the shell throttles relaying when the phone is warm.
+- **Heat.** About 1 W spread over the whole back is a few degrees of rise; charging is the main heat source. A graphite sheet spreads heat from the board and coil across the outer skin (aluminium or titanium), and the shell throttles relaying above a 41 °C skin temperature or when the phone reports thermal pressure. It never charges the phone and itself at full rate at once.
 
 ## 7. Not a carrier
 

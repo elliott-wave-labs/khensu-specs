@@ -1,0 +1,213 @@
+{
+  "build": {
+    "wall": 1.0,
+    "skin": 0.7,
+    "base": 0.6,
+    "suction": 0.3,
+    "gap": 0.6,
+    "edge_inset": 0.4,
+    "magnet_od": 56.0,
+    "magnet_id": 46.0,
+    "magnet_t": 0.5,
+    "coil_d": 44.0,
+    "coil_t": 0.8,
+    "pcb_l": 34.0,
+    "pcb_w": 14.0,
+    "pcb_t": 1.6,
+    "antenna_l": 40.0,
+    "antenna_w": 8.0,
+    "usb_w": 9.2,
+    "usb_h": 3.4,
+    "wh_per_cm3": 0.45
+  },
+  "phones": [
+    {
+      "phone": {
+        "name": "pro-plateau",
+        "width": 71.9,
+        "height": 150.0,
+        "depth": 8.75,
+        "corner_r": 10.0,
+        "bump_x0": 0.0,
+        "bump_y0": 0.0,
+        "bump_w": 71.9,
+        "bump_h": 44.0,
+        "bump_r": 10.0,
+        "bump_z": 3.5,
+        "magsafe_y": -5.0
+      },
+      "styles": [
+        {
+          "style": "card",
+          "description": "Pocket-style card on MagSafe, own battery only",
+          "footprint_mm": [
+            56.0,
+            86.0
+          ],
+          "thickness_mm": 5.2,
+          "battery_cm3": 9.19,
+          "battery_wh": 4.1,
+          "housing_cm3": 4.37,
+          "usb_c_to_phone": false,
+          "magnet_ring_od_mm": 53.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 1.7,
+          "mass_g_aluminium": 48.0,
+          "mass_g_titanium": 56.0
+        },
+        {
+          "style": "fill",
+          "description": "Fills the space below the camera bump, flush with it",
+          "footprint_mm": [
+            65.9,
+            101.4
+          ],
+          "thickness_mm": 3.5,
+          "battery_cm3": 4.92,
+          "battery_wh": 2.2,
+          "housing_cm3": 5.32,
+          "usb_c_to_phone": true,
+          "magnet_ring_od_mm": 56.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 0.0,
+          "mass_g_aluminium": 43.0,
+          "mass_g_titanium": 52.0
+        },
+        {
+          "style": "wrap",
+          "description": "Whole back around the camera bump, flush with it",
+          "footprint_mm": [
+            71.1,
+            105.0
+          ],
+          "thickness_mm": 3.5,
+          "battery_cm3": 6.26,
+          "battery_wh": 2.8,
+          "housing_cm3": 5.91,
+          "usb_c_to_phone": true,
+          "magnet_ring_od_mm": 56.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 0.0,
+          "mass_g_aluminium": 49.0,
+          "mass_g_titanium": 59.0
+        },
+        {
+          "style": "wrap-xl",
+          "description": "Large-capacity wrap, 3 mm proud of the bump",
+          "footprint_mm": [
+            71.1,
+            105.0
+          ],
+          "thickness_mm": 6.5,
+          "battery_cm3": 25.34,
+          "battery_wh": 11.4,
+          "housing_cm3": 6.93,
+          "usb_c_to_phone": true,
+          "magnet_ring_od_mm": 56.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 3.0,
+          "mass_g_aluminium": 95.0,
+          "mass_g_titanium": 107.0
+        }
+      ]
+    },
+    {
+      "phone": {
+        "name": "island",
+        "width": 71.5,
+        "height": 147.6,
+        "depth": 7.8,
+        "corner_r": 10.0,
+        "bump_x0": 4.5,
+        "bump_y0": 4.5,
+        "bump_w": 38.0,
+        "bump_h": 38.0,
+        "bump_r": 8.0,
+        "bump_z": 2.6,
+        "magsafe_y": 0.0
+      },
+      "styles": [
+        {
+          "style": "card",
+          "description": "Pocket-style card on MagSafe, own battery only",
+          "footprint_mm": [
+            56.0,
+            86.0
+          ],
+          "thickness_mm": 5.2,
+          "battery_cm3": 9.17,
+          "battery_wh": 4.1,
+          "housing_cm3": 4.37,
+          "usb_c_to_phone": false,
+          "magnet_ring_od_mm": 53.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 2.6,
+          "mass_g_aluminium": 48.0,
+          "mass_g_titanium": 56.0
+        },
+        {
+          "style": "fill",
+          "description": "Fills the space below the camera bump, flush with it",
+          "footprint_mm": [
+            65.5,
+            100.5
+          ],
+          "thickness_mm": 3.4,
+          "battery_cm3": 4.5,
+          "battery_wh": 2.0,
+          "housing_cm3": 5.21,
+          "usb_c_to_phone": true,
+          "magnet_ring_od_mm": 56.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 0.8,
+          "mass_g_aluminium": 42.0,
+          "mass_g_titanium": 51.0
+        },
+        {
+          "style": "wrap",
+          "description": "Whole back around the camera bump, flush with it",
+          "footprint_mm": [
+            70.7,
+            146.8
+          ],
+          "thickness_mm": 3.4,
+          "battery_cm3": 10.62,
+          "battery_wh": 4.8,
+          "housing_cm3": 6.98,
+          "usb_c_to_phone": true,
+          "magnet_ring_od_mm": 56.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 0.8,
+          "mass_g_aluminium": 65.0,
+          "mass_g_titanium": 77.0
+        },
+        {
+          "style": "wrap-xl",
+          "description": "Large-capacity wrap, 3 mm proud of the bump",
+          "footprint_mm": [
+            70.7,
+            146.8
+          ],
+          "thickness_mm": 6.4,
+          "battery_cm3": 37.72,
+          "battery_wh": 17.0,
+          "housing_cm3": 8.22,
+          "usb_c_to_phone": true,
+          "magnet_ring_od_mm": 56.0,
+          "interference_mm3": 0.0,
+          "outer_qi2_coil": true,
+          "proud_of_bump_mm": 3.8,
+          "mass_g_aluminium": 130.0,
+          "mass_g_titanium": 144.0
+        }
+      ]
+    }
+  ]
+}

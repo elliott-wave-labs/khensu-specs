@@ -162,6 +162,7 @@ isProject: false
 - [Public square](#public-square-day-one)
 - [webE](#webe-day-one)
 - [Places](#places-proposed)
+- [Portal project and hardware](#portal-project-and-hardware-proposed)
 - [nu-media](#nu-media-proposed)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
@@ -554,6 +555,17 @@ A live world on webE: people broadcast 360° and spatial video from where they a
 - **Safety.** Live streams use the same on-device moderation, label lists and consensus labels as the Feed, plus fast reporting, delayed public listing of new broadcasters' streams, and the illegal-content rules.
 - **Earnings.** Relays carrying popular broadcasts earn from token burning like any node work; tipping and paid tickets can use the shielded pool where payments are switched on.
 - **Patent candidates:** listed in `PATENTS.md` (Places). The disclosure rule applies before any partner pitch or public demo: file first, then talk.
+
+## Portal project and hardware (proposed)
+
+A Kickstarter that funds public portals around the world and puts nodes in backers' homes and pockets. Open questions are in `OPEN-QUESTIONS.md` section J.
+
+- **Portals.** Weatherproof, vandal-resistant boxes with a 360° camera and a screen, installed with site hosts (cafés, venues, plazas, community spaces) around the world. Each portal is a live Places broadcast and a window into other portals: stand in front of one and see and talk to a place on the other side of the planet. Each portal is also an always-on node. On-device face blurring for passers-by, a visible live indicator, and host permission at every site.
+- **Home node.** A Raspberry Pi in a designed chassis (Compute Module 5 on our own carrier board, or a Pi 5), with Ethernet, Wi-Fi and a long-range mesh radio. Runs tatenan always-on, joins the offline mesh, earns from token burning like any node, and doubles as the stealth path for the owner's attachments. Sold through the Kickstarter and afterwards.
+- **Mesh clip.** A small battery-powered radio that snaps magnetically onto the back of an iPhone (MagSafe-compatible magnet ring, no charging, so no MFi needed for the attachment). The phone talks to it over Bluetooth or Wi-Fi Aware; it carries sealed packets over the long-range mesh radio when there's no internet, extending the offline mesh from about 100 m to about 1 km per hop. A Pi 5 is too big and too power-hungry for this; the clip uses a low-power board (a Pi Zero 2 W class board or a microcontroller with the radio). It relays mesh traffic but isn't an earning node.
+- **Mesh radio.** Recommendation: Wi-Fi HaLow (802.11ah, sub-GHz) in both the home node and the clip: about 1 km range and megabit speeds, enough for the 10 KB packets and nu-media previews. LoRa reaches farther but carries only a few kbit/s with duty-cycle limits (1% in the EU), too little for ML-DSA-87-signed messages. Pre-certified radio modules keep FCC and CE certification manageable.
+- **The campaign sells hardware, not income.** Kickstarter rules forbid offering financial returns, and marketing a device by what it will earn risks it being treated as a security (the SEC's 2025 case against Helium's Nova Labs was over hotspot earnings claims). Rewards are portals, home nodes and clips; node earnings are described only factually, with counsel, outside the campaign rewards.
+- **Patent candidates:** a magnetically attached phone mesh radio bridging a stealth mixnet; public 360° portal pairs on a stealth network. File before the campaign goes live, because the campaign page is public disclosure.
 
 ## nu-media (proposed)
 

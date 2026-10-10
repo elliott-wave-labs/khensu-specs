@@ -298,6 +298,16 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 63. **Bystander defaults.** Face blurring on by default outside opted-in venues (rec), and home-location warnings. **Open.**
 64. **Insta360 X6 specifics.** Confirm the camera's capture formats, SDK live-streaming support and spatial or depth output before designing the ingest. **Open.**
 
+## J. Portal project and hardware (proposed 9 Oct 2026; design in `PLAN.md`)
+
+65. **Mesh radio.** Wi-Fi HaLow in the home node and the clip (rec), LoRa, or both. **Open.**
+66. **Home node board.** Compute Module 5 on our own carrier (rec: smaller, designed for the chassis and radio) or a stock Pi 5 in a case. **Open.**
+67. **Clip board and battery.** Pi Zero 2 W class or a microcontroller with the radio (rec: microcontroller, for days of battery); target size and battery life. **Open.**
+68. **Kickstarter timing.** After the patent filings (58) and a working devnet demo of portals and the mesh; campaign goal, reward tiers and delivery dates. **Open.**
+69. **Portal sites.** Hosting agreements, power and connectivity, permits, insurance, vandalism, and filming-in-public law per country (stricter in the EU). Rec: start with partner venues, not public streets. **Open.**
+70. **Hardware company and repo.** Which entity sells hardware (MOQOM, a khensu entity or a new one), and a `khensu-hardware` repo for boards, enclosures and firmware. **Open.**
+71. **Certification.** FCC, CE, UKCA and others per market; use pre-certified radio modules. **Open.**
+
 ## F. Housekeeping
 
 37. **`PROTOCOL.md` sections 13 and 14** say "frozen in `PAYMENTS.md`" and "each frozen in its own spec"; those files don't exist yet. Reword to "to be written". **Open.**

@@ -302,7 +302,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 
 65. **Mesh radio.** Wi-Fi HaLow in the home node and the clip (rec), LoRa, or both. **Open.**
 66. **Home node board.** Compute Module 5 on our own carrier (rec: smaller, designed for the chassis and radio) or a stock Pi 5 in a case. **Open.**
-67. **Shell board and battery.** Now a full node (relay, content push, committee), so a low-power Linux system-on-module rather than a microcontroller; target battery life for a day of relaying in the slim version. **Open.**
+67. **Shell board and battery.** Now a full node (relay, content push, committee). The CAD model (`hardware/shell`) gives 2–5 Wh in the slim styles and 11–17 Wh in the XL, so a Linux system-on-module drawing about 1 W relays for only 2–5 hours alone. Rec: two chips, a low-power mesh controller always on (about 0.15 W, a day or more on a slim battery) and the Linux module only while charging or backhauled; alternative: the Linux module always on. **Open.**
 68. **Kickstarter timing.** After the patent filings (58) and a working devnet demo of portals and the mesh; campaign goal, reward tiers and delivery dates. **Open.**
 69. **Portal sites.** Hosting agreements, power and connectivity, permits, insurance, vandalism, and filming-in-public law per country (stricter in the EU). Rec: start with partner venues, not public streets. **Open.**
 70. **Hardware company and repo.** Which entity sells hardware (MOQOM, a khensu entity or a new one), and a `khensu-hardware` repo for boards, enclosures and firmware. **Open.**

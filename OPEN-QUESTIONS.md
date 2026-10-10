@@ -302,13 +302,13 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 
 65. **Mesh radio.** Wi-Fi HaLow in the home node and the clip (rec), LoRa, or both. **Open.**
 66. **Home node board.** Compute Module 5 on our own carrier (rec: smaller, designed for the chassis and radio) or a stock Pi 5 in a case. **Open.**
-67. **Shell board and battery.** Now a full node (relay, content push, committee). The CAD model (`hardware/shell`) gives 2–5 Wh in the slim styles and 11–17 Wh in the XL, so a Linux system-on-module drawing about 1 W relays for only 2–5 hours alone. Rec: two chips, a low-power mesh controller always on (about 0.15 W, a day or more on a slim battery) and the Linux module only while charging or backhauled; alternative: the Linux module always on. **Open.**
+67. **Shell board and battery.** Now a full node (relay, content push, committee). The CAD model (`hardware/shell`) gives 2–5 Wh in the slim styles and 11–17 Wh in the XL, so a Linux system-on-module drawing about 1 W relays for only 2–5 hours alone. **Decided 10 Oct 2026:** the Linux module is always on (one board, no low-power mesh controller), so the shell is a full node whenever it's attached. When its cells run out, the fill, wrap and XL styles run from the phone over USB-C (about 1 W, roughly 6–7% of a Pro iPhone's battery per hour); the card has no plug and stops.
 68. **Kickstarter timing.** After the patent filings (58) and a working devnet demo of portals and the mesh; campaign goal, reward tiers and delivery dates. **Open.**
 69. **Portal sites.** Hosting agreements, power and connectivity, permits, insurance, vandalism, and filming-in-public law per country (stricter in the EU). Rec: start with partner venues, not public streets. **Open.**
 70. **Hardware company and repo.** Which entity sells hardware (MOQOM, a khensu entity or a new one), and a `khensu-hardware` repo for boards, enclosures and firmware. **Open.**
 71. **Certification.** FCC, CE, UKCA and others per market; use pre-certified radio modules. **Open.**
 72. **Shell name.** "khensu shell" as a working name. **Open.**
-73. **Mesh tick rate.** 1 small packet every 2 s on the mesh (rec), so a HaLow cell carries about 40–120 open phones while staying stealthy. **Open.**
+73. **Mesh tick rate.** **Decided 10 Oct 2026:** 2 s on the mesh too, always: no change at low battery, on the shell's own cells or on phone power. Packets per mesh tick: 1 small packet (rec), so a HaLow cell carries about 40–120 open phones while staying stealthy; confirm with 2c.
 74. **Satellite options.** Iridium Certus in the large shell and home station, NB-NTN where operators agree, Starlink as backhaul for home nodes and portals (rec); per-country legality. **Open.**
 75. **Push without APNs.** Shell owners get messages through the shell over Bluetooth with no push gateway (rec); everyone else keeps the wake-only gateway. **Open.**
 76. **Industrial design.** Per-model shells around one core module; materials; first models to support (rec: current Pro and standard iPhones). **Open.**

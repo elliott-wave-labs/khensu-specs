@@ -425,7 +425,7 @@ export default function KhensuShell() {
           <CardHeader>Runs cool</CardHeader>
           <CardBody>
             <Text size="small" tone="secondary">
-              About 1 W spread across the back is a few degrees of rise. Charging is the real heat source, so the shell never charges itself and the phone at full rate together. A 25 µm graphite sheet spreads heat into the metal skin; relaying throttles above 41 °C skin temperature or when the phone reports thermal pressure.
+              About 1 W spread across the back is a few degrees of rise. Charging is the real heat source, so the shell never charges itself and the phone at full rate together. A 25 µm graphite sheet spreads heat into the metal skin; above 41 °C skin temperature it cuts charging first, then pauses optional work. The board stays on and the 2 s tick never changes, at any battery level.
             </Text>
           </CardBody>
         </Card>
@@ -448,7 +448,7 @@ export default function KhensuShell() {
       </Grid>
 
       <Callout tone="warning" title="Three findings from the CAD">
-        Slim shells can't go below about 3.4 mm (film, base, board, skin), so on phones with a low bump they sit up to 0.8 mm proud. A slim shell holds 2–5 Wh, not the 8–10 Wh first estimated; that's a few hours of relaying before it draws on the phone, and only the XL relays all day. The Pocket-size card fits a 53 mm magnet ring, not the full 56 mm one, and blocks the phone's MagSafe charging while attached.
+        Slim shells can't go below about 3.4 mm (film, base, board, skin), so on phones with a low bump they sit up to 0.8 mm proud. A slim shell holds 2–5 Wh, not the 8–10 Wh first estimated; with the board always on, that's a few hours on its own cells before it draws about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour); the card has no plug and stops. Only the XL runs all day on its own. The Pocket-size card fits a 53 mm magnet ring, not the full 56 mm one, and blocks the phone's MagSafe charging while attached.
       </Callout>
     </Stack>
   );

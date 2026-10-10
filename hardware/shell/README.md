@@ -52,4 +52,4 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 
 ## Heat
 
-About 1 W while relaying, spread over the back, is a few degrees of rise. Charging is the main heat source. A 25 µm graphite sheet under the skin spreads heat from the board and coil; firmware throttles relaying above a 41 °C skin temperature and never charges the phone and itself at full rate at the same time.
+About 1 W while relaying, spread over the back, is a few degrees of rise. Charging is the main heat source. A 25 µm graphite sheet under the skin spreads heat from the board and coil; above a 41 °C skin temperature firmware cuts the charging rate first, then pauses optional work (cache serving, committee duty), and never charges the phone and itself at full rate at the same time. The board is always on and the 2 s tick and cover never change, so heat is managed through charging and optional work only.

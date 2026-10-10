@@ -302,11 +302,16 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 
 65. **Mesh radio.** Wi-Fi HaLow in the home node and the clip (rec), LoRa, or both. **Open.**
 66. **Home node board.** Compute Module 5 on our own carrier (rec: smaller, designed for the chassis and radio) or a stock Pi 5 in a case. **Open.**
-67. **Clip board and battery.** Pi Zero 2 W class or a microcontroller with the radio (rec: microcontroller, for days of battery); target size and battery life. **Open.**
+67. **Shell board and battery.** Now a full node (relay, content push, committee), so a low-power Linux system-on-module rather than a microcontroller; target battery life for a day of relaying in the slim version. **Open.**
 68. **Kickstarter timing.** After the patent filings (58) and a working devnet demo of portals and the mesh; campaign goal, reward tiers and delivery dates. **Open.**
 69. **Portal sites.** Hosting agreements, power and connectivity, permits, insurance, vandalism, and filming-in-public law per country (stricter in the EU). Rec: start with partner venues, not public streets. **Open.**
 70. **Hardware company and repo.** Which entity sells hardware (MOQOM, a khensu entity or a new one), and a `khensu-hardware` repo for boards, enclosures and firmware. **Open.**
 71. **Certification.** FCC, CE, UKCA and others per market; use pre-certified radio modules. **Open.**
+72. **Shell name.** "khensu shell" as a working name. **Open.**
+73. **Mesh tick rate.** 1 small packet every 2 s on the mesh (rec), so a HaLow cell carries about 40–120 open phones while staying stealthy. **Open.**
+74. **Satellite options.** Iridium Certus in the large shell and home station, NB-NTN where operators agree, Starlink as backhaul for home nodes and portals (rec); per-country legality. **Open.**
+75. **Push without APNs.** Shell owners get messages through the shell over Bluetooth with no push gateway (rec); everyone else keeps the wake-only gateway. **Open.**
+76. **Industrial design.** Per-model shells around one core module; materials; first models to support (rec: current Pro and standard iPhones). **Open.**
 
 ## F. Housekeeping
 

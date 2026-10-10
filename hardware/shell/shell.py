@@ -78,10 +78,15 @@ class Build:
     antenna_w: float = 8.0
     usb_w: float = 9.2  # USB-C receptacle opening
     usb_h: float = 3.4
+    coil_window_d: float = 46.0  # PC window in a metal skin over the coil
+    window_margin: float = 1.0  # PC window around the antenna keep-out
     wh_per_cm3: float = 0.45  # thin pouch cells, conservative
 
 
 B = Build()
+
+
+STYLE_TITLES = {"card": "Card", "fill": "Fill", "wrap": "Wrap", "wrap-xl": "Wrap XL"}
 
 
 @dataclass
@@ -223,16 +228,35 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
             cq.Workplane("XY").center(0, inner_bb.ymin + 6).rect(B.usb_w + 4, 14).extrude(t + 2).translate((0, 0, -1))
         )
 
+    # Metal blocks radio and wireless charging: PC windows over the coil (skin only) and the antenna (skin and bottom wall).
+    bb = s.outline.val().BoundingBox()
+    win_top = inner_bb.ymin + B.antenna_w + 0.5 + B.window_margin
+    ant_window = (
+        cq.Workplane("XY")
+        .center(0, (bb.ymin - 1 + win_top) / 2)
+        .rect(min(B.antenna_l, inner_bb.xlen - 2) + 2 * B.window_margin, win_top - (bb.ymin - 1))
+        .extrude(t + 1 - stack_bottom).translate((0, 0, stack_bottom))
+    )
+    cutter = ant_window
+    if has_coil:
+        cutter = cutter.union(
+            cq.Workplane("XY").center(cx, cy).circle(B.coil_window_d / 2).extrude(B.skin + 1)
+            .translate((0, 0, t - B.skin - 0.01))
+        )
+    inserts = housing.intersect(cutter)
+    housing = housing.cut(cutter)
+
     if s.usb_c:
-        bb = s.outline.val().BoundingBox()
         port = (
             cq.Workplane("XZ").center(0, B.suction + (t - B.suction) / 2).rect(B.usb_w, min(B.usb_h, t - 1.2))
             .extrude(-6).translate((0, bb.ymin - 1, 0))
         )
         housing = housing.cut(port)
+        inserts = inserts.cut(port)
 
     parts = {
         "housing": housing,
+        "window_inserts": inserts,
         "base": base,
         "suction_film": film,
         "magnet_ring": magnets,
@@ -272,6 +296,7 @@ DENSITY = {  # g/cm3
     "al6061": 2.70,
     "ti_gr5": 4.43,
     "base": 1.45,  # 30% glass-filled PC
+    "window_inserts": 1.2,  # PC
     "battery": 2.3,  # pouch cell
     "magnet_ring": 7.5,  # NdFeB
     "coil": 4.0,  # copper and ferrite

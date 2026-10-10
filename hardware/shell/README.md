@@ -3,8 +3,11 @@
 Parametric CadQuery model of the khensu shell, the mesh node that attaches to the back of a phone. See `design/mesh.md` section 6 for what it does.
 
 ```sh
-uv run python shell.py
+uv run python shell.py      # solids: STEP and STL
+uv run python drawings.py   # A3 production drawings: AutoCAD DXF and one PDF
 ```
+
+The full product specification (variants, materials, electrical, radios, thermal, compliance, test plan, open items) is in `SPEC.md`. Drawings are in `drawings/`: an assembly sheet (-100) and a housing detail sheet (-101) per style and phone, and a case sheet (-201) per phone, all in `drawings/khensu-shell-drawings.pdf`.
 
 This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<style>/`, and `out/summary.json` with footprint, thickness, battery volume and Wh, mass in aluminium and titanium, and an interference check. The script fails if any part overlaps another, any solid is invalid, or a style is too thin for its cells.
 
@@ -24,7 +27,8 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 
 | File | Part | Suggested process |
 | --- | --- | --- |
-| `housing` | Outer skin and side walls (1.0 mm walls, 0.7 mm skin), USB-C opening | CNC 6061-T6 or 7075 aluminium, or titanium Grade 5 |
+| `housing` | Outer skin and side walls (1.0 mm walls, 0.7 mm skin), USB-C opening, window cut-outs | CNC 6061-T6 or 7075 aluminium, or titanium Grade 5 |
+| `window_inserts` | PC windows over the coil and along the bottom edge (antennas) | Insert-moulded or bonded PC, flush to the skin |
 | `base` | Phone-side plate (0.6 mm) that closes the cavity | Injection-moulded or CNC 30% glass-filled PC |
 | `suction_film` | 0.3 mm micro-suction layer | Die-cut nano-suction PU film |
 | `magnet_ring` | MagSafe-compatible ring (56/46 mm, 0.5 mm) | Bought-in NdFeB segment ring |

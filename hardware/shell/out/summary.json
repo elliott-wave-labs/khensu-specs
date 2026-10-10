@@ -18,6 +18,8 @@
     "antenna_w": 8.0,
     "usb_w": 9.2,
     "usb_h": 3.4,
+    "coil_window_d": 46.0,
+    "window_margin": 1.0,
     "wh_per_cm3": 0.45
   },
   "phones": [
@@ -47,14 +49,14 @@
           "thickness_mm": 5.2,
           "battery_cm3": 9.19,
           "battery_wh": 4.1,
-          "housing_cm3": 4.37,
+          "housing_cm3": 2.76,
           "usb_c_to_phone": false,
           "magnet_ring_od_mm": 53.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 1.7,
-          "mass_g_aluminium": 48.0,
-          "mass_g_titanium": 56.0
+          "mass_g_aluminium": 46.0,
+          "mass_g_titanium": 50.0
         },
         {
           "style": "fill",
@@ -66,14 +68,14 @@
           "thickness_mm": 3.5,
           "battery_cm3": 4.92,
           "battery_wh": 2.2,
-          "housing_cm3": 5.32,
+          "housing_cm3": 3.81,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 0.0,
-          "mass_g_aluminium": 43.0,
-          "mass_g_titanium": 52.0
+          "mass_g_aluminium": 41.0,
+          "mass_g_titanium": 47.0
         },
         {
           "style": "wrap",
@@ -85,14 +87,14 @@
           "thickness_mm": 3.5,
           "battery_cm3": 6.26,
           "battery_wh": 2.8,
-          "housing_cm3": 5.91,
+          "housing_cm3": 4.4,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 0.0,
-          "mass_g_aluminium": 49.0,
-          "mass_g_titanium": 59.0
+          "mass_g_aluminium": 46.0,
+          "mass_g_titanium": 54.0
         },
         {
           "style": "wrap-xl",
@@ -104,14 +106,14 @@
           "thickness_mm": 6.5,
           "battery_cm3": 25.34,
           "battery_wh": 11.4,
-          "housing_cm3": 6.93,
+          "housing_cm3": 5.3,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 3.0,
-          "mass_g_aluminium": 95.0,
-          "mass_g_titanium": 107.0
+          "mass_g_aluminium": 93.0,
+          "mass_g_titanium": 102.0
         }
       ]
     },
@@ -141,14 +143,14 @@
           "thickness_mm": 5.2,
           "battery_cm3": 9.17,
           "battery_wh": 4.1,
-          "housing_cm3": 4.37,
+          "housing_cm3": 2.76,
           "usb_c_to_phone": false,
           "magnet_ring_od_mm": 53.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 2.6,
-          "mass_g_aluminium": 48.0,
-          "mass_g_titanium": 56.0
+          "mass_g_aluminium": 46.0,
+          "mass_g_titanium": 50.0
         },
         {
           "style": "fill",
@@ -160,14 +162,14 @@
           "thickness_mm": 3.4,
           "battery_cm3": 4.5,
           "battery_wh": 2.0,
-          "housing_cm3": 5.21,
+          "housing_cm3": 3.7,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 0.8,
-          "mass_g_aluminium": 42.0,
-          "mass_g_titanium": 51.0
+          "mass_g_aluminium": 39.0,
+          "mass_g_titanium": 46.0
         },
         {
           "style": "wrap",
@@ -179,14 +181,14 @@
           "thickness_mm": 3.4,
           "battery_cm3": 10.62,
           "battery_wh": 4.8,
-          "housing_cm3": 6.98,
+          "housing_cm3": 5.47,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 0.8,
-          "mass_g_aluminium": 65.0,
-          "mass_g_titanium": 77.0
+          "mass_g_aluminium": 62.0,
+          "mass_g_titanium": 72.0
         },
         {
           "style": "wrap-xl",
@@ -198,14 +200,14 @@
           "thickness_mm": 6.4,
           "battery_cm3": 37.72,
           "battery_wh": 17.0,
-          "housing_cm3": 8.22,
+          "housing_cm3": 6.59,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "proud_of_bump_mm": 3.8,
-          "mass_g_aluminium": 130.0,
-          "mass_g_titanium": 144.0
+          "mass_g_aluminium": 128.0,
+          "mass_g_titanium": 139.0
         }
       ]
     }

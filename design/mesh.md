@@ -63,10 +63,10 @@ Phones' built-in satellite features only reach the networks Apple or the carrier
 
   | Style | Pro phone (camera plateau) | Standard phone (camera island) |
   | --- | --- | --- |
-  | Card (Pocket-size, 56 × 86 × 5.2 mm) | 4.1 Wh, 48 g | 4.1 Wh, 48 g |
+  | Card (Pocket-size, 56 × 86 × 5.2 mm) | 4.1 Wh, 46 g | 4.1 Wh, 46 g |
   | Fill (below the bump) | 2.2 Wh, 3.5 mm, flush | 2.0 Wh, 3.4 mm, 0.8 mm proud |
   | Wrap (whole back around the bump) | 2.8 Wh, 3.5 mm, flush | 4.8 Wh, 3.4 mm, 0.8 mm proud |
-  | Wrap XL (3 mm proud) | 11.4 Wh, 95 g | 17.0 Wh, 130 g |
+  | Wrap XL (3 mm proud) | 11.4 Wh, 93 g | 17.0 Wh, 128 g |
 
   The slim styles can't be thinner than about 3.4 mm (suction film, base, board, skin), so on phones with a lower bump they sit slightly proud of it. The board and radios draw roughly 1 W while relaying (estimate), so a slim shell relays for 2–5 hours alone and then falls back to the phone; the XL relays all day.
 - **Power.** The shell runs on its own battery. MagSafe on iPhone only receives power, so the fallback to the phone's battery uses USB-C (iPhone 15 and later can supply about 4.5 W): the fill, wrap and case versions include a USB-C plug. The shell charges from a Qi2 receiver coil on its outer face, like Apple's MagSafe battery, and charges the phone over USB-C. The card has no plug and covers the phone's MagSafe coil, so the phone charges with the card removed.

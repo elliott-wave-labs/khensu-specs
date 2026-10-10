@@ -72,16 +72,16 @@ type Result = {
 
 const RESULTS: Record<PhoneId, Record<Exclude<StyleId, "case">, Result>> = {
   "pro-plateau": {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.19, alG: 48, tiG: 56, proud: 1.7, usb: false, ring: 53 },
-    fill: { footprint: [65.9, 101.4], t: 3.5, wh: 2.2, cm3: 4.92, alG: 43, tiG: 52, proud: 0, usb: true, ring: 56 },
-    wrap: { footprint: [71.1, 105.0], t: 3.5, wh: 2.8, cm3: 6.26, alG: 49, tiG: 59, proud: 0, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [71.1, 105.0], t: 6.5, wh: 11.4, cm3: 25.34, alG: 95, tiG: 107, proud: 3.0, usb: true, ring: 56 },
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.19, alG: 46, tiG: 50, proud: 1.7, usb: false, ring: 53 },
+    fill: { footprint: [65.9, 101.4], t: 3.5, wh: 2.2, cm3: 4.92, alG: 41, tiG: 47, proud: 0, usb: true, ring: 56 },
+    wrap: { footprint: [71.1, 105.0], t: 3.5, wh: 2.8, cm3: 6.26, alG: 46, tiG: 54, proud: 0, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [71.1, 105.0], t: 6.5, wh: 11.4, cm3: 25.34, alG: 93, tiG: 102, proud: 3.0, usb: true, ring: 56 },
   },
   island: {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, alG: 48, tiG: 56, proud: 2.6, usb: false, ring: 53 },
-    fill: { footprint: [65.5, 100.5], t: 3.4, wh: 2.0, cm3: 4.5, alG: 42, tiG: 51, proud: 0.8, usb: true, ring: 56 },
-    wrap: { footprint: [70.7, 146.8], t: 3.4, wh: 4.8, cm3: 10.62, alG: 65, tiG: 77, proud: 0.8, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [70.7, 146.8], t: 6.4, wh: 17.0, cm3: 37.72, alG: 130, tiG: 144, proud: 3.8, usb: true, ring: 56 },
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, alG: 46, tiG: 50, proud: 2.6, usb: false, ring: 53 },
+    fill: { footprint: [65.5, 100.5], t: 3.4, wh: 2.0, cm3: 4.5, alG: 39, tiG: 46, proud: 0.8, usb: true, ring: 56 },
+    wrap: { footprint: [70.7, 146.8], t: 3.4, wh: 4.8, cm3: 10.62, alG: 62, tiG: 72, proud: 0.8, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [70.7, 146.8], t: 6.4, wh: 17.0, cm3: 37.72, alG: 128, tiG: 139, proud: 3.8, usb: true, ring: 56 },
   },
 };
 

@@ -1227,11 +1227,11 @@ function NetworkTab() {
           <H3>Cover traffic while the app is open</H3>
           <BarChart
             categories={["Wi-Fi", "Cellular", "Low Power Mode"]}
-            series={[{ name: "Upstream cover at 1 packet per tick (MB per hour)", data: [18, 18, 18] }]}
+            series={[{ name: "Upstream cover, 4 packets per tick (MB per hour)", data: [72, 72, 72] }]}
             valueSuffix=" MB"
           />
           <Text size="small" tone="tertiary">
-            MB per hour of foreground use, upstream. One burst every 2 s on every network and in every power state, including low battery. Multiply by the packets per burst (open question 2c); downstream matches.
+            MB per hour of foreground use, upstream. One burst every 2 s on every network and in every power state, including low battery. Each burst is 4 small packets (one fetch plus three slots); downstream matches.
           </Text>
         </Stack>
         <Stack gap={8}>

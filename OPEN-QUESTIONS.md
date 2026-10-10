@@ -72,7 +72,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 ### 2c. Tick burst size
 - **Problem:** a signed message is about 4.9 KB, which needs 3 small packets, and the fixed buckets go up to 8. If each tick carries only one small packet, a typical message takes three ticks (6 s) to leave, which isn't real-time.
 - **Recommendation:** each tick carries a fixed burst of 4 small packets (one mailbox fetch plus three slots), so a typical message leaves in a single tick. Cost: about 20 KB/s up while the app is open (about 72 MB per open hour), and four times the cover load on nodes compared with one packet per tick. Battery changes little, since the radio is awake at a 2 s tick anyway; the bigger cost is node bandwidth at 10B scale (see 10 and 31).
-- **Status:** Open.
+- **Status:** **Decided** 10 Oct 2026: 4 small packets per tick (one mailbox fetch plus three slots), with a matching downstream of 4 reply packets.
 
 ### 2e. Live calls: stealth at MOQOM latency
 - **Today's plan:** calls carry MOQT media through two relays from different operators (caller's entry and callee's entry), so no single machine sees both IPs; direct paths are opt-in per contact.
@@ -308,7 +308,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 70. **Hardware company and repo.** Which entity sells hardware (MOQOM, a khensu entity or a new one), and a `khensu-hardware` repo for boards, enclosures and firmware. **Open.**
 71. **Certification.** FCC, CE, UKCA and others per market; use pre-certified radio modules. **Open.**
 72. **Shell name.** "khensu shell" as a working name. **Open.**
-73. **Mesh tick rate.** **Decided 10 Oct 2026:** 2 s on the mesh too, always: no change at low battery, on the shell's own cells or on phone power. Packets per mesh tick: 1 small packet (rec), so a HaLow cell carries about 40–120 open phones while staying stealthy; confirm with 2c.
+73. **Mesh tick rate.** **Decided 10 Oct 2026:** 2 s on the mesh too, always: no change at low battery, on the shell's own cells or on phone power. Packets per mesh tick: 1 small packet (rec, not the 4 of the internet tick in 2c), so a HaLow cell carries about 40–120 open phones while staying stealthy.
 74. **Satellite options.** Iridium Certus in the large shell and home station, NB-NTN where operators agree, Starlink as backhaul for home nodes and portals (rec); per-country legality. **Open.**
 75. **Push without APNs.** Shell owners get messages through the shell over Bluetooth with no push gateway (rec); everyone else keeps the wake-only gateway. **Open.**
 76. **Industrial design.** Per-model shells around one core module; materials; first models to support (rec: current Pro and standard iPhones). **Open.**

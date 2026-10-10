@@ -495,7 +495,7 @@ The recipient keeps the per-hop payload keys indexed by `payload_key_ref`, valid
 
 ### 8.8 Ticks and cover
 
-- **Phones (app in foreground):** one burst every 2 s on every network and in every power state, with no exceptions. A burst is a fixed number of small packets (`OPEN-QUESTIONS.md` 2c): one mailbox `fetch` plus slots for outgoing fragments, receipts, typing events, PIR queries and nu-media, filled with cover packets when empty. Tick times have a small uniform jitter (±100 ms) so bursts don't align across phones. The downstream carries a fixed number of reply packets per tick, padded with cover replies. No cover in the background.
+- **Phones (app in foreground):** one burst every 2 s on every network and in every power state, with no exceptions. A burst is 4 small packets: one mailbox `fetch` plus 3 slots for outgoing fragments, receipts, typing events, PIR queries and nu-media, filled with cover packets when empty. Tick times have a small uniform jitter (±100 ms) so bursts don't align across phones. The downstream carries 4 reply packets per tick, padded with cover replies. No cover in the background.
 - **Nodes:** constant node-to-node cover and loop packets around the clock, at a rate set per capacity class in the epoch header, independent of real load.
 - **Bulk packets** travel only inside constant streams: a user's own node, the Wi-Fi-and-charging window on phones, and call trunks. Phones send no bulk packets outside those.
 - Tick length, burst size and node cover rates are consensus parameters in the epoch header.

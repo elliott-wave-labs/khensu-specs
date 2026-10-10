@@ -69,4 +69,15 @@ Phones' built-in satellite features only reach the networks Apple or the carrier
 
 ## 7. Not a carrier
 
-The network carries data, not phone numbers. It doesn't connect to the phone network, so it can't place emergency calls, and it shouldn't be marketed as a phone service, which would bring carrier regulation and emergency-call obligations. The app always lets the phone use its normal emergency calling.
+The network carries data, not phone numbers. It doesn't connect to the phone network, so it can't place emergency calls, and it shouldn't be marketed as a phone service, which would bring carrier regulation and emergency-call obligations. Emergency calls use Apple's emergency calling and Emergency SOS via satellite, which work well (decided 9 Oct 2026); khensu never gets in their way. Everything else runs on our own network and our own satellite links, with no dependence on Apple.
+
+## 8. Phones as nodes
+
+Phones are nodes too (decided 9 Oct 2026): any iPhone on iOS 26 (iPhone 11 and later) runs node mode while the app is open, plugged in and on Wi-Fi. Old phones are often faster than a Pi 5 (an A13 beats it on CPU), have Wi-Fi 6 and their own battery as a UPS.
+
+- **Foreground only.** iOS doesn't let apps relay in the background, so node mode keeps the app open: idle timer off, screen dimmed to black with a minimal status display (no OLED burn-in), Guided Access recommended so it stays open.
+- **Battery care.** Uses iOS's charging limit where available (80% on iPhone 15 and later), shows battery temperature, and pauses relaying if the phone gets hot.
+- **Roles.** Phones behind home routers usually can't accept inbound connections, so they take roles that dial out (cover, mailbox replica, cache, PIR mirror, mesh relay over Wi-Fi Aware and Bluetooth); with a reachable IPv6 address they can also mix. Committee duty only with an epoch lease, like any node.
+- **Earnings.** From token burning in proportion to verified work, like any node.
+- **Never on cellular.** Node mode stops when Wi-Fi or power is lost.
+- **Capacity:** counts against the home connection's upload, like any node in the same home.

@@ -288,6 +288,16 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 56. **Gateways.** Allow operators to run non-stealthy gateways that serve public webE content to ordinary browsers under `*.khensu.nu` (with a banner), or none at all. Rec: allow, off by default for operators. **Open.**
 57. **Publish quotas.** Anonymous storage quota per persona per epoch, and how stake raises it. Rec: 100 MB per persona per month free, more with stake. **Open.**
 
+## I. Places (proposed 9 Oct 2026; design in `PLAN.md`, Places)
+
+58. **Patent filings before talking to Insta360.** A pitch or demo without an NDA is a disclosure. Rec: provisional filings on the Places, webE and stealth candidates in `PATENTS.md` first, then an NDA, then the pitch. **Open.**
+59. **Partnership terms.** What we ask Insta360 for (payment for publicity, co-marketing, SDK access, hardware bundles) and what we keep (format, network, patents). Rec: camera-agnostic format regardless, so the walk-away option (build it ourselves) is always real. **Open.**
+60. **Day one or later.** Places on day one alongside the Feed, or after launch once node capacity grows (360° live streams are the heaviest load on the network). **Open.**
+61. **Apple Vision Pro.** Add visionOS as a platform for Places (immersive viewing). **Open.**
+62. **Music and performance rights.** Venue partners only for performances at launch, or a licensing deal with collecting societies. Counsel. **Open.**
+63. **Bystander defaults.** Face blurring on by default outside opted-in venues (rec), and home-location warnings. **Open.**
+64. **Insta360 X6 specifics.** Confirm the camera's capture formats, SDK live-streaming support and spatial or depth output before designing the ingest. **Open.**
+
 ## F. Housekeeping
 
 37. **`PROTOCOL.md` sections 13 and 14** say "frozen in `PAYMENTS.md`" and "each frozen in its own spec"; those files don't exist yet. Reword to "to be written". **Open.**

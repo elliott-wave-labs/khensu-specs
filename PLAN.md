@@ -161,6 +161,7 @@ isProject: false
 - [Stealth](#stealth-decided)
 - [Public square](#public-square-day-one)
 - [webE](#webe-day-one)
+- [Places](#places-proposed)
 - [nu-media](#nu-media-proposed)
 - [Apple platform features](#apple-platform-features)
 - [Mix packet format: Outfox, extended](#mix-packet-format-outfox-extended-decided)
@@ -539,6 +540,20 @@ The Feed tab in the khensu.nu app, with public forums inside it, running on webE
   - The khensu.nu app includes a viewer for sites on iPhone, iPad and Mac.
 - **Standards.** Internet-Drafts for the post-quantum mix packet format (the Outfox paper), handle resolution from a transparency log, content-addressed signed site bundles over MOQ, and the stealth MOQ profile, building on MOQOM's existing IETF MOQ work.
 - **Prior art to position against:** IPFS, Tor onion services, I2P, Freenet/Hyphanet, Veilid, Lokinet, Handshake. The difference: post-quantum throughout, stealth by default, live media at MOQ latency, and operators paid for work.
+
+## Places (proposed)
+
+A live world on webE: people broadcast 360° and spatial video from where they are (concerts, stages, restaurants, parties, streets), pinned to the place on a map, and viewers move or teleport there to be inside the moment on iPhone, iPad, Mac and later Apple Vision Pro. Open questions are in `OPEN-QUESTIONS.md` section I.
+
+- **Capture.** Recommended camera: Insta360's 360° cameras (the X series), through their SDK, with a partnership sought. The format is camera-agnostic from day one, so iPhone spatial video and other 360° cameras work and no partner is a dependency. Later: depth, 3D scene capture and Gaussian splats, in line with nu-media's 3D roadmap.
+- **Broadcast.** A broadcast is a live MOQ track on webE, published by a persona to a place. The video is split into viewport tiles so each viewer only receives the part they're looking at (plus a low-resolution full sphere), which keeps 360° streams within phone and network budgets. nu-media handles 360° and spatial video.
+- **The map.** Map data comes from OpenStreetMap, served as vector tiles over webE: no Apple Maps or Google Maps requests, which would tell those companies where people look. Tiles and place listings are fetched with the stealth fetch, so no node learns which places a viewer visits.
+- **Moving and teleporting.** Viewers drift across the map or jump to any live place; nearby broadcasts at the same place (several cameras at one concert) are stitched into one place view with switchable vantage points.
+- **Places are public, viewers are stealthy.** A broadcast's place is public by design; the broadcaster can be a persona. Viewers stay stealthy under the webE rules. Broadcasters can show exact venues or a coarse area, and the app warns before going live from a home.
+- **Bystanders and venues.** On-device face blurring for people who aren't the subject (on by default outside venues that opt in), venue opt-in and verified venue places, and a clear live indicator. Music and performances need rights from venues and rights holders; verified venue partners broadcast performances, and unlicensed performance streams get labels and reports like any content.
+- **Safety.** Live streams use the same on-device moderation, label lists and consensus labels as the Feed, plus fast reporting, delayed public listing of new broadcasters' streams, and the illegal-content rules.
+- **Earnings.** Relays carrying popular broadcasts earn from token burning like any node work; tipping and paid tickets can use the shielded pool where payments are switched on.
+- **Patent candidates:** listed in `PATENTS.md` (Places). The disclosure rule applies before any partner pitch or public demo: file first, then talk.
 
 ## nu-media (proposed)
 

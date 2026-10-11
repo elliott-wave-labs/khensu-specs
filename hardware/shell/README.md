@@ -28,11 +28,11 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 | File | Part | Suggested process |
 | --- | --- | --- |
 | `housing` | Outer skin and side walls (1.0 mm walls, 0.7 mm skin), USB-C opening, window cut-outs | CNC titanium Ti-6Al-4V Grade 5 (the only material) |
-| `window_inserts` | PC windows over the coil and along the bottom edge (antennas) | Insert-moulded or bonded PC, flush to the skin |
+| `window_inserts` | Fill and wrap: antenna band in the bottom wall. Card and XL: windows over the coil and along the bottom edge | Insert-moulded or bonded PC, flush |
 | `base` | Phone-side plate (0.6 mm) that closes the cavity | Injection-moulded or CNC 30% glass-filled PC |
 | `suction_film` | 0.3 mm micro-suction layer | Die-cut nano-suction PU film |
 | `magnet_ring` | MagSafe-compatible ring (56/46 mm, 0.5 mm) | Bought-in NdFeB segment ring |
-| `coil` | Qi2 receiver coil and ferrite under the skin | Bought-in module |
+| `coil` | Qi2 receiver coil and ferrite under the skin (card and XL only) | Bought-in module |
 | `pcb` | Board volume including the tallest part (1.6 mm) | Stand-in for the system-on-module and radios |
 | `antenna_keepout` | HaLow antenna area, bottom edge | No metal here: see below |
 | `battery` | Space available for cells | Custom pouch cells cut to this shape |

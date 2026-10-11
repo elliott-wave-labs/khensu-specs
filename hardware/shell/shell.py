@@ -254,7 +254,7 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
     t = s.thickness
     stack_bottom = B.suction + B.base  # phone side of the cavity
     envelope = outline_solid(s.outline, B.suction, t - B.suction)
-    edge_fillet = min(1.2, (t - B.suction) * 0.45)
+    edge_fillet = min(1.8 if s.plate else 1.2, (t - B.suction) * 0.45)
     try:
         envelope = envelope.faces(">Z").edges().fillet(edge_fillet)
     except Exception:
@@ -303,9 +303,11 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
         .translate((0, 0, stack_bottom))
     )
     coil_z = t - B.skin - B.coil_t
-    has_coil = coil_z >= stack_bottom + B.magnet_t + 0.1
+    # The flat-back styles are one unbroken metal face, which a Qi2 coil can't see through; they charge
+    # over USB-C. Only the card, which has no plug, keeps a coil behind a window.
+    has_coil = coil_z >= stack_bottom + B.magnet_t + 0.1 and not s.plate
     if not has_coil:
-        coil_z = t - B.skin  # too thin for an outer Qi2 coil; the shell charges over USB-C only
+        coil_z = t - B.skin
     coil = (
         cq.Workplane("XY").center(cx, cy).circle(B.coil_d / 2).extrude(B.coil_t).translate((0, 0, coil_z))
         if has_coil else None
@@ -347,15 +349,25 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
             cq.Workplane("XY").center(0, inner_bb.ymin + 6).rect(B.usb_w + 4, 14).extrude(t + 2).translate((0, 0, -1))
         )
 
-    # Metal blocks radio and wireless charging: PC windows over the coil (skin only) and the antenna (skin and bottom wall).
+    # Metal blocks radio and wireless charging. Flat-back styles: a PC antenna band in the bottom wall only,
+    # like the bands on a phone's frame, so the outer face stays unbroken metal. Others: PC windows through
+    # the skin and bottom wall over the antenna, and through the skin over the coil.
     bb = s.outline.val().BoundingBox()
-    win_top = inner_bb.ymin + B.antenna_w + 0.5 + B.window_margin
-    ant_window = (
-        cq.Workplane("XY")
-        .center(0, (bb.ymin - 1 + win_top) / 2)
-        .rect(min(B.antenna_l, inner_bb.xlen - 2) + 2 * B.window_margin, win_top - (bb.ymin - 1))
-        .extrude(t + 1 - stack_bottom).translate((0, 0, stack_bottom))
-    )
+    ant_w = min(B.antenna_l, inner_bb.xlen - 2) + 2 * B.window_margin
+    if s.plate:
+        ant_window = (
+            cq.Workplane("XY").center(0, (bb.ymin - 1 + inner_bb.ymin + 0.3) / 2)
+            .rect(ant_w, inner_bb.ymin + 0.3 - (bb.ymin - 1))
+            .extrude(t - B.skin - stack_bottom).translate((0, 0, stack_bottom))
+        )
+    else:
+        win_top = inner_bb.ymin + B.antenna_w + 0.5 + B.window_margin
+        ant_window = (
+            cq.Workplane("XY")
+            .center(0, (bb.ymin - 1 + win_top) / 2)
+            .rect(ant_w, win_top - (bb.ymin - 1))
+            .extrude(t + 1 - stack_bottom).translate((0, 0, stack_bottom))
+        )
     cutter = ant_window
     if has_coil:
         cutter = cutter.union(

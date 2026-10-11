@@ -73,14 +73,14 @@ type Result = {
 const RESULTS: Record<PhoneId, Record<Exclude<StyleId, "case">, Result>> = {
   "iphone-18-pro": {
     card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.2, tiG: 50, proud: 1.0, draft: 0, usb: false, ring: 53 },
-    fill: { footprint: [65.9, 143.0], t: 4.2, wh: 4.4, cm3: 9.81, tiG: 69, proud: 0, draft: 0, usb: true, ring: 56 },
-    wrap: { footprint: [71.1, 149.2], t: 4.2, wh: 5.3, cm3: 11.7, tiG: 83, proud: 0, draft: 0, usb: true, ring: 56 },
+    fill: { footprint: [65.9, 143.0], t: 4.2, wh: 5.4, cm3: 11.92, tiG: 73, proud: 0, draft: 0, usb: true, ring: 56 },
+    wrap: { footprint: [71.1, 149.2], t: 4.2, wh: 6.2, cm3: 13.81, tiG: 87, proud: 0, draft: 0, usb: true, ring: 56 },
     "wrap-xl": { footprint: [71.1, 149.2], t: 7.2, wh: 13.2, cm3: 29.41, tiG: 124, proud: 3.0, draft: 1.3, usb: true, ring: 56 },
   },
   island: {
     card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, tiG: 50, proud: 1.6, draft: 0, usb: false, ring: 53 },
-    fill: { footprint: [65.5, 140.6], t: 3.6, wh: 3.1, cm3: 6.8, tiG: 62, proud: 0, draft: 0, usb: true, ring: 56 },
-    wrap: { footprint: [70.7, 146.8], t: 3.6, wh: 3.9, cm3: 8.63, tiG: 72, proud: 0, draft: 0, usb: true, ring: 56 },
+    fill: { footprint: [65.5, 140.6], t: 3.6, wh: 4.6, cm3: 10.24, tiG: 69, proud: 0, draft: 0, usb: true, ring: 56 },
+    wrap: { footprint: [70.7, 146.8], t: 3.6, wh: 5.4, cm3: 12.06, tiG: 79, proud: 0, draft: 0, usb: true, ring: 56 },
     "wrap-xl": { footprint: [70.7, 146.8], t: 6.6, wh: 13.7, cm3: 30.37, tiG: 129, proud: 3.0, draft: 1.4, usb: true, ring: 56 },
   },
 };

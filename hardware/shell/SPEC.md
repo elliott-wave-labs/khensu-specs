@@ -23,12 +23,12 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass (titanium) | Attachment | Drawings |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
-| Fill | iPhone 18 Pro | 65.9 × 143.0, camera plate | 4.2 (level) | 4.4 Wh | 69 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
-| Wrap | iPhone 18 Pro | 71.1 × 149.2, camera plate | 4.2 (level) | 5.3 Wh | 83 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
+| Fill | iPhone 18 Pro | 65.9 × 143.0, camera plate | 4.2 (level) | 5.4 Wh | 73 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
+| Wrap | iPhone 18 Pro | 71.1 × 149.2, camera plate | 4.2 (level) | 6.2 Wh | 87 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
 | Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out, 1.3 mm draft | 7.2 (+3.0) | 13.2 Wh | 124 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
-| Fill | Standard | 65.5 × 140.6, camera plate | 3.6 (level) | 3.1 Wh | 62 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
-| Wrap | Standard | 70.7 × 146.8, camera plate | 3.6 (level) | 3.9 Wh | 72 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
+| Fill | Standard | 65.5 × 140.6, camera plate | 3.6 (level) | 4.6 Wh | 69 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
+| Wrap | Standard | 70.7 × 146.8, camera plate | 3.6 (level) | 5.4 Wh | 79 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
 | Wrap XL | Standard | 70.7 × 146.8, 1.4 mm draft | 6.6 (+3.0) | 13.7 Wh | 129 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
 | Silicone case | Both | phone + 1.6 per side | phone + module + 0.8 | (holds a Wrap) | about 18 g | Grips the phone | KS-*-CASE-201 |
 
@@ -36,13 +36,13 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 ## 3. Mechanical
 
-**Construction stack (phone side outward):** micro-suction film 0.3 → base plate 0.6 → cavity (magnet ring 0.5, board 1.6, cells, Qi2 coil 0.8 under the skin) → graphite sheet 0.025 → skin 0.7. Side walls 1.0.
+**Construction stack (phone side outward):** micro-suction film 0.3 → base plate 0.6 → cavity (magnet ring 0.5, board 1.6, cells; Qi2 coil 0.8 under the skin in the card and XL only) → graphite sheet 0.025 → skin 0.7. Side walls 1.0.
 
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
 | Housing (titanium) | Ti-6Al-4V Grade 5, "titanium battleproof shell" | 5-axis CNC; bead blast, then matte powder coat 60–80 µm on the outer faces, colour-matched to the phone finish (Burgundy, Glacier, Silver, Black for iPhone 18 Pro). Matte so it doesn't show fingerprints. Mask the inside, the windows and the phone side; machine the face 0.07 mm low so the coated face is level with the lens rings | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
 | Housing (brass) | C26000 cartridge brass (70% copper, 30% zinc, lead-free, no nickel) | 5-axis CNC; bead blast to satin and leave bare. No lacquer or coating, which would stop the copper working on germs. It darkens to a natural patina; it cannot rust (no iron) | About 1.9× the titanium housing mass (wrap 117 g against 83 g). Copper alloys of at least 60% copper are registered with the US EPA as antimicrobial; product claims need the registered alloy, approved wording, and regulatory review before launch |
-| Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Ø46 over the coil (skin only); 42 mm strip along the bottom edge (skin and wall) for the antennas |
+| Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Fill and wrap: a 42 mm antenna band in the bottom wall only, like the bands on a phone's frame; the outer face is one unbroken metal surface with no windows. Card and XL: Ø46 over the coil (skin only) and a 42 mm strip along the bottom edge (skin and wall) |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
 | Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |
 | Magnet ring | NdFeB N52, Ni-Cu-Ni plated, segmented | Bought in | MagSafe-compatible array; 56/46 mm (53/43 mm in the card) |
@@ -65,8 +65,8 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Guard (Guard-M) | Cortex-M33 with TrustZone, TRNG, AES/SHA acceleration, SPI and SDIO host (e.g. STM32U5 class) | Open Rust firmware; enforces frame sizes, the tick, destinations and signed parameters; ML-DSA-87 secure boot; holds radios in reset until its checks pass |
 | Mesh radio | Wi-Fi HaLow (802.11ah) module (e.g. Morse Micro MM6108 based), hosted by the guard | Pre-certified module; must support a microcontroller host |
 | Wi-Fi and Bluetooth | Wi-Fi 6 and Bluetooth LE 5.3 combo with a microcontroller host driver, hosted by the guard | Link to the phone and nearby devices; Bluetooth wakes the app |
-| Power path | 1S charger with power-path, USB-C PD dual-role controller, fuel gauge | Charges from USB-C or Qi2; powers the board from the phone when cells are empty |
-| Wireless charging | Qi2-certified receiver module, coil under the skin window | The shell charges itself; it does not pass charge wirelessly to the phone |
+| Power path | 1S charger with power-path, USB-C PD dual-role controller, fuel gauge | Charges over USB-C (fill, wrap; passes power through to the phone) or Qi2 (card, XL); powers the board from the phone when cells are empty |
+| Wireless charging | Qi2-certified receiver module, coil under the skin window (card and XL only) | The flat-back fill and wrap have no coil, since metal over it would block charging; they charge over USB-C. The phone can't charge wirelessly through any metal shell |
 | Cells | 1S Li-ion pouch, 3.85 V nominal, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles |
 
 **Power budget (estimate, to be measured):**
@@ -79,7 +79,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
-At about 1 W and 85% conversion efficiency, a slim shell runs about 2–4.5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
+At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
 
 ## 5. Radios and network
 
@@ -115,6 +115,7 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 2–4.5 hour
 - **Radio:** FCC Part 15 (HaLow under 15.247), ISED, CE RED, UKCA, MIC Japan, RCM; pre-certified modules reduce, but don't remove, end-product testing.
 - **RF exposure:** the shell is worn against the phone and the head during calls, so SAR evaluation is required in each market.
 - **Battery and safety:** UN38.3 (transport), IEC 62133-2, IEC 62368-1.
+- **RF:** the flat-back styles radiate only through the edge band, with metal over the antennas; measure HaLow, Wi-Fi and Bluetooth efficiency on first articles and widen the band (or add a second on a side wall) if range falls short.
 - **Charging and USB:** Qi2 certification (WPC) for the receiver; USB-IF compliance for the USB-C port.
 - **Materials:** RoHS, REACH, WEEE, battery directive labelling.
 - **Apple:** marketed as "MagSafe-compatible", not "Made for MagSafe" (an MFi programme term).

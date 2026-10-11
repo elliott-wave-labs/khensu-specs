@@ -34,6 +34,23 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 "Level" means the top face is level with the tops of the lens rings, so the back is one flat surface with no camera bump, like a phone with flush cameras; "+" is height above the lens rings. In the fill and wrap a camera plate covers the plateau (2.1 mm thick on iPhone 18 Pro's 2 mm plateau, 0.1 mm above it), with a round opening for each lens, the flash, the depth sensor and the microphone: 0.6 mm clear round each, and the flash and depth-sensor openings widen with height so the wall stays outside their light cones. The XL rises 3 mm above the lenses, where separate openings for the ultra wide would merge, so its camera sits in one opening that widens with height (the draft) to stay out of every field of view (120° for the ultra wide), with 0.3 mm to spare. `sunu.py` intersects each sensor's column and field-of-view cone with the housing and fails the build if anything touches, with 0.2 mm to spare. The slim styles also have a 3.4 mm floor (shock layer 0.5, base 0.4, board 1.6 with 0.2 clearance, skin 0.7). iPhone 18 Pro's camera plateau runs the full width of the phone (apple.com), so the wrap's camera plate spans edge to edge over it and its side walls stop at the plateau. The titanium within 1.6 mm of the opening is solid, with no cells. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
 
+### 2.1 Phones supported (decided 11 Oct 2026)
+
+Every iPhone back to iPhone X, and comparable Android phones from Google and Samsung, flagship and everyday models. Each supported model gets its own fit, generated from the same parametric CAD (`sunu.py`): a new `PHONES` entry per model from the maker's accessory drawings (Apple's Accessory Design Guidelines under MFi; Google's and Samsung's case-maker drawings) and checked against a measured phone before tooling. The node module is the same in every fit, so one board, battery and firmware serves the whole range.
+
+| Family | Models | Fits | Attachment |
+| --- | --- | --- | --- |
+| iPhone with MagSafe | iPhone 12 to iPhone 18 families (mini, standard, Plus, Air, Pro, Pro Max) | Titanium wrap and fill per model; silicone shock case per model | MagSafe magnets and suction |
+| iPhone without MagSafe | iPhone X, XS, XS Max, XR, 11, 11 Pro, 11 Pro Max, SE (2nd and 3rd generation), 16e | Silicone shock case per model with a built-in magnet ring; titanium wrap for the 11 Pro and Pro Max | Case magnet ring, or suction for the wrap |
+| Google Pixel, flagship | Pixel Pro, Pro XL and standard models from Pixel 8 on | Titanium wrap per model (one camera bar across the back); silicone shock case | Built-in Qi2 magnets on Pixel 10 and later; case magnet ring or suction before that |
+| Google Pixel, everyday | Pixel a models from Pixel 8a on | Silicone shock case per model with a built-in magnet ring | Case magnet ring |
+| Samsung Galaxy, flagship | Galaxy S Ultra, S+ and S models from S24 on | Titanium wrap per model; silicone shock case | Case magnet ring (Qi2 Ready phones have no magnets of their own) or suction |
+| Samsung Galaxy, everyday | Galaxy A models from A16 on (A16, A26, A36, A56 and successors) | Silicone shock case per model with a built-in magnet ring | Case magnet ring |
+
+- **The Card style fits any of these phones** with a magnet ring (built in, or from the case), so a phone can be supported as soon as it launches, before its own fit ships.
+- **What runs where.** The shield is a complete node with its own battery, so on every phone above it relays, caches, carries the mesh and earns. The khensu.nu app needs iOS 26, which runs on iPhone 11 and later and iPhone SE (2nd generation) and later. On iPhone X, XS, XS Max and XR the shield works as a node and battery only; messaging needs a newer iPhone (`OPEN-QUESTIONS.md` 85). On Android the shield works as a node now, and the khensu.nu app for Android comes later (`PLAN.md`).
+- **Order of work.** iPhone 18 Pro and Pro Max first (current drawings), then the iPhone 17 and 16 families, the Galaxy S and Pixel flagships, then the everyday models and older iPhones, scheduled by how many people own each model.
+
 ## 3. Mechanical
 
 **Construction stack (phone side outward):** shock layer with micro-suction face 0.5 → base plate 0.4 → cavity (magnet ring 0.5, board 1.6, cells; Qi2 coil 0.8 under the skin in the card and XL only) → graphite sheet 0.025 → skin 0.7. Side walls 1.0.

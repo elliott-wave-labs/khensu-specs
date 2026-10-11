@@ -80,6 +80,7 @@ At setup the app creates a `SecureEnclave.MLDSA87` key (CryptoKit, iOS 26), gate
 | Power path | TI TPS25750 USB-C PD controller, TI BQ25895 1S charger with power path, TI BQ27427 fuel gauge | Charges over its own USB-C (fill, wrap) or Qi2 (card, XL). The iPhone's port stays free |
 | Wireless charging | Qi2-certified receiver module, coil under the skin window (card and XL only) | The flat-back fill and wrap have no coil, since metal over it would block charging; they charge over USB-C. The phone can't charge wirelessly through any metal shell |
 | Cells | 1S Li-ion pouch, 3.85 V nominal, about 1,610 mAh (6.2 Wh) in the wrap, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles; IEC 62133-2 and UN 38.3 |
+| Cells, extended option | 1S silicon-carbon anode pouch (Group14 SCC55 class, as shipping in flagship phones), same envelope: about 7.5 Wh (about 1,950 mAh). Higher cost. Next step: 100% silicon anode (Enovix AI-1 class, 935 Wh/L independently tested, in smartphone qualification as of 2026) | Silicon swells more than graphite: keep the 0.1 mm swell allowance in the cell pocket, qualify cycle life at the node's duty cycle, same protection, NTC and IEC 62133-2 / UN 38.3 certification |
 
 **Power budget (estimate, to be measured):**
 

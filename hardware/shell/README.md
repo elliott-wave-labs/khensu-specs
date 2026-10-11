@@ -18,8 +18,8 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 | Style | What it is | Attaches by |
 | --- | --- | --- |
 | `card` | Pocket-size card, 56 × 86 × 5.2 mm, below the bump | MagSafe-compatible magnets (53 mm ring to fit the width) |
-| `fill` | Fills the flat area below the camera bump, flush with it | Magnets plus micro-suction |
-| `wrap` | Covers the whole back around the bump, flush with it | Magnets plus micro-suction |
+| `fill` | Fills the flat area below the camera, level with the lens rings | Magnets plus micro-suction |
+| `wrap` | Covers the whole back around the camera, level with the lens rings: a flat back | Magnets plus micro-suction |
 | `wrap-xl` | `wrap` 3 mm thicker, for all-day relaying | Magnets plus micro-suction |
 | `case-silicone` | Shock case that holds the phone and a `wrap` module | Case grips the phone |
 
@@ -43,7 +43,7 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 - Machine the housing from the outside first (5-axis, or two 3-axis setups), then pocket the cavity. 0.7 mm skin over 60 × 100 mm needs a vacuum fixture or a sacrificial support; 0.8–1.0 mm is safer for a first article.
 - **Metal blocks radio and wireless charging.** Titanium blocks both, so cut the skin over `coil` and along `antenna_keepout` into windows filled with PC or glass-filled nylon (insert-moulded or bonded), like the bands on a phone frame. Keep at least 40 mm of non-metal length along the bottom edge for the sub-GHz antenna.
 - Inside corner radii in the model are at least 0.5 mm; use a 1 mm end mill for the cavity and leave 0.2 mm radii only where the CAM can reach.
-- Bead-blast and PVD the titanium. Mask the inside where the graphite sheet bonds.
+- Bead-blast and PVD the titanium in the colour matching the phone's finish. Mask the inside where the graphite sheet bonds.
 - Tolerances for a first article: ±0.05 mm on the outline and bump cutout, ±0.1 mm elsewhere. Bump clearance is 0.6 mm per side.
 
 ## Mould notes (silicone shock case)

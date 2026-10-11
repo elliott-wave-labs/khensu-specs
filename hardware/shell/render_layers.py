@@ -45,7 +45,6 @@ MATERIALS = {  # base rgb, specular strength, shininess, alpha
     "battery": ((34, 36, 41), 0.25, 20, 255),
     "coil": ((184, 115, 58), 0.7, 50, 255),
     "window_inserts": ((30, 31, 35), 0.6, 70, 255),
-    "housing": ((92, 94, 100), 0.7, 45, 255),  # space gray titanium
 }
 
 # iPhone 18 Pro finishes, as listed on apple.com/shop/buy-iphone/iphone-18-pro (approximate colours).
@@ -56,6 +55,9 @@ PHONE_COLOURS = {
     "black": (46, 47, 51),
 }
 DEFAULT_COLOUR = "burgundy"
+# The titanium shell is finished to match each phone (PVD on bead-blasted Grade 5), a touch deeper
+# and more metallic than the phone's aluminium so the seam reads.
+SHELL_COLOURS = {c: tuple(int(ch * 0.9) for ch in rgb) for c, rgb in PHONE_COLOURS.items()}
 
 LAYERS = ["phone", "suction_film", "base", "magnet_ring", "pcb", "battery", "coil", "window_inserts", "housing"]
 
@@ -67,23 +69,18 @@ def tess(shape: cq.Shape, tol=0.05) -> tuple[np.ndarray, np.ndarray]:
 
 
 def phone_with_lenses(p: S.Phone) -> tuple[cq.Shape, cq.Shape, cq.Shape, cq.Shape]:
-    """Phone body plus a Pro-style camera: three lenses in a triangle at the left of the plateau,
-    flash and depth sensor at the right."""
-    body = S.phone_reference(p).val()
+    """Phone body (plateau only), lens rings, lens glass and the small sensors, from the CAD sensor map."""
     bx, by, bw, bh = p.bump_rect()
-    left = bx - bw / 2
-    r = bh * 0.19
-    pts = [(left + bh * 0.28, by + bh * 0.22), (left + bh * 0.28, by - bh * 0.22), (left + bh * 0.66, by)]
-    z = p.bump_z
-    lenses = cq.Workplane("XY").pushPoints(pts).circle(r).extrude(1.0).translate((0, 0, z)).val()
-    glass = cq.Workplane("XY").pushPoints(pts).circle(r * 0.62).extrude(1.3).translate((0, 0, z)).val()
-    right = bx + bw / 2
-    small = (
-        cq.Workplane("XY").pushPoints([(right - bh * 0.26, by + bh * 0.2)]).circle(bh * 0.07).extrude(0.3)
-        .union(cq.Workplane("XY").pushPoints([(right - bh * 0.26, by - bh * 0.2)]).circle(bh * 0.09).extrude(0.3))
-        .translate((0, 0, z)).val()
-    )
-    return body, lenses, glass, small
+    body = S.outline_solid(S.rounded_rect(p.width, p.height, p.corner_r), -p.depth, p.depth).union(
+        S.outline_solid(S.rounded_rect(bw, bh, p.bump_r, bx, by), 0, p.bump_z)).val()
+    lenses, glass, small = cq.Workplane("XY"), cq.Workplane("XY"), cq.Workplane("XY")
+    for _, x, y, r, z, _ in p.sensor_list():
+        if z > p.bump_z:
+            lenses = lenses.union(cq.Workplane("XY").center(x, y).circle(r).extrude(z - p.bump_z).translate((0, 0, p.bump_z)))
+            glass = glass.union(cq.Workplane("XY").center(x, y).circle(r * 0.62).extrude(z - p.bump_z - 0.15).translate((0, 0, p.bump_z + 0.1)))
+        else:
+            small = small.union(cq.Workplane("XY").center(x, y).circle(r).extrude(0.1).translate((0, 0, p.bump_z)))
+    return body, lenses.val(), glass.val(), small.val()
 
 
 def project(v: np.ndarray, scale: float, center: np.ndarray) -> np.ndarray:
@@ -145,12 +142,16 @@ def main(out: Path):
     images = {}
     for colour, rgb in PHONE_COLOURS.items():
         MATERIALS[f"phone_{colour}"] = (rgb, 0.4, 40, 255)
+        MATERIALS[f"housing_{colour}"] = (SHELL_COLOURS[colour], 0.7, 45, 255)
+        img = render([(sol, f"housing_{colour}") for sol in parts["housing"].solids().vals()], scale, center)
+        img.save(out / f"housing_{colour}.png", optimize=True)
+        images[f"housing_{colour}"] = img
         img = render([(body, f"phone_{colour}"), (lenses, "bezel"), (glass, "lens"), (small, "flash")], scale, center)
         img.save(out / f"phone_{colour}.png", optimize=True)
         images[f"phone_{colour}"] = img
     for name in LAYERS:
-        if name == "phone":
-            img = images[f"phone_{DEFAULT_COLOUR}"]
+        if name in ("phone", "housing"):
+            img = images[f"{name}_{DEFAULT_COLOUR}"]
         elif name in parts:
             img = render([(sol, name) for sol in parts[name].solids().vals()], scale, center)
         else:
@@ -159,12 +160,18 @@ def main(out: Path):
         images[name] = img
         meta["layers"].append({"name": name, "bbox": img.getbbox()})
         print(name, img.getbbox())
-    # Flattened assemblies, one per phone colour, for the colour picker.
+    # The lenses again on their own: nothing on the shell hides them once it's on, so the assembled
+    # images (and the exploded view at rest) paint them over the housing's far wall.
+    camera = render([(lenses, "bezel"), (glass, "lens"), (small, "flash")], scale, center)
+    camera.save(out / "camera.png", optimize=True)
+    # Flattened assemblies, one per colour (shell matched to phone), for the colour picker.
     for colour in PHONE_COLOURS:
         flat = images[f"phone_{colour}"].copy()
-        for name in LAYERS[1:]:
+        for name in LAYERS[1:-1]:
             if name in images:
                 flat.alpha_composite(images[name])
+        flat.alpha_composite(images[f"housing_{colour}"])
+        flat.alpha_composite(camera)
         flat.save(out / f"assembled_{colour}.png", optimize=True)
     # soft contact shadow under the phone
     sh = Image.new("L", (SIZE, SIZE), 0)

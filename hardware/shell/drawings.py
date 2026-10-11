@@ -460,7 +460,7 @@ def housing_sheet(p: S.Phone, s: S.Style, parts: dict, dwg: str, sheet: str) -> 
         title=f"{S.STYLE_TITLES[s.name].upper()} - {p.name.upper()}",
         subtitle="KHENSU SHELL - HOUSING",
         dwg_no=dwg, material="TI-6AL-4V GR5",
-        finish="BEAD BLAST, SPACE GRAY PVD",
+        finish="BEAD BLAST, PVD COLOUR-MATCHED TO PHONE",
         scale="1:1", mass=f"{S.volume_cm3(parts['housing']) * S.DENSITY['ti_gr5']:.1f} G", sheet=sheet,
     ), HOUSING_NOTES)
     return doc

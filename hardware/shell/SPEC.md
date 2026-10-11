@@ -23,16 +23,16 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass (titanium) | Attachment | Drawings |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
-| Fill | iPhone 18 Pro | 65.9 × 101.9 | 3.4 (+0.4) | 2.1 Wh | 47 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
-| Wrap | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out | 3.4 (+0.4) | 2.7 Wh | 58 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
-| Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out | 6.4 (+3.4) | 11.3 Wh | 109 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
+| Fill | iPhone 18 Pro | 65.9 × 101.9 | 4.2 (level) | 4.4 Wh | 60 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
+| Wrap | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out | 4.2 (level) | 5.3 Wh | 74 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
+| Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out, 1.3 mm draft | 7.2 (+3.0) | 13.2 Wh | 124 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
-| Fill | Standard | 65.5 × 100.5 | 3.4 (+0.8) | 2.0 Wh | 46 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
-| Wrap | Standard | 70.7 × 146.8 | 3.4 (+0.8) | 3.5 Wh | 65 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
-| Wrap XL | Standard | 70.7 × 146.8 | 6.4 (+3.8) | 13.4 Wh | 123 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
+| Fill | Standard | 65.5 × 100.5 | 3.6 (level) | 2.3 Wh | 47 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
+| Wrap | Standard | 70.7 × 146.8 | 3.6 (level) | 3.9 Wh | 68 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
+| Wrap XL | Standard | 70.7 × 146.8, 1.4 mm draft | 6.6 (+3.0) | 13.7 Wh | 129 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
 | Silicone case | Both | phone + 1.6 per side | phone + module + 0.8 | (holds a Wrap) | about 18 g | Grips the phone | KS-*-CASE-201 |
 
-"+" is height above the camera bump. The slim styles have a 3.4 mm floor (suction film 0.3, base 0.6, board 1.6 with 0.2 clearance, skin 0.7), so on phones with a lower bump they sit slightly proud. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
+"Level" means the top face is level with the tops of the lens rings, so the back is one flat surface with no camera bump; "+" is height above the lens rings. The camera plateau sits in the opening 0.6 mm clear of the wall on every side, and nothing covers a lens, the flash, the depth sensor or the microphone. Where the face rises above the lenses (the XL), the opening widens with height (the draft) so no wall enters a lens's field of view (120° for the ultra wide) or the flash and depth-sensor cones, with 0.3 mm to spare; `shell.py` checks this for every style and fails the build if any sensor is covered or clipped. The slim styles also have a 3.4 mm floor (suction film 0.3, base 0.6, board 1.6 with 0.2 clearance, skin 0.7). The titanium within 1.6 mm of the opening is solid, with no cells. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
 
 ## 3. Mechanical
 
@@ -40,14 +40,14 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
-| Housing | Ti-6Al-4V Grade 5 titanium (only material), "titanium battleproof shell" | 5-axis CNC; bead blast and space gray PVD | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
+| Housing | Ti-6Al-4V Grade 5 titanium (only material), "titanium battleproof shell" | 5-axis CNC; bead blast and PVD colour-matched to the phone finish (Burgundy, Glacier, Silver, Black for iPhone 18 Pro) | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
 | Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Ø46 over the coil (skin only); 42 mm strip along the bottom edge (skin and wall) for the antennas |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
 | Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |
 | Magnet ring | NdFeB N52, Ni-Cu-Ni plated, segmented | Bought in | MagSafe-compatible array; 56/46 mm (53/43 mm in the card) |
 | Silicone case | LSR, Shore 55A ±5 | Injection moulded, VDI 27 texture | Add 0.5–1° draft; button covers per model |
 
-**Tolerances:** ISO 2768-mK general; phone interface features (outline, camera cutout, MagSafe axis) ±0.05; camera clearance 0.6 per side; window flushness 0.02.
+**Tolerances:** ISO 2768-mK general; phone interface features (outline, camera cutout, MagSafe axis) ±0.05; camera clearance 0.6 per side, with the face level with the lens rings within +0/−0.05 (never below them); window flushness 0.02.
 
 **Attachment targets (to validate):** normal pull-off at least 10 N on magnets alone and 25 N with suction; shear at least 15 N; no creep over 24 h at 40 °C; repeated attach/detach 5,000 cycles without film loss.
 
@@ -78,7 +78,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
-At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–3 hours on its own cells, the card about 3.5 hours, the iPhone 18 Pro XL about 10 hours and the standard XL about 11 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
+At about 1 W and 85% conversion efficiency, a slim shell runs about 2–4.5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
 
 ## 5. Radios and network
 

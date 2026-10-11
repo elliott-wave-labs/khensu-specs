@@ -31,7 +31,7 @@ type Phone = {
   h: number;
   depth: number;
   r: number;
-  bump: { x0: number; y0: number; w: number; h: number; r: number; z: number };
+  bump: { x0: number; y0: number; w: number; h: number; r: number; z: number; lens: number };
   magsafeY: number;
 };
 
@@ -40,14 +40,14 @@ const PHONES: Record<PhoneId, Phone> = {
     id: "iphone-18-pro",
     label: "iPhone 18 Pro, long camera plateau",
     w: 71.9, h: 150.0, depth: 8.75, r: 10,
-    bump: { x0: 3.5, y0: 3.5, w: 64.9, h: 40, r: 8, z: 3.0 },
+    bump: { x0: 3.5, y0: 3.5, w: 64.9, h: 40, r: 8, z: 3.0, lens: 4.2 },
     magsafeY: -5,
   },
   island: {
     id: "island",
     label: "Standard phone, camera island",
     w: 71.5, h: 147.6, depth: 7.8, r: 10,
-    bump: { x0: 4.5, y0: 4.5, w: 38, h: 38, r: 8, z: 2.6 },
+    bump: { x0: 4.5, y0: 4.5, w: 38, h: 38, r: 8, z: 2.6, lens: 3.6 },
     magsafeY: 0,
   },
 };
@@ -64,31 +64,32 @@ type Result = {
   wh: number;
   cm3: number;
   tiG: number;
-  proud: number;
+  proud: number; // height above the lens rings
+  draft: number;
   usb: boolean;
   ring: number;
 };
 
 const RESULTS: Record<PhoneId, Record<Exclude<StyleId, "case">, Result>> = {
   "iphone-18-pro": {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.2, tiG: 50, proud: 2.2, usb: false, ring: 53 },
-    fill: { footprint: [65.9, 101.9], t: 3.4, wh: 2.1, cm3: 4.71, tiG: 47, proud: 0.4, usb: true, ring: 56 },
-    wrap: { footprint: [71.1, 149.2], t: 3.4, wh: 2.7, cm3: 6.04, tiG: 58, proud: 0.4, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [71.1, 149.2], t: 6.4, wh: 11.3, cm3: 25.07, tiG: 109, proud: 3.4, usb: true, ring: 56 },
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.2, tiG: 50, proud: 1.0, draft: 0, usb: false, ring: 53 },
+    fill: { footprint: [65.9, 101.9], t: 4.2, wh: 4.4, cm3: 9.74, tiG: 60, proud: 0, draft: 0, usb: true, ring: 56 },
+    wrap: { footprint: [71.1, 149.2], t: 4.2, wh: 5.3, cm3: 11.7, tiG: 74, proud: 0, draft: 0, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [71.1, 149.2], t: 7.2, wh: 13.2, cm3: 29.41, tiG: 124, proud: 3.0, draft: 1.3, usb: true, ring: 56 },
   },
   island: {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, tiG: 50, proud: 2.6, usb: false, ring: 53 },
-    fill: { footprint: [65.5, 100.5], t: 3.4, wh: 2.0, cm3: 4.5, tiG: 46, proud: 0.8, usb: true, ring: 56 },
-    wrap: { footprint: [70.7, 146.8], t: 3.4, wh: 3.5, cm3: 7.74, tiG: 65, proud: 0.8, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [70.7, 146.8], t: 6.4, wh: 13.4, cm3: 29.76, tiG: 123, proud: 3.8, usb: true, ring: 56 },
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, tiG: 50, proud: 1.6, draft: 0, usb: false, ring: 53 },
+    fill: { footprint: [65.5, 100.5], t: 3.6, wh: 2.3, cm3: 5.01, tiG: 47, proud: 0, draft: 0, usb: true, ring: 56 },
+    wrap: { footprint: [70.7, 146.8], t: 3.6, wh: 3.9, cm3: 8.63, tiG: 68, proud: 0, draft: 0, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [70.7, 146.8], t: 6.6, wh: 13.7, cm3: 30.37, tiG: 129, proud: 3.0, draft: 1.4, usb: true, ring: 56 },
   },
 };
 
 const STYLE_INFO: Record<StyleId, { name: string; line: string }> = {
   card: { name: "Card", line: "Pocket-size, 56 × 86 × 5.2 mm, snaps on MagSafe below the camera" },
-  fill: { name: "Fill", line: "Fills the flat area below the camera bump, flush with it" },
-  wrap: { name: "Wrap", line: "Covers the whole back around the bump; the back becomes flat" },
-  "wrap-xl": { name: "Wrap XL", line: "Wrap 3 mm thicker, for relaying all day" },
+  fill: { name: "Fill", line: "Fills the flat area below the camera, level with the lens rings" },
+  wrap: { name: "Wrap", line: "Covers the whole back, level with the lens rings: flat, no camera bump, every sensor clear" },
+  "wrap-xl": { name: "Wrap XL", line: "Wrap 3 mm above the lenses, camera well drafted clear of every field of view" },
   case: { name: "Silicone case", line: "Shock case that holds the phone with a Wrap module inside" },
 };
 
@@ -224,9 +225,9 @@ function SectionView({ phone, style }: { phone: Phone; style: Exclude<StyleId, "
   const y0 = o.cy - o.h / 2;
   const y1 = o.cy + o.h / 2;
   const W = (y1 - y0) * kx + padX * 2;
-  const H = (Math.max(T, phone.bump.z) + 1.8) * kz + padTop + 40;
+  const H = (Math.max(T, phone.bump.lens) + 1.8) * kz + padTop + 40;
   const X = (y: number) => padX + (y - y0) * kx;
-  const Z = (z: number) => padTop + (Math.max(T, phone.bump.z) - z) * kz;
+  const Z = (z: number) => padTop + (Math.max(T, phone.bump.lens) - z) * kz;
   const box = (ya: number, yb: number, za: number, zb: number, fill: string, op = 1, stroke?: string) => (
     <rect x={X(ya)} y={Z(zb)} width={Math.max(0, (yb - ya) * kx)} height={Math.max(0, (zb - za) * kz)}
       fill={fill} opacity={op} stroke={stroke} strokeWidth={stroke ? 1 : 0} />
@@ -250,8 +251,8 @@ function SectionView({ phone, style }: { phone: Phone; style: Exclude<StyleId, "
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
       <line x1={X(y0) - 12} x2={X(y1) + 12} y1={Z(0)} y2={Z(0)} stroke={t.stroke.primary} />
       <text x={X(y0) - 12} y={Z(0) + 14} fontSize={10} fill={t.text.tertiary}>phone back glass</text>
-      <line x1={X(y0) - 12} x2={X(y1) + 12} y1={Z(phone.bump.z)} y2={Z(phone.bump.z)} stroke={t.text.tertiary} strokeDasharray="4 4" />
-      <text x={X(y1) + 12} y={Z(phone.bump.z) - 4} fontSize={10} fill={t.text.tertiary} textAnchor="end">camera bump height {phone.bump.z} mm</text>
+      <line x1={X(y0) - 12} x2={X(y1) + 12} y1={Z(phone.bump.lens)} y2={Z(phone.bump.lens)} stroke={t.text.tertiary} strokeDasharray="4 4" />
+      <text x={X(y1) + 12} y={Z(phone.bump.lens) - 4} fontSize={10} fill={t.text.tertiary} textAnchor="end">lens ring tops {phone.bump.lens} mm</text>
       {box(y0, y1, 0, B.suction, t.category.gray, 0.6)}
       {box(yi0, yi1, B.suction, zb, t.fill.primary, 0.6)}
       {box(y0, yi0, B.suction, T, t.text.secondary, 0.85)}
@@ -345,7 +346,7 @@ export default function KhensuShell() {
             <>
               <Row gap={28} wrap>
                 <Stat value={`${res.wh} Wh`} label={`battery (${res.cm3} cm³ of cells)`} />
-                <Stat value={`${res.t} mm`} label={res.proud > 0 ? `thick, ${res.proud} mm proud of the bump` : "thick, flush with the bump"} />
+                <Stat value={`${res.t} mm`} label={res.proud > 0 ? `thick, ${res.proud} mm above the lenses${res.draft ? `, ${res.draft} mm draft` : ""}` : "thick, level with the lenses"} />
                 <Stat value={`${res.tiG} g`} label="titanium" />
               </Row>
               <Text size="small" tone="tertiary">
@@ -406,7 +407,7 @@ export default function KhensuShell() {
                 STYLE_INFO[sid].name,
                 pid === "iphone-18-pro" ? "iPhone 18 Pro" : "Standard",
                 `${r.footprint[0]} × ${r.footprint[1]}`,
-                r.proud > 0 ? `${r.t} (+${r.proud})` : `${r.t} (flush)`,
+                r.proud > 0 ? `${r.t} (+${r.proud})` : `${r.t} (level)`,
                 r.wh.toFixed(1),
                 `${r.wh.toFixed(0)} h`,
                 `${r.tiG}`,
@@ -415,7 +416,7 @@ export default function KhensuShell() {
           )}
         />
         <Text size="small" tone="tertiary">
-          Source: shell.py CAD output. Cells at 0.45 Wh/cm³ (thin pouch). "+" is height above the camera bump. Relay time assumes about 1 W average for board and radios (an estimate until the board exists); after that the shell runs from the phone over USB-C. Phone dimensions are placeholders until Apple's accessory drawings replace them.
+          Source: shell.py CAD output. Cells at 0.45 Wh/cm³ (thin pouch). "+" is height above the lens rings; "level" means a flat back with no camera bump. The build fails if any style covers a lens, the flash, the depth sensor or the microphone, or clips a field of view. Relay time assumes about 1 W average for board and radios (an estimate until the board exists); after that the shell runs from the phone over USB-C. Phone dimensions are placeholders until Apple's accessory drawings replace them.
         </Text>
       </Stack>
 
@@ -447,7 +448,7 @@ export default function KhensuShell() {
       </Grid>
 
       <Callout tone="warning" title="Three findings from the CAD">
-        Slim shells can't go below about 3.4 mm (film, base, board, skin), so on phones with a low bump they sit up to 0.8 mm proud. A slim shell holds 2–4 Wh, not the 8–10 Wh first estimated; with the board always on, that's a few hours on its own cells before it draws about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour); the card has no plug and stops. Only the XL runs all day on its own. The Pocket-size card fits a 53 mm magnet ring, not the full 56 mm one, and blocks the phone's MagSafe charging while attached.
+        Slim shells finish level with the lens rings, so the back is flat; they can't go below about 3.4 mm (film, base, board, skin). A slim shell holds 2–5 Wh, not the 8–10 Wh first estimated; with the board always on, that's a few hours on its own cells before it draws about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour); the card has no plug and stops. Only the XL runs most of a day (about 11 hours) on its own. The Pocket-size card fits a 53 mm magnet ring, not the full 56 mm one, and blocks the phone's MagSafe charging while attached.
       </Callout>
     </Stack>
   );

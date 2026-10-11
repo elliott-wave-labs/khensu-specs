@@ -124,6 +124,45 @@ The `ambisonics_layout` extension (proposed) records order, normalisation, chann
 - **Export.** "Save to Photos" and "Share outside khensu" write APAC through `AVAssetWriter` with the AAC stereo compatibility track, so Photos and other Apple apps play it as spatial audio. Android and the web get Opus ambisonics in WebM or Ogg, or a binaural AAC render.
 - **Dolby Atmos.** Played through Apple's decoders where it arrives (E-AC-3 JOC), never authored by khensu; authoring needs Dolby's licence. Imported Atmos decodes to channels, so it is carried as a 7.1.4 bed (objects are lost) or sent bit-exact.
 
+### 7.4 Auto spatial for Akashic members (`nu_upmix_v1`)
+
+Proposed 11 Oct 2026, design only; nothing here is built or measured, and every figure is a design target. When an Akashic member plays a track that has no spatial mix (mono or plain stereo, with no `binaural` flag, channel bed or ambisonics), their own device separates the mix into its parts and places them around the listener, live, on the Neural Engine. Apple's chips have no "TPU"; the Neural Engine is the equivalent, and `nu_upmix_v1` is written for it. It isn't Apple's "Spatialize Stereo", which widens the whole stereo image; this places each part of the song.
+
+**Who gets it.** Akashic members only (`PLAN.md`, subscriptions), alongside Akashic's upscaling. The app checks the Akashic entitlement on the device with StoreKit 2's signed transactions; no server is asked, and the network never learns which tracks were upmixed (A6).
+
+**Pipeline, all on the listener's device.**
+
+| Stage | What it does | Runs on |
+| --- | --- | --- |
+| 1. Separate | `nu_sep_v1`, our own separation network, splits the stereo mix into vocals, drums, bass, other instruments and ambience, 44.1 or 48 kHz, in 2-second windows with 0.5 s overlap | Neural Engine (Core ML, 16-bit, convolution only so every layer stays on the Neural Engine) |
+| 2. Keep it whole | Mixture-consistency projection: the five stems are corrected so they sum back to the original stereo, sample for sample to within 16-bit rounding (−90 dBFS) | CPU (Accelerate) |
+| 3. Place | Vocals front centre; bass centre and the low-frequency channel; drums front, 60° wide; other instruments spread to ±70° following their stereo position; ambience to the surrounds and height, decorrelated. The placement table is fixed and published, so the same track always sounds the same | CPU |
+| 4. Encode the scene | Third-order ambisonics (16 channels) or a 7.1.4 bed, held in memory only | CPU |
+| 5. Render | Binaural with head tracking through the spatial renderer in 7.2, using the listener's Personalized Spatial Audio profile; to speakers on a Mac or HomePod | Platform renderer |
+
+**Rules.**
+
+- **Display only (A3).** The upmix is an enhancement outside the bitstream: it is never stored, exported, published, forwarded or fed back into encoding, and nobody receives it but the listener's ears.
+- **The artist decides.** A track's `spatial_policy` extension (proposed) can say `no_auto` and the upmix never runs. Artists own their work (`PLAN.md`, creators); a mix they chose to release in stereo stays stereo if they say so.
+- **Labelled and reversible.** The now-playing screen shows "Auto spatial", and one tap plays the original stereo. Tracks with a real spatial mix always play that mix instead.
+- **Nothing lost.** Because of stage 2, folding the upmix back to stereo gives the original; if the stems fail that check for a window, that window plays as plain stereo.
+- **Offline and private.** The models ship inside the app; no audio, stem, position or head pose leaves the device.
+
+**Akashic artists.** When an Akashic member publishes a stereo track, they can run the same pipeline on their own devices before release, adjust the placement, and publish the result as a real spatial mix (a 7.1.4 bed or third-order ambisonics, 7.1) labelled "auto-mixed". That is Akashic's "one rung above the source" applied to sound. The stereo master is published with it.
+
+**What we must write.** `nu_sep_v1` (the separation network, its training code and its Core ML conversion), the mixture-consistency and placement stages, the scene encoder, and the test harness below. Open separation models such as HTDemucs (MIT) are the comparison point, not the product: their attention layers fall back from the Neural Engine to the GPU, and we need weights trained only on data we hold rights to (11.2).
+
+**Budgets (design targets).** At least 20× real time on an iPhone 17 or M-series Mac, so a 4-minute song is ready in 12 s and playback can start after the first window; added latency under 2.5 s before sound, or immediate stereo that crossfades to spatial once the first windows are ready; under 150 mW extra while playing; model under 40 MB.
+
+**Gates before it ships.**
+
+- Separation quality at least 7 dB SDR (signal-to-distortion ratio) averaged over vocals, drums, bass and other on the MUSDB18-HQ test set (an estimate of what a Neural Engine-sized model can reach; HTDemucs is reported near 9 dB).
+- Stereo fold-down within −90 dBFS of the original on every test track (stage 2).
+- A MUSHRA listening test with at least 20 listeners on AirPods Pro and AirPods Max: auto spatial preferred over the original stereo and over "Spatialize Stereo" on most of a 40-track set across genres, with no track rated worse than stereo by most listeners.
+- Real-time factor, latency, power and size measured on the oldest supported iPhone, against the budgets above.
+
+The ñü.sounds demo on khensu.nu currently uses a plain matrix upmix made with FFmpeg's `surround` filter, not `nu_upmix_v1`; it is replaced once `nu_upmix_v1` passes these gates.
+
 ## 8. Receiver-side enhancement (outside the bitstream)
 
 | Operation | Use | Rule |

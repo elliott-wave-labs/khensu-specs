@@ -791,7 +791,7 @@ Where we're behind and must earn it: a new chain has no track record (QRL has ru
 | Free | $0 | 1:1 and groups, calls, 100 MB attachments, 30-day mailbox history, 3 devices |
 | Pro (formerly Plus) | $4.99/month | 2 GB attachments, encrypted backups, 10 devices, custom icons and themes |
 | Ultra | $200/month | Pro, plus ñü.media Ultra: 4K at 240 fps rebuilt on your own Mac |
-| Akashic | $1,000/month | Ultra, plus Akashic: AI upscaling one rung above the source for everything you publish, on your own devices |
+| Akashic | $1,000/month | Ultra, plus Akashic: AI upscaling one rung above the source for everything you publish, and auto spatial audio for every stereo track you play or publish (`design/nu-audio.md` 7.4), on your own devices |
 | Family | $9.99/month | Plus for 6 people |
 | Business | Per seat | Admin roles, compliance exports done on members' own devices, self-hosted network option |
 

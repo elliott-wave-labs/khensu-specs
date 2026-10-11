@@ -24,6 +24,9 @@ SECONDS = 6
 CLIPS = {
     # 3840 x 2160 landscape; VMAF's 4K model; tiles are 1:1 crops of 960 x 540.
     "aurora": {"rates": [2000, 4000, 8000, 16000], "show": 4000, "model": "vmaf_4k_v0.6.1", "crop": "960:540:1440:420", "row": 3},
+    # NASA's "Aurora Borealis from Space" UHD on YouTube; the best stream is VP9 at about 16 Mbit/s here, so rates stop at 8.
+    "nasa4k": {"rates": [1000, 2000, 4000, 8000], "show": 4000, "model": "vmaf_4k_v0.6.1", "crop": "960:540:1300:1380", "row": 4,
+               "tiles": ["h264-hw", "hevc-hw", "nu-base"]},
     # 720 x 1280 portrait; tiles are 1:1 crops of 360 x 640.
     "reel": {"rates": [250, 500, 1000, 2000], "show": 500, "model": "vmaf_v0.6.1", "crop": "360:640:180:160", "row": 6},
 }
@@ -170,25 +173,26 @@ def bench_clip(name, src, start, phone, root):
         res["grid"]["codecs"][k] = {"actual_kbps": round(kbps(f), 1), "vmaf": round(vmaf(f, full, c["model"], size), 2)}
         print(name, "grid", k, res["grid"]["codecs"][k], flush=True)
 
+    (out / f"results-{name}.json").write_text(json.dumps(res, indent=2))
+
     # Comparison video: the source and each grid encode, 1:1 crops, in rows of c["row"].
-    tiles = [full] + [out / f"{name}-grid-{k}.mp4" for k in GRID]
+    tiles = [full] + [out / f"{name}-grid-{k}.mp4" for k in c.get("tiles", GRID)]
     n = len(tiles)
     chains = []
     for i, t in enumerate(tiles):
         up = f"scale={sw}:{sh}:flags=lanczos," if dims(t) != size else ""
-        chains.append(f"[{i}:v]{up}crop={c['crop']},setpts=PTS-STARTPTS,format=yuv420p[t{i}]")
+        chains.append(f"[{i}:v]{up}crop={c['crop']},setpts=N/(30000/1001)/TB,format=yuv420p[t{i}]")
     per = c["row"]
     rows = []
     for r0 in range(0, n, per):
         ids = "".join(f"[t{i}]" for i in range(r0, min(n, r0 + per)))
-        rows.append(f"{ids}hstack={min(n, r0 + per) - r0}[r{r0}]")
+        rows.append(f"{ids}hstack={min(n, r0 + per) - r0}:shortest=1[r{r0}]")
     tail = "".join(f"[r{r0}]" for r0 in range(0, n, per))
     stack = f"{tail}vstack={len(rows)}[v]" if len(rows) > 1 else f"{tail}null[v]"
     grid = out / f"compare-{name}.mp4"
     ff(*sum((["-i", str(t)] for t in tiles), []), "-filter_complex", ";".join(chains + rows + [stack]), "-map", "[v]",
        "-c:v", "libx264", "-crf", "16", "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(grid))
     ff("-ss", "2", "-i", str(grid), "-frames:v", "1", "-q:v", "3", str(out / f"compare-{name}.jpg"))
-    (out / f"results-{name}.json").write_text(json.dumps(res, indent=2))
     for f in (full, half, *out.glob(f"{name}-grid-*.mp4")):
         f.unlink()
     return res

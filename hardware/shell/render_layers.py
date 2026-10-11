@@ -90,7 +90,9 @@ def phone_body(p):
         btn = (cq.Workplane("XY").box(1.4, length, 2.3).edges("|X").fillet(1.1)
                .translate((p.width / 2 - 0.25, half - from_top - length / 2, zc)))
         body = body.union(btn)
-    plateau = S.outline_solid(S.plateau_outline(p), -1.0, p.bump_z + 1.0).faces(">Z").edges().fillet(0.8)
+    # The plateau rises from the back in a soft slope, not a step.
+    plateau = S.outline_solid(S.plateau_outline(p), -1.0, p.bump_z + 1.0).faces(">Z").edges("<Y").chamfer(3.0, 2.2)
+    plateau = plateau.faces(">Z").edges().fillet(0.6)
     return body.union(plateau), glass, dark
 
 
@@ -249,6 +251,9 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
     area("key", (-0.35, -0.55, 1.0), 320, 2.6e6)
     area("rim", (0.85, 0.55, 0.35), 160, 1.1e6)
     area("fill", (0.6, -0.9, 0.25), 260, 0.5e6)
+    # A small softbox in the mirror direction of the main camera, so flat glass and the lens elements catch a glint.
+    e = Vector(info["eye"])
+    area("glint", (-e.x, -e.y, e.z), 30, 0.045e6)
 
     def ortho_camera(name, v):
         eye, right, up = Vector(v["eye"]), Vector(v["right"]), Vector(v["up"])
@@ -360,9 +365,9 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
     # Materials
     phone_mat = material("phone", metallic=0.8, roughness=0.36, **{"Coat Weight": 0.1, "Coat Roughness": 0.25})
     bezel_mat = material("bezel", (0.045, 0.045, 0.05, 1), 1.0, 0.1)
-    barrel_mat = material("barrel", (0.008, 0.008, 0.009, 1), 0.0, 0.55)
+    barrel_mat = material("barrel", (0.025, 0.025, 0.028, 1), 0.3, 0.38)
     element_mat = material("element", (0.004, 0.004, 0.006, 1), 0.0, 0.025, **{
-        "IOR": 1.8, "Thin Film Thickness": 430.0, "Thin Film IOR": 1.38})
+        "IOR": 2.0, "Thin Film Thickness": 480.0, "Thin Film IOR": 1.38})
     sapphire_mat = material("sapphire", (1, 1, 1, 1), 0.0, 0.0, **{
         "IOR": 1.77, "Transmission Weight": 1.0, "Thin Film Thickness": 140.0, "Thin Film IOR": 1.38})
     flash_mat = material("flash", (0.78, 0.72, 0.52, 1), 0.0, 0.38, **{"Coat Weight": 1.0, "Coat Roughness": 0.05})
@@ -427,6 +432,8 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
             re = 0.55 * r - 0.02
             dome = [(re * math.sin(math.radians(a)), h - 0.95 + 0.33 * math.cos(math.radians(a)) ** 1.5) for a in range(0, 91, 6)]
             lens_parts.append(lathe(f"{name}-element", [*dome, (re, h - 1.1), (0.0, h - 1.1)], x, y, base_z, mat=element_mat))
+            ring = [(0.3 * r, h - 0.62), (0.42 * r, h - 0.62), (0.42 * r, h - 0.66), (0.3 * r, h - 0.66)]
+            lens_parts.append(lathe(f"{name}-aperture", ring, x, y, base_z, mat=bezel_mat))
             glass = [(0.0, h - 0.06), (rin - 0.03, h - 0.06), (rin - 0.03, h - 0.32), (0.0, h - 0.32)]
             lens_parts.append(lathe(f"{name}-sapphire", glass, x, y, base_z, mat=sapphire_mat))
         elif name == "flash":

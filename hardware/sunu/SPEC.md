@@ -1,8 +1,8 @@
-# suñůlink: product specification
+# suñůlink shield: product specification
 
 Revision B, 10 October 2026. **Preliminary.** Phone interface dimensions are placeholders until they are replaced with Apple's Accessory Design Guidelines drawings for each target model. Electrical figures marked *estimate* are to be measured on the first boards.
 
-suñůlink (formerly the khensu shell) is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **The product is the Wrap on iPhone 18 Pro and Pro Max** (iPhone 18 to follow); the other styles stay in the CAD as engineering references. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
+suñůlink shield (formerly the khensu shell) is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **The product is the Wrap on iPhone 18 Pro and Pro Max** (iPhone 18 to follow); the other styles stay in the CAD as engineering references. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
 
 ## 1. Deliverables
 
@@ -144,7 +144,7 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours 
 
 ## 9. Firmware
 
-- **Names:** suñůlink is the display name only. Code, commands, packages and identifiers use the ASCII name `sunu`: the CAD package `hardware/sunu` (`uv run python sunu.py`), the firmware crates `sunu-*`, the `sunu` command on the device and on tatenan nodes, and the accessory identifier `nu.khensu.sunu`.
+- **Names:** suñůlink shield is the display name only. Code, commands, packages and identifiers use the ASCII name `sunu`: the CAD package `hardware/sunu` (`uv run python sunu.py`), the firmware crates `sunu-*`, the `sunu` command on the device and on tatenan nodes, and the accessory identifier `nu.khensu.sunu`.
 
 - **Guard firmware:** open Rust (`no_std`), under 20,000 lines, reproducible builds, ML-DSA-87 secure boot, updates need the release key and the owner's approval; debug fused off. Rules in `design/guard.md` section 5.
 

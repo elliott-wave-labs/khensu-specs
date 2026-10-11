@@ -1,6 +1,6 @@
-# suñůlink: CAD (package `sunu`)
+# suñůlink shield: CAD (package `sunu`)
 
-Parametric CadQuery model of suñůlink, the mesh transceiver and node that attaches to the back of a phone. See `design/mesh.md` section 6 for what it does.
+Parametric CadQuery model of suñůlink shield, the mesh transceiver and node that attaches to the back of a phone. See `design/mesh.md` section 6 for what it does.
 
 ```sh
 uv run python sunu.py      # solids: STEP and STL

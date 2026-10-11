@@ -61,18 +61,18 @@ Phones' built-in satellite features only reach the networks Apple or the carrier
 - **Shape.** A curved, organic shell that fills the back of the phone up to the height of the camera bump, so the back becomes flat and the shell looks like part of the phone. Phones without a camera bump get a full back cover. Held by a MagSafe-compatible magnet ring plus a micro-suction layer.
 - **Styles and battery (from the CAD model in `hardware/shell`).** Cells fill the cavity around the MagSafe ring, the board and the antenna window, at about 0.45 Wh/cm³. Phone dimensions are placeholders until Apple's accessory drawings replace them.
 
-  | Style | Pro phone (camera plateau) | Standard phone (camera island) |
+  | Style | iPhone 18 Pro (long camera plateau) | Standard phone (camera island) |
   | --- | --- | --- |
   | Card (Pocket-size, 56 × 86 × 5.2 mm) | 4.1 Wh, 50 g | 4.1 Wh, 50 g |
-  | Fill (below the bump) | 2.2 Wh, 3.5 mm, flush | 2.0 Wh, 3.4 mm, 0.8 mm proud |
-  | Wrap (whole back around the bump) | 2.8 Wh, 3.5 mm, flush | 3.5 Wh, 3.4 mm, 0.8 mm proud |
-  | Wrap XL (3 mm proud) | 11.4 Wh, 102 g | 13.4 Wh, 123 g |
+  | Fill (below the bump) | 2.1 Wh, 3.4 mm, 0.4 mm proud | 2.0 Wh, 3.4 mm, 0.8 mm proud |
+  | Wrap (whole back around the bump) | 2.7 Wh, 3.4 mm, 0.4 mm proud | 3.5 Wh, 3.4 mm, 0.8 mm proud |
+  | Wrap XL (3 mm proud) | 11.3 Wh, 109 g | 13.4 Wh, 123 g |
 
   The slim styles can't be thinner than about 3.4 mm (suction film, base, board, skin), so on phones with a lower bump they sit slightly proud of it. The board and radios draw roughly 1 W while relaying (estimate), so a slim shell relays for 2–4 hours alone and then falls back to the phone; the XL relays all day.
 - **Power.** The shell runs on its own battery. MagSafe on iPhone only receives power, so the fallback to the phone's battery uses USB-C (iPhone 15 and later can supply about 4.5 W): the fill, wrap and case versions include a USB-C plug. The shell charges from a Qi2 receiver coil on its outer face, like Apple's MagSafe battery, and charges the phone over USB-C. The card has no plug and covers the phone's MagSafe coil, so the phone charges with the card removed.
 - **Radios.** Bluetooth LE and Wi-Fi (to the phone and nearby devices), Wi-Fi HaLow (neighbourhood), optional satellite in the large version.
 - **Board (decided).** One Linux system-on-module, always on while attached, running full node software (tatenan) in a reduced profile, and a guard chip (Guard-M) that owns both radios and enforces fixed packet sizes and the 2 s tick in hardware (`design/guard.md`). The SoM has no radio of its own. The mesh tick stays at 2 s whatever the battery level.
-- **Materials and versions.** Every shell is titanium (Grade 5); there is no aluminium version. Versions: slim, large-capacity, shockproof case and dive case. Titanium blocks radio and wireless charging, so every shell needs antenna windows (like the bands on the phone itself) and a non-metal area over the coil. The dive case protects the phone; radio doesn't travel underwater, so the mesh works only at the surface.
+- **Materials and versions.** Every shell is a titanium battleproof shell (Grade 5) in space gray; there is no aluminium version. Versions: slim, large-capacity, shockproof case and dive case. Titanium blocks radio and wireless charging, so every shell needs antenna windows (like the bands on the phone itself) and a non-metal area over the coil. The dive case protects the phone; radio doesn't travel underwater, so the mesh works only at the surface.
 - **Per-model shells.** One core module (board, radios, battery) with model-specific shells, because every camera bump is different.
 - **Heat.** About 1 W spread over the whole back is a few degrees of rise; charging is the main heat source. A graphite sheet spreads heat from the board and coil across the titanium outer skin, and above a 41 °C skin temperature or when the phone reports thermal pressure the shell cuts its charging rate first, then pauses optional work (cache serving, committee duty). The 2 s tick and cover never change. It never charges the phone and itself at full rate at once.
 

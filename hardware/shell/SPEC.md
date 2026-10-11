@@ -22,10 +22,10 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 | Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass (titanium) | Attachment | Drawings |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Card | Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-PRO-PLATEAU-CARD-100/101 |
-| Fill | Pro | 65.9 × 101.4 | 3.5 (flush) | 2.2 Wh | 47 g | Magnets and suction | KS-PRO-PLATEAU-FILL-100/101 |
-| Wrap | Pro | 71.1 × 105.0 | 3.5 (flush) | 2.8 Wh | 54 g | Magnets and suction | KS-PRO-PLATEAU-WRAP-100/101 |
-| Wrap XL | Pro | 71.1 × 105.0 | 6.5 (+3.0) | 11.4 Wh | 102 g | Magnets and suction | KS-PRO-PLATEAU-WRAP-XL-100/101 |
+| Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
+| Fill | iPhone 18 Pro | 65.9 × 101.9 | 3.4 (+0.4) | 2.1 Wh | 47 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
+| Wrap | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out | 3.4 (+0.4) | 2.7 Wh | 58 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
+| Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out | 6.4 (+3.4) | 11.3 Wh | 109 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
 | Fill | Standard | 65.5 × 100.5 | 3.4 (+0.8) | 2.0 Wh | 46 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
 | Wrap | Standard | 70.7 × 146.8 | 3.4 (+0.8) | 3.5 Wh | 65 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
@@ -40,7 +40,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
-| Housing | Ti-6Al-4V Grade 5 titanium (only material) | 5-axis CNC; bead blast and PVD | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
+| Housing | Ti-6Al-4V Grade 5 titanium (only material), "titanium battleproof shell" | 5-axis CNC; bead blast and space gray PVD | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
 | Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Ø46 over the coil (skin only); 42 mm strip along the bottom edge (skin and wall) for the antennas |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
 | Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |
@@ -78,7 +78,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
-At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–4 hours on its own cells, the card about 3.5 hours, the Pro XL about 10 hours and the standard XL about 14 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
+At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–3 hours on its own cells, the card about 3.5 hours, the iPhone 18 Pro XL about 10 hours and the standard XL about 11 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
 
 ## 5. Radios and network
 
@@ -137,7 +137,7 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–4 hour
 
 ## 10. Open items
 
-1. Replace placeholder phone dimensions with Apple's accessory drawings for the first models (current Pro and standard iPhones) and regenerate.
+1. Replace placeholder phone dimensions with Apple's accessory drawings for the first models (iPhone 18 Pro first, then standard iPhones) and regenerate.
 2. Base plate retention: PSA perimeter bond now; decide whether to add a 0.3 mm ledge in the housing for location.
 3. Cell supplier for 1.7–1.8 mm custom pouch cells in the slim cavity shape, with a minimum-thickness check.
 4. Magnet array: MagSafe-compatible pole pattern and the 53 mm ring in the card; verify hold on target phones.

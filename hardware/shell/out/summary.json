@@ -25,17 +25,17 @@
   "phones": [
     {
       "phone": {
-        "name": "pro-plateau",
+        "name": "iphone-18-pro",
         "width": 71.9,
         "height": 150.0,
         "depth": 8.75,
         "corner_r": 10.0,
-        "bump_x0": 0.0,
-        "bump_y0": 0.0,
-        "bump_w": 71.9,
-        "bump_h": 44.0,
-        "bump_r": 10.0,
-        "bump_z": 3.5,
+        "bump_x0": 3.5,
+        "bump_y0": 3.5,
+        "bump_w": 64.9,
+        "bump_h": 40.0,
+        "bump_r": 8.0,
+        "bump_z": 3.0,
         "magsafe_y": -5.0
       },
       "styles": [
@@ -47,14 +47,14 @@
             86.0
           ],
           "thickness_mm": 5.2,
-          "battery_cm3": 9.19,
+          "battery_cm3": 9.2,
           "battery_wh": 4.1,
           "housing_cm3": 2.76,
           "usb_c_to_phone": false,
           "magnet_ring_od_mm": 53.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
-          "proud_of_bump_mm": 1.7,
+          "proud_of_bump_mm": 2.2,
           "mass_g_titanium": 50.0
         },
         {
@@ -62,17 +62,17 @@
           "description": "Fills the space below the camera bump, flush with it",
           "footprint_mm": [
             65.9,
-            101.4
+            101.9
           ],
-          "thickness_mm": 3.5,
-          "battery_cm3": 4.92,
-          "battery_wh": 2.2,
-          "housing_cm3": 3.81,
+          "thickness_mm": 3.4,
+          "battery_cm3": 4.71,
+          "battery_wh": 2.1,
+          "housing_cm3": 3.8,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
-          "proud_of_bump_mm": 0.0,
+          "proud_of_bump_mm": 0.4,
           "mass_g_titanium": 47.0
         },
         {
@@ -80,36 +80,36 @@
           "description": "Whole back around the camera bump, flush with it",
           "footprint_mm": [
             71.1,
-            105.0
+            149.2
           ],
-          "thickness_mm": 3.5,
-          "battery_cm3": 6.26,
-          "battery_wh": 2.8,
-          "housing_cm3": 4.4,
+          "thickness_mm": 3.4,
+          "battery_cm3": 6.04,
+          "battery_wh": 2.7,
+          "housing_cm3": 5.28,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
-          "proud_of_bump_mm": 0.0,
-          "mass_g_titanium": 54.0
+          "proud_of_bump_mm": 0.4,
+          "mass_g_titanium": 58.0
         },
         {
           "style": "wrap-xl",
           "description": "Large-capacity wrap, 3 mm proud of the bump",
           "footprint_mm": [
             71.1,
-            105.0
+            149.2
           ],
-          "thickness_mm": 6.5,
-          "battery_cm3": 25.34,
-          "battery_wh": 11.4,
-          "housing_cm3": 5.3,
+          "thickness_mm": 6.4,
+          "battery_cm3": 25.07,
+          "battery_wh": 11.3,
+          "housing_cm3": 7.02,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
-          "proud_of_bump_mm": 3.0,
-          "mass_g_titanium": 102.0
+          "proud_of_bump_mm": 3.4,
+          "mass_g_titanium": 109.0
         }
       ]
     },

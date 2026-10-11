@@ -21,7 +21,7 @@ import {
 
 // Geometry and results mirror hardware/shell/shell.py and out/summary.json (khensu-specs).
 
-type PhoneId = "pro-plateau" | "island";
+type PhoneId = "iphone-18-pro" | "island";
 type StyleId = "card" | "fill" | "wrap" | "wrap-xl" | "case";
 
 type Phone = {
@@ -36,11 +36,11 @@ type Phone = {
 };
 
 const PHONES: Record<PhoneId, Phone> = {
-  "pro-plateau": {
-    id: "pro-plateau",
-    label: "Pro phone, camera plateau",
+  "iphone-18-pro": {
+    id: "iphone-18-pro",
+    label: "iPhone 18 Pro, long camera plateau",
     w: 71.9, h: 150.0, depth: 8.75, r: 10,
-    bump: { x0: 0, y0: 0, w: 71.9, h: 44, r: 10, z: 3.5 },
+    bump: { x0: 3.5, y0: 3.5, w: 64.9, h: 40, r: 8, z: 3.0 },
     magsafeY: -5,
   },
   island: {
@@ -70,11 +70,11 @@ type Result = {
 };
 
 const RESULTS: Record<PhoneId, Record<Exclude<StyleId, "case">, Result>> = {
-  "pro-plateau": {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.19, tiG: 50, proud: 1.7, usb: false, ring: 53 },
-    fill: { footprint: [65.9, 101.4], t: 3.5, wh: 2.2, cm3: 4.92, tiG: 47, proud: 0, usb: true, ring: 56 },
-    wrap: { footprint: [71.1, 105.0], t: 3.5, wh: 2.8, cm3: 6.26, tiG: 54, proud: 0, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [71.1, 105.0], t: 6.5, wh: 11.4, cm3: 25.34, tiG: 102, proud: 3.0, usb: true, ring: 56 },
+  "iphone-18-pro": {
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.2, tiG: 50, proud: 2.2, usb: false, ring: 53 },
+    fill: { footprint: [65.9, 101.9], t: 3.4, wh: 2.1, cm3: 4.71, tiG: 47, proud: 0.4, usb: true, ring: 56 },
+    wrap: { footprint: [71.1, 149.2], t: 3.4, wh: 2.7, cm3: 6.04, tiG: 58, proud: 0.4, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [71.1, 149.2], t: 6.4, wh: 11.3, cm3: 25.07, tiG: 109, proud: 3.4, usb: true, ring: 56 },
   },
   island: {
     card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, tiG: 50, proud: 2.6, usb: false, ring: 53 },
@@ -123,7 +123,7 @@ function outline(p: Phone, s: StyleId): Rect[] {
     return [{ cx: 0, cy: (bb + bot) / 2, w: p.w - 6, h: bb - bot, r: p.r - 3 }];
   }
   if (s === "case") return [{ cx: 0, cy: 0, w: p.w + 3.2, h: p.h + 3.2, r: p.r + 1.6 }, { ...cut, w: b.w + 1.6, h: b.h + 1.6, r: b.r + 0.8 }];
-  if (p.bump.w >= p.w - 2 * p.r) {
+  if (p.bump.w + 2 * B.gap >= p.w - 2 * B.inset - 2 * B.wall) {
     const bot = -p.h / 2 + B.inset;
     return [{ cx: 0, cy: (bb + bot) / 2, w: p.w - 2 * B.inset, h: bb - bot, r: 1 }];
   }
@@ -305,7 +305,7 @@ function Legend() {
 
 export default function KhensuShell() {
   const t = useHostTheme();
-  const [phoneId, setPhoneId] = useCanvasState<PhoneId>("phone", "pro-plateau");
+  const [phoneId, setPhoneId] = useCanvasState<PhoneId>("phone", "iphone-18-pro");
   const [style, setStyle] = useCanvasState<StyleId>("style", "wrap");
   const [showInternals, setShowInternals] = useCanvasState<boolean>("internals", true);
   const phone = PHONES[phoneId];
@@ -404,7 +404,7 @@ export default function KhensuShell() {
               const r = RESULTS[pid][sid];
               return [
                 STYLE_INFO[sid].name,
-                pid === "pro-plateau" ? "Pro" : "Standard",
+                pid === "iphone-18-pro" ? "iPhone 18 Pro" : "Standard",
                 `${r.footprint[0]} × ${r.footprint[1]}`,
                 r.proud > 0 ? `${r.t} (+${r.proud})` : `${r.t} (flush)`,
                 r.wh.toFixed(1),

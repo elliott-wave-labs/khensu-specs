@@ -51,8 +51,9 @@ class Phone:
 
 
 PHONES = [
-    # Pro-size phone with a full-width camera plateau across the top.
-    Phone("pro-plateau", 71.9, 150.0, 8.75, 10.0, 0.0, 0.0, 71.9, 44.0, 10.0, 3.5, -5.0),
+    # iPhone 18 Pro: a long camera plateau across the top, inset from the edges, so the wrap frames it.
+    # Placeholder geometry until Apple's accessory drawings replace it.
+    Phone("iphone-18-pro", 71.9, 150.0, 8.75, 10.0, 3.5, 3.5, 64.9, 40.0, 8.0, 3.0, -5.0),
     # Standard-size phone with a square camera island at the top left.
     Phone("island", 71.5, 147.6, 7.8, 10.0, 4.5, 4.5, 38.0, 38.0, 8.0, 2.6, 0.0),
 ]
@@ -147,7 +148,7 @@ def styles_for(p: Phone) -> list[Style]:
     fill = fill.cut(bump_cut)
 
     # Wrap: the whole back around the bump, flush with the bump height.
-    if bw >= p.width - 2 * p.corner_r:
+    if bw + 2 * B.gap >= p.width - 2 * B.edge_inset - 2 * B.wall:
         # Full-width plateau: everything below it, with square top corners against the straight phone sides.
         bot = -p.height / 2 + B.edge_inset
         h = bottom_of_bump - bot

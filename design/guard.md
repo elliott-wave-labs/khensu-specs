@@ -91,7 +91,7 @@ The rules live in guard firmware and a signed parameter set. The SoM can't chang
 ## 7. Verification by the owner
 
 - The guard keeps counters per link: frames sent, padded, filled from the pool, filled with random bytes, dropped (oversize, wrong destination, queue full). The paired app shows them.
-- A radio capture of a device, idle or busy, must show the same pattern. This is part of the hardware test plan (`hardware/shell/SPEC.md` section 8) and of certification for any third-party khensu hardware.
+- A radio capture of a device, idle or busy, must show the same pattern. This is part of the hardware test plan (`hardware/sunu/SPEC.md` section 8) and of certification for any third-party khensu hardware.
 - The guard signs a short attestation (firmware hash, parameter-set epoch, counters) that the app checks against the transparency log.
 
 ## 8. Cost

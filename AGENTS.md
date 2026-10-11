@@ -22,6 +22,7 @@ Post-quantum private messenger on a decentralized operator network. `PLAN.md` is
 - All messages go through the mixnet; only calls use two relays run by different operators.
 - Nothing is processed on servers: no Siri, no Private Cloud Compute, no Writing Tools in the composer, no iCloud.
 - Minimum iOS, iPadOS and macOS 26. Stock Liquid Glass chrome only (see the App design section of `PLAN.md`).
+- The hardware transceiver is shown as suñůlink; code, commands, packages and identifiers use `sunu` (`hardware/sunu`, `nu.khensu.sunu`).
 - Permanent handles are `name.khensu.nu`, resolved from the key transparency log over the mixnet.
 - Apple Team ID `LHS49D8RYY`. Licences: `khensu-core` Apache-2.0, `khensu-specs` CC BY 4.0, all other repos AGPL-3.0, CLA for outside contributors.
 - Every component gets a full design doc and a patent assessment (`PATENTS.md`) once built, before any repo goes public.

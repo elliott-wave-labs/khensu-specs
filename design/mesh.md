@@ -59,7 +59,7 @@ Phones' built-in satellite features only reach the networks Apple or the carrier
 ## 6. Hardware: the khensu shell
 
 - **Shape.** A curved, organic shell that fills the back of the phone up to the height of the camera bump, so the back becomes flat and the shell looks like part of the phone. Phones without a camera bump get a full back cover. Held by a MagSafe-compatible magnet ring plus a micro-suction layer.
-- **Styles and battery (from the CAD model in `hardware/shell`).** Cells fill the cavity around the MagSafe ring, the board and the antenna window, at about 0.45 Wh/cm³. Phone dimensions are placeholders until Apple's accessory drawings replace them.
+- **Styles and battery (from the CAD model in `hardware/sunu`).** Cells fill the cavity around the MagSafe ring, the board and the antenna window, at about 0.45 Wh/cm³. Phone dimensions are placeholders until Apple's accessory drawings replace them.
 
   | Style | iPhone 18 Pro (long camera plateau) | Standard phone (camera island) |
   | --- | --- | --- |

@@ -19,7 +19,7 @@ import {
   useHostTheme,
 } from "cursor/canvas";
 
-// Geometry and results mirror hardware/shell/shell.py and out/summary.json (khensu-specs).
+// Geometry and results mirror hardware/sunu/sunu.py and out/summary.json (khensu-specs).
 
 type PhoneId = "iphone-18-pro" | "island";
 type StyleId = "card" | "fill" | "wrap" | "wrap-xl" | "case";
@@ -317,7 +317,7 @@ export default function KhensuShell() {
       <Stack gap={6}>
         <H1>khensu shell: attachment styles</H1>
         <Text tone="secondary">
-          A mesh node on the back of the phone: HaLow radio for the neighbourhood mesh, Wi-Fi and Bluetooth to the phone, its own battery, and fallback power from the phone over USB-C. Every drawing is to scale and generated from the same parametric CAD (<Code>khensu-specs/hardware/shell/shell.py</Code>), which exports STEP and STL for CNC and tooling.
+          A mesh node on the back of the phone: HaLow radio for the neighbourhood mesh, Wi-Fi and Bluetooth to the phone, its own battery, and fallback power from the phone over USB-C. Every drawing is to scale and generated from the same parametric CAD (<Code>khensu-specs/hardware/sunu/sunu.py</Code>), which exports STEP and STL for CNC and tooling.
         </Text>
       </Stack>
 
@@ -416,7 +416,7 @@ export default function KhensuShell() {
           )}
         />
         <Text size="small" tone="tertiary">
-          Source: shell.py CAD output. Cells at 0.45 Wh/cm³ (thin pouch). "+" is height above the lens rings; "level" means a flat back with no camera bump. The build fails if any style covers a lens, the flash, the depth sensor or the microphone, or clips a field of view. Relay time assumes about 1 W average for board and radios (an estimate until the board exists); after that the shell runs from the phone over USB-C. Phone dimensions are placeholders until Apple's accessory drawings replace them.
+          Source: sunu.py CAD output. Cells at 0.45 Wh/cm³ (thin pouch). "+" is height above the lens rings; "level" means a flat back with no camera bump. The build fails if any style covers a lens, the flash, the depth sensor or the microphone, or clips a field of view. Relay time assumes about 1 W average for board and radios (an estimate until the board exists); after that the shell runs from the phone over USB-C. Phone dimensions are placeholders until Apple's accessory drawings replace them.
         </Text>
       </Stack>
 

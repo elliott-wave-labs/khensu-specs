@@ -1,4 +1,4 @@
-# Provisional patent application (draft for filing): SunuLink transceiver shell
+# Provisional patent application (draft for filing): suñůlink transceiver shell
 
 Draft 1, 10 October 2026. **Confidential until filed.** Prepared for filing as a US provisional application through USPTO Patent Center. Patent counsel should review before the non-provisional or PCT filing, which must follow within 12 months of the provisional filing date.
 

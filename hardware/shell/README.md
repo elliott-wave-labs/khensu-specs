@@ -43,7 +43,7 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 - Machine the housing from the outside first (5-axis, or two 3-axis setups), then pocket the cavity. 0.7 mm skin over 60 × 100 mm needs a vacuum fixture or a sacrificial support; 0.8–1.0 mm is safer for a first article.
 - **Metal blocks radio and wireless charging.** Titanium blocks both, so cut the skin over `coil` and along `antenna_keepout` into windows filled with PC or glass-filled nylon (insert-moulded or bonded), like the bands on a phone frame. Keep at least 40 mm of non-metal length along the bottom edge for the sub-GHz antenna.
 - Inside corner radii in the model are at least 0.5 mm; use a 1 mm end mill for the cavity and leave 0.2 mm radii only where the CAM can reach.
-- Bead-blast and PVD the titanium in the colour matching the phone's finish. Mask the inside where the graphite sheet bonds.
+- Titanium: bead-blast, then matte powder coat in the colour matching the phone's finish. Brass (C26000): bead-blast and leave bare. Mask the inside where the graphite sheet bonds.
 - Tolerances for a first article: ±0.05 mm on the outline and bump cutout, ±0.1 mm elsewhere. Bump clearance is 0.6 mm per side.
 
 ## Mould notes (silicone shock case)

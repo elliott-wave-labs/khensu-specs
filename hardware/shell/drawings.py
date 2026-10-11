@@ -326,6 +326,8 @@ HOUSING_NOTES = [
     "WINDOWS FILLED WITH ITEM 2 (PC), FLUSH TO SKIN WITHIN 0.02.",
     "MASK INTERNAL SKIN FOR GRAPHITE SHEET BOND (ITEM 9). NO BURRS AT USB-C OPENING.",
     "KEEP 40 MM NON-METAL ALONG BOTTOM EDGE (HALOW ANTENNA). NO METAL OVER COIL WINDOW.",
+    "TI: MATTE POWDER COAT 60-80 UM ON OUTER FACES ONLY; MACHINE FACE 0.07 LOW SO COATED FACE IS LEVEL WITH LENS RINGS.",
+    "BRASS: C26000 LEAD-FREE, NO LACQUER OR COATING ON OUTER FACES (KEEPS SURFACE ANTIMICROBIAL).",
 ]
 
 ASSEMBLY_NOTES = [
@@ -347,7 +349,7 @@ CASE_NOTES = [
 
 BOM = [
     # item, part key, description, material / spec, process
-    (1, "housing", "HOUSING", "TI-6AL-4V GR5", "CNC, SEE -101"),
+    (1, "housing", "HOUSING", "TI-6AL-4V GR5 OR C26000 BRASS", "CNC, SEE -101"),
     (2, "window_inserts", "RADIO / COIL WINDOWS", "PC, UL94 V-0, COLOUR MATCHED", "INSERT MOULD OR BOND"),
     (3, "base", "BASE PLATE 0.6", "PC-GF30", "MOULD OR CNC"),
     (4, "suction_film", "MICRO-SUCTION FILM 0.3", "NANO-SUCTION PU", "DIE CUT"),
@@ -361,7 +363,7 @@ BOM = [
 
 
 def mass_str(parts: dict, density: float) -> str:
-    return f"{S.mass_g(parts, density):.0f} G (AL)"
+    return f"{S.mass_g(parts, density):.0f} G (TI) / {S.mass_g(parts, S.DENSITY['brass']):.0f} G (BRASS)"
 
 
 def housing_sheet(p: S.Phone, s: S.Style, parts: dict, dwg: str, sheet: str) -> ezdxf.document.Drawing:
@@ -459,9 +461,11 @@ def housing_sheet(p: S.Phone, s: S.Style, parts: dict, dwg: str, sheet: str) -> 
     sheet_frame(msp, TitleInfo(
         title=f"{S.STYLE_TITLES[s.name].upper()} - {p.name.upper()}",
         subtitle="KHENSU SHELL - HOUSING",
-        dwg_no=dwg, material="TI-6AL-4V GR5",
-        finish="BEAD BLAST, PVD COLOUR-MATCHED TO PHONE",
-        scale="1:1", mass=f"{S.volume_cm3(parts['housing']) * S.DENSITY['ti_gr5']:.1f} G", sheet=sheet,
+        dwg_no=dwg, material="TI-6AL-4V GR5 OR C26000 BRASS",
+        finish="TI: MATTE POWDER COAT, COLOUR-MATCHED. BRASS: BEAD BLAST, BARE",
+        scale="1:1",
+        mass=f"{S.volume_cm3(parts['housing']) * S.DENSITY['ti_gr5']:.1f} G TI / {S.volume_cm3(parts['housing']) * S.DENSITY['brass']:.1f} G BRASS",
+        sheet=sheet,
     ), HOUSING_NOTES)
     return doc
 

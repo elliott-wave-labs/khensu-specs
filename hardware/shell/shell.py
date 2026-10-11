@@ -395,6 +395,7 @@ def phone_reference(p: Phone) -> cq.Workplane:
 
 DENSITY = {  # g/cm3
     "ti_gr5": 4.43,
+    "brass": 8.53,  # C26000 cartridge brass, 70/30, lead-free
     "base": 1.45,  # 30% glass-filled PC
     "window_inserts": 1.2,  # PC
     "battery": 2.3,  # pouch cell
@@ -464,6 +465,7 @@ def main() -> None:
                 "camera_draft_mm": round(camera_draft(p, s.thickness) if s.name != "card" else 0.0, 2),
                 "sensor_margin_mm": round(margin, 2) if math.isfinite(margin) else None,
                 "mass_g_titanium": round(mass_g(parts, DENSITY["ti_gr5"]), 0),
+                "mass_g_brass": round(mass_g(parts, DENSITY["brass"]), 0),
             })
             if s.name == "wrap":
                 export(build_case(p, s.thickness), OUT / p.name / "case-silicone" / "case")
@@ -473,7 +475,7 @@ def main() -> None:
         print(e["phone"]["name"])
         for s in e["styles"]:
             print(f"  {s['style']:8} {s['footprint_mm']} x {s['thickness_mm']} mm  battery {s['battery_wh']} Wh  "
-                  f"{s['mass_g_titanium']:.0f} g  draft {s['camera_draft_mm']} mm  sensor margin {s['sensor_margin_mm']} mm")
+                  f"{s['mass_g_titanium']:.0f} g Ti / {s['mass_g_brass']:.0f} g brass  draft {s['camera_draft_mm']} mm  sensor margin {s['sensor_margin_mm']} mm")
 
 
 if __name__ == "__main__":

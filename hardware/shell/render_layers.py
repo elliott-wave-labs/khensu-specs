@@ -55,9 +55,11 @@ PHONE_COLOURS = {
     "black": (46, 47, 51),
 }
 DEFAULT_COLOUR = "burgundy"
-# The titanium shell is finished to match each phone (PVD on bead-blasted Grade 5), a touch deeper
-# and more metallic than the phone's aluminium so the seam reads.
+# The titanium shell is matte powder coat matched to each phone, a touch deeper than the phone's
+# aluminium so the seam reads. Brass is bare C26000 with a satin bead-blast.
 SHELL_COLOURS = {c: tuple(int(ch * 0.9) for ch in rgb) for c, rgb in PHONE_COLOURS.items()}
+MATTE = (0.05, 6)  # specular strength, shininess: powder coat has almost no highlight
+BRASS = ((181, 146, 88), 0.32, 16, 255)
 
 LAYERS = ["phone", "suction_film", "base", "magnet_ring", "pcb", "battery", "coil", "window_inserts", "housing"]
 
@@ -97,6 +99,14 @@ def shade(n: np.ndarray, mat) -> tuple[int, int, int, int]:
     spec = ks * max(0.0, float(n @ h)) ** shin
     c = [min(255, int(ch * diff + 255 * spec)) for ch in rgb]
     return (*c, alpha)
+
+
+def grain(img: Image.Image, amount: float = 7.0, seed: int = 1) -> Image.Image:
+    """Fine speckle on opaque pixels: the texture of powder coat or bead blast."""
+    a = np.asarray(img).astype(np.float32)
+    noise = np.random.default_rng(seed).normal(0, amount, a.shape[:2])[..., None]
+    a[..., :3] = np.clip(a[..., :3] + noise * (a[..., 3:4] > 0), 0, 255)
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
 
 
 def render(shapes: list[tuple[cq.Shape, str]], scale: float, center: np.ndarray) -> Image.Image:
@@ -142,13 +152,16 @@ def main(out: Path):
     images = {}
     for colour, rgb in PHONE_COLOURS.items():
         MATERIALS[f"phone_{colour}"] = (rgb, 0.4, 40, 255)
-        MATERIALS[f"housing_{colour}"] = (SHELL_COLOURS[colour], 0.7, 45, 255)
-        img = render([(sol, f"housing_{colour}") for sol in parts["housing"].solids().vals()], scale, center)
-        img.save(out / f"housing_{colour}.png", optimize=True)
-        images[f"housing_{colour}"] = img
+        MATERIALS[f"housing_{colour}"] = (SHELL_COLOURS[colour], *MATTE, 255)
         img = render([(body, f"phone_{colour}"), (lenses, "bezel"), (glass, "lens"), (small, "flash")], scale, center)
         img.save(out / f"phone_{colour}.png", optimize=True)
         images[f"phone_{colour}"] = img
+    MATERIALS["housing_brass"] = BRASS
+    for finish in [*PHONE_COLOURS, "brass"]:
+        img = render([(sol, f"housing_{finish}") for sol in parts["housing"].solids().vals()], scale, center)
+        img = grain(img, 7.0 if finish != "brass" else 4.0)
+        img.save(out / f"housing_{finish}.png", optimize=True)
+        images[f"housing_{finish}"] = img
     for name in LAYERS:
         if name in ("phone", "housing"):
             img = images[f"{name}_{DEFAULT_COLOUR}"]
@@ -166,13 +179,14 @@ def main(out: Path):
     camera.save(out / "camera.png", optimize=True)
     # Flattened assemblies, one per colour (shell matched to phone), for the colour picker.
     for colour in PHONE_COLOURS:
-        flat = images[f"phone_{colour}"].copy()
-        for name in LAYERS[1:-1]:
-            if name in images:
-                flat.alpha_composite(images[name])
-        flat.alpha_composite(images[f"housing_{colour}"])
-        flat.alpha_composite(camera)
-        flat.save(out / f"assembled_{colour}.png", optimize=True)
+        for shell, suffix in ((colour, ""), ("brass", "_brass")):
+            flat = images[f"phone_{colour}"].copy()
+            for name in LAYERS[1:-1]:
+                if name in images:
+                    flat.alpha_composite(images[name])
+            flat.alpha_composite(images[f"housing_{shell}"])
+            flat.alpha_composite(camera)
+            flat.save(out / f"assembled_{colour}{suffix}.png", optimize=True)
     # soft contact shadow under the phone
     sh = Image.new("L", (SIZE, SIZE), 0)
     d = ImageDraw.Draw(sh)

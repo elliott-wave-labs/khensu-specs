@@ -40,7 +40,8 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
-| Housing | Ti-6Al-4V Grade 5 titanium (only material), "titanium battleproof shell" | 5-axis CNC; bead blast and PVD colour-matched to the phone finish (Burgundy, Glacier, Silver, Black for iPhone 18 Pro) | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
+| Housing (titanium) | Ti-6Al-4V Grade 5, "titanium battleproof shell" | 5-axis CNC; bead blast, then matte powder coat 60–80 µm on the outer faces, colour-matched to the phone finish (Burgundy, Glacier, Silver, Black for iPhone 18 Pro). Matte so it doesn't show fingerprints. Mask the inside, the windows and the phone side; machine the face 0.07 mm low so the coated face is level with the lens rings | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
+| Housing (brass) | C26000 cartridge brass (70% copper, 30% zinc, lead-free, no nickel) | 5-axis CNC; bead blast to satin and leave bare. No lacquer or coating, which would stop the copper working on germs. It darkens to a natural patina; it cannot rust (no iron) | About 1.9× the titanium housing mass (wrap 98 g against 74 g). Copper alloys of at least 60% copper are registered with the US EPA as antimicrobial; product claims need the registered alloy, approved wording, and regulatory review before launch |
 | Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Ø46 over the coil (skin only); 42 mm strip along the bottom edge (skin and wall) for the antennas |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
 | Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |

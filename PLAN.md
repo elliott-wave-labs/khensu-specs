@@ -252,6 +252,15 @@ Telegram's appeal is its features, not its security: ordinary chats and all grou
 
 Beyond Telegram: everything above is end-to-end encrypted and post-quantum by default, metadata is hidden by the mixnet, no phone number is needed, wallet and ENS links, creator tipping in live rooms, AR spaces from MOQOM ([ar-space guide](sites/moqom-dev/src/content/docs/guides/ar-space.md)), on-device AI summaries, and anyone can earn by running a node.
 
+**Edit, undo send and delete (decided 11 Oct 2026).** All three are encrypted control messages inside the ticks, signed like any message, so nodes can't tell them from ordinary traffic.
+
+- **Grace period.** Each message gets its own random grace period of 2 to 5 minutes, drawn on the sender's device and never sent, so an observer can't predict when deletions become archives.
+- **Undo send.** Within the grace period, Undo Send removes the message from every recipient's device and crypto-erases it, as if it was never sent. Messages still waiting in the sender's tick queue are dropped before they leave. After the grace period, Undo Send becomes Delete.
+- **Edit.** Allowed at any time. Recipients see "Edited", and the previous versions stay in the message's history, which anyone in the chat can open. Edits within the grace period replace the text without leaving a history.
+- **Delete.** After the grace period, Delete removes the message from the chat for everyone but keeps it, with its edit history, in the chat's Archived messages on each member's device, marked "Deleted by Ana". Nobody can silently rewrite what they said once others had time to read it.
+- **What still erases archives.** The chat's disappearing-message timer, leaving or deleting the chat, account deletion, and the panic wipe. Archives count as message content: encrypted at rest, never backed up unless backups are on, excluded from Per-Ankh memory once deleted.
+- **Honest limits.** A recipient's device that has been modified can ignore Undo Send, and anyone can screenshot. The app says "Removed from their devices if they haven't saved it" rather than promising otherwise. Details in `OPEN-QUESTIONS.md` 90.
+
 What we won't copy: sponsored messages in channels, server-side access to chats, and tradeable usernames.
 
 ## What exists and what has to change

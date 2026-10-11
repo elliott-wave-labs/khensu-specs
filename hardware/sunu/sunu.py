@@ -64,17 +64,18 @@ class Phone:
 
 
 PHONES = [
-    # iPhone 18 Pro: an aluminium camera plateau across the full width of the top, as on apple.com.
-    # Placeholder geometry until Apple's accessory drawings replace it.
+    # iPhone 18 Pro: an aluminium camera plateau across the full width of the top. Measured from the
+    # AR model on apple.com/iphone-18-pro (11 Oct 2026); Apple's accessory drawings take precedence.
+    # Lens radius is the outer ring (16.57 mm across), so openings clear the rings, not just the glass.
     Phone(
-        "iphone-18-pro", 71.9, 150.0, 8.75, 10.0, 0.0, 0.0, 71.9, 43.0, 10.0, 2.0, -5.0, lens_z=4.2,
+        "iphone-18-pro", 71.78, 149.96, 8.62, 12.5, 0.0, 0.0, 71.78, 43.1, 12.5, 2.78, -5.0, lens_z=4.68,
         sensors=(
-            ("wide", 14.7, 14.7, 7.6, 4.2, 42.0),
-            ("ultra wide", 14.7, 32.3, 7.6, 4.2, 60.0),
-            ("telephoto", 29.9, 23.5, 7.6, 4.2, 20.0),
-            ("flash", 58.0, 15.5, 2.8, 2.0, 60.0),
-            ("lidar", 58.0, 31.5, 3.6, 2.0, 40.0),
-            ("microphone", 63.9, 23.5, 0.6, 2.0, 0.0),
+            ("wide", 14.35, 14.36, 8.29, 4.68, 42.0),
+            ("ultra wide", 14.35, 33.6, 8.29, 4.68, 60.0),
+            ("telephoto", 32.45, 23.98, 8.29, 4.68, 20.0),
+            ("flash", 57.97, 13.82, 3.37, 2.78, 60.0),
+            ("lidar", 57.97, 34.15, 3.35, 2.78, 40.0),
+            ("microphone", 57.97, 23.98, 0.38, 2.78, 0.0),
         ),
     ),
     # Standard-size phone with a square camera island at the top left.
@@ -450,15 +451,15 @@ class Armor:
 
 A = Armor()
 
-# Side controls, placeholder positions until Apple's accessory drawings: (side, centre from the top, length).
+# Side controls, measured from Apple's AR model: (side, centre from the top, length).
 # Back coordinates: +x is the phone's left edge seen from the front.
 CONTROLS = {
     "iphone-18-pro": (
-        ("+x", 33.0, 6.5),  # Action button
-        ("+x", 47.0, 10.0),  # volume up
-        ("+x", 60.0, 10.0),  # volume down
-        ("-x", 43.0, 17.0),  # side button
-        ("-x", 103.0, 19.0),  # Camera Control: pressed and slid, so its opening stays fully open
+        ("+x", 34.27, 6.92),  # Action button
+        ("+x", 48.42, 11.21),  # volume up
+        ("+x", 62.61, 11.22),  # volume down
+        ("-x", 55.52, 17.71),  # side button
+        ("-x", 98.37, 17.12),  # Camera Control: pressed and slid, so its opening stays fully open
     ),
 }
 

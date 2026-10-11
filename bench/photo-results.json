@@ -1,0 +1,36 @@
+{
+  "size": "2622x1206",
+  "vmaf_model": "vmaf_v0.6.1",
+  "source": "Digital Abstract Network Grid Over the Earth. Artificial Intelligence Neural Network Growing and Covering Planet Beautiful View from Space. Modern Business and Technology Concept 4K stock video.mov",
+  "start": 4.0,
+  "jpeg": {
+    "bytes": 1032613,
+    "vmaf": 95.61,
+    "settings": "ImageIO quality 0.85"
+  },
+  "heic": {
+    "bytes": 1257355,
+    "vmaf": 96.99,
+    "settings": "ImageIO quality 0.85"
+  },
+  "nu-vs-jpeg": {
+    "bytes": 1111568,
+    "vmaf": 80.04,
+    "heic_quality_half_size": 100
+  },
+  "nu-vs-heic": {
+    "bytes": 1111568,
+    "vmaf": 80.04,
+    "heic_quality_half_size": 100
+  },
+  "live-apple": {
+    "bytes": 4527652,
+    "video_kbps": 8000,
+    "video_vmaf": 91.33
+  },
+  "live-nu": {
+    "bytes": 4289726,
+    "video_kbps": 8000,
+    "video_vmaf": 39.45
+  }
+}

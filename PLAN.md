@@ -105,10 +105,10 @@ todos:
     content: Fuzzing for all new decoders, release hashes in the transparency log, hardware keys on Apple/GitHub accounts, external audit, bug bounty, launch
     status: pending
   - id: webe-naming
-    content: "webE naming: NameRecord in the key transparency log, PIR resolution with proofs, webe:// and https://name.khensu.nu URLs, publish keys (WEBE.md 3)"
+    content: "webE̊ naming: NameRecord in the key transparency log, PIR resolution with proofs, webe:// and https://name.khensu.nu URLs, publish keys (WEBE.md 3)"
     status: pending
   - id: webe-objects
-    content: "webE objects and storage: 64 KiB content-addressed chunks, chunk lists, signed site manifests, erasure coding across 6+ operators on channel_cache nodes, owner-node pinning, anonymous publish quotas, illegal-content hash list (WEBE.md 4, 6)"
+    content: "webE̊ objects and storage: 64 KiB content-addressed chunks, chunk lists, signed site manifests, erasure coding across 6+ operators on channel_cache nodes, owner-node pinning, anonymous publish quotas, illegal-content hash list (WEBE.md 4, 6)"
     status: pending
   - id: webe-fetch
     content: "Two-relay stealth fetch in khensu-tatenan and khensu-core: ML-KEM-1024 sealed requests to the exit relay, padded trunks, size-bucketed responses, small objects through the ticks (WEBE.md 5, design/stealth-relay.md rule 8)"
@@ -117,7 +117,7 @@ todos:
     content: "khensu relay evolved from MOQOM's Apache-2.0 crates, in khensu repos only: constant-rate padded media, padded trunks, edge blurring, WebTransport h3 on 443, relay-only with local-link direct (design/stealth-relay.md)"
     status: pending
   - id: webe-sites
-    content: "webE sites: in-app viewer (WKWebView with a webe:// scheme handler), site publishing from the app and the Mac node, strict site policy (WEBE.md 7, 11)"
+    content: "webE̊ sites: in-app viewer (WKWebView with a webe:// scheme handler), site publishing from the app and the Mac node, strict site policy (WEBE.md 7, 11)"
     status: pending
   - id: feed
     content: "Feed tab: personas posting over the stealth ticks, FeedEntry hash chains, live feed tracks, on-device timelines and ranking, anonymous tallies for likes/reposts/views, label proposals, subscribable label lists, bridging consensus labels, threshold pledges (WEBE.md 8, 10; PLAN Public square)"
@@ -132,7 +132,7 @@ todos:
     content: "nu-media: learned image codec (integer networks, progressive, fidelity first) and hybrid video codec (hardware CBR base, Neural Engine enhancement), tuned for iPhone 18 Pro on iOS 27 and working on every iOS 26 device"
     status: pending
   - id: webe-browser
-    content: "Chromium extension with a local khensu daemon over native messaging, then a Chromium patch with a native webE network service and stealth defences (WEBE.md 11.2)"
+    content: "Chromium extension with a local khensu daemon over native messaging, then a Chromium patch with a native webE̊ network service and stealth defences (WEBE.md 11.2)"
     status: pending
   - id: phone-node
     content: "Phone node mode in khensu-apple: foreground node while plugged in on Wi-Fi (idle timer off, black screen, Guided Access hint), charge limit and heat pause, outbound-only roles behind NAT, mixing over reachable IPv6, earnings view (design/mesh.md 8)"
@@ -166,7 +166,7 @@ isProject: false
 - [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
 - [Stealth](#stealth-decided)
 - [Public square](#public-square-day-one)
-- [webE](#webe-day-one)
+- [webE̊](#webe-day-one)
 - [Places](#places-proposed)
 - [Portal project and hardware](#portal-project-and-hardware-proposed)
 - [nu-media](#nu-media-proposed)
@@ -421,7 +421,7 @@ Panic wipe: iOS doesn't let third-party apps read side-button or volume-button p
   - The app icon is a thin white ring with a second, unfilled arc just inside its left half, nearly a half circle of the same size, meeting the ring at top and bottom centre, so it reads as two circles forming a crescent line. The dark tile is the master and the default icon; light, tinted and clear styles derive from it.
   - Moon phases show disappearing-message timers (the moon wanes as a message nears expiry).
   - Typography: SF Pro for the interface, with a display face for the wordmark only.
-- **Telegram-like layout.** Chat folders as tabs at the top of the chat list (All, Personal, Groups, Channels, Unread, custom folders); swipe to pin, mute, archive or mark read; replies, reactions, threads, polls, stickers and voice and video notes in the chat view. Bottom tabs: Chats, Feed (the public square and forums on webE), Calls, Search ("Ask khensu"), Settings.
+- **Telegram-like layout.** Chat folders as tabs at the top of the chat list (All, Personal, Groups, Channels, Unread, custom folders); swipe to pin, mute, archive or mark read; replies, reactions, threads, polls, stickers and voice and video notes in the chat view. Bottom tabs: Chats, Feed (the public square and forums on webE̊), Calls, Search ("Ask khensu"), Settings.
 - **Visible but quiet security.** A white check on verified contacts, the four-word check phrase on profiles, and a Face ID unlock screen styled like the lock screen. There's no crypto jargon in the main interface; details live under "Encryption" on each chat.
 - **Node app (`nu.khensu.tatenan`).** A macOS menu-bar app in the same palette, showing node status, schedule and earnings.
 
@@ -519,7 +519,7 @@ Stealth on the network is a foundation of the system, not a setting: there is no
 
 ## Public square (day one)
 
-The Feed tab in the khensu.nu app, with public forums inside it, running on webE (`WEBE.md` sections 8–10) and built in tandem with the messenger. A public broadcast network, like Twitter or Mastodon, that runs itself on the node network: free speech, private reading and posting, moderation on each person's device, and open consensus labels for facts, opinion, fraud and safety. Built to help people organise around causes, actions and interests, and to keep working when a government shuts the internet down. Open questions are in `OPEN-QUESTIONS.md` section G.
+The Feed tab in the khensu.nu app, with public forums inside it, running on webE̊ (`WEBE.md` sections 8–10) and built in tandem with the messenger. A public broadcast network, like Twitter or Mastodon, that runs itself on the node network: free speech, private reading and posting, moderation on each person's device, and open consensus labels for facts, opinion, fraud and safety. Built to help people organise around causes, actions and interests, and to keep working when a government shuts the internet down. Open questions are in `OPEN-QUESTIONS.md` section G.
 
 - **Posting.** Posts come from personas (hidden profiles or public handles), are signed with the persona's ML-DSA-87 key, and ride the stealth ticks into the mixnet like any message. Nobody, including us, can link a persona to a person unless its owner does. Posts are public, content-addressed, erasure-coded and cached across `channel_cache` nodes; popular posts are replicated more widely. Images use nu-media.
 - **Reading.** Following, timelines, replies and search fetch through the mixnet inside the ticks, with PIR for indexes, so no node learns who reads what. The home feed is ranked on the device by the user's own rules and on-device models. There is no central ranking algorithm and no ad targeting, because there is nothing about readers to target with.
@@ -533,14 +533,14 @@ The Feed tab in the khensu.nu app, with public forums inside it, running on webE
 - **Runs itself.** No company servers: nodes cache, count and serve, paid by burn and mint; label rules and the illegal-content list change only through the governance process.
 - **Patent candidates:** stealth-tick posting with PIR reading, anonymous Sybil-resistant bridging labels computed on every device, threshold pledges with anonymous tallies, mesh gossip of a public feed under shutdown.
 
-## webE (day one)
+## webE̊ (day one)
 
-**webE** (home: `khensu.nu`) is the internet web3 was supposed to be: content delivery, websites, public feeds, forums and live media run by the people on the node network, with its own naming instead of DNS, no CDN and no metered bandwidth. It is a new set of open standards (`WEBE.md`, draft 0.1, to become Internet-Drafts). The khensu.nu app is the first webE application: primarily a messenger, with a Feed tab, public forums and site hosting from day one. Everything is built on webE from the start, and webE is built in tandem with the app. MOQOM stays a company. Open questions are in `OPEN-QUESTIONS.md` section H.
+**webE̊** (home: `khensu.nu`) is the internet web3 was supposed to be: content delivery, websites, public feeds, forums and live media run by the people on the node network, with its own naming instead of DNS, no CDN and no metered bandwidth. It is a new set of open standards (`WEBE.md`, draft 0.1, to become Internet-Drafts). The khensu.nu app is the first webE̊ application: primarily a messenger, with a Feed tab, public forums and site hosting from day one. Everything is built on webE̊ from the start, and webE̊ is built in tandem with the app. MOQOM stays a company. Open questions are in `OPEN-QUESTIONS.md` section H.
 
 - **Nodes are relays, devices are smart.** Every tatenan node runs a MOQ relay alongside its mix, mailbox and cache roles. The relay is an evolution of MOQOM built only in khensu repos from MOQOM's Apache-2.0 crates (decided); MOQOM stays a separate product aimed at replacing Agora or being sold to it. Relays only forward and cache; encoding, encryption, ranking, moderation and rendering happen on devices.
 - **Names without name servers.** Sites and streams are named by `name.khensu.nu` handles resolved from the key transparency log over the mixnet (PIR), and by content addresses. No DNS lookup, no registrar, no certificate authority: the handle's log entry carries the site's ML-DSA-87 key and current root hash.
 - **Sites.** A site is a signed, content-addressed bundle (static files plus optional WebAssembly), published by its owner's devices, erasure-coded across `channel_cache` nodes and served by relays. Updates are new signed roots. Dynamic features run in the browser or through the owner's own node.
-- **Replaces a VPN (proposed).** Everything on webE already gets more than a VPN gives: no single party sees both who and what, traffic looks like ordinary HTTPS, timing is covered, and there is no off switch. For the rest of the internet, **webE exit**: a Network Extension packet tunnel in the app routes all device traffic through an entry relay and an exit relay from different operators, with DNS resolved at the exit and HTTPS left end to end. Exit duty is opt-in with extra stake because exits receive abuse complaints. Bulk browsing doesn't fit in the 2 s ticks, so its timing cover is weaker than for messages, and the app says so. Open questions in `OPEN-QUESTIONS.md` 80.
+- **Replaces a VPN (proposed).** Everything on webE̊ already gets more than a VPN gives: no single party sees both who and what, traffic looks like ordinary HTTPS, timing is covered, and there is no off switch. For the rest of the internet, **webE̊ exit**: a Network Extension packet tunnel in the app routes all device traffic through an entry relay and an exit relay from different operators, with DNS resolved at the exit and HTTPS left end to end. Exit duty is opt-in with extra stake because exits receive abuse complaints. Bulk browsing doesn't fit in the 2 s ticks, so its timing cover is weaker than for messages, and the app says so. Open questions in `OPEN-QUESTIONS.md` 80.
 - **Public content, stealthy access (decided).** Content can be public, but reading it is always stealthy because it sits on the stealth network. Fetches go through two relays like calls: the entry relay knows who but not what (the request is encrypted to the exit relay), the exit relay or cache knows what but not who, the hop between them rides a padded trunk, and responses are padded to size buckets. Small objects can ride the stealth ticks. Speed stays close to a CDN. Private content is end-to-end encrypted on top. Code mapping in `design/stealth-relay.md`.
 - **Live media.** Public broadcasts and live streams are MOQ tracks fanned out by node relays (MOQOM's core, at sub-second latency); private streams are end-to-end encrypted with keys sealed to subscribers.
 - **No metered bandwidth.** Users never pay per byte. Operators are paid by the protocol from work receipts (burn and mint), so more usage means more operator income and more nodes.
@@ -553,13 +553,13 @@ The Feed tab in the khensu.nu app, with public forums inside it, running on webE
 
 ## Places (proposed)
 
-A live world on webE: people broadcast 360° and spatial video from where they are (concerts, stages, restaurants, parties, streets), pinned to the place on a map, and viewers move or teleport there to be inside the moment on iPhone, iPad, Mac and later Apple Vision Pro. Open questions are in `OPEN-QUESTIONS.md` section I.
+A live world on webE̊: people broadcast 360° and spatial video from where they are (concerts, stages, restaurants, parties, streets), pinned to the place on a map, and viewers move or teleport there to be inside the moment on iPhone, iPad, Mac and later Apple Vision Pro. Open questions are in `OPEN-QUESTIONS.md` section I.
 
 - **Capture.** Recommended camera: Insta360's 360° cameras (the X series), through their SDK, with a partnership sought. The format is camera-agnostic from day one, so iPhone spatial video and other 360° cameras work and no partner is a dependency. Later: depth, 3D scene capture and Gaussian splats, in line with nu-media's 3D roadmap.
-- **Broadcast.** A broadcast is a live MOQ track on webE, published by a persona to a place. The video is split into viewport tiles so each viewer only receives the part they're looking at (plus a low-resolution full sphere), which keeps 360° streams within phone and network budgets. nu-media handles 360° and spatial video.
-- **The map.** Map data comes from OpenStreetMap, served as vector tiles over webE: no Apple Maps or Google Maps requests, which would tell those companies where people look. Tiles and place listings are fetched with the stealth fetch, so no node learns which places a viewer visits.
+- **Broadcast.** A broadcast is a live MOQ track on webE̊, published by a persona to a place. The video is split into viewport tiles so each viewer only receives the part they're looking at (plus a low-resolution full sphere), which keeps 360° streams within phone and network budgets. nu-media handles 360° and spatial video.
+- **The map.** Map data comes from OpenStreetMap, served as vector tiles over webE̊: no Apple Maps or Google Maps requests, which would tell those companies where people look. Tiles and place listings are fetched with the stealth fetch, so no node learns which places a viewer visits.
 - **Moving and teleporting.** Viewers drift across the map or jump to any live place; nearby broadcasts at the same place (several cameras at one concert) are stitched into one place view with switchable vantage points.
-- **Places are public, viewers are stealthy.** A broadcast's place is public by design; the broadcaster can be a persona. Viewers stay stealthy under the webE rules. Broadcasters can show exact venues or a coarse area, and the app warns before going live from a home.
+- **Places are public, viewers are stealthy.** A broadcast's place is public by design; the broadcaster can be a persona. Viewers stay stealthy under the webE̊ rules. Broadcasters can show exact venues or a coarse area, and the app warns before going live from a home.
 - **Bystanders and venues.** On-device face blurring for people who aren't the subject (on by default outside venues that opt in), venue opt-in and verified venue places, and a clear live indicator. Music and performances need rights from venues and rights holders; verified venue partners broadcast performances, and unlicensed performance streams get labels and reports like any content.
 - **Safety.** Live streams use the same on-device moderation, label lists and consensus labels as the Feed, plus fast reporting, delayed public listing of new broadcasters' streams, and the illegal-content rules.
 - **Earnings.** Relays carrying popular broadcasts earn from token burning like any node work; tipping and paid tickets can use the shielded pool where payments are switched on.
@@ -837,7 +837,7 @@ Decided:
 - Signatures: ML-DSA-87 everywhere, with the category-5 MLS suite MOQOM Cloud already uses (changed from ML-DSA-65 on 9 Oct 2026). Key exchange: pure ML-KEM-1024, no classical KEM (chosen over the hybrid recommendation, with the mitigations in Cryptographic design).
 - Routing: every message, receipt and typing event goes through the mixnet; there is no instant path for chat. Calls are the one exception and use two relays run by different operators under the stealth call profile, because a mixnet's delays can't carry live audio.
 - Stealth: a foundation, not a setting. 2 s fixed bursts on every network and power state, nu-media images inside the ticks, stealth paths for originals and video, hardened calls (see Stealth).
-- Blockchain only for payments: webE, the node network and content delivery don't run on a blockchain. A 21-member committee drawn by weighted sortition each epoch agrees the node list, parameters and work-receipt totals, with no permanent ledger. Our own lightweight post-quantum chain is used only for payments: the token, burn and mint, balances, stakes and the shielded pool; history is pruned.
+- Blockchain only for payments: webE̊, the node network and content delivery don't run on a blockchain. A 21-member committee drawn by weighted sortition each epoch agrees the node list, parameters and work-receipt totals, with no permanent ledger. Our own lightweight post-quantum chain is used only for payments: the token, burn and mint, balances, stakes and the shielded pool; history is pruned.
 - Camouflage: every connection to a node looks like Safari or Chrome visiting an ordinary website (browser-identical outer handshake with X25519MLKEM768, ordinary hostname and certificate, probe-proof website fallback); inside it, pure ML-KEM-1024 and ML-DSA-87 authenticate the node, channel-bound to the outer session. Profiles track browser releases through the epoch header (`design/camouflage.md`).
 - Relay rotation: every participant in calls, rooms and live streams switches edge relays at independent random times, make-before-break.
 - Hardware guard: every khensu hardware device (shell, home node, portal) has a separate guard chip that owns all radios and network paths and enforces fixed packet sizes, the 2 s tick and signed parameters in hardware, so a compromised main computer or radio can't break the cover pattern. Phones and computers enforce the same rules in software (`design/guard.md`).

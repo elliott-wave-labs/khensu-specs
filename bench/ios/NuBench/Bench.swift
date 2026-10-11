@@ -4,7 +4,7 @@ import VideoToolbox
 struct Job: Codable {
     let input: String
     let output: String
-    let codec: String  // "h264", "hevc", or "sr" (Apple's low-latency super resolution, 2x, raw NV12 out)
+    let codec: String  // "h264", "hevc", or "sr" (Apple's low-latency super resolution, 2x: raw NV12 out, or HEVC at kbps if kbps > 0)
     let kbps: Int
 }
 
@@ -85,6 +85,20 @@ enum Bench {
         FileManager.default.createFile(atPath: url.path, contents: nil)
         let fh = try FileHandle(forWritingTo: url)
         defer { try? fh.close() }
+        // 4K raw frames don't fit on the Mac, so large outputs are re-encoded near-losslessly in hardware instead.
+        let compress = job.kbps > 0
+        var session: VTCompressionSession?
+        let sink = Sink()
+        if compress {
+            let spec = [kVTVideoEncoderSpecification_RequireHardwareAcceleratedVideoEncoder: true] as CFDictionary
+            let st = VTCompressionSessionCreate(allocator: nil, width: Int32(w * 2), height: Int32(h * 2), codecType: kCMVideoCodecType_HEVC,
+                                                encoderSpecification: spec, imageBufferAttributes: nil, compressedDataAllocator: nil,
+                                                outputCallback: nil, refcon: nil, compressionSessionOut: &session)
+            guard st == noErr, let session else { throw BenchError.session(st) }
+            VTSessionSetProperty(session, key: kVTCompressionPropertyKey_AverageBitRate, value: (job.kbps * 1000) as CFTypeRef)
+            VTSessionSetProperty(session, key: kVTCompressionPropertyKey_Quality, value: 1.0 as CFTypeRef)
+            VTCompressionSessionPrepareToEncodeFrames(session)
+        }
 
         reader.startReading()
         var frames = 0
@@ -106,9 +120,23 @@ enum Bench {
             let t0 = Date()
             try await processor.process(parameters: VTLowLatencySuperResolutionScalerParameters(sourceFrame: sf, destinationFrame: df))
             busy += Date().timeIntervalSince(t0)
-            try fh.write(contentsOf: nv12(dst))
+            if let session {
+                let st = VTCompressionSessionEncodeFrame(session, imageBuffer: dst, presentationTimeStamp: pts, duration: .invalid,
+                                                         frameProperties: nil, infoFlagsOut: nil) { status, _, buf in
+                    if status == noErr, let buf { sink.append(buf) }
+                }
+                if st != noErr { throw BenchError.session(st) }
+            } else {
+                try fh.write(contentsOf: nv12(dst))
+            }
             shape = "\(CVPixelBufferGetWidth(dst))x\(CVPixelBufferGetHeight(dst)) format \(CVPixelBufferGetPixelFormatType(dst))"
             frames += 1
+        }
+        if let session {
+            VTCompressionSessionCompleteFrames(session, untilPresentationTimeStamp: .invalid)
+            VTCompressionSessionInvalidate(session)
+            try? fh.close()
+            try await write(sink.buffers, to: url, fileType: .mov)
         }
         let bytes = (try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
         print("sr output \(shape)")
@@ -201,9 +229,16 @@ enum Bench {
         VTCompressionSessionInvalidate(session)
 
         let url = docs.appending(path: job.output)
+        try await write(sink.buffers, to: url, fileType: .mp4)
+
+        let bytes = (try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
+        return JobResult(output: job.output, frames: frames, seconds: seconds, fps: Double(frames) / seconds, bytes: bytes)
+    }
+
+    /// Writes encoded samples to a file without re-encoding.
+    static func write(_ encoded: [CMSampleBuffer], to url: URL, fileType: AVFileType) async throws {
         try? FileManager.default.removeItem(at: url)
-        let writer = try AVAssetWriter(outputURL: url, fileType: .mp4)
-        let encoded = sink.buffers
+        let writer = try AVAssetWriter(outputURL: url, fileType: fileType)
         guard let first = encoded.first else { throw BenchError.writer("no frames encoded") }
         let input = AVAssetWriterInput(mediaType: .video, outputSettings: nil, sourceFormatHint: CMSampleBufferGetFormatDescription(first))
         input.expectsMediaDataInRealTime = false
@@ -217,8 +252,5 @@ enum Bench {
         input.markAsFinished()
         await writer.finishWriting()
         if writer.status != .completed { throw BenchError.writer(writer.error.map { "\($0)" } ?? "finish failed") }
-
-        let bytes = (try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
-        return JobResult(output: job.output, frames: frames, seconds: seconds, fps: Double(frames) / seconds, bytes: bytes)
     }
 }

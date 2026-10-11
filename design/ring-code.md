@@ -8,15 +8,15 @@ A ring code is a circle of points joined by lines into a network, with pulses ru
 
 ### Layout
 
-- Six concentric rings with 48, 56, 64, 72, 80 and 88 points: 408 points in total, roughly ten times the 40 or so dots in a typical "network" illustration.
+- Six concentric rings with 54, 62, 70, 78, 86 and 94 points: 444 points in total (decided 11 Oct 2026), roughly eleven times the 40 or so dots in a typical "network" illustration.
 - A fixed orientation mark (a gap in the outer ring at 12 o'clock and three larger anchor points) gives rotation, scale and perspective, the same way QR finder patterns do.
-- Each data point has four angular offsets and two brightness levels, so it carries 3 bits. A single frame holds 1,224 raw bits; with Reed–Solomon over GF(2⁸) at 50% redundancy, that leaves about 76 bytes of payload per frame and survives a quarter of the points being misread.
+- Each data point has four angular offsets and two brightness levels, so it carries 3 bits. A single frame holds 1,332 raw bits; with Reed–Solomon over GF(2⁸) at 50% redundancy, that leaves about 83 bytes of payload per frame and survives a quarter of the points being misread.
 - Lines join each point to its two nearest neighbours on the next ring inward. They carry no data and are only there for the look; the decoder ignores them.
 - Pulses run along the lines at random, also without data. In static mode they're absent.
 
 ### Live mode (in the app)
 
-- The code changes 12 times a second. The frames are fountain-coded (RaptorQ, RFC 6330), so the scanner can start at any moment and needs any 22 or so frames, not a particular sequence.
+- The code changes 12 times a second. The frames are fountain-coded (RaptorQ, RFC 6330), so the scanner can start at any moment and needs any 21 or so frames, not a particular sequence.
 - Payload: a fresh ML-KEM-1024 encapsulation key (1,568 bytes), the account address (32 bytes) and a 16-byte one-time invite. With framing that is about 1.7 KB, read in about 2 seconds at 30 fps.
 - The scanner encapsulates to that key and sends the ciphertext back over Wi-Fi Aware or, if the phones aren't close, over the mixnet to the invite's mailbox. Both phones derive the same secret and exchange profiles encrypted under it with AES-256-GCM. Both then check the address against the key transparency log.
 - Every showing generates a new key, so each live ring is unique and works once. A photo or screen recording of a ring is useless after its 5-minute expiry or its first use, whichever comes first.
@@ -24,7 +24,7 @@ A ring code is a circle of points joined by lines into a network, with pulses ru
 
 ### Static mode (Wallet pass, contact photo, print)
 
-- One frame, no animation: the address (32 bytes), a 16-byte invite that can be revoked, and a 4-byte checksum, in one 76-byte frame.
+- One frame, no animation: the address (32 bytes), a 16-byte invite that can be revoked, and a 4-byte checksum, in one 83-byte frame.
 - The scanner looks up the address in the key transparency log over the mixnet to get the ML-KEM-1024 key, then proceeds as in live mode. The ring itself holds no secret; the invite only rate-limits strangers and can be revoked in Settings.
 - Each person's static ring is unique, because its points are their address.
 

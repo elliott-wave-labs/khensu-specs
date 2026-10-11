@@ -112,7 +112,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 - **Recommendation:**
   - The log keeps a verifiable map (a sparse Merkle tree of each account's current state: identity keys, device keys, revocations), committed in every witnessed checkpoint.
   - Each device holds a proof bundle: its `bind_device_key` entry, the account's current identity key set, and map proofs against a checkpoint no older than 24 hours. Revocation shows up as a failed or missing proof.
-  - Bundles travel alongside the group, not inside the ratchet tree: refreshed with every update commit (at most 24 hours apart) and delivered to joiners as extra content-addressed chunks next to the tree. This keeps the tree small (bundles are estimated at 12–17 KB each, which would double a 1,000-device tree if embedded).
+  - Bundles travel alongside the group, not inside the ratchet tree: refreshed with every update commit (at most 5 minutes apart) and delivered to joiners as extra content-addressed chunks next to the tree. This keeps the tree small (bundles are estimated at 12–17 KB each, which would double a 1,000-device tree if embedded).
   - Revocation takes effect within 24 hours plus the next commit; groups remove a device whose bundle stops verifying.
 - **Status:** Recommended.
 

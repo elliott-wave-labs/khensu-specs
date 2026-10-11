@@ -117,7 +117,7 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours 
 
 | Link | Band | Use |
 | --- | --- | --- |
-| Wi-Fi HaLow | Sub-GHz ISM by region (US 902–928 MHz, EU 863–868 MHz, others per market) | Neighbourhood mesh, about 1 km to home nodes (target, line of sight) |
+| Wi-Fi HaLow | Sub-GHz ISM by region (US 902–928 MHz, EU 863–868 MHz, others per market) | Neighbourhood mesh: about 600 m shield to shield and 2 km to a rooftop node on open ground; 100 m and 250 m in a city (`design/mesh.md` 1.4). Phones alone reach about 100 m |
 | Wi-Fi 6 | 2.4 and 5 GHz | Internet backhaul when on Wi-Fi; link to the phone |
 | Bluetooth LE 5.3 | 2.4 GHz | Wakes the khensu app without APNs; control channel |
 

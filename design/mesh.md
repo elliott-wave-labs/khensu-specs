@@ -9,13 +9,31 @@ A pure phone-to-phone mesh can't replace telecom: in a shared radio medium, each
 | Layer | Devices | Radio | Range | Role |
 | --- | --- | --- | --- | --- |
 | Personal | Phone and its shell | Bluetooth, Wi-Fi Aware | touching | The shell is the phone's radio and node |
-| Neighbourhood | Shells, home nodes, portals | Wi-Fi HaLow (802.11ah, sub-GHz); Wi-Fi 6 at short range | about 1 km (HaLow), about 100 m (Wi-Fi) | Home nodes and portals act as community access points |
+| Neighbourhood | Shells, home nodes, portals | Wi-Fi HaLow (802.11ah, sub-GHz); Wi-Fi 6 at short range | 100–600 m shield to shield, 250 m–2 km to a rooftop node (HaLow, 1.4); about 100 m (Wi-Fi) | Home nodes and portals act as community access points |
 | Backhaul | Home nodes, portals, servers | Fiber, cable, fixed wireless | the internet | Joins neighbourhoods to the global node network |
 | Sky | Large shells, home stations | Satellite (section 5) | global | Backhaul where there is no ground link |
 
 - **Normal case:** shell → nearest home node or portal over HaLow (one hop) → internet → mixnet. This is a community-run access network: every home node with a HaLow radio is a small cell tower that earns from token burning.
 - **No backhaul nearby:** shells relay over several HaLow or Wi-Fi hops until one reaches a home node, a portal or a satellite link.
 - **Internet shut down:** neighbourhoods keep working locally; store-and-forward and public-feed gossip carry data between them as people move (PLAN, Public square); satellite links bridge to the global network.
+
+### 1.4 Range, with and without suñůlink.shield
+
+| Link | City | Suburbs | Open ground, line of sight |
+| --- | --- | --- | --- |
+| Phone to phone, no shield (Bluetooth LE, Wi-Fi peer-to-peer) | about 30 m indoors | about 50 m | about 100 m |
+| Shield to shield (HaLow, both at hand height) | about 100 m | about 200 m | about 600 m |
+| Shield to rooftop node (HaLow, node antenna 10 m up) | about 250 m | about 500 m | about 2 km |
+
+Each hop adds the same distance again; with store and forward, messages cross any distance people travel.
+
+How the figures are calculated (US 902–928 MHz):
+
+- **Link budget:** Morse Micro MM6108 transmit power +21 dBm; receive sensitivity −105 dBm at 1 MHz, MCS10; −3 dBi antenna in the shell's edge band; +3 dBi antenna on the rooftop node; 15 dB margin for the body holding the phone and for fading. Shield to shield: 21 − 3 − 3 + 105 − 15 = 105 dB of allowed path loss. Shield to rooftop node: 111 dB.
+- **Open ground:** two-ray ground reflection beyond the breakpoint 4·h₁·h₂/λ (27 m at 1.5 m heights): path loss = 40·log₁₀(d) − 20·log₁₀(h₁·h₂). Shield to shield (1.5 m and 1.5 m): 105 = 40·log₁₀(d) − 7.0, d ≈ 630 m. Shield to node (1.5 m and 10 m): 111 = 40·log₁₀(d) − 23.5, d ≈ 2.3 km.
+- **Towns:** Okumura–Hata at 915 MHz with a 10 m base antenna and a 1.5 m mobile: urban L = 133.2 + 38.35·log₁₀(d km), giving about 0.26 km at 111 dB; suburban (−10.0 dB) about 0.48 km. Shield to shield in a city (both at 1.5 m, 105 dB, building clutter) comes to about 100 m. Hata is extrapolated below its 30 m base height and 1 km distance, so town figures are rounded down.
+- **Phones alone:** iOS exposes Bluetooth LE 1M PHY and Wi-Fi Aware to apps, not LE Coded, so phone-to-phone links follow ordinary Bluetooth and Wi-Fi peer-to-peer range: about 30 m indoors and 100 m outdoors in line of sight.
+- **Europe:** 863–868 MHz allows 25 mW ERP (about +14 dBm), 7 dB less than the US; under two-ray loss that is a third less range (10^(7/40) ≈ 1.5).
 
 ## 2. Capacity on the mesh (estimates)
 

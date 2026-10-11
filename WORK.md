@@ -120,7 +120,7 @@ Post-quantum timestamps prove that a hash existed at a given time.
 
 Nodes and suñůlink.shield units carry mixnet traffic between places with no internet and the rest of the network.
 
-- **Mesh:** shields and nodes reach each other over Wi-Fi HaLow (802.11ah) and Bluetooth LE. Packets are the same fixed-size sealed mix packets as everywhere else, so a mesh hop learns nothing a mix hop wouldn't.
+- **Mesh:** shields and nodes reach each other over Wi-Fi HaLow (802.11ah) and Bluetooth LE: phones alone about 100 m outdoors; shield to shield about 600 m on open ground and 100 m in a city; shield to a rooftop node up to 2 km (`design/mesh.md` 1.4). Packets are the same fixed-size sealed mix packets as everywhere else, so a mesh hop learns nothing a mix hop wouldn't.
 - **Gateways:** a mesh node with internet, or with a satellite link, forwards mesh traffic into the mixnet and back. Satellite links carry the same padded trunks as any other uplink.
 - **Store and forward:** when a mesh island has no gateway, packets wait on shields and nodes until one appears, up to the packet's lifetime.
 - **Receipt:** `quantity` is packets carried, with `ForwardingReceipt`s (`PROTOCOL.md` 12.4) countersigned by the peer on each side.

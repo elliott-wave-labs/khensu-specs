@@ -2,8 +2,8 @@
   "build": {
     "wall": 1.0,
     "skin": 0.7,
-    "base": 0.6,
-    "suction": 0.3,
+    "base": 0.4,
+    "suction": 0.5,
     "gap": 0.6,
     "fov_margin": 0.3,
     "plate_clear": 0.1,
@@ -32,59 +32,59 @@
         "height": 150.0,
         "depth": 8.75,
         "corner_r": 10.0,
-        "bump_x0": 3.5,
-        "bump_y0": 3.5,
-        "bump_w": 64.9,
-        "bump_h": 40.0,
-        "bump_r": 8.0,
+        "bump_x0": 0.0,
+        "bump_y0": 0.0,
+        "bump_w": 71.9,
+        "bump_h": 43.0,
+        "bump_r": 10.0,
         "bump_z": 3.0,
         "magsafe_y": -5.0,
         "lens_z": 4.2,
         "sensors": [
           [
             "wide",
-            11.2,
-            11.2,
+            14.7,
+            14.7,
             7.6,
             4.2,
             42.0
           ],
           [
             "ultra wide",
-            11.2,
-            28.8,
+            14.7,
+            32.3,
             7.6,
             4.2,
             60.0
           ],
           [
             "telephoto",
-            26.4,
-            20.0,
+            29.9,
+            23.5,
             7.6,
             4.2,
             20.0
           ],
           [
             "flash",
-            54.5,
-            12.0,
+            58.0,
+            15.5,
             2.8,
             3.0,
             60.0
           ],
           [
             "lidar",
-            54.5,
-            28.0,
+            58.0,
+            31.5,
             3.6,
             3.0,
             40.0
           ],
           [
             "microphone",
-            60.4,
-            20.0,
+            63.9,
+            23.5,
             0.6,
             3.0,
             0.0
@@ -102,7 +102,7 @@
           "thickness_mm": 5.2,
           "battery_cm3": 9.2,
           "battery_wh": 4.1,
-          "housing_cm3": 2.76,
+          "housing_cm3": 2.71,
           "usb_c_to_phone": false,
           "magnet_ring_od_mm": 53.0,
           "interference_mm3": 0.0,
@@ -111,7 +111,7 @@
           "camera_draft_mm": 0.0,
           "camera": "clear of the camera",
           "mass_g_titanium": 50.0,
-          "mass_g_brass": 62.0
+          "mass_g_brass": 61.0
         },
         {
           "style": "fill",
@@ -121,9 +121,9 @@
             143.0
           ],
           "thickness_mm": 4.2,
-          "battery_cm3": 11.92,
+          "battery_cm3": 11.97,
           "battery_wh": 5.4,
-          "housing_cm3": 7.5,
+          "housing_cm3": 7.57,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -132,7 +132,7 @@
           "camera_draft_mm": 0.0,
           "camera": "plate with sensor openings",
           "mass_g_titanium": 73.0,
-          "mass_g_brass": 104.0
+          "mass_g_brass": 105.0
         },
         {
           "style": "wrap",
@@ -144,7 +144,7 @@
           "thickness_mm": 4.2,
           "battery_cm3": 13.81,
           "battery_wh": 6.2,
-          "housing_cm3": 9.43,
+          "housing_cm3": 8.57,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -152,29 +152,29 @@
           "above_lenses_mm": 0.0,
           "camera_draft_mm": 0.0,
           "camera": "plate with sensor openings",
-          "mass_g_titanium": 87.0,
-          "mass_g_brass": 126.0
+          "mass_g_titanium": 83.0,
+          "mass_g_brass": 118.0
         },
         {
           "style": "wrap-xl",
           "description": "Large-capacity wrap, flat back 3 mm above the lenses in a drafted well",
           "footprint_mm": [
             71.1,
-            149.2
+            106.0
           ],
           "thickness_mm": 7.2,
-          "battery_cm3": 29.41,
+          "battery_cm3": 29.24,
           "battery_wh": 13.2,
-          "housing_cm3": 8.1,
+          "housing_cm3": 6.0,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
           "outer_qi2_coil": true,
           "above_lenses_mm": 3.0,
-          "camera_draft_mm": 1.3,
+          "camera_draft_mm": 1.8,
           "camera": "drafted well",
-          "mass_g_titanium": 124.0,
-          "mass_g_brass": 157.0
+          "mass_g_titanium": 114.0,
+          "mass_g_brass": 138.0
         }
       ]
     },
@@ -247,7 +247,7 @@
           "thickness_mm": 5.2,
           "battery_cm3": 9.17,
           "battery_wh": 4.1,
-          "housing_cm3": 2.76,
+          "housing_cm3": 2.71,
           "usb_c_to_phone": false,
           "magnet_ring_od_mm": 53.0,
           "interference_mm3": 0.0,
@@ -256,7 +256,7 @@
           "camera_draft_mm": 0.0,
           "camera": "clear of the camera",
           "mass_g_titanium": 50.0,
-          "mass_g_brass": 62.0
+          "mass_g_brass": 61.0
         },
         {
           "style": "fill",
@@ -268,7 +268,7 @@
           "thickness_mm": 3.6,
           "battery_cm3": 10.24,
           "battery_wh": 4.6,
-          "housing_cm3": 7.25,
+          "housing_cm3": 7.28,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -289,7 +289,7 @@
           "thickness_mm": 3.6,
           "battery_cm3": 12.06,
           "battery_wh": 5.4,
-          "housing_cm3": 8.24,
+          "housing_cm3": 8.26,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -310,7 +310,7 @@
           "thickness_mm": 6.6,
           "battery_cm3": 30.37,
           "battery_wh": 13.7,
-          "housing_cm3": 8.42,
+          "housing_cm3": 8.26,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -318,8 +318,8 @@
           "above_lenses_mm": 3.0,
           "camera_draft_mm": 1.4,
           "camera": "drafted well",
-          "mass_g_titanium": 129.0,
-          "mass_g_brass": 163.0
+          "mass_g_titanium": 128.0,
+          "mass_g_brass": 162.0
         }
       ]
     }

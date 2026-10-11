@@ -88,6 +88,18 @@ The rules live in guard firmware and a signed parameter set; the node computer c
 
 In alternatives the guard is a field-programmable gate array placed between a node's processor and its Ethernet PHY and radios, for home nodes at gigabit rates.
 
+### 7a. Shock-isolating attachment layer
+
+The housing never contacts the phone directly. Its only load path to the phone's back is a compliant attachment layer, for example 0.5 mm of rate-dependent microcellular urethane with a micro-suction face, that both holds the accessory on and isolates it. The side walls stop inside the phone's plan outline (for example 0.4 mm), so in a back or edge impact the housing decelerates first and the phone is brought to rest over the layer's usable stroke (for example about 0.3 mm) rather than through a rigid metal contact (about 0.1 mm). Average deceleration scales as v²/2d, so from a 1.5 m drop (v ≈ 5.42 m/s) the phone sees about 5,000 g through the layer against about 15,000 g for a rigid contact. The layer's thickness is taken from the base plate (for example 0.6 mm reduced to 0.4 mm), so the stack height, and with it the lens-level outer face and the battery volume, are unchanged.
+
+### 7b. Pairing to the phone's secure element
+
+At setup the companion app creates a post-quantum signature key (for example ML-DSA-87) inside the phone's hardware secure element, usable only after biometric authentication, and signs the accessory's identity key and a pairing record with it. The accessory generates its own keys inside its processor's secure enclave and accepts configuration, firmware-update approval and owner traffic only when signed by the paired key. Revocation is a signed record from the phone, on which the accessory erases its keys. The accessory handles only sealed fixed-size packets and holds no readable message content.
+
+### 7c. Independent ports
+
+The accessory has its own USB-C receptacle in its bottom wall above the phone's port and never covers or occupies the phone's port, so both can be charged at once and the phone's port remains available for other devices.
+
 ### 8. Use
 
 With the shell attached, the phone's maximum thickness is unchanged and its back is flat. The shell runs as a node on its own battery (for example about 4–5 hours at about 1 W), relays sealed packets to nearby shells and home nodes over the mesh, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth, and then runs from the phone's power over USB-C. Because the guard enforces the pattern, the device's traffic looks the same whether the owner is active, idle or low on battery, even if the node computer is compromised.
@@ -105,3 +117,7 @@ With the shell attached, the phone's maximum thickness is unchanged and its back
 9. The accessory of claim 5, wherein the guard processor controls the power and reset of each radio and holds the radios in reset until it has verified its own firmware with a post-quantum signature.
 10. A network device comprising a host processor without any network interface of its own, a guard processor connected to the host processor only by a bus without direct memory access into the host processor's memory, and one or more radios connected only to the guard processor, wherein the guard processor enforces fixed frame sizes, a fixed schedule, filled empty slots, an allowed-destination list taken from a signed network epoch header, and schedule independence from battery level and temperature.
 11. A method of adding a network node to a mobile phone without increasing its maximum thickness, comprising: measuring the height of the phone's camera module above its back; forming a metal housing whose thickness equals that height, whose outline follows the phone's outline inset by a margin, and whose camera plate has an opening for each sensor clear of each sensor's field-of-view cone; verifying by intersecting each sensor's field-of-view cone with the housing solid; placing a battery, a node computer, a guard processor and radios in the housing; and attaching the housing to the phone's back so that its outer face is level with the top of the camera module.
+12. The accessory of claim 1, wherein the housing is coupled to the phone's back only through a compliant attachment layer, the housing's side walls lie inside the phone's plan outline, and the layer's usable compression stroke reduces the phone's average deceleration in a back or edge impact relative to a rigid contact.
+13. The accessory of claim 12, wherein the attachment layer is a rate-dependent microcellular polymer with a micro-suction face that both retains the accessory on the phone and provides the compliant coupling, and the sum of the attachment layer and base plate thicknesses is constant such that the outer face remains level with the top of the camera module.
+14. The accessory of claim 5, wherein the accessory stores its keys in a secure enclave of the node computer and accepts configuration and owner traffic only when signed by a post-quantum signature key held in a hardware secure element of the paired phone and released by biometric authentication.
+15. The accessory of claim 1, further comprising its own charging port in an edge wall of the housing, wherein the housing leaves the phone's own charging port uncovered and unoccupied.

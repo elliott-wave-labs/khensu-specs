@@ -1,8 +1,8 @@
 # khensu shell: product specification
 
-Revision A, 10 October 2026. **Preliminary.** Phone interface dimensions are placeholders until they are replaced with Apple's Accessory Design Guidelines drawings for each target model. Electrical figures marked *estimate* are to be measured on the first boards.
+Revision B, 10 October 2026. **Preliminary.** Phone interface dimensions are placeholders until they are replaced with Apple's Accessory Design Guidelines drawings for each target model. Electrical figures marked *estimate* are to be measured on the first boards.
 
-The khensu shell is a mesh node that attaches to the back of an iPhone. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
+The khensu shell is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **The product is the Wrap on iPhone 18 Pro and Pro Max** (iPhone 18 to follow); the other styles stay in the CAD as engineering references. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
 
 ## 1. Deliverables
 
@@ -24,7 +24,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
 | Fill | iPhone 18 Pro | 65.9 × 143.0, camera plate | 4.2 (level) | 5.4 Wh | 73 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
-| Wrap | iPhone 18 Pro | 71.1 × 149.2, camera plate | 4.2 (level) | 6.2 Wh | 87 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
+| **Wrap (the product)** | iPhone 18 Pro | 71.1 × 149.2, camera plate over the full-width plateau | 4.2 (level) | 6.2 Wh | 83 g (118 g brass) | Magnets and shock-isolating suction layer | KS-IPHONE-18-PRO-WRAP-100/101 |
 | Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out, 1.3 mm draft | 7.2 (+3.0) | 13.2 Wh | 124 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
 | Fill | Standard | 65.5 × 140.6, camera plate | 3.6 (level) | 4.6 Wh | 69 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
@@ -32,19 +32,19 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Wrap XL | Standard | 70.7 × 146.8, 1.4 mm draft | 6.6 (+3.0) | 13.7 Wh | 129 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
 | Silicone case | Both | phone + 1.6 per side | phone + module + 0.8 | (holds a Wrap) | about 18 g | Grips the phone | KS-*-CASE-201 |
 
-"Level" means the top face is level with the tops of the lens rings, so the back is one flat surface with no camera bump, like a phone with flush cameras; "+" is height above the lens rings. In the fill and wrap a camera plate covers the plateau (1.1 mm thick on iPhone 18 Pro, 0.1 mm above it), with a round opening for each lens, the flash, the depth sensor and the microphone: 0.6 mm clear round each, and the flash and depth-sensor openings widen with height so the wall stays outside their light cones. The XL rises 3 mm above the lenses, where separate openings for the ultra wide would merge, so its camera sits in one opening that widens with height (the draft) to stay out of every field of view (120° for the ultra wide), with 0.3 mm to spare. `shell.py` intersects each sensor's column and field-of-view cone with the housing and fails the build if anything touches, with 0.2 mm to spare. The slim styles also have a 3.4 mm floor (suction film 0.3, base 0.6, board 1.6 with 0.2 clearance, skin 0.7). The titanium within 1.6 mm of the opening is solid, with no cells. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
+"Level" means the top face is level with the tops of the lens rings, so the back is one flat surface with no camera bump, like a phone with flush cameras; "+" is height above the lens rings. In the fill and wrap a camera plate covers the plateau (1.1 mm thick on iPhone 18 Pro, 0.1 mm above it), with a round opening for each lens, the flash, the depth sensor and the microphone: 0.6 mm clear round each, and the flash and depth-sensor openings widen with height so the wall stays outside their light cones. The XL rises 3 mm above the lenses, where separate openings for the ultra wide would merge, so its camera sits in one opening that widens with height (the draft) to stay out of every field of view (120° for the ultra wide), with 0.3 mm to spare. `shell.py` intersects each sensor's column and field-of-view cone with the housing and fails the build if anything touches, with 0.2 mm to spare. The slim styles also have a 3.4 mm floor (shock layer 0.5, base 0.4, board 1.6 with 0.2 clearance, skin 0.7). iPhone 18 Pro's camera plateau runs the full width of the phone (apple.com), so the wrap's camera plate spans edge to edge over it and its side walls stop at the plateau. The titanium within 1.6 mm of the opening is solid, with no cells. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
 
 ## 3. Mechanical
 
-**Construction stack (phone side outward):** micro-suction film 0.3 → base plate 0.6 → cavity (magnet ring 0.5, board 1.6, cells; Qi2 coil 0.8 under the skin in the card and XL only) → graphite sheet 0.025 → skin 0.7. Side walls 1.0.
+**Construction stack (phone side outward):** shock layer with micro-suction face 0.5 → base plate 0.4 → cavity (magnet ring 0.5, board 1.6, cells; Qi2 coil 0.8 under the skin in the card and XL only) → graphite sheet 0.025 → skin 0.7. Side walls 1.0.
 
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
-| Housing (titanium) | Ti-6Al-4V Grade 5, "titanium battleproof shell" | 5-axis CNC; bead blast, then matte powder coat 60–80 µm on the outer faces, colour-matched to the phone finish (Burgundy, Glacier, Silver, Black for iPhone 18 Pro). Matte so it doesn't show fingerprints. Mask the inside, the windows and the phone side; machine the face 0.07 mm low so the coated face is level with the lens rings | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
+| Housing (titanium) | Ti-6Al-4V Grade 5 (ASTM B348 / F136), "titanium battleproof shell"; yield at least 828 MPa, about 1.6× 7075-T6 aluminium | 5-axis CNC; bead blast; plasma electrolytic oxidation (micro-arc) to grow a 10–15 µm TiO₂ ceramic layer from the titanium, then a colour-matched ceramic topcoat 20–25 µm on the outer faces (Burgundy, Glacier, Silver, Black for iPhone 18 Pro), satin so it doesn't show fingerprints. Mask the inside, the windows and the phone side; machine the face 0.035 mm low so the finished face is level with the lens rings | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
 | Housing (brass) | C26000 cartridge brass (70% copper, 30% zinc, lead-free, no nickel) | 5-axis CNC; bead blast to satin and leave bare. No lacquer or coating, which would stop the copper working on germs. It darkens to a natural patina; it cannot rust (no iron) | About 1.9× the titanium housing mass (wrap 117 g against 83 g). Copper alloys of at least 60% copper are registered with the US EPA as antimicrobial; product claims need the registered alloy, approved wording, and regulatory review before launch |
 | Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Fill and wrap: a 42 mm antenna band in the bottom wall only, like the bands on a phone's frame; the outer face is one unbroken metal surface with no windows. Card and XL: Ø46 over the coil (skin only) and a 42 mm strip along the bottom edge (skin and wall) |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
-| Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |
+| Shock layer | Microcellular urethane, PORON XRD class, 0.5 mm, with a micro-suction face | Die cut, laminated to base | Holds the shell on and isolates it: rate-dependent, soft at rest and firm at impact. Washable; replaceable part. See section 3a |
 | Magnet ring | NdFeB N52, Ni-Cu-Ni plated, segmented | Bought in | MagSafe-compatible array; 56/46 mm (53/43 mm in the card) |
 | Silicone case | LSR, Shore 55A ±5 | Injection moulded, VDI 27 texture | Add 0.5–1° draft; button covers per model |
 
@@ -52,7 +52,19 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 **Attachment targets (to validate):** normal pull-off at least 10 N on magnets alone and 25 N with suction; shear at least 15 N; no creep over 24 h at 40 °C; repeated attach/detach 5,000 cycles without film loss.
 
-**Phone connection:** the fill, wrap and XL have a USB-C receptacle on the bottom edge and connect to the phone's port with a short right-angle USB-C jumper (included). The silicone case can integrate the plug in its lip. The card has no connector.
+**USB-C (decided):** the shell has its own USB-C receptacle centred in its bottom wall, directly above the iPhone's. The iPhone's port is never covered or plugged: the shell sits on the back only, so the owner can charge both at once (two cables or one dual-head cable) and keep the iPhone's port for drives, displays, audio and CarPlay. There is no jumper to the phone.
+
+### 3a. Drop physics and shock isolation
+
+From a drop height h the impact speed is v = √(2gh): 5.42 m/s at 1.5 m. Stopping over distance d gives an average deceleration v²/2d. With a rigid metal-to-phone contact (d ≈ 0.1 mm) that is about 15,000 g; through the 0.5 mm shock layer with about 0.3 mm usable stroke it is about 5,000 g, a third of the rigid case. Energy at impact rises from 2.9 J (about 200 g phone) to 4.2 J with the 83 g shell, which is why the shell's mass must reach the phone through the layer, never through a hard contact.
+
+- The housing never touches the phone directly: the shock layer is the only load path on the back, and the side walls stop 0.4 mm inside the phone's outline.
+- The shell protects the back and frames the camera. It does not cover the screen; face-down drops are the phone's own Ceramic Shield 2.
+- Verify on first articles: MIL-STD-810H Method 516.8 transit drops at 1.2 m and 1.5 m onto steel-backed plywood, 26 orientations, with accelerometers on the phone; publish peak g with and without the layer.
+
+### 3b. Pairing to the iPhone's Secure Enclave
+
+At setup the app creates a `SecureEnclave.MLDSA87` key (CryptoKit, iOS 26), gated by Face ID with `.biometryCurrentSet`, and signs the shell's identity key and a pairing record. The shell generates its keys inside the i.MX 93's EdgeLock Secure Enclave and accepts configuration, updates approval and owner traffic only when signed by the paired key. Revocation is a signed record from the phone; a revoked shell wipes its keys. The shell holds no readable message content: it handles only sealed fixed-size packets.
 
 ## 4. Electrical
 
@@ -60,14 +72,14 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 | Block | Choice (candidates) | Notes |
 | --- | --- | --- |
-| Application processor | Low-power Cortex-A55 class SoM (e.g. NXP i.MX 93) | Runs tatenan in a reduced node profile; secure boot |
+| Application processor | NXP i.MX 93 SoM (2× Cortex-A55, Cortex-M33, EdgeLock Secure Enclave) | Runs tatenan in a reduced node profile; secure boot; node keys sealed in EdgeLock |
 | Memory | 2 GB LPDDR4X, 32 GB eMMC | Encrypted outbox, inbox and content cache |
-| Guard (Guard-M) | Cortex-M33 with TrustZone, TRNG, AES/SHA acceleration, SPI and SDIO host (e.g. STM32U5 class) | Open Rust firmware; enforces frame sizes, the tick, destinations and signed parameters; ML-DSA-87 secure boot; holds radios in reset until its checks pass |
-| Mesh radio | Wi-Fi HaLow (802.11ah) module (e.g. Morse Micro MM6108 based), hosted by the guard | Pre-certified module; must support a microcontroller host |
-| Wi-Fi and Bluetooth | Wi-Fi 6 and Bluetooth LE 5.3 combo with a microcontroller host driver, hosted by the guard | Link to the phone and nearby devices; Bluetooth wakes the app |
-| Power path | 1S charger with power-path, USB-C PD dual-role controller, fuel gauge | Charges over USB-C (fill, wrap; passes power through to the phone) or Qi2 (card, XL); powers the board from the phone when cells are empty |
+| Guard (Guard-M) | STMicroelectronics STM32U5 (Cortex-M33 with TrustZone, TRNG, AES/SHA acceleration, SPI and SDIO host) | Open Rust firmware; enforces frame sizes, the tick, destinations and signed parameters; ML-DSA-87 secure boot; holds radios in reset until its checks pass |
+| Mesh radio | Wi-Fi HaLow (802.11ah) module based on the Morse Micro MM6108, hosted by the guard | Pre-certified module; must support a microcontroller host |
+| Wi-Fi and Bluetooth | NXP IW612 (Wi-Fi 6, Bluetooth LE, 802.15.4), hosted by the guard | Link to the phone and nearby devices; Bluetooth wakes the app |
+| Power path | TI TPS25750 USB-C PD controller, TI BQ25895 1S charger with power path, TI BQ27427 fuel gauge | Charges over its own USB-C (fill, wrap) or Qi2 (card, XL). The iPhone's port stays free |
 | Wireless charging | Qi2-certified receiver module, coil under the skin window (card and XL only) | The flat-back fill and wrap have no coil, since metal over it would block charging; they charge over USB-C. The phone can't charge wirelessly through any metal shell |
-| Cells | 1S Li-ion pouch, 3.85 V nominal, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles |
+| Cells | 1S Li-ion pouch, 3.85 V nominal, about 1,610 mAh (6.2 Wh) in the wrap, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles; IEC 62133-2 and UN 38.3 |
 
 **Power budget (estimate, to be measured):**
 
@@ -79,7 +91,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
-At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
+At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that it stops relaying until it is charged; it never draws from the phone, whose port stays open. The owner's own messages still arrive through the phone.
 
 ## 5. Radios and network
 

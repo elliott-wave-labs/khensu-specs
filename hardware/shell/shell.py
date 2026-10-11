@@ -53,6 +53,9 @@ class Phone:
     def bump_bottom(self) -> float:
         return self.height / 2 - self.bump_y0 - self.bump_h
 
+    def full_width_bump(self) -> bool:
+        return self.bump_w >= self.width - 0.01
+
     def sensor_list(self) -> list[tuple[str, float, float, float, float, float]]:
         """Sensors in back coordinates: (name, x, y, radius, top z, half field of view)."""
         bx, by, bw, bh = self.bump_rect()
@@ -61,17 +64,17 @@ class Phone:
 
 
 PHONES = [
-    # iPhone 18 Pro: a long camera plateau across the top, inset from the edges, so the wrap frames it.
+    # iPhone 18 Pro: an aluminium camera plateau across the full width of the top, as on apple.com.
     # Placeholder geometry until Apple's accessory drawings replace it.
     Phone(
-        "iphone-18-pro", 71.9, 150.0, 8.75, 10.0, 3.5, 3.5, 64.9, 40.0, 8.0, 3.0, -5.0, lens_z=4.2,
+        "iphone-18-pro", 71.9, 150.0, 8.75, 10.0, 0.0, 0.0, 71.9, 43.0, 10.0, 3.0, -5.0, lens_z=4.2,
         sensors=(
-            ("wide", 11.2, 11.2, 7.6, 4.2, 42.0),
-            ("ultra wide", 11.2, 28.8, 7.6, 4.2, 60.0),
-            ("telephoto", 26.4, 20.0, 7.6, 4.2, 20.0),
-            ("flash", 54.5, 12.0, 2.8, 3.0, 60.0),
-            ("lidar", 54.5, 28.0, 3.6, 3.0, 40.0),
-            ("microphone", 60.4, 20.0, 0.6, 3.0, 0.0),
+            ("wide", 14.7, 14.7, 7.6, 4.2, 42.0),
+            ("ultra wide", 14.7, 32.3, 7.6, 4.2, 60.0),
+            ("telephoto", 29.9, 23.5, 7.6, 4.2, 20.0),
+            ("flash", 58.0, 15.5, 2.8, 3.0, 60.0),
+            ("lidar", 58.0, 31.5, 3.6, 3.0, 40.0),
+            ("microphone", 63.9, 23.5, 0.6, 3.0, 0.0),
         ),
     ),
     # Standard-size phone with a square camera island at the top left.
@@ -92,8 +95,11 @@ PHONES = [
 class Build:
     wall: float = 1.0  # side walls (CNC titanium)
     skin: float = 0.7  # outer face
-    base: float = 0.6  # phone-side plate (glass-filled PC), closes the cavity
-    suction: float = 0.3  # micro-suction film on the phone side
+    base: float = 0.4  # phone-side plate (glass-filled PC), closes the cavity
+    # Phone side: microcellular urethane (PORON XRD class) with a micro-suction face. It holds the
+    # shell on and is the shock isolator: in a back or edge impact it lets the shell's mass decelerate
+    # over the layer's stroke instead of hammering the phone's glass through a rigid contact.
+    suction: float = 0.5
     gap: float = 0.6  # clearance to the camera bump
     fov_margin: float = 0.3  # extra clearance past each sensor's field-of-view cone
     plate_clear: float = 0.1  # between the plateau top and the underside of the camera plate
@@ -137,6 +143,18 @@ def rounded_rect(w: float, h: float, r: float, cx: float = 0, cy: float = 0) -> 
     return cq.Workplane("XY").center(cx, cy).rect(w, h).extrude(1).edges("|Z").fillet(r)
 
 
+def plateau_outline(p: Phone, grow: float = 0.0) -> cq.Workplane:
+    """The camera plateau's outline grown by `grow`. A full-width plateau follows the phone's own top
+    corners and meets its sides square at the bottom."""
+    if not p.full_width_bump():
+        bx, by, bw, bh = p.bump_rect()
+        return rounded_rect(bw + 2 * grow, bh + 2 * grow, p.bump_r + grow, bx, by)
+    top = p.height / 2 + grow
+    bottom = p.bump_bottom() - grow
+    band = cq.Workplane("XY").center(0, (top + bottom) / 2).rect(p.width + 2 * grow + 2, top - bottom).extrude(1)
+    return rounded_rect(p.width + 2 * grow, p.height + 2 * grow, p.corner_r + grow).intersect(band)
+
+
 def outline_solid(outline: cq.Workplane, z0: float, t: float) -> cq.Workplane:
     """Re-extrude a 1 mm outline solid to thickness t starting at z0."""
     face = outline.faces("<Z").val()
@@ -164,11 +182,11 @@ def styles_for(p: Phone) -> list[Style]:
     bx, by, bw, bh = p.bump_rect()
     bottom_of_bump = p.bump_bottom() - B.gap
     body = rounded_rect(p.width - 2 * B.edge_inset, p.height - 2 * B.edge_inset, p.corner_r - B.edge_inset)
-    bump_cut = rounded_rect(bw + 2 * B.gap, bh + 2 * B.gap, p.bump_r + B.gap, bx, by)
+    bump_cut = plateau_outline(p, B.gap)
 
     # Card: Pocket-sized, 86 x 56 x 5.2 mm, centred on MagSafe but kept clear of the bump.
     card_w, card_h, card_t = 56.0, 86.0, 5.2
-    card_cy = min(p.magsafe_y, bottom_of_bump - card_h / 2 - 1.0)
+    card_cy = min(p.magsafe_y, bottom_of_bump - card_h / 2 - 1.5)
     card = rounded_rect(card_w, card_h, 8.0, 0, card_cy)
 
     # Fill: inset from the phone's edges, over the camera plateau too, so the back is flat.
@@ -254,7 +272,8 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
     t = s.thickness
     stack_bottom = B.suction + B.base  # phone side of the cavity
     envelope = outline_solid(s.outline, B.suction, t - B.suction)
-    edge_fillet = min(1.8 if s.plate else 1.2, (t - B.suction) * 0.45)
+    # A crisp edge, like the phone's own, so the flat back reads flat.
+    edge_fillet = min(0.8 if s.plate else 1.2, (t - B.suction) * 0.45)
     try:
         envelope = envelope.faces(">Z").edges().fillet(edge_fillet)
     except Exception:
@@ -265,7 +284,7 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
     draft = camera_draft(p, t) if s.name != "card" else 0.0
     # Solid titanium around the camera opening: no cells in the thin rails, and room for the draft.
     ring = B.gap + draft + B.wall
-    keepout = rounded_rect(bw + 2 * ring, bh + 2 * ring, p.bump_r + ring, bx, by)
+    keepout = plateau_outline(p, ring)
     if s.name != "card":
         inner = inner.cut(keepout)
         inner = cq.Workplane("XY").add(max(inner.solids().vals(), key=lambda v: v.Volume()))
@@ -276,7 +295,7 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
     if s.plate:
         # The plateau sits in a pocket under a plate level with the lens rings; each sensor gets its own opening.
         g = B.gap
-        pocket = outline_solid(rounded_rect(bw + 2 * g, bh + 2 * g, p.bump_r + g, bx, by), -1.0, p.bump_z + B.plate_clear + 1.0)
+        pocket = outline_solid(plateau_outline(p, g), -1.0, p.bump_z + B.plate_clear + 1.0)
         housing = housing.cut(pocket)
         for _, x, y, r, z, fov in p.sensor_list():
             housing = housing.cut(sensor_opening(p, t, x, y, r, z, fov))
@@ -284,7 +303,7 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
         # Widen the opening above the plateau so the wall stays outside every field-of-view cone.
         def wire(grow: float, z: float) -> cq.Wire:
             g = B.gap + grow
-            return rounded_rect(bw + 2 * g, bh + 2 * g, p.bump_r + g, bx, by).faces("<Z").wires().val().translate((0, 0, z))
+            return plateau_outline(p, g).faces("<Z").wires().val().translate((0, 0, z))
         slope = draft / (t - p.bump_z)
         well = cq.Solid.makeLoft([wire(0.0, p.bump_z), wire(slope * (t + 1 - p.bump_z), t + 1)])
         housing = housing.cut(cq.Workplane("XY").add(well))
@@ -379,7 +398,7 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
 
     if s.usb_c:
         port = (
-            cq.Workplane("XZ").center(0, B.suction + (t - B.suction) / 2).rect(B.usb_w, min(B.usb_h, t - 1.2))
+            cq.Workplane("XZ").center(0, B.suction + (t - B.suction) / 2).slot2D(B.usb_w, min(B.usb_h, t - 1.2))
             .extrude(-6).translate((0, bb.ymin - 1, 0))
         )
         housing = housing.cut(port)
@@ -412,14 +431,13 @@ def build_case(p: Phone, module_t: float) -> cq.Workplane:
     phone_body = outline_solid(rounded_rect(p.width, p.height, p.corner_r), -p.depth, p.depth + module_t)
     front_opening = outline_solid(rounded_rect(p.width - 2 * lip, p.height - 2 * lip, p.corner_r - lip), z0 - 1, 2.0)
     bx, by, bw, bh = p.bump_rect()
-    camera = outline_solid(rounded_rect(bw + 1.6, bh + 1.6, p.bump_r + 0.8, bx, by), 0, z1 + 1)
+    camera = outline_solid(plateau_outline(p, 0.8), 0, z1 + 1)
     return case.cut(phone_body).cut(front_opening).cut(camera)
 
 
 def phone_reference(p: Phone) -> cq.Workplane:
     body = outline_solid(rounded_rect(p.width, p.height, p.corner_r), -p.depth, p.depth)
-    bx, by, bw, bh = p.bump_rect()
-    bump = outline_solid(rounded_rect(bw, bh, p.bump_r, bx, by), 0, p.bump_z)
+    bump = outline_solid(plateau_outline(p), 0, p.bump_z)
     body = body.union(bump)
     for name, x, y, r, z, _ in p.sensor_list():
         if z > p.bump_z:

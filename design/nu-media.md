@@ -210,3 +210,20 @@ What this shows:
 - **A half-size base layer alone loses on this hardware** (69 vs 73 at 720p, 87 vs 93 at 4K): upscaling can't restore detail the encoder never sent. Everything nu-media claims beyond HEVC has to come from the Neural Engine layers, which don't exist yet. The target stays 40% fewer bits than hardware HEVC at equal VMAF.
 - **4K HEVC encodes at about 48 fps on iPhone Air** including ProRes decode, so 4K30 is live; the half-size path runs at about 97 fps, leaving headroom for enhancement.
 - **Limits:** two clips, one phone, 8-bit SDR, no energy measurement yet. Publishing the reel on khensu.nu needs the creator's permission.
+
+**Every codec at 500 kbit/s, 720p, with a first Neural Engine enhancement** (`bench/grid720.py`, data in `bench/iphone-720p.json`). The source is the Instagram file itself: H.264 High profile, 720 × 1280 at 30 fps, 2.44 Mbit/s video (2.51 Mbit/s with audio). Every encoder is steered to 500 kbit/s ±3%.
+
+| Tile | Where | VMAF |
+| --- | --- | --- |
+| nu-media prototype: HEVC hardware at 360 × 640 + `VTLowLatencySuperResolutionScaler` 2x on the Neural Engine | iPhone Air | 62.7 |
+| Same base with a Lanczos upscale | iPhone Air encode, Mac upscale | 69.4 |
+| H.264, iPhone hardware | iPhone Air | 52.7 |
+| HEVC, iPhone hardware | iPhone Air | 72.6 |
+| AV1, SVT-AV1 real time | Mac | 72.9 |
+| AV1, SVT-AV1 preset 4 with lookahead (not live) | Mac | 86.1 |
+| VP9, libvpx real time | Mac | 64.0 |
+| HEVC, x265 preset slow (not live) | Mac | 81.3 |
+
+- **Apple's low-latency super resolution** runs at about 440–500 fps at 360 × 640 → 720 × 1280 on iPhone Air, so a learned enhancement layer has ample real-time budget. It looks sharper but scores below a plain upscale: it is a general-purpose scaler that adds texture the original doesn't have, which VMAF penalises. nu-media's enhancement has to be trained on our own base layer with a fidelity loss, not borrowed.
+- **Offline encoders show the headroom:** x265 slow and AV1 with lookahead reach VMAF 81–86 at the same bits, 9–14 points above the live hardware encoder. That gap is what a learned layer on the receiving phone can try to close without changing what's sent.
+- **Bug fixed on the way:** the scaler rejects frames that lack the padded layout in `sourcePixelBufferAttributes`, which `AVAssetReader` ignores; frames are copied into a pool with those attributes first.

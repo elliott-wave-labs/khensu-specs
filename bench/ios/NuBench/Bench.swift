@@ -4,7 +4,7 @@ import VideoToolbox
 struct Job: Codable {
     let input: String
     let output: String
-    let codec: String  // "h264" or "hevc"
+    let codec: String  // "h264", "hevc", or "sr" (Apple's low-latency super resolution, 2x, raw NV12 out)
     let kbps: Int
 }
 
@@ -41,7 +41,7 @@ enum Bench {
         let jobs = try JSONDecoder().decode([Job].self, from: Data(contentsOf: docs.appending(path: "jobs.json")))
         var results: [JobResult] = []
         for job in jobs {
-            let r = try await encode(job, in: docs)
+            let r = job.codec == "sr" ? try await superResolve(job, in: docs) : try await encode(job, in: docs)
             print("\(job.output) \(r.frames) frames \(String(format: "%.1f", r.fps)) fps \(r.bytes) B")
             results.append(r)
         }
@@ -52,6 +52,95 @@ enum Bench {
         let enc = JSONEncoder()
         enc.outputFormatting = [.prettyPrinted, .sortedKeys]
         try enc.encode(report).write(to: docs.appending(path: "results-ios.json"))
+    }
+
+    /// Decodes the input and upscales each frame 2x with VTLowLatencySuperResolutionScaler (the Neural Engine
+    /// video-call scaler in iOS 26). Writes raw NV12 frames so the Mac scores exactly what the scaler produced.
+    static func superResolve(_ job: Job, in docs: URL) async throws -> JobResult {
+        let asset = AVURLAsset(url: docs.appending(path: job.input))
+        guard let track = try await asset.loadTracks(withMediaType: .video).first else { throw BenchError.noVideoTrack(job.input) }
+        let size = try await track.load(.naturalSize)
+        let w = Int(size.width), h = Int(size.height)
+        guard VTLowLatencySuperResolutionScalerConfiguration.isSupported else { throw BenchError.writer("super resolution not supported") }
+        let factors = VTLowLatencySuperResolutionScalerConfiguration.supportedScaleFactors(frameWidth: w, frameHeight: h)
+        print("supported scale factors for \(w)x\(h): \(factors)")
+        guard factors.contains(2.0) else { throw BenchError.writer("2x not supported for \(w)x\(h): \(factors)") }
+        let config = VTLowLatencySuperResolutionScalerConfiguration(frameWidth: w, frameHeight: h, scaleFactor: 2.0)
+        let processor = VTFrameProcessor()
+        try processor.startSession(configuration: config)
+        defer { processor.endSession() }
+
+        let reader = try AVAssetReader(asset: asset)
+        let out = AVAssetReaderTrackOutput(track: track, outputSettings: config.sourcePixelBufferAttributes)
+        reader.add(out)
+        var pool: CVPixelBufferPool?
+        CVPixelBufferPoolCreate(nil, nil, config.destinationPixelBufferAttributes as CFDictionary, &pool)
+        var srcPool: CVPixelBufferPool?
+        CVPixelBufferPoolCreate(nil, nil, config.sourcePixelBufferAttributes as CFDictionary, &srcPool)
+        var xfer: VTPixelTransferSession?
+        VTPixelTransferSessionCreate(allocator: nil, pixelTransferSessionOut: &xfer)
+        guard let pool, let srcPool, let xfer else { throw BenchError.writer("no pixel buffer pools") }
+
+        let url = docs.appending(path: job.output)
+        FileManager.default.createFile(atPath: url.path, contents: nil)
+        let fh = try FileHandle(forWritingTo: url)
+        defer { try? fh.close() }
+
+        reader.startReading()
+        var frames = 0
+        var busy = 0.0
+        var shape = ""
+        while let sb = out.copyNextSampleBuffer() {
+            guard let decoded = CMSampleBufferGetImageBuffer(sb) else { continue }
+            let pts = CMSampleBufferGetPresentationTimeStamp(sb)
+            // The scaler needs the padded layout in sourcePixelBufferAttributes, which AVAssetReader doesn't honour.
+            var padded: CVPixelBuffer?
+            CVPixelBufferPoolCreatePixelBuffer(nil, srcPool, &padded)
+            guard let src = padded else { throw BenchError.writer("source buffer") }
+            let xs = VTPixelTransferSessionTransferImage(xfer, from: decoded, to: src)
+            if xs != noErr { throw BenchError.session(xs) }
+            var dst: CVPixelBuffer?
+            CVPixelBufferPoolCreatePixelBuffer(nil, pool, &dst)
+            guard let dst, let sf = VTFrameProcessorFrame(buffer: src, presentationTimeStamp: pts),
+                  let df = VTFrameProcessorFrame(buffer: dst, presentationTimeStamp: pts) else { throw BenchError.writer("frame setup") }
+            let t0 = Date()
+            try await processor.process(parameters: VTLowLatencySuperResolutionScalerParameters(sourceFrame: sf, destinationFrame: df))
+            busy += Date().timeIntervalSince(t0)
+            try fh.write(contentsOf: nv12(dst))
+            shape = "\(CVPixelBufferGetWidth(dst))x\(CVPixelBufferGetHeight(dst)) format \(CVPixelBufferGetPixelFormatType(dst))"
+            frames += 1
+        }
+        let bytes = (try FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
+        print("sr output \(shape)")
+        return JobResult(output: job.output, frames: frames, seconds: busy, fps: Double(frames) / busy, bytes: bytes)
+    }
+
+    /// Packs a bi-planar 4:2:0 buffer into tightly packed NV12 bytes, converting other formats first.
+    private static func nv12(_ buf: CVPixelBuffer) throws -> Data {
+        var b = buf
+        let fmt = CVPixelBufferGetPixelFormatType(buf)
+        if fmt != kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange {
+            var t: VTPixelTransferSession?
+            VTPixelTransferSessionCreate(allocator: nil, pixelTransferSessionOut: &t)
+            var o: CVPixelBuffer?
+            CVPixelBufferCreate(nil, CVPixelBufferGetWidth(buf), CVPixelBufferGetHeight(buf), kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange,
+                                [kCVPixelBufferIOSurfacePropertiesKey: [:]] as CFDictionary, &o)
+            guard let t, let o else { throw BenchError.writer("transfer setup") }
+            let st = VTPixelTransferSessionTransferImage(t, from: buf, to: o)
+            if st != noErr { throw BenchError.session(st) }
+            b = o
+        }
+        CVPixelBufferLockBaseAddress(b, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(b, .readOnly) }
+        var data = Data()
+        let w = CVPixelBufferGetWidth(b), h = CVPixelBufferGetHeight(b)
+        for plane in 0..<2 {
+            let rows = plane == 0 ? h : h / 2
+            let base = CVPixelBufferGetBaseAddressOfPlane(b, plane)!
+            let stride = CVPixelBufferGetBytesPerRowOfPlane(b, plane)
+            for r in 0..<rows { data.append(base.advanced(by: r * stride).assumingMemoryBound(to: UInt8.self), count: w) }
+        }
+        return data
     }
 
     /// Decodes the input in full, feeding frames to a hardware-only VTCompressionSession at the input's size.

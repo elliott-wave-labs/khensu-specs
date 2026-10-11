@@ -110,11 +110,11 @@ def grain(img: Image.Image, amount: float = 7.0, seed: int = 1) -> Image.Image:
 
 
 def render(shapes: list[tuple[cq.Shape, str]], scale: float, center: np.ndarray) -> Image.Image:
-    """Shapes are painted in list order; triangles are depth-sorted within each shape."""
-    img = Image.new("RGBA", (SIZE * SS, SIZE * SS), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
+    """Z-buffered rasterisation of every shape in the call, so hidden faces never show through."""
+    W = SIZE * SS
+    zbuf = np.full((W, W), np.inf, np.float32)
+    rgba = np.zeros((W, W, 4), np.uint8)
     for shape, mat_name in shapes:
-        polys = []
         mat = MATERIALS[mat_name]
         v, t = tess(shape)
         if len(t) == 0:
@@ -129,10 +129,23 @@ def render(shapes: list[tuple[cq.Shape, str]], scale: float, center: np.ndarray)
         for i in np.nonzero(ok)[0]:
             if n[i] @ EYE <= 0:
                 continue
-            polys.append((depth[t[i]].mean(), [tuple(p2[j]) for j in t[i]], shade(n[i], mat)))
-        for _, pts, col in sorted(polys, key=lambda q: -q[0]):
-            draw.polygon(pts, fill=col)
-    return img.resize((SIZE, SIZE), Image.LANCZOS)
+            (xa, ya), (xb, yb), (xc, yc) = p2[t[i]]
+            da, db, dc = depth[t[i]]
+            x0, x1 = max(int(min(xa, xb, xc)), 0), min(int(max(xa, xb, xc)) + 1, W - 1)
+            y0, y1 = max(int(min(ya, yb, yc)), 0), min(int(max(ya, yb, yc)) + 1, W - 1)
+            den = (yb - yc) * (xa - xc) + (xc - xb) * (ya - yc)
+            if x1 < x0 or y1 < y0 or abs(den) < 1e-9:
+                continue
+            X, Y = np.meshgrid(np.arange(x0, x1 + 1) + 0.5, np.arange(y0, y1 + 1) + 0.5)
+            w0 = ((yb - yc) * (X - xc) + (xc - xb) * (Y - yc)) / den
+            w1 = ((yc - ya) * (X - xc) + (xa - xc) * (Y - yc)) / den
+            w2 = 1 - w0 - w1
+            z = w0 * da + w1 * db + w2 * dc
+            zs = zbuf[y0:y1 + 1, x0:x1 + 1]
+            m = (w0 >= -1e-4) & (w1 >= -1e-4) & (w2 >= -1e-4) & (z < zs)
+            zs[m] = z[m]
+            rgba[y0:y1 + 1, x0:x1 + 1][m] = shade(n[i], mat)
+    return Image.fromarray(rgba, "RGBA").resize((SIZE, SIZE), Image.LANCZOS)
 
 
 def main(out: Path):
@@ -162,8 +175,14 @@ def main(out: Path):
         img = grain(img, 7.0 if finish != "brass" else 4.0)
         img.save(out / f"housing_{finish}.png", optimize=True)
         images[f"housing_{finish}"] = img
+        # Radio windows are PC moulded in a matching colour, so the back reads as one surface.
+        base = MATERIALS[f"housing_{finish}"][0]
+        MATERIALS[f"windows_{finish}"] = (tuple(int(ch * 0.94) for ch in base), 0.08, 10, 255)
+        img = render([(sol, f"windows_{finish}") for sol in parts["window_inserts"].solids().vals()], scale, center)
+        img.save(out / f"window_inserts_{finish}.png", optimize=True)
+        images[f"window_inserts_{finish}"] = img
     for name in LAYERS:
-        if name in ("phone", "housing"):
+        if name in ("phone", "housing", "window_inserts"):
             img = images[f"{name}_{DEFAULT_COLOUR}"]
         elif name in parts:
             img = render([(sol, name) for sol in parts[name].solids().vals()], scale, center)
@@ -175,15 +194,22 @@ def main(out: Path):
         print(name, img.getbbox())
     # The lenses again on their own: nothing on the shell hides them once it's on, so the assembled
     # images (and the exploded view at rest) paint them over the housing's far wall.
-    camera = render([(lenses, "bezel"), (glass, "lens"), (small, "flash")], scale, center)
+    # Only the faces that show through the plate's openings: lens-ring tops, glass and the small sensors.
+    tops, glass_tops = cq.Workplane("XY"), cq.Workplane("XY")
+    for _, x, y, r, z, _ in p.sensor_list():
+        if z > p.bump_z:
+            tops = tops.union(cq.Workplane("XY").center(x, y).circle(r).extrude(0.05).translate((0, 0, z - 0.05)))
+            glass_tops = glass_tops.union(cq.Workplane("XY").center(x, y).circle(r * 0.62).extrude(0.05).translate((0, 0, z - 0.04)))
+    camera = render([(tops.val(), "bezel"), (glass_tops.val(), "lens"), (small, "flash")], scale, center)
     camera.save(out / "camera.png", optimize=True)
     # Flattened assemblies, one per colour (shell matched to phone), for the colour picker.
     for colour in PHONE_COLOURS:
         for shell, suffix in ((colour, ""), ("brass", "_brass")):
             flat = images[f"phone_{colour}"].copy()
-            for name in LAYERS[1:-1]:
+            for name in LAYERS[1:-2]:
                 if name in images:
                     flat.alpha_composite(images[name])
+            flat.alpha_composite(images[f"window_inserts_{shell}"])
             flat.alpha_composite(images[f"housing_{shell}"])
             flat.alpha_composite(camera)
             flat.save(out / f"assembled_{colour}{suffix}.png", optimize=True)

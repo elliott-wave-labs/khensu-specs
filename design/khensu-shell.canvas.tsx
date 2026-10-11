@@ -73,22 +73,22 @@ type Result = {
 const RESULTS: Record<PhoneId, Record<Exclude<StyleId, "case">, Result>> = {
   "iphone-18-pro": {
     card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.2, tiG: 50, proud: 1.0, draft: 0, usb: false, ring: 53 },
-    fill: { footprint: [65.9, 101.9], t: 4.2, wh: 4.4, cm3: 9.74, tiG: 60, proud: 0, draft: 0, usb: true, ring: 56 },
-    wrap: { footprint: [71.1, 149.2], t: 4.2, wh: 5.3, cm3: 11.7, tiG: 74, proud: 0, draft: 0, usb: true, ring: 56 },
+    fill: { footprint: [65.9, 143.0], t: 4.2, wh: 4.4, cm3: 9.81, tiG: 69, proud: 0, draft: 0, usb: true, ring: 56 },
+    wrap: { footprint: [71.1, 149.2], t: 4.2, wh: 5.3, cm3: 11.7, tiG: 83, proud: 0, draft: 0, usb: true, ring: 56 },
     "wrap-xl": { footprint: [71.1, 149.2], t: 7.2, wh: 13.2, cm3: 29.41, tiG: 124, proud: 3.0, draft: 1.3, usb: true, ring: 56 },
   },
   island: {
     card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, tiG: 50, proud: 1.6, draft: 0, usb: false, ring: 53 },
-    fill: { footprint: [65.5, 100.5], t: 3.6, wh: 2.3, cm3: 5.01, tiG: 47, proud: 0, draft: 0, usb: true, ring: 56 },
-    wrap: { footprint: [70.7, 146.8], t: 3.6, wh: 3.9, cm3: 8.63, tiG: 68, proud: 0, draft: 0, usb: true, ring: 56 },
+    fill: { footprint: [65.5, 140.6], t: 3.6, wh: 3.1, cm3: 6.8, tiG: 62, proud: 0, draft: 0, usb: true, ring: 56 },
+    wrap: { footprint: [70.7, 146.8], t: 3.6, wh: 3.9, cm3: 8.63, tiG: 72, proud: 0, draft: 0, usb: true, ring: 56 },
     "wrap-xl": { footprint: [70.7, 146.8], t: 6.6, wh: 13.7, cm3: 30.37, tiG: 129, proud: 3.0, draft: 1.4, usb: true, ring: 56 },
   },
 };
 
 const STYLE_INFO: Record<StyleId, { name: string; line: string }> = {
   card: { name: "Card", line: "Pocket-size, 56 × 86 × 5.2 mm, snaps on MagSafe below the camera" },
-  fill: { name: "Fill", line: "Fills the flat area below the camera, level with the lens rings" },
-  wrap: { name: "Wrap", line: "Covers the whole back, level with the lens rings: flat, no camera bump, every sensor clear" },
+  fill: { name: "Fill", line: "Inset from the edges, over the camera: flat back, an opening per sensor" },
+  wrap: { name: "Wrap", line: "The whole back, over the camera: flat, no camera bump, an opening per sensor" },
   "wrap-xl": { name: "Wrap XL", line: "Wrap 3 mm above the lenses, camera well drafted clear of every field of view" },
   case: { name: "Silicone case", line: "Shock case that holds the phone with a Wrap module inside" },
 };

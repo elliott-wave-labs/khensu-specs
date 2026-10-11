@@ -404,6 +404,9 @@ def housing_sheet(p: S.Phone, s: S.Style, parts: dict, dwg: str, sheet: str) -> 
         dim(msp, to(hb.xmax, hb.ymin), to(hb.xmax, hb.ymax), (to(hb.xmax, 0)[0] + 6, 0), 90, "<> %%p0.05")
         dim(msp, to(ob.xmin, hb.ymax), to(hb.xmin, hb.ymax), (0, fb[3] + 7), 0)
         text(msp, "CAMERA CUTOUT: 0.6 CLEARANCE ALL ROUND", (fb[0], fb[3] + 20), 2.0)
+    elif s.plate:
+        text(msp, f"CAMERA PLATE {s.thickness - p.bump_z - S.B.plate_clear:.1f} THK OVER PLATEAU, FACE LEVEL WITH LENS RINGS. "
+             "SENSOR OPENINGS 0.6 CLEARANCE, FLASH/LIDAR DRAFTED PER STEP", (fb[0], fb[3] + 20), 2.0)
     else:
         clr = S.Phone.bump_bottom(p) - ob.ymax
         text(msp, f"TOP EDGE: {clr:.1f} CLEARANCE TO CAMERA BUMP", (fb[0], fb[3] + 20), 2.0)

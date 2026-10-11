@@ -18,8 +18,8 @@ This writes STEP (for CAM and tooling) and STL (for prints) to `out/<phone>/<sty
 | Style | What it is | Attaches by |
 | --- | --- | --- |
 | `card` | Pocket-size card, 56 × 86 × 5.2 mm, below the bump | MagSafe-compatible magnets (53 mm ring to fit the width) |
-| `fill` | Fills the flat area below the camera, level with the lens rings | Magnets plus micro-suction |
-| `wrap` | Covers the whole back around the camera, level with the lens rings: a flat back | Magnets plus micro-suction |
+| `fill` | Inset from the edges, over the camera: a flat back level with the lens rings, with an opening per sensor | Magnets plus micro-suction |
+| `wrap` | The whole back, over the camera: a flat back level with the lens rings, with an opening per sensor | Magnets plus micro-suction |
 | `wrap-xl` | `wrap` 3 mm thicker, for all-day relaying | Magnets plus micro-suction |
 | `case-silicone` | Shock case that holds the phone and a `wrap` module | Case grips the phone |
 

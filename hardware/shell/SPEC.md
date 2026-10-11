@@ -23,16 +23,16 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass (titanium) | Attachment | Drawings |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
-| Fill | iPhone 18 Pro | 65.9 × 101.9 | 4.2 (level) | 4.4 Wh | 60 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
-| Wrap | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out | 4.2 (level) | 5.3 Wh | 74 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
+| Fill | iPhone 18 Pro | 65.9 × 143.0, camera plate | 4.2 (level) | 4.4 Wh | 69 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
+| Wrap | iPhone 18 Pro | 71.1 × 149.2, camera plate | 4.2 (level) | 5.3 Wh | 83 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-100/101 |
 | Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out, 1.3 mm draft | 7.2 (+3.0) | 13.2 Wh | 124 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
-| Fill | Standard | 65.5 × 100.5 | 3.6 (level) | 2.3 Wh | 47 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
-| Wrap | Standard | 70.7 × 146.8 | 3.6 (level) | 3.9 Wh | 68 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
+| Fill | Standard | 65.5 × 140.6, camera plate | 3.6 (level) | 3.1 Wh | 62 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
+| Wrap | Standard | 70.7 × 146.8, camera plate | 3.6 (level) | 3.9 Wh | 72 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
 | Wrap XL | Standard | 70.7 × 146.8, 1.4 mm draft | 6.6 (+3.0) | 13.7 Wh | 129 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
 | Silicone case | Both | phone + 1.6 per side | phone + module + 0.8 | (holds a Wrap) | about 18 g | Grips the phone | KS-*-CASE-201 |
 
-"Level" means the top face is level with the tops of the lens rings, so the back is one flat surface with no camera bump; "+" is height above the lens rings. The camera plateau sits in the opening 0.6 mm clear of the wall on every side, and nothing covers a lens, the flash, the depth sensor or the microphone. Where the face rises above the lenses (the XL), the opening widens with height (the draft) so no wall enters a lens's field of view (120° for the ultra wide) or the flash and depth-sensor cones, with 0.3 mm to spare; `shell.py` checks this for every style and fails the build if any sensor is covered or clipped. The slim styles also have a 3.4 mm floor (suction film 0.3, base 0.6, board 1.6 with 0.2 clearance, skin 0.7). The titanium within 1.6 mm of the opening is solid, with no cells. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
+"Level" means the top face is level with the tops of the lens rings, so the back is one flat surface with no camera bump, like a phone with flush cameras; "+" is height above the lens rings. In the fill and wrap a camera plate covers the plateau (1.1 mm thick on iPhone 18 Pro, 0.1 mm above it), with a round opening for each lens, the flash, the depth sensor and the microphone: 0.6 mm clear round each, and the flash and depth-sensor openings widen with height so the wall stays outside their light cones. The XL rises 3 mm above the lenses, where separate openings for the ultra wide would merge, so its camera sits in one opening that widens with height (the draft) to stay out of every field of view (120° for the ultra wide), with 0.3 mm to spare. `shell.py` intersects each sensor's column and field-of-view cone with the housing and fails the build if anything touches, with 0.2 mm to spare. The slim styles also have a 3.4 mm floor (suction film 0.3, base 0.6, board 1.6 with 0.2 clearance, skin 0.7). The titanium within 1.6 mm of the opening is solid, with no cells. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
 
 ## 3. Mechanical
 
@@ -41,7 +41,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
 | Housing (titanium) | Ti-6Al-4V Grade 5, "titanium battleproof shell" | 5-axis CNC; bead blast, then matte powder coat 60–80 µm on the outer faces, colour-matched to the phone finish (Burgundy, Glacier, Silver, Black for iPhone 18 Pro). Matte so it doesn't show fingerprints. Mask the inside, the windows and the phone side; machine the face 0.07 mm low so the coated face is level with the lens rings | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
-| Housing (brass) | C26000 cartridge brass (70% copper, 30% zinc, lead-free, no nickel) | 5-axis CNC; bead blast to satin and leave bare. No lacquer or coating, which would stop the copper working on germs. It darkens to a natural patina; it cannot rust (no iron) | About 1.9× the titanium housing mass (wrap 98 g against 74 g). Copper alloys of at least 60% copper are registered with the US EPA as antimicrobial; product claims need the registered alloy, approved wording, and regulatory review before launch |
+| Housing (brass) | C26000 cartridge brass (70% copper, 30% zinc, lead-free, no nickel) | 5-axis CNC; bead blast to satin and leave bare. No lacquer or coating, which would stop the copper working on germs. It darkens to a natural patina; it cannot rust (no iron) | About 1.9× the titanium housing mass (wrap 117 g against 83 g). Copper alloys of at least 60% copper are registered with the US EPA as antimicrobial; product claims need the registered alloy, approved wording, and regulatory review before launch |
 | Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Ø46 over the coil (skin only); 42 mm strip along the bottom edge (skin and wall) for the antennas |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
 | Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |

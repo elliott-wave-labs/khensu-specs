@@ -96,6 +96,7 @@ class Build:
     suction: float = 0.3  # micro-suction film on the phone side
     gap: float = 0.6  # clearance to the camera bump
     fov_margin: float = 0.3  # extra clearance past each sensor's field-of-view cone
+    plate_clear: float = 0.1  # between the plateau top and the underside of the camera plate
     edge_inset: float = 0.4  # inset from the phone's outline so the shell never overhangs
     magnet_od: float = 56.0  # MagSafe-compatible magnet ring
     magnet_id: float = 46.0
@@ -128,6 +129,7 @@ class Style:
     outline: cq.Workplane = field(repr=False)
     usb_c: bool
     magsafe_center: tuple[float, float]
+    plate: bool = False  # covers the camera plateau, with an opening per sensor, for a flat back
 
 
 def rounded_rect(w: float, h: float, r: float, cx: float = 0, cy: float = 0) -> cq.Workplane:
@@ -169,15 +171,14 @@ def styles_for(p: Phone) -> list[Style]:
     card_cy = min(p.magsafe_y, bottom_of_bump - card_h / 2 - 1.0)
     card = rounded_rect(card_w, card_h, 8.0, 0, card_cy)
 
-    # Fill: the empty space below the bump, flush with the bump height.
+    # Fill: inset from the phone's edges, over the camera plateau too, so the back is flat.
     margin_side, margin_bottom = 3.0, 4.0
-    fill_top = bottom_of_bump
+    fill_top = p.height / 2 - margin_side
     fill_bot = -p.height / 2 + margin_bottom
     fill_h = fill_top - fill_bot
     fill = rounded_rect(p.width - 2 * margin_side, fill_h, p.corner_r - margin_side, 0, fill_bot + fill_h / 2)
-    fill = fill.cut(bump_cut)
 
-    # Wrap: the whole back around the bump, flush with the bump height.
+    # Wrap XL: the whole back around the bump (the camera sits in a drafted well).
     if bw + 2 * B.gap >= p.width - 2 * B.edge_inset - 2 * B.wall:
         # Full-width plateau: everything below it, with square top corners against the straight phone sides.
         bot = -p.height / 2 + B.edge_inset
@@ -190,8 +191,8 @@ def styles_for(p: Phone) -> list[Style]:
     slim_t = max(p.lens_z, p.bump_z, min_slim_thickness())
     return [
         Style("card", "Pocket-style card on MagSafe, own battery only", card_t, card, False, (0, p.magsafe_y)),
-        Style("fill", "Fills the space below the camera, level with the lenses", slim_t, fill, True, (0, p.magsafe_y)),
-        Style("wrap", "Whole back around the camera, level with the lenses: a flat back", slim_t, wrap, True, (0, p.magsafe_y)),
+        Style("fill", "Inset from the edges, over the camera: a flat back level with the lenses", slim_t, fill, True, (0, p.magsafe_y), plate=True),
+        Style("wrap", "The whole back, over the camera: a flat back level with the lenses", slim_t, body, True, (0, p.magsafe_y), plate=True),
         Style("wrap-xl", "Large-capacity wrap, flat back 3 mm above the lenses in a drafted well", slim_t + 3.0, wrap, True, (0, p.magsafe_y)),
     ]
 
@@ -211,26 +212,37 @@ def camera_draft(p: Phone, t: float, gap: float = B.gap) -> float:
     return max(0.0, need)
 
 
-def check_sensors(p: Phone, s: Style, draft: float) -> float:
-    """Raise if the shell covers any sensor or clips a field of view; return the tightest margin (mm)."""
-    bx, by, bw, bh = p.bump_rect()
-    x0, x1, y0, y1 = bx - bw / 2 - B.gap, bx + bw / 2 + B.gap, by - bh / 2 - B.gap, by + bh / 2 + B.gap
-    footprint = s.outline.faces("<Z").val()
-    worst = math.inf
+def check_sensors(p: Phone, s: Style, housing: cq.Workplane) -> None:
+    """Raise if the housing touches any sensor, or enters a field-of-view cone, with 0.2 mm to spare."""
+    t = s.thickness
     for name, x, y, r, z, fov in p.sensor_list():
-        disc = cq.Workplane("XY").center(x, y).circle(r + B.gap).extrude(1).val()
-        if footprint.intersect(disc).Area() > 1e-6:
-            raise ValueError(f"{p.name}/{s.name}: shell covers the {name}")
-        h = s.thickness - z
-        if fov <= 0 or h <= 0:
-            continue
-        # Wall and cone both widen linearly with height, so the tightest point is the top face.
-        d = min(x - r - x0, x1 - x - r, y - r - y0, y1 - y - r) + draft
-        margin = d - h * math.tan(math.radians(fov))
-        if margin < 0:
-            raise ValueError(f"{p.name}/{s.name}: wall clips the {name} field of view by {-margin:.2f} mm")
-        worst = min(worst, margin)
-    return worst
+        rr = r + 0.2
+        column = cq.Solid.makeCylinder(rr, max(z - p.bump_z, 0.01), cq.Vector(x, y, p.bump_z))
+        h = t + 1.0 - z
+        cone = (cq.Solid.makeCone(rr, rr + h * math.tan(math.radians(fov)), h, cq.Vector(x, y, z))
+                if fov > 0 else cq.Solid.makeCylinder(rr, h, cq.Vector(x, y, z)))
+        keepout = cq.Workplane("XY").add(column).union(cq.Workplane("XY").add(cone))
+        try:
+            hit = volume_cm3(housing.intersect(keepout)) * 1000.0
+        except ValueError:
+            hit = 0.0
+        if hit > 1e-3:
+            raise ValueError(f"{p.name}/{s.name}: shell blocks the {name} ({hit:.3f} mm3)")
+
+
+def sensor_opening(p: Phone, t: float, x: float, y: float, r: float, z: float, fov: float) -> cq.Workplane:
+    """Opening through the camera plate: 0.6 mm round the sensor, widening with height so the wall
+    stays outside its field of view."""
+    rb = r + B.gap
+    h = t - z
+    rise = t - p.bump_z
+    slope = (h * math.tan(math.radians(fov)) + B.fov_margin) / rise if fov > 0 and h > 0 else 0.0
+    z0, z1 = p.bump_z - 0.5, t + 0.5
+    rt = rb + slope * (z1 - p.bump_z)
+    r0 = rb - slope * 0.5
+    solid = (cq.Solid.makeCone(r0, rt, z1 - z0, cq.Vector(x, y, z0)) if slope > 0
+             else cq.Solid.makeCylinder(rb, z1 - z0, cq.Vector(x, y, z0)))
+    return cq.Workplane("XY").add(solid)
 
 
 def min_slim_thickness() -> float:
@@ -260,6 +272,14 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
         inner = offset_outline(offset_outline(inner, -0.5), 0.5)  # drop slivers under 1 mm wide
     cavity = outline_solid(inner, B.suction, t - B.skin - B.suction)
     housing = envelope.cut(cavity)
+    pocket = None
+    if s.plate:
+        # The plateau sits in a pocket under a plate level with the lens rings; each sensor gets its own opening.
+        g = B.gap
+        pocket = outline_solid(rounded_rect(bw + 2 * g, bh + 2 * g, p.bump_r + g, bx, by), -1.0, p.bump_z + B.plate_clear + 1.0)
+        housing = housing.cut(pocket)
+        for _, x, y, r, z, fov in p.sensor_list():
+            housing = housing.cut(sensor_opening(p, t, x, y, r, z, fov))
     if draft > 0:
         # Widen the opening above the plateau so the wall stays outside every field-of-view cone.
         def wire(grow: float, z: float) -> cq.Wire:
@@ -271,6 +291,8 @@ def build_shell(p: Phone, s: Style) -> dict[str, cq.Workplane]:
 
     base = outline_solid(offset_outline(inner, -0.05), B.suction, B.base)
     film = outline_solid(s.outline, 0, B.suction)
+    if pocket is not None:
+        film = film.cut(pocket)
 
     cx, cy = s.magsafe_center
     inner_w = inner.val().BoundingBox().xlen
@@ -433,7 +455,7 @@ def main() -> None:
             parts = build_shell(p, s)
             for name, part in parts.items():
                 export(part, OUT / p.name / s.name / name)
-            margin = check_sensors(p, s, camera_draft(p, s.thickness) if s.name != "card" else 0.0)
+            check_sensors(p, s, parts["housing"])
             bat = volume_cm3(parts["battery"])
             bb = s.outline.val().BoundingBox()
             solid_parts = [k for k in parts if k not in ("suction_film", "antenna_keepout")]
@@ -463,7 +485,7 @@ def main() -> None:
                 "outer_qi2_coil": "coil" in parts,
                 "above_lenses_mm": round(max(0.0, s.thickness - p.lens_z), 2),
                 "camera_draft_mm": round(camera_draft(p, s.thickness) if s.name != "card" else 0.0, 2),
-                "sensor_margin_mm": round(margin, 2) if math.isfinite(margin) else None,
+                "camera": "plate with sensor openings" if s.plate else ("drafted well" if s.name != "card" else "clear of the camera"),
                 "mass_g_titanium": round(mass_g(parts, DENSITY["ti_gr5"]), 0),
                 "mass_g_brass": round(mass_g(parts, DENSITY["brass"]), 0),
             })
@@ -475,7 +497,7 @@ def main() -> None:
         print(e["phone"]["name"])
         for s in e["styles"]:
             print(f"  {s['style']:8} {s['footprint_mm']} x {s['thickness_mm']} mm  battery {s['battery_wh']} Wh  "
-                  f"{s['mass_g_titanium']:.0f} g Ti / {s['mass_g_brass']:.0f} g brass  draft {s['camera_draft_mm']} mm  sensor margin {s['sensor_margin_mm']} mm")
+                  f"{s['mass_g_titanium']:.0f} g Ti / {s['mass_g_brass']:.0f} g brass  draft {s['camera_draft_mm']} mm  {s['camera']}")
 
 
 if __name__ == "__main__":

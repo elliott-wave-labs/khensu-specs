@@ -578,11 +578,11 @@ A Kickstarter that funds public portals around the world and puts nodes in backe
 
 ## nu-media (proposed)
 
-One learned media format for images, video and later 3D, encoded and decoded on devices. Microsoft's research neural video codecs didn't work well for us; nu-media is our own.
+One learned media format for images, video and later 3D, encoded and decoded on devices. Microsoft's research neural video codecs didn't work well for us; nu-media is our own. Comparisons with ImageIO and hardware H.264 and HEVC, HDR and colour, and the benchmark plan are in `design/nu-media.md`.
 
 - **Images:** as in Stealth: 15–40 KB full-screen photos, progressive, fidelity over invented detail, integer networks so every device decodes identically.
 - **Video, hybrid design:**
-  - The base layer uses the phone's hardware video encoder (HEVC, AV1 where supported) at constant bitrate, so it runs in real time on every iOS 26 device and inside the stealth call profile.
+  - The base layer uses the phone's hardware video encoder (HEVC Main 10; the iPhone decodes AV1 but has no AV1 encoder) at constant bitrate, so it runs in real time on every iOS 26 device and inside the stealth call profile.
   - A learned enhancement runs on the Neural Engine at the receiver, outside the coding loop, so it can't drift and doesn't need bit-exact decoding across devices: super-resolution, artefact removal and frame interpolation.
   - A learned residual layer, inside the loop and in integer arithmetic, adds detail on devices that can run it in real time.
 - **Device tiers:** works on every iOS 26 device; tuned for iPhone 18 Pro on iOS 27 as the "portal" tier (highest resolution, frame rate and enhancement, lowest latency). Exact tier numbers come from device measurements.

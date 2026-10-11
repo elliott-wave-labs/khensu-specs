@@ -211,7 +211,7 @@ Feed tab, forums inside Feed, and a site viewer: a `WKWebView` with a `WKURLSche
 
 ### 11.2 Chromium
 
-- **Extension (first):** resolves `webe://` and `https://*.khensu.nu` and fetches through a local khensu daemon over native messaging, because an extension can't run the mixnet or ML-KEM transport itself.
+- **Extension (first):** one WebExtensions codebase for Chrome, Edge, Firefox and Safari. It runs the webE client itself (`khensu-core` in WebAssembly over WebTransport; in Safari, the khensu.nu app through native messaging), so no local daemon or proxy is needed. It catches `https://*.khensu.nu` and `webe://` before they reach the network and shows sites in its own viewer until browsers let extensions serve `webe://` origins. Design and the upstream proposal in `design/browser.md`.
 - **Patch (second):** a native webE network service, `webe://` as a standard secure scheme, and stealth defences: fixed window sizes, WebRTC off, restricted high-entropy APIs, no third-party requests.
 
 ### 11.3 Site policy

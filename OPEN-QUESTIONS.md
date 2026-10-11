@@ -287,6 +287,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 
 56. **Gateways.** Allow operators to run non-stealthy gateways that serve public webE content to ordinary browsers under `*.khensu.nu` (with a banner), or none at all. Rec: allow, off by default for operators. **Open.**
 80. **webE exit (VPN replacement for the open internet).** Proposed 11 Oct 2026: a Network Extension packet tunnel in the app sends all device traffic through an entry and an exit relay from different operators; DNS at the exit; HTTPS stays end to end. Decide: exit duty opt-in with extra stake (rec), which jurisdictions allow exits, abuse-complaint handling for exit operators, whether exits are a paid tier, and how much timing cover bulk browsing gets (it can't fit in the 2 s ticks). **Open.**
+81. **Browser scheme providers.** Proposed 11 Oct 2026 (`design/browser.md`, `proposals/`): ask the WebExtensions Community Group, WHATWG, Chromium, Firefox and WebKit to let extensions serve allowlisted schemes such as `webe://` as real per-host origins, so `name.khensu.nu` shows in the address bar with no DNS lookup. Decide: run the patent check first (a public proposal is disclosure), then file. **Open.**
 57. **Publish quotas.** Anonymous storage quota per persona per epoch, and how stake raises it. Rec: 100 MB per persona per month free, more with stake. **Open.**
 
 ## I. Places (proposed 9 Oct 2026; design in `PLAN.md`, Places)

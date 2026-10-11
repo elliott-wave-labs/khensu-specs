@@ -1,8 +1,8 @@
-# khensu shell: product specification
+# NuLink: product specification
 
 Revision B, 10 October 2026. **Preliminary.** Phone interface dimensions are placeholders until they are replaced with Apple's Accessory Design Guidelines drawings for each target model. Electrical figures marked *estimate* are to be measured on the first boards.
 
-The khensu shell is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **The product is the Wrap on iPhone 18 Pro and Pro Max** (iPhone 18 to follow); the other styles stay in the CAD as engineering references. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
+NuLink (formerly the khensu shell) is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **The product is the Wrap on iPhone 18 Pro and Pro Max** (iPhone 18 to follow); the other styles stay in the CAD as engineering references. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
 
 ## 1. Deliverables
 

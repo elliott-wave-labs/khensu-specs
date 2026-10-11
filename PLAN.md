@@ -714,6 +714,8 @@ People fund each other directly over the network, with no platform cut: **nuFi G
 
 Design: `design/nufi.md`.
 
+**Shield orders without a card processor (decided 11 Oct 2026).** No Stripe. khensu.nu/buy takes free reservations by email (no server, no payment data), and payment opens in the khensu.nu app over the shielded pool, reservations first in the order they came in. The cost table shows $0 payment processing; the only charge is the network fee to node operators.
+
 ## Compared with existing post-quantum coins
 
 Existing post-quantum coins each solve one layer. khensu.nu's chain is designed to be post-quantum at every layer, with privacy that doesn't depend on a permanent record:

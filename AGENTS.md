@@ -24,6 +24,10 @@ Post-quantum private messenger on a decentralized operator network. `PLAN.md` is
 - Minimum iOS, iPadOS and macOS 26. Stock Liquid Glass chrome only (see the App design section of `PLAN.md`).
 - The hardware transceiver is shown as suñůlink.shield; code, commands, packages and identifiers use `sunu` (`hardware/sunu`, `nu.khensu.sunu`).
 - The open web layer is shown as webË (E with a diaeresis, U+00CB); schemes, files and identifiers use `webe` (`webe://`, `WEBE.md`).
+- "nu" is shown as ñü wherever people see it (khensu.ñü, ñü-media, ñüFi, ñüCode); code, URLs, domains, files and data keys keep `nu`.
+- Site work is published as soon as it's built, to every site including the studio; it is never held for a patent filing.
+- The network can't be stopped: a founder dead-man's switch (30-day check-ins, fires after 90 days or on handover) passes every founder power to consensus for good, with the full archive of code, releases, chain and node history kept on the network (`PROTOCOL.md` 12.5–12.6).
+- App commerce: a flat 10% of in-app purchases and subscriptions, never scaled up or down; tips stay 100% to the person.
 - Commands for the private AI agents and the node terminal start with `~` (`~summarize`, `~node status`), never `/`.
 - Permanent handles are `name.khensu.nu`, resolved from the key transparency log over the mixnet.
 - Apple Team ID `LHS49D8RYY`. Licences: `khensu-core` Apache-2.0, `khensu-specs` CC BY 4.0, all other repos AGPL-3.0, CLA for outside contributors.

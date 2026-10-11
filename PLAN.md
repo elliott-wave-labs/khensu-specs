@@ -376,6 +376,12 @@ Founder powers by stage:
 
 What the founder can never do, at any stage: read content, unmask users, skip the timelock except for tighten-only emergencies, or change payouts and penalties without the timelock.
 
+Founder succession (decided 11 Oct 2026): the network can't be stopped, by anyone, including the founder. It is a gift to Earth and every being.
+- **Dead-man's switch:** the founder key signs a check-in on chain at least every 30 days. If 90 days pass with no check-in, or the founder signs a handover at any time, the switch fires on its own: the founder co-signature, admission veto and founder release key end, and every founder power passes to consensus (2/3 of the committee, 30-day timelock with veto, 48-hour tighten-only emergencies). Nothing can undo it; there is no path back to a founder key.
+- **Releases:** after the switch, node and app releases are signed by a 14-of-21 committee threshold key, rotated each epoch, from reproducible builds that match the archive.
+- **Full archive:** every repository (all branches, tags and history), every spec, every signed release and build recipe, the full chain history, the node list and the lease and receipt history are kept on the network itself as content-addressed, erasure-coded objects at `archive.khensu.nu`, stored by storage nodes in `WORK.md`. Each epoch header commits to the archive root, so anyone can rebuild every past release and replay the network from genesis without GitHub, Apple or the founder.
+- Full rules: `PROTOCOL.md` 12.5.
+
 App and supply-chain takeover (a separate, bigger real-world risk): hardware security keys on the Apple developer and GitHub accounts; release signing only from locked-down CI; every app and node release hash published to the transparency log so nodes and outside watchers can see an unexpected release; reproducible builds for the node and the Pi image.
 
 ## Identity, addresses and handles (decided)
@@ -620,6 +626,7 @@ Capabilities and reasons are listed in [APP-ID-CAPABILITIES.md](APP-ID-CAPABILIT
 - **Anti-spam without identity.** App Attest is checked once at the credential issuer, then the issuer hands out blind tokens, so the attestation can't be linked to later messages. Trust Insights is not used: Apple's documentation doesn't confirm that its evaluation never involves Apple's servers.
 - **Age assurance.** Declared Age Range applies teen defaults (no messages from strangers, sensitive images blurred); Sensitive Content Analysis blurs unsolicited explicit images for everyone who opts in.
 - **Web subscriptions.** StoreKit External Purchases links to `khensu.nu` checkout where allowed, alongside In-App Purchase.
+- **App commerce (decided 11 Oct 2026).** khensu.nu keeps 10% of in-app purchases and subscriptions sold by apps on the network, the network fee included; developers keep 90% at any size, with no minimum payout. It supports every model of Apple's Advanced Commerce API (large catalogs, per-creator subscriptions, add-ons in one subscription) for any app, with buyers anonymous and purchases unlinkable. Store builds follow each storefront's billing rules; the GitHub, installer and node builds pay only over the network. See `design/app-commerce.md` and `design/distribution.md`.
 - **Not used:** Background Inference, Background GPU Access, Sustained Execution, Increased (Debugging) Memory Limit, Extended Virtual Addressing. Foundation Models runs in Apple's system process, and memory work runs only while the app is unlocked. Sustained Execution would cap performance. Revisit Background Inference only if a shipped Core ML model (such as a reranker) needs the Neural Engine in the background.
 - **Apple requests to file early:** notification filtering, CarPlay communication, default messaging/calling app, external purchase.
 

@@ -1,8 +1,8 @@
 # webË
 
-Draft 0.1, 9 Oct 2026. Status: design; the basis for a family of Internet-Drafts.
+Version 1.0, 11 Oct 2026. The basis for a family of Internet-Drafts.
 
-webË is an internet run by the people on the khensu.nu node network: names without DNS, content without CDNs, websites, public feeds, forums and live media, all delivered over a post-quantum stealth network with no metered bandwidth. Nodes only relay, cache and count; encoding, encryption, ranking, moderation and rendering happen on devices. The khensu.nu app is the first webË application: primarily a messenger, with a Feed tab, public forums and site hosting from day one.
+webË is an internet run by the people on the khensu.nu node network: names without DNS, content without CDNs, websites, public feeds, forums and live media, all delivered over a post-quantum stealth network with no metered bandwidth. Nodes only relay, cache and count; encoding, encryption, ranking, moderation and rendering happen on devices. The khensu.nu app is the first webË application: primarily a messenger, with a Feed tab, public forums, site hosting and contracts.
 
 Wire primitives, encodings and the mixnet are as in `PROTOCOL.md` (sections 1, 3, 8, 9); this document adds the webË layers. Stealth rules are in `PLAN.md` (Stealth) and `design/stealth-relay.md`.
 
@@ -25,6 +25,8 @@ Wire primitives, encodings and the mixnet are as in `PROTOCOL.md` (sections 1, 3
 | Fetch and publish | Two-relay stealth fetch, publish through ticks or the owner's node | 5, 6 |
 | Applications | Sites, feeds, forums, live tracks | 7–10 |
 | Clients | khensu.nu app viewer, Chromium extension and patch | 11 |
+| Contracts | Private, self-enforcing agreements, proved with STARKs and settled in the shielded pool | 14 |
+| Network work | Jobs nodes do for the network and for contracts, paid from work receipts | `WORK.md` |
 
 ## 3. Names
 
@@ -220,7 +222,7 @@ The manifest `policy` lists allowed APIs and other names a site may reference. C
 
 ## 12. Standards
 
-Planned Internet-Drafts. Patent assessment and any filings come first, because submitting a draft is public disclosure (`PATENTS.md`):
+Internet-Drafts:
 
 1. Outfox with ML-KEM-1024: a post-quantum mix packet format (with the Outfox paper).
 2. A stealth profile for MOQ: constant-rate media, padded trunks, two-relay paths.
@@ -235,3 +237,156 @@ Planned Internet-Drafts. Patent assessment and any filings come first, because s
 - **Names:** squatting is limited by registration rules in the log; impersonation by look-alike names is countered by safety numbers, verified badges from label lists and on-device warnings.
 - **Storage abuse:** quotas, stake and the illegal-content list.
 - **Cache poisoning:** impossible for content-addressed objects; manifests and name records are signed and logged.
+- **Contracts:** see 14.10.
+
+## 14. Contracts
+
+A webË contract is an agreement between parties that enforces itself. Its code is public and signed; its inputs and state are private to the parties; each step is proved with a STARK and the chain stores only the proof and commitments. There is no global contract state, no public order book and nothing for a quantum computer to break later.
+
+### 14.1 Code
+
+Contract code is a WebAssembly module in the deterministic subset `webe-det-1`:
+
+- No floating point, threads, SIMD with non-deterministic results, host clocks or host randomness.
+- Imports only from the `khensu:contract/1` interface (14.3).
+- At most 4 MiB, with fuel metering; a step that runs out of fuel fails and changes nothing.
+
+```
+struct {
+  opaque wasm<V>;
+  opaque abi<V>;                 // CBOR description of terms, actions and effects
+  opaque author_sig_pk<V>;       // ML-DSA-87
+  opaque signature<V>;           // Sign(author_sig_pk, "contract code", wasm || abi)
+} ContractCode;
+
+code_id = H256(Label("contract code") || wasm || abi)
+```
+
+Code is published like a site (section 6): content-addressed, erasure-coded and fetched with two-relay stealth fetch. Anyone can read it, run it and audit it before agreeing to it. A name record can point at a code_id, so `escrow.example.khensu.nu` always resolves to the same audited program.
+
+### 14.2 Instances
+
+An instance is one agreement between specific parties under one code_id.
+
+```
+struct {
+  opaque code_id[32];
+  opaque terms_commitment[32];   // Poseidon2 over the CBOR terms and a blinding factor
+  opaque party_keys<V>;          // one fresh ML-DSA-87 key per party, per contract
+  uint8  approval_policy;        // all(0), majority(1), arbiter(2), threshold(3), any(4)
+  uint8  threshold;              // for threshold(3)
+  uint64 deadline_epoch;         // after this, only timeout actions are valid
+  opaque nonce[16];
+} ContractOpen;
+
+contract_id = H256(Label("contract") || ContractOpen)
+```
+
+Party keys are fresh for each contract and are never linked to an account, a handle or a device key. Parties agree on the terms inside an MLS group created for the contract (`PROTOCOL.md` 4), so every message between them travels over the mixnet.
+
+### 14.3 Interface
+
+```
+init(terms, inputs) -> state
+step(state, action, public: { epoch, contract_id }) -> (state', effects)
+check(state, submission) -> bool            // optional, for work orders (14.6)
+```
+
+`action` is signed by the party keys the approval policy requires. `epoch` is the only external input the chain provides, so deadlines and time locks are deterministic. Effects are:
+
+| Effect | Result |
+| --- | --- |
+| `pay(outputs)` | Shielded notes created from notes locked in the contract (`PROTOCOL.md` 13) |
+| `refund` | Locked notes returned to their owners |
+| `release(share)` | A key share or secret sent to a recipient mailbox |
+| `publish(ref)` | A signed post to a feed or forum named in the terms (sections 8, 9) |
+| `issue(credential)` | A blind-issued anonymous credential (`PROTOCOL.md` 11) |
+| `admit(group)` | An MLS Add to a group the contract holds a commit key for |
+| `count(tally)` | A tally added to an anonymous counter |
+| `close` | The instance ends and its state is deleted at the next era close |
+
+### 14.4 Proved steps
+
+A step runs on the device of the party who submits it. The khensu zkVM executes the WebAssembly and produces a STARK (hash-based, so post-quantum) that `step` ran correctly from the committed state.
+
+```
+struct {
+  opaque contract_id[32];
+  uint32 era;
+  opaque state_nullifier[32];    // Poseidon2(state_secret, contract_id, step_index)
+  opaque new_state_commitment[32];
+  opaque note_commitments<V>;    // outputs of pay or refund
+  opaque note_nullifiers<V>;     // notes locked into the contract by this step
+  opaque effects_commitment[32];
+  opaque proof<V>;               // STARK over code_id, approvals and the transition
+} ContractUpdate;
+```
+
+Updates go to committee ingress through the mixnet as kind 5, like spends. The committee checks the proof and that `state_nullifier` is new; a second update from the same state is rejected, so a contract can't fork. Aggregator nodes fold every update and spend in an epoch into one recursive proof (`WORK.md` 3), so a phone checks one small proof per epoch.
+
+### 14.5 Settlement
+
+Value moves only through the shielded pool. Locking a note into a contract spends it into a note owned by the contract's state; `pay` and `refund` create ordinary notes for the recipients. The chain sees nullifiers and commitments, never amounts, parties or terms.
+
+### 14.6 Work orders
+
+Any contract can commission work. A work order is a contract whose terms name what is wanted, how it is accepted and what it pays.
+
+```
+enum { requester(0), reviewer(1), test(2), receipt(3) } AcceptKind;
+enum { notes(0), credential(1), reputation(2), admit(3), none(4) } RewardKind;
+
+struct {
+  opaque spec_ref[32];           // content address of the brief, encrypted to the parties
+  AcceptKind accept;
+  opaque reviewer_key<V>;        // for reviewer(1): a key both sides chose
+  opaque test_entry<V>;          // for test(2): the exported check function
+  uint16 receipt_type;           // for receipt(3): a WORK.md receipt type
+  uint64 receipt_quantity;
+  RewardKind reward;
+  opaque reward_terms<V>;
+  uint8  max_workers;            // 1 for a single job, more for bounties
+} WorkOrder;
+```
+
+- **Work by people:** a translation, design, review or report is submitted as an encrypted object; the requester, the reviewer or the `check` function accepts it.
+- **Work by nodes:** a node submits signed work receipts from `WORK.md`; the contract checks them against the epoch header's `receipts_root`. This is how a site owner pays for extra storage replicas or a creator pays for public media renditions.
+- **Any reward:** shielded notes, an anonymous credential, an anonymous reputation point, admission to a group, or nothing at all.
+
+### 14.7 Ballots
+
+A ballot contract counts votes without revealing who voted or how.
+
+1. **Roll:** the organiser publishes a member tree root; each member holds one credential, issued blind, so the organiser can't link credentials to people.
+2. **Seal:** a key is split 3-of-5 among nodes with role `deadman` (`PROTOCOL.md` 14.1). Each ballot is encrypted to it with ML-KEM-1024.
+3. **Cast:** a member submits `{ nullifier = Poseidon2(member_secret, contract_id), sealed_ballot, STARK of membership }` over the mixnet. One nullifier, one ballot.
+4. **Close:** at `deadline_epoch` the holders release their shares to the contract; a `step` decrypts every ballot inside the proof and outputs only the tally.
+
+Nobody, including the organiser and the share holders, learns who voted or how any member voted. Ranked, weighted and quorum rules are ordinary contract code.
+
+### 14.8 Standard contracts
+
+Audited code published under `contracts.khensu.nu`:
+
+| Contract | What it does |
+| --- | --- |
+| `ballot` | Anonymous votes and polls (14.7) |
+| `work-order` | Commission work from people or nodes (14.6) |
+| `escrow` | Milestones released by both sides or a chosen arbiter |
+| `pledge` | Pays only if a threshold of hidden pledges is met by a deadline; refunds otherwise |
+| `split` | Pays collaborators their shares from every payment a post, song or film earns |
+| `ticket` | Anonymous, unlinkable tickets and memberships |
+| `bounty` | Pays the first submission that passes the check |
+| `timelock` | Opens a file, key or message on a date, or when the owner stops checking in |
+
+### 14.9 Expiry
+
+Contract state lives in the shielded pool's eras. An open contract refreshes into the next era during the grace period; a closed one is deleted with its era's tree. Nothing sits on the chain forever.
+
+### 14.10 Security considerations
+
+- **Inputs stay private:** proofs reveal only commitments and nullifiers. A contract that needs public state uses a feed or forum as its record, and says so in its ABI.
+- **Bad code:** a contract does only what its code says, and the code is public. Wallets show the code_id, its author and any audit labels (section 10) before a party signs.
+- **Liveness:** if a party disappears, the deadline lets any other party submit a timeout action.
+- **Metadata:** party keys are fresh per contract, every message goes over the mixnet, and updates are mixed with spends at committee ingress.
+- **Proof soundness:** STARKs rest on hash functions only; parameters target 128-bit post-quantum security.

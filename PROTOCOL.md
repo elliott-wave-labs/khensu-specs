@@ -628,6 +628,43 @@ struct {
 
 Storage receipts (`StorageReceipt { epoch, node, byte_hours, replicas_checked, signature }`) are countersigned by randomly assigned auditors who challenge stored items. Receipts carry only aggregate counts per epoch, never per-packet data. The unlinkable-receipt extension in the Outfox paper may replace pairwise counts later.
 
+### 12.5 Founder succession
+
+The network can't be stopped by anyone, including the founder. A dead-man's switch hands every founder power to consensus if the founder disappears or moves on.
+
+```
+struct {
+  uint64 network_epoch;
+  opaque archive_root[64];       // the archive root the founder attests to
+  opaque signature<V>;           // founder threshold key, label "founder check-in"
+} FounderCheckIn;
+
+struct {
+  uint64 network_epoch;
+  opaque signature<V>;           // founder threshold key, label "founder handover"
+} FounderHandover;
+```
+
+- The founder posts a `FounderCheckIn` at least every 720 network epochs (30 days).
+- The switch fires at the first epoch where 2,160 network epochs (90 days) have passed since the last valid check-in, or at the epoch after a valid `FounderHandover`. Committee members record the firing in the epoch header's `rules_hash` transition; no signature is needed to fire it.
+- From that epoch: `founder_cosig` is always empty; rule changes need only 2/3 of the committee with the 30-day timelock and veto; admission veto ends; the founder key is removed from the pinned key set in the next app and node releases.
+- Release signing passes to a 14-of-21 threshold ML-DSA-87 key held by the epoch's committee and re-shared every epoch. A release is valid only if its reproducible build hash matches an entry under the archive root.
+- The switch is one-way. No rule change, including one signed by the founder key, can restore a founder role; such a change is invalid by definition and its signers produce `Evidence`.
+
+### 12.6 Archive
+
+Everything needed to rebuild and run the network lives on the network itself:
+
+| Archived | Contents |
+| --- | --- |
+| Code | Every repository: all branches, tags and history, as git packfiles |
+| Specs | Every version of the specifications and design documents |
+| Releases | Every signed node, app and firmware release, with its reproducible build recipe and toolchain hashes |
+| Chain | Every epoch header, rule set, lease, receipt root and evidence item since genesis |
+| Nodes | The node list and lease history for every epoch |
+
+Archive objects are content-addressed and erasure-coded like webË objects (`WEBE.md` 4) and stored by storage nodes (`WORK.md` 4) at the highest replication class. The archive root is a Merkle root over the archive manifest, published under `archive.khensu.nu` and committed in every epoch header as part of `rules_hash`. Anyone can fetch the archive over the mixnet, rebuild every past release, check it against the logged hashes and replay the chain from genesis.
+
 ## 13. Shielded payments (outline, frozen in `PAYMENTS.md`)
 
 - Notes in fixed denominations (1, 10, 100, 1,000 units); note commitment `Poseidon2(value, owner_pk_hash, rho, era)`.

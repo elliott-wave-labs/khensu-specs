@@ -1,0 +1,26 @@
+name: NuBench
+options:
+  bundleIdPrefix: nu.khensu
+  deploymentTarget:
+    iOS: "26.0"
+settings:
+  base:
+    DEVELOPMENT_TEAM: LHS49D8RYY
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_VERSION: "6.0"
+targets:
+  NuBench:
+    type: application
+    platform: iOS
+    sources: [NuBench]
+    info:
+      path: NuBench/Info.plist
+      properties:
+        CFBundleDisplayName: nu bench
+        UILaunchScreen: {}
+        UIApplicationSupportsIndirectInputEvents: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: nu.khensu.bench
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: NO

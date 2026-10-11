@@ -74,6 +74,8 @@ Each adversary is described by what it can do. "Covered" means the guarantees in
 - **M8.** The push gateway learns only that some device should wake, at a delayed and merged time. It never learns the sender, conversation, mailbox or account.
 - **M9.** The group sequencer sees an opaque group ID and encrypted commits that arrive through the mixnet. It never learns who is in the group.
 - **M10.** On khensu hardware (shell, home node, portal) a separate guard chip owns every radio and network path. Even with the main computer or a radio's firmware compromised, only fixed-size packets on the fixed tick, addressed to current entry nodes, leave the device, and radios can't read main memory (`design/guard.md`).
+- **M11.** Every connection to a node passes as Safari or Chrome visiting an ordinary website, and answers probes as that website; the node is authenticated inside with ML-KEM-1024 and ML-DSA-87 bound to the outer session (`design/camouflage.md`). Camouflage hides what a connection is, not where it goes: published node addresses can still be blocked.
+- **M12.** In calls, rooms and live streams every participant rotates edge relays at independent random times, so no relay or operator sees a whole session.
 
 ### 3.4 Money
 
@@ -136,7 +138,7 @@ Until step-down, the founder threshold key co-signs rule changes and approves va
 | # | Threat | Why out of scope | What we do |
 | --- | --- | --- | --- |
 | 5.1 | Endpoint malware with root on the device | It sees the screen and keystrokes | Enhanced Security (memory tagging), third-party keyboards blocked, Lockdown Mode compatible, minimal attack surface |
-| 5.2 | Timing correlation of live calls by a global observer | A mixnet's delays can't carry live media | Stealth call profile (`PROTOCOL.md` 7.1): two relays from different operators, networks and jurisdictions; setup over the mixnet; constant-rate fixed-size media (no speech-pattern leak); padded relay trunks; random 2–8 s padding before and after each call; HTTPS-like transport on UDP 443; no direct internet paths. A global observer can still match call start, end and duration across the two edges over time; the app says so |
+| 5.2 | Timing correlation of live calls by a global observer | A mixnet's delays can't carry live media | Stealth call profile (`PROTOCOL.md` 7.1): two relays from different operators, networks and jurisdictions; setup over the mixnet; constant-rate fixed-size media (no speech-pattern leak); padded relay trunks; random 2–8 s padding before and after each call; camouflaged transport on UDP 443; independent random relay rotation during the call; no direct internet paths. A global observer can still match call start, end and duration across the two edges over time; the app says so |
 | 5.3 | A global active adversary breaking anonymity | Active attacks on all links defeat any practical mixnet | Content and identity guarantees still hold; loop measurement detects nodes that drop traffic |
 | 5.4 | A malicious app release | We sign the app | Release hashes in the transparency log, reproducible node builds, binary transparency checks in the app for updates, hardware keys on accounts, signing only from locked-down CI |
 | 5.5 | A recipient leaking content | Recipients see plaintext | Disappearing messages, screenshot notice where iOS allows, message franking for reports |

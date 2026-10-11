@@ -509,7 +509,8 @@ Stealth on the network is a foundation of the system, not a setting: there is no
   - each side picks its own relay nearby, from a different operator, network and jurisdiction than the other side's;
   - relay-to-relay trunks carry constant padded traffic multiplexing many calls;
   - streams start a random few seconds before a call connects and continue with padding a random few seconds after hangup;
-  - media rides WebTransport over HTTP/3 on UDP 443, so it looks like ordinary HTTPS;
+  - media rides WebTransport over HTTP/3 on UDP 443 behind khensu camouflage: the handshake matches Safari or Chrome to a node that looks like an ordinary website, with pure ML-KEM-1024 and ML-DSA-87 inside, bound to the outer session (`design/camouflage.md`);
+  - every participant in a call, room or live stream switches relays at its own random times, seamlessly, so no relay sees a whole session;
   - no direct phone-to-phone paths over the internet; direct links only on Wi-Fi Aware or the same Wi-Fi network;
   - group calls fan out through relays acting as MOQ forwarders.
   Target under 150 ms glass to glass within a region. What remains is long-term edge correlation by a global observer, stated in the app (THREAT-MODEL 5.2).
@@ -831,6 +832,8 @@ Decided:
 - Routing: every message, receipt and typing event goes through the mixnet; there is no instant path for chat. Calls are the one exception and use two relays run by different operators under the stealth call profile, because a mixnet's delays can't carry live audio.
 - Stealth: a foundation, not a setting. 2 s fixed bursts on every network and power state, nu-media images inside the ticks, stealth paths for originals and video, hardened calls (see Stealth).
 - Blockchain only for payments: webE, the node network and content delivery don't run on a blockchain. A 21-member committee drawn by weighted sortition each epoch agrees the node list, parameters and work-receipt totals, with no permanent ledger. Our own lightweight post-quantum chain is used only for payments: the token, burn and mint, balances, stakes and the shielded pool; history is pruned.
+- Camouflage: every connection to a node looks like Safari or Chrome visiting an ordinary website (browser-identical outer handshake with X25519MLKEM768, ordinary hostname and certificate, probe-proof website fallback); inside it, pure ML-KEM-1024 and ML-DSA-87 authenticate the node, channel-bound to the outer session. Profiles track browser releases through the epoch header (`design/camouflage.md`).
+- Relay rotation: every participant in calls, rooms and live streams switches edge relays at independent random times, make-before-break.
 - Hardware guard: every khensu hardware device (shell, home node, portal) has a separate guard chip that owns all radios and network paths and enforces fixed packet sizes, the 2 s tick and signed parameters in hardware, so a compromised main computer or radio can't break the cover pattern. Phones and computers enforce the same rules in software (`design/guard.md`).
 - Node earnings: everyone who runs a node (Pi, laptop, desktop or server; always-on or idle-time) earns from token burning, in proportion to verified relay, storage and serving work. No mining and no proof of work.
 - Token: burn and mint on our own chain; a fixed share of net proceeds is revenue, the rest buys and burns the token for capacity; the protocol mints operator rewards from work receipts; burn auction for launch liquidity. Name, supply and genesis allocation set with counsel.

@@ -317,7 +317,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 78. **Outer TLS: camouflage or pure post-quantum.** `PROTOCOL.md` 7.1 says the outer TLS 1.3 handshake uses ML-KEM-1024 and an ML-DSA-87 node certificate. No mainstream browser offers that combination, so a censor can fingerprint khensu connections from the ClientHello alone, which undercuts "looks like ordinary HTTPS". Content never depends on this layer: every message, fetch and stream is already sealed inside with pure ML-KEM-1024 (Outfox, MLS, FetchRequest) and signed with ML-DSA-87. Options:
     - (a) Camouflage outside, pure post-quantum inside (rec): the outer handshake matches current Chrome on the wire (X25519MLKEM768 hybrid, which is itself post-quantum), nodes authenticate with keys pinned from the node directory inside the session, and all khensu traffic stays sealed with pure ML-KEM-1024 and ML-DSA-87.
     - (b) Pure ML-KEM-1024 and ML-DSA-87 on the outer layer too: strongest on paper and simplest to state, but fingerprintable and easier to block.
-    **Open.**
+    **Decided 10 Oct 2026: (a).** Design in `design/camouflage.md`; patent candidate.
 79. **Relay rotation during calls and live streams.** Rec: every participant (host, co-host, room member, viewer) switches its edge relay during a session, independently of everyone else:
     - **Random, unsynchronised timing:** each device draws its own switch times (exponential, mean about 4 minutes, at least 60 s apart). Participants never switch together, because a simultaneous switch would link them.
     - **Make-before-break:** the new session opens and carries padded media about 2 s before the old one stops; the old one then runs on as padding for a random 2–8 s tail, so a switch looks like any other session start and end. No glitch, no added latency.
@@ -327,7 +327,7 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
     - **Guard:** on khensu hardware the overlap is an allowed stream type with a fixed length.
     - **What it buys:** no relay or operator sees a whole session; watching a few relays catches only fragments; long flows stop being a fingerprint. **What it doesn't:** a global observer still sees that a device carries a constant media stream from start to end; edge blurring and the call-duration limit in THREAT-MODEL 5.2 stay.
     - **Cost:** a few seconds of doubled stream every few minutes, about 2–4% more data and battery during calls.
-    **Recommended.**
+    **Decided 10 Oct 2026.** In `PROTOCOL.md` 7.1 and `design/stealth-relay.md` rule 9.
 
 ## F. Housekeeping
 

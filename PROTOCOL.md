@@ -400,7 +400,7 @@ Every call uses this profile; there is no other.
 
 **Relay choice.** Each side picks its own entry relay from the epoch's node list: low round-trip time from itself, lease covering the epoch, and a different operator, autonomous system and jurisdiction from the other side's relay (announced in the accept). The two relays connect over a trunk. A relay never learns both endpoints' IPs.
 
-**Transport.** WebTransport over HTTP/3, UDP port 443, ALPN `h3` only. No MOQ-specific ALPN is offered on the wire; the MOQT version is negotiated inside the WebTransport session. TLS 1.3 uses ML-KEM-1024 key exchange and the relay's ML-DSA-87 node certificate. Clients send no SNI when dialling a relay by address.
+**Transport.** WebTransport over HTTP/3, UDP port 443, ALPN `h3` only. No MOQ-specific ALPN is offered on the wire; the MOQT version is negotiated inside the WebTransport session. Every connection to a node (relays, mix entries, caches, trunks) uses khensu camouflage (`design/camouflage.md`): the outer QUIC and TLS 1.3 handshake matches the current Safari (Apple devices) or Chrome (everything else) profile from the epoch header, with the browsers' X25519MLKEM768 key exchange, the node's ordinary hostname as SNI and an ordinary WebPKI certificate. Inside it, an `InnerHello` with ML-KEM-1024 to the node's directory key, channel-bound to the outer TLS exporter, and an `InnerAccept` signed with the node's ML-DSA-87 key authenticate the node; all khensu traffic is sealed again under the inner keys. A wrong knock gets the node's ordinary website.
 
 **Constant-rate media.** Each media track sends fixed-size objects at a fixed rate for the whole call, whatever is happening:
 
@@ -417,6 +417,8 @@ Every call uses this profile; there is no other.
 - Tier changes for bandwidth happen at most once every 30 s with hysteresis and only between adjacent tiers. A tier change is visible to the local network; it reveals network conditions, not content.
 
 **Edge blurring.** Each phone opens its relay stream and starts constant-rate padding a uniformly random 2–8 s before it expects media (after sending accept, or on ringing), and keeps padding a uniformly random 2–8 s after hangup.
+
+**Relay rotation.** During every call, room and live stream, each participant (host, co-host, member or viewer) switches its edge relay at its own random times: intervals drawn independently on the device from an exponential distribution with mean 4 minutes, at least 60 s apart, never coordinated with other participants. The switch is make-before-break: the new edge session opens and carries constant-rate padded media about 2 s before the old one stops, and the old one then continues as padding for a uniformly random 2–8 s. The new edge relay announces itself to the far side over the trunks, never over the participant's link. Each new relay follows the relay-choice rules above and is not reused within the session. Rotation parameters are consensus parameters.
 
 **Trunks.** Relays exchange constant-rate padded traffic between themselves on long-lived WebTransport sessions, sized to their capacity class and independent of load, carrying all calls between them multiplexed. Trunk traffic is fixed-size objects at a fixed rate; when calls end, padding replaces them.
 

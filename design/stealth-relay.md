@@ -11,7 +11,8 @@ Status: design. Nothing here is implemented yet.
 | Observer | Plain MOQOM today | khensu |
 | --- | --- | --- |
 | Relay | Object sizes and timing (speech activity, scene changes, keyframes); both endpoints' IPs when a direct path is used | Constant-size objects at a constant rate; one relay never sees both IPs |
-| Local network or ISP | A MOQ-specific ALPN on port 4443, variable bitrate | An HTTP/3 stream on UDP 443 at a constant rate |
+| Local network or ISP | A MOQ-specific ALPN on port 4443, variable bitrate | What looks like Safari or Chrome talking HTTP/3 to an ordinary website, at a constant rate |
+| Relay operator | Whole sessions | Fragments: edge relays rotate at random during every session |
 | Global observer | Exact call start, end, duration, and who is talking when | Start and end blurred by random padding; speech patterns hidden. Long-term edge correlation remains |
 
 Variable-bitrate audio leaks speech even when encrypted: published attacks recover spoken phrases from packet sizes alone. Constant bitrate is the core.
@@ -36,9 +37,10 @@ Variable-bitrate audio leaks speech even when encrypted: published attacks recov
 3. **Two relays from different operators.** Each side connects to its own nearby relay; the relays connect over a trunk. Different operator, autonomous system and jurisdiction.
 4. **Padded trunks.** Relay-to-relay sessions are long-lived, multiplex everything between the two relays (calls, streams, public fetches), and send fixed-size objects at a constant rate sized to the link's capacity class, independent of load.
 5. **Edge blurring.** Clients open the relay stream and start padding a uniformly random 2–8 s before media is expected, and keep padding a uniformly random 2–8 s after leaving.
-6. **HTTPS-like transport.** WebTransport over HTTP/3 on UDP 443, ALPN `h3` only. MOQT version negotiated inside the WebTransport session. No SNI when dialling a relay by address.
+6. **Camouflaged transport.** WebTransport over HTTP/3 on UDP 443, ALPN `h3` only, MOQT negotiated inside. The outer handshake matches current Safari or Chrome, to a node that looks like an ordinary website; the node is authenticated inside with ML-KEM-1024 and ML-DSA-87, bound to the outer session (`design/camouflage.md`).
 7. **Group calls and streams.** Relays act as forwarders; every publisher follows rule 1.
 8. **Stealth access to public content (webE).** Public content isn't secret, but who reads it is. A fetch goes through two relays like a call: the entry relay knows the reader's IP but not what is fetched (the request is encrypted to the exit relay with ML-KEM-1024); the exit relay or cache knows the object but not the reader. The hop between them rides a padded trunk, and responses are padded to size buckets. Small objects can also ride the stealth ticks.
+9. **Relay rotation.** Every participant switches its edge relay at its own random times (mean about 4 minutes, at least 60 s apart), make-before-break with a random padded tail, announced over the trunks. No relay sees a whole session, and participants never switch together.
 
 ## Gaps in the MOQOM code khensu starts from
 
@@ -52,7 +54,8 @@ Variable-bitrate audio leaks speech even when encrypted: published attacks recov
 | 3 | Not a policy | Relay selection by operator, AS and jurisdiction from the epoch's node list | `khensu-core` route selection |
 | 4 | Edge↔parent links in the proprietary relay; no padding or pacing | Trunk mode: multiplexed, constant-rate, padded | `khensu-tatenan` relay, written fresh on the Apache transport |
 | 5 | Absent | Pre-roll and post-roll padding with random lengths | client publish path in `khensu-core` |
-| 6 | Default `[::]:4443`; raw-QUIC ALPNs `moqt-22`, `moqt-19`; WebTransport via `h3` | Listen on 443, offer `h3` only, negotiate MOQT inside WebTransport | `khensu-tatenan` and the client transport config |
+| 6 | Default `[::]:4443`; raw-QUIC ALPNs `moqt-22`, `moqt-19`; WebTransport via `h3`; rustls | Listen on 443, offer `h3` only, negotiate MOQT inside WebTransport; camouflage outer stack (Network.framework on Apple, BoringSSL elsewhere) with the inner handshake | `khensu-tatenan`, `khensu-core`, client transport config |
+| 9 | Absent | Independent random edge-relay rotation, make-before-break, announced over trunks | `khensu-core` session layer, `khensu-tatenan` relay |
 | 8 | Absent | Two-relay encrypted fetch with size buckets | `khensu-tatenan` and `khensu-core` |
 
 ## Costs
@@ -65,7 +68,8 @@ Variable-bitrate audio leaks speech even when encrypted: published attacks recov
 ## Tests
 
 - Wire-level: object sizes and inter-object gaps are identical between a silent call and a talking call, and between camera on and off.
-- Fingerprint: the ClientHello offers only `h3`; port 443; no STUN traffic.
+- Fingerprint: JA4 and QUIC fingerprints match the current Safari or Chrome capture for the profile; a wrong knock returns the node's normal website response; no STUN traffic.
+- Rotation: participants' switch times are uncorrelated; no audio or video gap across a switch.
 - Trunk: relay-to-relay byte rate is flat whether 0 or 500 sessions are active.
 - Public fetch: the entry relay never sees an object address in the clear; response sizes fall only on bucket boundaries.
 - Latency: glass to glass with two relays stays under 150 ms within a region.

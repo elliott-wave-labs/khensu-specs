@@ -382,7 +382,7 @@ Founder succession (decided 11 Oct 2026): the network can't be stopped, by anyon
 - **Full archive:** every repository (all branches, tags and history), every spec, every signed release and build recipe, the full chain history, the node list and the lease and receipt history are kept on the network itself as content-addressed, erasure-coded objects at `archive.khensu.nu`, stored by storage nodes in `WORK.md`. Each epoch header commits to the archive root, so anyone can rebuild every past release and replay the network from genesis without GitHub, Apple or the founder.
 - Full rules: `PROTOCOL.md` 12.5.
 
-App and supply-chain takeover (a separate, bigger real-world risk): hardware security keys on the Apple developer and GitHub accounts; releases signed by an offline ML-DSA-87 release key plus a threshold of co-signers, one of them locked-down CI (after founder succession, the 14-of-21 committee key, `PROTOCOL.md` 12.5); every app and node release hash published to the transparency log so nodes and outside watchers can see an unexpected release; reproducible builds for the node and the Pi image.
+App and supply-chain takeover (a separate, bigger real-world risk): hardware security keys on the Apple developer and GitHub accounts; releases signed by an offline ML-DSA-87 release key plus a threshold of co-signers, one of them locked-down CI: 2 of 3 (offline release key, CI, one trusted person), every node caching releases within 2% of its lease bandwidth (after founder succession, the 14-of-21 committee key, `PROTOCOL.md` 12.5); every app and node release hash published to the transparency log so nodes and outside watchers can see an unexpected release; reproducible builds for the node and the Pi image.
 
 ## Identity, addresses and handles (decided)
 

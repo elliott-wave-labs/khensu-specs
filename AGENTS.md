@@ -24,9 +24,9 @@ Post-quantum private messenger on a decentralized operator network. `PLAN.md` is
 - Minimum iOS, iPadOS and macOS 26. Stock Liquid Glass chrome only (see the App design section of `PLAN.md`).
 - The hardware transceiver is shown as suñůlink.shield; code, commands, packages and identifiers use `sunu` (`hardware/sunu`, `nu.khensu.sunu`).
 - The open web layer is shown as webË (E with a diaeresis, U+00CB); schemes, files and identifiers use `webe` (`webe://`, `WEBE.md`).
-- "nu" is shown as ñü wherever people see it (khensu.ñü, ñü-media, ñüFi, ñüCode); code, URLs, domains, files and data keys keep `nu`.
+- "nu" is shown as ñü wherever people see it (khensu.ñü, ñü.media, ñüFi, ñüCode); code, URLs, domains, files and data keys keep `nu`.
 - Site work is published as soon as it's built, to every site including the studio; it is never held for a patent filing.
-- The network can't be stopped: a founder dead-man's switch (30-day check-ins, fires after 90 days or on handover) passes every founder power to consensus for good, with the full archive of code, releases, chain and node history kept on the network (`PROTOCOL.md` 12.5–12.6).
+- The network is a gift to humanity and all beings: freedom and privacy, plus a universal basic income, so people everywhere can create, build and live securely. Never phrase it as "can't be stopped". A founder dead-man's switch (weekly check-ins, fires after 42 days of silence or on handover) passes every founder power to consensus for good. Every code change, release and upgrade is archived on the network automatically; when the switch fires, the trusted committee nodes open the sealed escrow of all private code, patented code included, and release everything to every node, the founder's list of friends, the press (WSJ, Forbes), Wikimedia Commons and the Internet Archive (`PROTOCOL.md` 12.5–12.7).
 - App commerce: a flat 10% of in-app purchases and subscriptions, never scaled up or down; tips stay 100% to the person.
 - Commands for the private AI agents and the node terminal start with `~` (`~summarize`, `~node status`), never `/`.
 - Permanent handles are `name.khensu.nu`, resolved from the key transparency log over the mixnet.

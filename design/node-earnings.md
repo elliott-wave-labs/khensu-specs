@@ -69,7 +69,7 @@ Assumptions, all estimates:
 - **Bytes per view.** nu-media at 500 kbit/s plus 32 kbit/s Opus is about 4.0 MB a minute. Instagram's own file for the benchmark reel is 2.51 Mbit/s, about 18.8 MB a minute.
 - **Node work per view.** Each view crosses three node hops (cache to viewer through the mixnet), so 12 MB of node bandwidth per view.
 - **Node pay.** $0.002–0.005 per GB (section 3, low and high media cases).
-- **Creator pay (proposed, `OPEN-QUESTIONS.md` 89).** A creator pool takes 30% of each subscription after Apple's 15% ($1.27 of Plus at $4.99). Each subscriber's share goes to the creators they actually watched, split by minutes (user-centric, so nobody's money goes to creators they never watch). A Plus subscriber who watches 1,000 minutes in a month pays creators $0.00127 a minute. Free viewers add nothing to the pool, so the blended rate depends on the paying share. Tips and subscriptions to the creator come on top, with no cut.
+- **Creator pay (decided 11 Oct 2026, `OPEN-QUESTIONS.md` 89).** Every view (one minute watched) or play pays the creator 1¢, $10 per 1,000, with no platform cut. A fan's money only goes to what they watched or played. Tips and subscriptions to the creator come on top, also with no cut.
 
 | Views of a 1-minute video | 1 thousand | 1 million | 1 billion | 1 trillion (network-wide total) |
 | --- | --- | --- | --- | --- |
@@ -77,10 +77,9 @@ Assumptions, all estimates:
 | Delivered as Instagram's file | 18.8 GB | 18.8 TB | 18.8 PB | 18.8 EB |
 | Node bandwidth (3 hops) | 12 GB | 12 TB | 12 PB | 12 EB |
 | Paid to nodes, all together | $0.02–0.06 | $24–60 | $24,000–60,000 | $24–60 million |
-| Creator pool, 5% of viewers paying | about $0.06 | about $64 | about $64,000 | about $64 million |
-| Creator pool, all viewers paying | about $1.27 | about $1,270 | about $1.27 million | about $1.27 billion |
+| Paid to the creator, 1¢ a view | $10 | $10,000 | $10 million | $10 billion |
 
-For comparison (commonly reported, not verified by us): YouTube Shorts pays creators roughly $0.01–0.07 per 1,000 views and TikTok's Creator Rewards roughly $0.40–1.00 per 1,000 for videos over a minute. Per view, the creator pool at 5% paying is Shorts-level; it reaches TikTok-level and beyond as the paying share rises, and no platform takes a cut of tips.
+For comparison (commonly reported, not verified by us): YouTube Shorts pays creators roughly $0.01–0.07 per 1,000 views and TikTok's Creator Rewards roughly $0.40–1.00 per 1,000 for videos over a minute. At $10 per 1,000, khensu.ñü pays 10 to 25 times TikTok's rate and over 100 times Shorts', and no platform takes a cut of tips.
 
 What this says: per video, node earnings are small, because nu-media makes delivery cheap; that is the point. A node earns a living only from aggregate demand (section 5). A trillion views is roughly a large platform's total short-video traffic over days to weeks, not one video.
 

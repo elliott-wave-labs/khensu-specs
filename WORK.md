@@ -16,6 +16,8 @@ Primitives, epochs, leases, receipts and the epoch header are as in `PROTOCOL.md
 | Private lookups | `pir(5)` | Encrypted queries | Answers checked against inclusion proofs | Query |
 | Randomness and timestamps | `beacon(12)` | Hashes and shares | Threshold signatures | Round, stamp |
 | Mesh and satellite bridging | `mesh(13)` | Sealed mix packets | Forwarding receipts from both sides | Packet |
+| Legacy internet calls | `gateway(14)` | Requests a contract sends to the public internet | TLS transcript proofs | Request |
+| Background computing | `compute(15)` | Public work units, such as volunteer science | The project's validator, or a quorum of matching results | Work unit |
 
 Roles extend the `Role` enum in `PROTOCOL.md` 12.1. A node advertises them in its lease; each role has its own stake floor and hardware class (section 9).
 
@@ -71,10 +73,10 @@ Sites, media, backups and the network archive (`PROTOCOL.md` 12.6) are stored as
 
 ## 5. Public media renditions
 
-Creators who publish openly can have their media encoded into every ñü-media rendition by the network, so a post plays at the right size on every device.
+Creators who publish openly can have their media encoded into every ñü.media rendition by the network, so a post plays at the right size on every device.
 
 - **Scope:** only media whose owner published it as public content in a feed, forum or site, and only on the owner's request in a work order. Private media is always encoded on the sender's device and never reaches a render node.
-- **Job:** the node fetches the published source by content address, encodes the requested ñü-media ladder (`design/nu-media.md`), and publishes each rendition as a signed object linked from a rendition manifest that the owner countersigns.
+- **Job:** the node fetches the published source by content address, encodes the requested ñü.media ladder (`design/nu-media.md`), and publishes each rendition as a signed object linked from a rendition manifest that the owner countersigns.
 - **Checks:** a random 2% of renditions are re-encoded by a second node and compared, and every rendition's VMAF against the source must meet the ladder's floor. A rendition that fails is `Evidence`.
 - **Receipt:** `quantity` is rendition-seconds, countersigned by the owner's acceptance.
 - Hardware: Apple silicon Mac (media engine) or a desktop with a hardware encoder.
@@ -150,6 +152,14 @@ Operators turn jobs on per node. The node terminal:
 
 Stake floors are in network tokens and change only through governance.
 
+## 9a. Legacy internet calls
+
+A contract's `fetch` effect asks a `gateway(14)` node to make an HTTPS request to the public internet: an API call, a webhook, a price feed. The request is encrypted to the gateway, which sees it and the destination; the destination sees only the gateway's address, never the contract's parties. The gateway returns the response with a TLS transcript proof (a signed commitment to the session, checkable against the server's certificate), so the contract can verify the answer came from that server unaltered. Contracts should `fetch` only what they're willing to show one gateway, and the wallet says so before signing.
+
+## 9b. Background computing
+
+`compute(15)` nodes run public work units in the background when they're idle and on power: rendering, model training on public data, and volunteer science such as Einstein@Home, which searches data from gravitational-wave detectors and radio telescopes for continuous gravitational waves and new pulsars. A task names its project and how results are validated: by the project's own validator (for BOINC projects such as Einstein@Home, the granted-credit record) or by a quorum of nodes returning the same result. Work units are public data, so this role never touches anyone's private data. Phones don't take this role; it runs on Mac and Raspberry Pi 5 nodes.
+
 ## 10. Commissioning work from contracts
 
 A work order names a receipt type and quantity (`WEBE.md` 14.6). Examples:
@@ -158,6 +168,8 @@ A work order names a receipt type and quantity (`WEBE.md` 14.6). Examples:
 - A creator pays for public renditions of a film: `receipt_type = 5`, rendition-seconds.
 - A raffle or ballot names a future beacon round: `receipt_type = 7`.
 - A community pays gateways to keep its mesh connected: `receipt_type = 8`, packets carried for its mesh region.
+- An app pays a gateway to post to a legacy webhook when a vote closes: `receipt_type = 9`, requests.
+- A science fund pays nodes for validated Einstein@Home work units: `receipt_type = 10`, work units.
 
 The contract checks the receipts against `receipts_root` inside its proof, so payment and evidence settle together without the requester learning which node did the work.
 

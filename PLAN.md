@@ -376,11 +376,13 @@ Founder powers by stage:
 
 What the founder can never do, at any stage: read content, unmask users, skip the timelock except for tighten-only emergencies, or change payouts and penalties without the timelock.
 
-Founder succession (decided 11 Oct 2026): the network can't be stopped, by anyone, including the founder. It is a gift to Earth and every being.
-- **Dead-man's switch:** the founder key signs a check-in on chain at least every 30 days. If 90 days pass with no check-in, or the founder signs a handover at any time, the switch fires on its own: the founder co-signature, admission veto and founder release key end, and every founder power passes to consensus (2/3 of the committee, 30-day timelock with veto, 48-hour tighten-only emergencies). Nothing can undo it; there is no path back to a founder key.
+Founder succession (decided 11 Oct 2026): the network is a gift to humanity and all beings, freedom and privacy plus a universal basic income, so people everywhere can create, build and live securely. It belongs to everyone, and the founder's powers pass to consensus.
+- **Dead-man's switch:** the founder key signs a check-in on chain every week. If 42 days pass with no check-in (six missed weeks), or the founder signs a handover at any time, the switch fires on its own: the founder co-signature, admission veto and founder release key end, and every founder power passes to consensus (2/3 of the committee, 30-day timelock with veto, 48-hour tighten-only emergencies). Nothing can undo it; there is no path back to a founder key.
 - **Releases:** after the switch, node and app releases are signed by a 14-of-21 committee threshold key, rotated each epoch, from reproducible builds that match the archive.
+- **Archived on every change:** CI archives every push to every repository (private ones sealed), every release and every network upgrade within one epoch, automatically; a release or upgrade missing from the archive is invalid and won't install. The weekly check-in attests to the archive as it stands.
 - **Full archive:** every repository (all branches, tags and history), every spec, every signed release and build recipe, the full chain history, the node list and the lease and receipt history are kept on the network itself as content-addressed, erasure-coded objects at `archive.khensu.nu`, stored by storage nodes in `WORK.md`. Each epoch header commits to the archive root, so anyone can rebuild every past release and replay the network from genesis without GitHub, Apple or the founder.
-- Full rules: `PROTOCOL.md` 12.5.
+- **Private code, patented code included:** every private repository, patented algorithm, model, build recipe and patent filing is sealed in the archive now (14-of-21 key held by the trusted committee nodes, kept current on every push). When the switch fires the committee opens it and releases everything, with a signed notice, to every node on the network, the founder's list of friends, the press (The Wall Street Journal and Forbes), Wikimedia Commons and the Internet Archive, with an irrevocable royalty-free licence to every patent.
+- Full rules: `PROTOCOL.md` 12.5–12.7.
 
 App and supply-chain takeover (a separate, bigger real-world risk): hardware security keys on the Apple developer and GitHub accounts; releases signed by an offline ML-DSA-87 release key plus a threshold of co-signers, one of them locked-down CI: 2 of 3 (offline release key, CI, one trusted person), every node caching releases within 2% of its lease bandwidth (after founder succession, the 14-of-21 committee key, `PROTOCOL.md` 12.5); every app and node release hash published to the transparency log so nodes and outside watchers can see an unexpected release; reproducible builds for the node and the Pi image.
 
@@ -536,7 +538,7 @@ Stealth on the network is a foundation of the system, not a setting: there is no
 
 
 **Sounds tab (decided 11 Oct 2026).** A music and audio player inside the khensu.nu app, in its own Sounds tab, like Spotify without the label in the middle:
-- **Music:** artists upload albums, singles and live recordings as ñü-audio (`design/nu-audio.md`), signed with their provenance key. Plays are paid from the creator pool (30% of each subscription, split by the minutes each subscriber plays, user-centric). Artists set prices only for what they sell: albums, downloads, tickets and in-app purchases (flat 10%). Fans can subscribe to an artist directly; tips stay 100% to the artist. Artists keep every right; khensu.nu takes no licence.
+- **Music:** artists upload albums, singles and live recordings as ñü-audio (`design/nu-audio.md`), signed with their provenance key. Every play pays the artist 1¢ ($10 per 1,000 plays), with no platform cut; a fan's money only goes to what they played. Artists set prices only for what they sell: albums, downloads, tickets and in-app purchases (flat 10%). Fans can subscribe to an artist directly; tips stay 100% to the artist. Artists keep every right; khensu.nu takes no licence.
 - **Healing sounds:** a library of sleep, focus and healing audio (solfeggio frequencies, binaural beats, singing bowls, rain, ocean, forest), generated or recorded and published by creators, with sleep timers and seamless loops.
 - **Private by design:** catalogue, search, playlists, listening history and recommendations live on the device; streams come over the stealth network as ordinary content fetches, so nodes can't see who listens to what. Offline downloads are encrypted on device. Nothing is processed on a server.
 - **Interface:** stock Liquid Glass tab bar item "Sounds" next to Chats and Feed; Now Playing bar above the tab bar; Music and Healing segments; CarPlay, AirPlay, lock screen and Live Activity controls through the standard Apple media APIs.
@@ -689,7 +691,7 @@ A single open-source Rust binary, `tatenan`. Operators pick roles; the epoch hea
 - **Burn and mint (decided).**
   1. Example: $4.99 a month, minus Apple's 15% (Small Business Program, or after the first subscription year), is about $4.24.
   2. A fixed share (for example 50%, about $2.12) is your revenue.
-  3. The rest buys the token and burns it for capacity credits, priced in dollars, the same way any customer pays for bandwidth.
+  3. The other 50% is the network's: converted 1:1 to USDC and paid into the shielded pool as each epoch's pay pool, from which nodes draw shielded USDC for their verified work receipts at one worldwide rate. Operators spend it with a USDC debit card in Apple Pay or withdraw to a bank (decided 11 Oct 2026; this replaces burning the share for capacity credits).
   4. The protocol mints new tokens to operators each epoch in proportion to the work receipts root (packets mixed, bytes stored over time, relay minutes, committee duty), on a declining emission schedule. The company never pays operators directly.
   5. Your costs are a fixed share of net revenue, so the business is profitable once that share covers fixed costs; price swings affect operators' token income, not your margin. More usage means more burned, which is where the token's value comes from.
 - **The world's media.** MOQOM Cloud customers pay in dollars for delivery on operator nodes, and that money is burned the same way, so demand comes from all MOQOM traffic, not just messenger subscriptions. MOTOM keeps handling the fiat side (Stripe) for these customers.
@@ -787,10 +789,13 @@ Where we're behind and must earn it: a new chain has no track record (QRL has ru
 | Tier | Price | Includes |
 | --- | --- | --- |
 | Free | $0 | 1:1 and groups, calls, 100 MB attachments, 30-day mailbox history, 3 devices |
-| Plus | $4.99/month | 2 GB attachments, encrypted backups, 10 devices, custom icons and themes |
+| Pro (formerly Plus) | $4.99/month | 2 GB attachments, encrypted backups, 10 devices, custom icons and themes |
+| Ultra | $200/month | Pro, plus ñü.media Ultra: 4K at 240 fps rebuilt on your own Mac |
+| Akashic | $1,000/month | Ultra, plus Akashic: AI upscaling one rung above the source for everything you publish, on your own devices |
 | Family | $9.99/month | Plus for 6 people |
 | Business | Per seat | Admin roles, compliance exports done on members' own devices, self-hosted network option |
 
+- **Split (decided 11 Oct 2026):** after Apple's 15%, 50% to the network in USDC and 50% to the founder's company: Pro $4.24 ($2.12 each), Ultra $170 ($85 each), Akashic $850 ($425 each). No cut on views, engagement, hosting, network work, gifts, or creators' own sales and subscriptions.
 - **Free users carried per subscriber (estimate):** a text-heavy free user generates about 2 GB a month on the mixnet, or about 6 GB of node bandwidth across three hops. At about $0.005 per GB for operators, that's about $0.03 a month. One Plus subscriber's operator share (about $2.12) covers roughly 70 free users. Validate on testnet.
 - **Token (proposal for counsel):** 1 billion at genesis. Emission starts at 8% a year and halves every 2 years. Net supply falls once burns exceed emission. Allocation: 20% company with a 4-year vest, 15% ecosystem and grants, 5% burn auction liquidity reserve, and the rest held by the network treasury with time locks.
 

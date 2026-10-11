@@ -50,7 +50,8 @@ What to expect honestly:
 - **At equal quality, nu-media targets about half the bits of ImageIO HEIC.** That figure is an estimate: the best learned image codecs measure roughly 10–20% fewer bits than VVC intra, VVC intra roughly 25% fewer than HEVC intra (HM reference), and a real-time hardware HEIC encoder needs more bits than HM. Combined, that is about 45–55% below ImageIO HEIC.
 - **15–40 KB is a size cap, not "the same picture for free".** It is about what HEIC would need at 30–80 KB: softer than the camera's original, but clean. Learned codecs degrade by smoothing, not by blocks and ringing, which is why they look better than HEIC at these sizes.
 - **Fidelity first:** no generated texture (no GAN or diffusion decoders), so nothing appears that wasn't in the photo.
-- **Originals** (full 48 MP, ProRAW, Live Photos) don't go through the ticks. They go through your own node, the charging window or the trickle (`PLAN.md`, Stealth).
+- **Live Photos are fully supported (11 Oct 2026).** At screen size they travel inside the ticks like any photo: the still first (about 40 KB, shown in about 7 ticks), then up to 3 s of motion coded as a residual from the still, with Opus sound, for about 200 KB in total (design target; about 34 ticks, so it moves at about 70 s). Apple's HEIC + HEVC pair at the same size is about 1.4 MB. The receiver rebuilds a real Live Photo (`PHLivePhoto` from a still and a paired video with the same asset identifier), so it plays with a long press and saves to Photos as a Live Photo.
+- **Originals** (full 48 MP, ProRAW, full-resolution Live Photos) don't go through the ticks. They go through your own node, the charging window or the trickle (`PLAN.md`, Stealth).
 
 ## 4. Video: hardware H.264 and H.265 against nu-media
 

@@ -23,9 +23,9 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass (titanium) | Attachment | Drawings |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
-| Fill | iPhone 18 Pro | 65.9 × 143.0, camera plate | 4.2 (level) | 5.4 Wh | 73 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
-| **Wrap (the product)** | iPhone 18 Pro | 71.1 × 149.2, camera plate over the full-width plateau | 4.2 (level) | 6.2 Wh | 93 g (136 g brass) | Magnets and shock-isolating suction layer | KS-IPHONE-18-PRO-WRAP-100/101 |
-| Wrap XL | iPhone 18 Pro | 71.1 × 149.2, long camera cut-out, 1.3 mm draft | 7.2 (+3.0) | 13.2 Wh | 124 g | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
+| Fill | iPhone 18 Pro | 65.8 × 143.0, camera plate | 4.7 (level) | 6.5 Wh | 84 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
+| Wrap | iPhone 18 Pro | 71.0 × 149.2, camera plate over the full-width plateau | 4.7 (level) | 7.5 Wh | 95 g (136 g brass) | Magnets and shock-isolating suction layer | KS-IPHONE-18-PRO-WRAP-100/101 |
+| **Wrap XL (the product)** | iPhone 18 Pro | 71.0 × 105.9, the back below the full-width camera plateau | 4.7 (level, 0 mm above the lenses) | 6.5 Wh | 74 g (93 g brass) | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
 | Fill | Standard | 65.5 × 140.6, camera plate | 3.6 (level) | 4.6 Wh | 69 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
 | Wrap | Standard | 70.7 × 146.8, camera plate | 3.6 (level) | 5.4 Wh | 79 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
@@ -96,7 +96,7 @@ At setup the app creates a `SecureEnclave.MLDSA87` key (CryptoKit, iOS 26), gate
 | Wi-Fi and Bluetooth | NXP IW612 (Wi-Fi 6, Bluetooth LE, 802.15.4), hosted by the guard | Link to the phone and nearby devices; Bluetooth wakes the app |
 | Power path | TI TPS25750 USB-C PD controller, TI BQ25895 1S charger with power path, TI BQ27427 fuel gauge | Charges over its own USB-C from a wall charger or power bank. When its cells run out it takes at most 1 W from the phone: through the Qi2 coil where the phone offers reverse wireless power (Apple does not document this for iPhone; to verify on iPhone 18 Pro), otherwise over a short USB-C cable. The iPhone's port stays free |
 | Wireless power | Qi2-certified receiver module, coil under the skin window facing the phone's MagSafe coil | The flat-back fill and wrap have no coil, since metal over it would block charging; they charge over USB-C. The phone can't charge wirelessly through any metal shell |
-| Cells | 1S Li-ion pouch, 3.85 V nominal, about 1,610 mAh (6.2 Wh) in the wrap, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles; IEC 62133-2 and UN 38.3 |
+| Cells | 1S Li-ion pouch, 3.85 V nominal, about 1,690 mAh (6.5 Wh) in the wrap XL, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles; IEC 62133-2 and UN 38.3 |
 | Cells, extended option | 1S silicon-carbon anode pouch (Group14 SCC55 class, as shipping in flagship phones), same envelope: about 7.5 Wh (about 1,950 mAh). Higher cost. Next step: 100% silicon anode (Enovix AI-1 class, 935 Wh/L independently tested, in smartphone qualification as of 2026) | Silicon swells more than graphite: keep the 0.1 mm swell allowance in the cell pocket, qualify cycle life at the node's duty cycle, same protection, NTC and IEC 62133-2 / UN 38.3 certification |
 
 **Power budget (estimate, to be measured):**

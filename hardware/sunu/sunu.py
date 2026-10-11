@@ -212,7 +212,7 @@ def styles_for(p: Phone) -> list[Style]:
         Style("card", "Pocket-style card on MagSafe, own battery only", card_t, card, False, (0, p.magsafe_y)),
         Style("fill", "Inset from the edges, over the camera: a flat back level with the lenses", slim_t, fill, True, (0, p.magsafe_y), plate=True),
         Style("wrap", "The whole back, over the camera: a flat back level with the lenses", slim_t, body, True, (0, p.magsafe_y), plate=True),
-        Style("wrap-xl", "Large-capacity wrap, flat back 3 mm above the lenses in a drafted well", slim_t + 3.0, wrap, True, (0, p.magsafe_y)),
+        Style("wrap-xl", "The whole back around the camera, its top face level with the lens rings: no bump above the camera", slim_t, wrap, True, (0, p.magsafe_y)),
     ]
 
 

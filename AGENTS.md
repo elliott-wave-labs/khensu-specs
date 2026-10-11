@@ -23,6 +23,7 @@ Post-quantum private messenger on a decentralized operator network. `PLAN.md` is
 - Nothing is processed on servers: no Siri, no Private Cloud Compute, no Writing Tools in the composer, no iCloud.
 - Minimum iOS, iPadOS and macOS 26. Stock Liquid Glass chrome only (see the App design section of `PLAN.md`).
 - The hardware transceiver is shown as suñůlink.shield; code, commands, packages and identifiers use `sunu` (`hardware/sunu`, `nu.khensu.sunu`).
+- The shield's stone inlay is shown as ñü.isheru; code, files and identifiers use `isheru` (`tools/shield/inlay.py` keeps its name until it is next touched).
 - The open web layer is shown as webË (E with a diaeresis, U+00CB); schemes, files and identifiers use `webe` (`webe://`, `WEBE.md`).
 - "nu" is shown as ñü wherever people see it (khensu.ñü, ñü.media, ñüFi, ñüCode); code, URLs, domains, files and data keys keep `nu`.
 - Site work is published as soon as it's built, to every site including the studio; it is never held for a patent filing.

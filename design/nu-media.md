@@ -131,6 +131,59 @@ nu-media carries more colour than the iPhone's screen shows, so the same file lo
 | Region of interest | Extra bits on faces and text in the same file size |
 | Later | 360° video in viewport tiles (Places), Gaussian splats and 3D capture |
 
+### 7.1 Frame rate: 120 Hz, and double the fastest gaming display
+
+- **Format:** frames carry a 1 MHz timestamp, not a fixed rate, so a stream can run at any rate up to **2,000 fps** and change rate mid-stream. That is double the fastest gaming monitors on sale (about 500 to 1,000 Hz in 2026; the exact top figure is to be confirmed before it is quoted on the site).
+- **Tiers:**
+
+  | Tier | Rate | Where |
+  | --- | --- | --- |
+  | Standard | 30 and 60 fps | Every iOS 26 device |
+  | ProMotion | 120 fps | iPhone Pro, iPad Pro, MacBook Pro |
+  | Double ProMotion | 240 fps | Recording and playback; slow motion from the camera |
+  | Gaming | Up to 2,000 fps | Mac and PC capture to high-refresh displays |
+
+- **How:** above the rate the sender's encoder can sustain, the sender codes a lower rate (for example 60 fps) and the receiver's Neural Engine interpolates the missing frames in the enhancement layer (section 5). Interpolated frames cost no bits, so 120 and 240 fps calls use the same bitrate as 60 fps. Stored high-rate video (camera 4K120, 240 fps slow motion, game capture) is coded at its native rate.
+- **No frame loss:** the receiver never drops a coded frame. It shows every coded frame and only adds or skips interpolated ones to match the display. The benchmark counts frames in and out for every run.
+- **To measure on iPhone Air:** hardware encode and Neural Engine super-resolution throughput at each base size (section 8.3), and Apple's low-latency frame interpolation from 30 or 60 to 120 and 240 fps. A 120 fps test clip is still needed: the NASA 4K clip is 29.97 fps.
+
+### 7.2 Resolution: native from the best cameras, headroom to 42K
+
+- **Rule:** nu-media never scales a source down to fit the codec. Video is carried at the camera's native resolution, frame rate and bit depth; only the bitrate changes. Lowering resolution is the viewer's choice (a smaller screen or a slower link fetches fewer tiles), not the sender's.
+- **Format limits:** frame sizes up to **43,008 × 21,504** (42K equirectangular), coded as independent tiles of 512 × 512 to 2,048 × 2,048 so no single decoder has to hold a whole frame. 42K cameras don't exist yet; the limit is there so the format won't need to change when they do.
+- **Cameras to support first:**
+
+  | Camera | Native video | Live today | Notes |
+  | --- | --- | --- | --- |
+  | Insta360 Titan | 11K mono, 10K 3D, 30 fps, 10-bit, 8 Micro Four Thirds sensors | 4K30 stitched in camera; 8K30 with Insta360's 8K Live licence and an external stitching server (RTSP, RTMP, RTMPS, HLS, SDI) | [insta360.com](https://www.insta360.com/product/insta360-titan) |
+  | Large-format cinema cameras | 12K to 17K (for example Blackmagic URSA Cine 17K 65) | Not as live streams | Model list to be confirmed before it is quoted |
+  | Dome and immersive rigs | Up to about 18K square (Sphere's Big Sky) | No | Theatre and dome playback |
+
+- **Viewing 360 and VR:** tiles are fetched by viewport (section 7, Places), so a viewer on iPhone or Vision Pro downloads only what they're looking at in full detail, plus a low-detail full sphere for quick head turns.
+- **Raw versus native:** truly uncompressed 11K30 10-bit is about 25 Gbit/s (10,560 × 5,280 × 30 fps × 15 bits at 4:2:0), which no internet path carries. "Raw" in khensu.nu means **native resolution, never downscaled**, at a visually lossless bitrate, with a mathematically lossless mode (section 7, Lossless) for local networks and dedicated fibre.
+- **Ingest without servers:** the encoder runs on the camera operator's own Mac or stitching machine, which takes the camera's SDI, RTSP or RTMP feed and sends nu-media into the network. Nothing is transcoded on khensu.nu or operator servers. MOQOM Cloud uses the same format and the same ingest tool.
+- **Theatres:** cinemas play features from DCI packages (JPEG 2000, encrypted with per-screen keys) and take live events as alternative content through a decoder on the projector's SDI or HDMI input. nu-media targets that alternative-content input first, at the projector's native 2K or 4K, or up to 16K on LED walls and domes. DCI packaging is a separate licensing and certification job.
+- **Open questions:**
+  - how high-bitrate live streams travel: the mixnet's constant-rate cover traffic makes multi-gigabit streams costly, so large live events may use the two-relay call path instead;
+  - decoder memory and power for 11K-plus tiles on iPhone and Vision Pro (to be measured);
+  - the exact current top camera and display figures, checked at publication.
+
+### 7.3 nu-score: the test where VMAF stops
+
+VMAF alone can't judge nu-media. Its models stop at 3840 × 2160 and assume 8-bit SDR at ordinary frame rates, which is about the ceiling of what Netflix streams (4K HDR). Its single average hides a few bad frames, and it can't see dropped frames, stalls or banding. `bench/nuscore.py` reports, for any resolution and frame rate:
+
+| Group | What it measures |
+| --- | --- |
+| Size | Bytes, mean bitrate, peak bitrate over any 1-second window, bits per pixel per frame |
+| Timing | Frames in and out, dropped and duplicated frames, longest stall, effective fps, encode fps (from the device), decode fps |
+| Resolution | Native size of the source and the encode; scoring always happens at the source size, in tiles of at most 3840 × 2160, so 8K, 11K and 42K work |
+| Quality | Per frame and per tile: VMAF (4K model per tile), PSNR-Y, MS-SSIM and Netflix's CAMBI banding score; mean, worst 1% of frames and worst tile. HDR and high-frame-rate perception with ColorVideoVDP (JOD, 10 = identical) when installed |
+| Verdict | "Same as the original" only when every gate passes: VMAF mean 95 and worst 1% 90, MS-SSIM worst 1% 0.985, CAMBI no higher than 3, no dropped frames, no stall longer than 1.5 frames, and JOD 9.5 when ColorVideoVDP runs. The gates are a starting point, calibrated against a viewer test (ITU-T P.910) |
+
+First run, on a synthetic 7680 × 4320 clip with x264 at CRF 32: VMAF mean 87, but the worst 1% of frames 62 and the worst tile 78, which a single VMAF number would have hidden.
+
+**Test media.** `bench/ytstream.py` saves exactly the stream YouTube delivers, without re-encoding, with a JSON record of the format, codec, resolution, frame rate, HDR transfer, bitrate, licence and SHA-256. The first clip is "Best of 8K Video" (4K Video ULTRA HD on YouTube), format 702: AV1 Main 10-bit, 7680 × 4320, 59.94 fps, PQ (SMPTE ST 2084) in BT.2020, about 51 Mbit/s; 20 seconds from 1:00. The title says 120 fps, but YouTube sends 60. Downloaded streams are for private dev testing; showing them publicly needs the owner's permission.
+
 ## 8. Benchmark: replacing the estimates
 
 A Swift test app, `nu-media/bench`, runs on iPhone 18 Pro and an iOS 26 device from the oldest supported generation and writes the tables above with measured numbers.

@@ -235,7 +235,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
     hdri = Path(bpy.utils.system_resource("DATAFILES")) / "studiolights" / "world" / "studio.exr"
     env.image = bpy.data.images.load(str(hdri))
     world.node_tree.links.new(env.outputs["Color"], bg.inputs["Color"])
-    bg.inputs["Strength"].default_value = 1.1
+    bg.inputs["Strength"].default_value = 0.7
 
     def area(name, direction, size_mm, power, dist=520.0):
         d = Vector(direction).normalized()
@@ -248,12 +248,11 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
         ob.rotation_euler = d.to_track_quat("Z", "Y").to_euler()
         sc.collection.objects.link(ob)
 
-    area("key", (-0.35, -0.55, 1.0), 320, 2.6e6)
-    area("rim", (0.85, 0.55, 0.35), 160, 1.1e6)
-    area("fill", (0.6, -0.9, 0.25), 260, 0.5e6)
-    # A small softbox in the mirror direction of the main camera, so flat glass and the lens elements catch a glint.
-    e = Vector(info["eye"])
-    area("glint", (-e.x, -e.y, e.z), 30, 0.045e6)
+    # Large, soft sources like a product studio's overhead scrim, with two thin rims to draw the edges.
+    area("key", (-0.3, 0.2, 1.0), 900, 2.2e6)
+    area("fill", (0.6, -0.9, 0.35), 700, 0.6e6)
+    area("rim", (0.9, 0.6, 0.15), 400, 0.9e6)
+    area("rim2", (-0.9, 0.5, 0.1), 400, 0.5e6)
 
     def ortho_camera(name, v):
         eye, right, up = Vector(v["eye"]), Vector(v["right"]), Vector(v["up"])
@@ -363,7 +362,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
                  cz + rad * math.sin(math.radians(a0 + (a1 - a0) * k / steps))) for k in range(steps + 1)]
 
     # Materials
-    phone_mat = material("phone", metallic=0.8, roughness=0.36, **{"Coat Weight": 0.1, "Coat Roughness": 0.25})
+    phone_mat = material("phone", metallic=0.75, roughness=0.45)
     bezel_mat = material("bezel", (0.045, 0.045, 0.05, 1), 1.0, 0.1)
     barrel_mat = material("barrel", (0.025, 0.025, 0.028, 1), 0.3, 0.38)
     element_mat = material("element", (0.004, 0.004, 0.006, 1), 0.0, 0.025, **{
@@ -375,7 +374,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
     hole_mat = material("hole", (0.002, 0.002, 0.002, 1), 0.0, 0.9)
     # Ceramic coat over Grade 5 titanium: a hard, satin, colour-matched ceramic layer (micro-arc oxide base,
     # ceramic topcoat), with the fine grain of a sprayed finish.
-    powder_mat = grain(material("ceramic", metallic=0.8, roughness=0.36, **{"Coat Weight": 0.3, "Coat Roughness": 0.25}), 300, 0.04)
+    powder_mat = grain(material("ceramic", metallic=0.75, roughness=0.45, **{"Coat Weight": 0.08, "Coat Roughness": 0.4}), 300, 0.03)
     brass_mat = grain(material("brass", srgb_to_linear((222, 182, 110)), 1.0, 0.34), 320, 0.12)
     windows_mat = material("windows", metallic=0.0, roughness=0.48)
     mats = {
@@ -387,7 +386,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
         "coil": material("coil", srgb_to_linear((184, 115, 58)), 1.0, 0.25),
     }
     chip_mat = material("chip", (0.012, 0.012, 0.013, 1), 0.0, 0.4)
-    glass_back_mat = material("back glass", metallic=0.6, roughness=0.42, **{"Coat Weight": 0.3, "Coat Roughness": 0.3})
+    glass_back_mat = material("back glass", metallic=0.55, roughness=0.55, **{"Coat Weight": 0.15, "Coat Roughness": 0.5})
     dark_mat = material("port", (0.01, 0.01, 0.011, 1), 0.6, 0.45)
 
     groups: dict[str, list] = {}

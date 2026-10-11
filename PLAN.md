@@ -701,6 +701,19 @@ Users send money to each other with no record of who paid whom, and no lasting r
 - **Creators (proposed 11 Oct 2026).** Tips, subscriptions and live-room tickets pay straight into the creator's own wallet through the pool, with no platform cut; the only charge is the network fee of a fraction of a cent per transfer (design target), which goes to node operators. Tips inside the iOS app rely on App Store guideline 3.2.1(vii) (optional gifts where 100% goes to the recipient); whether a network fee is compatible is `OPEN-QUESTIONS.md` 83. Paid digital content in the app follows Apple's purchase rules. A creator's suñůlink.shield and nodes earn protocol rewards for verified relay work into the same wallet; the site describes this factually, with no amounts (Kickstarter and securities rules above).
 - **Spending with Apple Pay (proposed 11 Oct 2026).** A debit card from a licensed issuing partner, provisioned into Apple Wallet for NFC tap to pay. At authorisation the wallet withdraws from the pool and converts to USDC, and the partner settles in local currency. This needs: an issuer and programme manager, identity verification of the cardholder (required for cards), Apple Pay issuer approval, and a USDC route off our chain (USDC is issued by Circle on classical chains, so the converted balance is not post-quantum). The partner sees card purchases like any bank card; messages and the rest of the wallet stay private, and the app says so. No khensu.nu fee; partner and FX fees to be negotiated toward zero for the user. Not on Visa or Mastercard: the recommendation is Discover Global Network (Discover, Diners Club, Pulse debit), with JCB or UnionPay as a regional fallback. The card has a real card number, shown only in the app behind Face ID, and Wallet holds a network token instead (`design/ring-code.md` 3). `OPEN-QUESTIONS.md` 82, 88.
 
+## nuFi: investing, lending, giving and crowdfunding (proposed 11 Oct 2026)
+
+People fund each other directly over the network, with no platform cut: **nuFi Give** (microgiving), **nuFi Back** (all-or-nothing crowdfunding with rewards, like Kickstarter), **nuFi Lend** (microlending) and **nuFi Invest** (an investment network for startups and local businesses). How it works:
+
+- Campaigns are signed webË documents logged in the key transparency log, so their terms can't change after anyone pays.
+- Pledges sit in escrow notes in the shielded pool, released by the consensus if the goal is met by the deadline and refunded automatically if not. Nobody holds the money.
+- Who gave, backed or lent stays private by default.
+- Lend and Invest are regulated: lending licences or a partner bank; securities rules through a registered funding portal. A licensed partner holds identity, never khensu.nu, and identity is never linked to messaging.
+- Rollout: Give and Back first (no securities, no lending licence), then 0% Lend through microfinance partners, then Invest through a registered portal partner.
+- The khensu.nu coin sale and company raises never run on nuFi Invest (conflict rule).
+
+Design: `design/nufi.md`.
+
 ## Compared with existing post-quantum coins
 
 Existing post-quantum coins each solve one layer. khensu.nu's chain is designed to be post-quantum at every layer, with privacy that doesn't depend on a permanent record:

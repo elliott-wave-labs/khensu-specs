@@ -63,7 +63,6 @@ type Result = {
   t: number;
   wh: number;
   cm3: number;
-  alG: number;
   tiG: number;
   proud: number;
   usb: boolean;
@@ -72,16 +71,16 @@ type Result = {
 
 const RESULTS: Record<PhoneId, Record<Exclude<StyleId, "case">, Result>> = {
   "pro-plateau": {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.19, alG: 46, tiG: 50, proud: 1.7, usb: false, ring: 53 },
-    fill: { footprint: [65.9, 101.4], t: 3.5, wh: 2.2, cm3: 4.92, alG: 41, tiG: 47, proud: 0, usb: true, ring: 56 },
-    wrap: { footprint: [71.1, 105.0], t: 3.5, wh: 2.8, cm3: 6.26, alG: 46, tiG: 54, proud: 0, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [71.1, 105.0], t: 6.5, wh: 11.4, cm3: 25.34, alG: 93, tiG: 102, proud: 3.0, usb: true, ring: 56 },
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.19, tiG: 50, proud: 1.7, usb: false, ring: 53 },
+    fill: { footprint: [65.9, 101.4], t: 3.5, wh: 2.2, cm3: 4.92, tiG: 47, proud: 0, usb: true, ring: 56 },
+    wrap: { footprint: [71.1, 105.0], t: 3.5, wh: 2.8, cm3: 6.26, tiG: 54, proud: 0, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [71.1, 105.0], t: 6.5, wh: 11.4, cm3: 25.34, tiG: 102, proud: 3.0, usb: true, ring: 56 },
   },
   island: {
-    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, alG: 46, tiG: 50, proud: 2.6, usb: false, ring: 53 },
-    fill: { footprint: [65.5, 100.5], t: 3.4, wh: 2.0, cm3: 4.5, alG: 39, tiG: 46, proud: 0.8, usb: true, ring: 56 },
-    wrap: { footprint: [70.7, 146.8], t: 3.4, wh: 4.8, cm3: 10.62, alG: 62, tiG: 72, proud: 0.8, usb: true, ring: 56 },
-    "wrap-xl": { footprint: [70.7, 146.8], t: 6.4, wh: 17.0, cm3: 37.72, alG: 128, tiG: 139, proud: 3.8, usb: true, ring: 56 },
+    card: { footprint: [56, 86], t: 5.2, wh: 4.1, cm3: 9.17, tiG: 50, proud: 2.6, usb: false, ring: 53 },
+    fill: { footprint: [65.5, 100.5], t: 3.4, wh: 2.0, cm3: 4.5, tiG: 46, proud: 0.8, usb: true, ring: 56 },
+    wrap: { footprint: [70.7, 146.8], t: 3.4, wh: 3.5, cm3: 7.74, tiG: 65, proud: 0.8, usb: true, ring: 56 },
+    "wrap-xl": { footprint: [70.7, 146.8], t: 6.4, wh: 13.4, cm3: 29.76, tiG: 123, proud: 3.8, usb: true, ring: 56 },
   },
 };
 
@@ -347,7 +346,7 @@ export default function KhensuShell() {
               <Row gap={28} wrap>
                 <Stat value={`${res.wh} Wh`} label={`battery (${res.cm3} cm³ of cells)`} />
                 <Stat value={`${res.t} mm`} label={res.proud > 0 ? `thick, ${res.proud} mm proud of the bump` : "thick, flush with the bump"} />
-                <Stat value={`${res.alG} g`} label={`aluminium (${res.tiG} g titanium)`} />
+                <Stat value={`${res.tiG} g`} label="titanium" />
               </Row>
               <Text size="small" tone="tertiary">
                 Footprint {res.footprint[0]} × {res.footprint[1]} mm. Magnet ring {res.ring} mm. {res.usb ? "USB-C plug powers it from the phone when its own cells run out." : "No plug: runs on its own cells and covers the phone's MagSafe coil, so the phone charges with the card off."}
@@ -398,7 +397,7 @@ export default function KhensuShell() {
       <Stack gap={10}>
         <H2>Battery and weight, both reference phones</H2>
         <Table
-          headers={["Style", "Phone", "Footprint (mm)", "Thickness (mm)", "Battery (Wh)", "Relays alone (≈1 W)", "Mass Al / Ti (g)"]}
+          headers={["Style", "Phone", "Footprint (mm)", "Thickness (mm)", "Battery (Wh)", "Relays alone (≈1 W)", "Mass, titanium (g)"]}
           columnAlign={["left", "left", "right", "right", "right", "right", "right"]}
           rows={(Object.keys(PHONES) as PhoneId[]).flatMap((pid) =>
             (["card", "fill", "wrap", "wrap-xl"] as const).map((sid) => {
@@ -410,7 +409,7 @@ export default function KhensuShell() {
                 r.proud > 0 ? `${r.t} (+${r.proud})` : `${r.t} (flush)`,
                 r.wh.toFixed(1),
                 `${r.wh.toFixed(0)} h`,
-                `${r.alG} / ${r.tiG}`,
+                `${r.tiG}`,
               ];
             }),
           )}
@@ -441,14 +440,14 @@ export default function KhensuShell() {
           <CardHeader>Made in metal</CardHeader>
           <CardBody>
             <Text size="small" tone="secondary">
-              CNC 6061/7075 aluminium or titanium Grade 5, 1.0 mm walls and 0.7 mm skin. Metal blocks radio and wireless charging, so the coil area and a 40 mm strip along the bottom edge are PC windows, like the bands on a phone frame. Glass-filled PC base, die-cut micro-suction film.
+              CNC titanium Grade 5 only, 1.0 mm walls and 0.7 mm skin. Metal blocks radio and wireless charging, so the coil area and a 40 mm strip along the bottom edge are PC windows, like the bands on a phone frame. Glass-filled PC base, die-cut micro-suction film.
             </Text>
           </CardBody>
         </Card>
       </Grid>
 
       <Callout tone="warning" title="Three findings from the CAD">
-        Slim shells can't go below about 3.4 mm (film, base, board, skin), so on phones with a low bump they sit up to 0.8 mm proud. A slim shell holds 2–5 Wh, not the 8–10 Wh first estimated; with the board always on, that's a few hours on its own cells before it draws about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour); the card has no plug and stops. Only the XL runs all day on its own. The Pocket-size card fits a 53 mm magnet ring, not the full 56 mm one, and blocks the phone's MagSafe charging while attached.
+        Slim shells can't go below about 3.4 mm (film, base, board, skin), so on phones with a low bump they sit up to 0.8 mm proud. A slim shell holds 2–4 Wh, not the 8–10 Wh first estimated; with the board always on, that's a few hours on its own cells before it draws about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour); the card has no plug and stops. Only the XL runs all day on its own. The Pocket-size card fits a 53 mm magnet ring, not the full 56 mm one, and blocks the phone's MagSafe charging while attached.
       </Callout>
     </Stack>
   );

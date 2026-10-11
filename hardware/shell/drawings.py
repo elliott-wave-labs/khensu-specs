@@ -347,7 +347,7 @@ CASE_NOTES = [
 
 BOM = [
     # item, part key, description, material / spec, process
-    (1, "housing", "HOUSING", "AL 6061-T6 OR TI-6AL-4V GR5", "CNC, SEE -101"),
+    (1, "housing", "HOUSING", "TI-6AL-4V GR5", "CNC, SEE -101"),
     (2, "window_inserts", "RADIO / COIL WINDOWS", "PC, UL94 V-0, COLOUR MATCHED", "INSERT MOULD OR BOND"),
     (3, "base", "BASE PLATE 0.6", "PC-GF30", "MOULD OR CNC"),
     (4, "suction_film", "MICRO-SUCTION FILM 0.3", "NANO-SUCTION PU", "DIE CUT"),
@@ -459,9 +459,9 @@ def housing_sheet(p: S.Phone, s: S.Style, parts: dict, dwg: str, sheet: str) -> 
     sheet_frame(msp, TitleInfo(
         title=f"{S.STYLE_TITLES[s.name].upper()} - {p.name.upper()}",
         subtitle="KHENSU SHELL - HOUSING",
-        dwg_no=dwg, material="AL 6061-T6 (ALT TI-6AL-4V GR5)",
+        dwg_no=dwg, material="TI-6AL-4V GR5",
         finish="BEAD BLAST, TYPE II ANODISE / PVD",
-        scale="1:1", mass=f"{S.volume_cm3(parts['housing']) * S.DENSITY['al6061']:.1f} G", sheet=sheet,
+        scale="1:1", mass=f"{S.volume_cm3(parts['housing']) * S.DENSITY['ti_gr5']:.1f} G", sheet=sheet,
     ), HOUSING_NOTES)
     return doc
 
@@ -563,7 +563,7 @@ def assembly_sheet(p: S.Phone, s: S.Style, parts: dict, dwg: str, sheet: str) ->
         title=f"{S.STYLE_TITLES[s.name].upper()} - {p.name.upper()}",
         subtitle="KHENSU SHELL - ASSEMBLY",
         dwg_no=dwg, material="SEE PARTS LIST", finish="SEE -101",
-        scale="1:1", mass=mass_str(parts, S.DENSITY["al6061"]), sheet=sheet,
+        scale="1:1", mass=mass_str(parts, S.DENSITY["ti_gr5"]), sheet=sheet,
     ), ASSEMBLY_NOTES)
     return doc
 

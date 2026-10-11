@@ -60,7 +60,7 @@ PHONES = [
 
 @dataclass
 class Build:
-    wall: float = 1.0  # side walls (CNC aluminium or titanium)
+    wall: float = 1.0  # side walls (CNC titanium)
     skin: float = 0.7  # outer face
     base: float = 0.6  # phone-side plate (glass-filled PC), closes the cavity
     suction: float = 0.3  # micro-suction film on the phone side
@@ -111,9 +111,20 @@ def outline_solid(outline: cq.Workplane, z0: float, t: float) -> cq.Workplane:
 
 
 def offset_outline(outline: cq.Workplane, d: float) -> cq.Workplane:
-    wire = outline.faces("<Z").wires().val()
-    off = wire.offset2D(d, "arc")[0]
-    return cq.Workplane("XY").add(cq.Solid.extrudeLinear(cq.Face.makeFromWires(off), cq.Vector(0, 0, 1)))
+    """Offset the outer edge by d and grow any holes (the camera cut-out) by -d, keeping the holes."""
+    face = outline.faces("<Z").val()
+
+    def slab(wire: cq.Wire, t: float = 1.0) -> cq.Workplane:
+        return cq.Workplane("XY").add(cq.Solid.extrudeLinear(cq.Face.makeFromWires(wire), cq.Vector(0, 0, t)))
+
+    result = slab(face.outerWire().offset2D(d, "arc")[0])
+    for hole in face.innerWires():
+        # offset2D's sign follows wire orientation, so pick the candidate by area.
+        candidates = hole.offset2D(d, "arc") + hole.offset2D(-d, "arc")
+        pick = max if d < 0 else min
+        new_hole = pick(candidates, key=lambda w: cq.Face.makeFromWires(w).Area())
+        result = result.cut(slab(new_hole, 3.0).translate((0, 0, -1.0)))
+    return result
 
 
 def styles_for(p: Phone) -> list[Style]:
@@ -293,7 +304,6 @@ def phone_reference(p: Phone) -> cq.Workplane:
 
 
 DENSITY = {  # g/cm3
-    "al6061": 2.70,
     "ti_gr5": 4.43,
     "base": 1.45,  # 30% glass-filled PC
     "window_inserts": 1.2,  # PC
@@ -360,7 +370,6 @@ def main() -> None:
                 "interference_mm3": round(clash, 2),
                 "outer_qi2_coil": "coil" in parts,
                 "proud_of_bump_mm": round(max(0.0, s.thickness - p.bump_z), 2),
-                "mass_g_aluminium": round(mass_g(parts, DENSITY["al6061"]), 0),
                 "mass_g_titanium": round(mass_g(parts, DENSITY["ti_gr5"]), 0),
             })
             if s.name == "wrap":

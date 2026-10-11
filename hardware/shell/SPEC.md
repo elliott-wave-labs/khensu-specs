@@ -20,16 +20,16 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 ## 2. Variants
 
-| Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass Al / Ti | Attachment | Drawings |
+| Style | Phone | Footprint (mm) | Thickness (mm) | Cells | Mass (titanium) | Attachment | Drawings |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Card | Pro | 56 × 86 | 5.2 | 4.1 Wh | 46 / 50 g | Magnets (53 mm ring) | KS-PRO-PLATEAU-CARD-100/101 |
-| Fill | Pro | 65.9 × 101.4 | 3.5 (flush) | 2.2 Wh | 41 / 47 g | Magnets and suction | KS-PRO-PLATEAU-FILL-100/101 |
-| Wrap | Pro | 71.1 × 105.0 | 3.5 (flush) | 2.8 Wh | 46 / 54 g | Magnets and suction | KS-PRO-PLATEAU-WRAP-100/101 |
-| Wrap XL | Pro | 71.1 × 105.0 | 6.5 (+3.0) | 11.4 Wh | 93 / 102 g | Magnets and suction | KS-PRO-PLATEAU-WRAP-XL-100/101 |
-| Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 46 / 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
-| Fill | Standard | 65.5 × 100.5 | 3.4 (+0.8) | 2.0 Wh | 39 / 46 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
-| Wrap | Standard | 70.7 × 146.8 | 3.4 (+0.8) | 4.8 Wh | 62 / 72 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
-| Wrap XL | Standard | 70.7 × 146.8 | 6.4 (+3.8) | 17.0 Wh | 128 / 139 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
+| Card | Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-PRO-PLATEAU-CARD-100/101 |
+| Fill | Pro | 65.9 × 101.4 | 3.5 (flush) | 2.2 Wh | 47 g | Magnets and suction | KS-PRO-PLATEAU-FILL-100/101 |
+| Wrap | Pro | 71.1 × 105.0 | 3.5 (flush) | 2.8 Wh | 54 g | Magnets and suction | KS-PRO-PLATEAU-WRAP-100/101 |
+| Wrap XL | Pro | 71.1 × 105.0 | 6.5 (+3.0) | 11.4 Wh | 102 g | Magnets and suction | KS-PRO-PLATEAU-WRAP-XL-100/101 |
+| Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
+| Fill | Standard | 65.5 × 100.5 | 3.4 (+0.8) | 2.0 Wh | 46 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
+| Wrap | Standard | 70.7 × 146.8 | 3.4 (+0.8) | 3.5 Wh | 65 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
+| Wrap XL | Standard | 70.7 × 146.8 | 6.4 (+3.8) | 13.4 Wh | 123 g | Magnets and suction | KS-ISLAND-WRAP-XL-100/101 |
 | Silicone case | Both | phone + 1.6 per side | phone + module + 0.8 | (holds a Wrap) | about 18 g | Grips the phone | KS-*-CASE-201 |
 
 "+" is height above the camera bump. The slim styles have a 3.4 mm floor (suction film 0.3, base 0.6, board 1.6 with 0.2 clearance, skin 0.7), so on phones with a lower bump they sit slightly proud. Cell energy assumes 0.45 Wh/cm³ for thin pouch cells.
@@ -40,7 +40,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 | Item | Material | Process and finish | Notes |
 | --- | --- | --- | --- |
-| Housing | Al 6061-T6 (alt. 7075-T6) or Ti-6Al-4V Grade 5 | 5-axis CNC; bead blast and Type II anodise (Al) or bead blast and PVD (Ti) | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
+| Housing | Ti-6Al-4V Grade 5 titanium (only material) | 5-axis CNC; bead blast and PVD | 0.7 mm skin needs a vacuum fixture; 0.8–1.0 mm is safer for first articles |
 | Windows | PC, UL94 V-0, colour matched | Insert-moulded or bonded, flush within 0.02 | Ø46 over the coil (skin only); 42 mm strip along the bottom edge (skin and wall) for the antennas |
 | Base plate | PC-GF30 | Moulded or CNC | Bonded with a 0.1 mm PSA perimeter bead |
 | Suction film | Nano-suction PU | Die cut, laminated to base | Washable; replaceable part |
@@ -90,7 +90,7 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–4 hour
 
 - **Internet traffic** looks like ordinary HTTPS/3: WebTransport on UDP 443 with no SNI, sealed mixnet packets inside.
 - **Mesh traffic** uses the same sealed fixed-size packets on a constant 2 s tick (1 small packet per tick on the mesh), so the radio pattern doesn't reveal activity.
-- **Antennas:** HaLow flex antenna and the 2.4/5 GHz chip antenna sit behind the bottom-edge PC window; keep 40 mm non-metal along that edge. In the titanium version the window is mandatory.
+- **Antennas:** HaLow flex antenna and the 2.4/5 GHz chip antenna sit behind the bottom-edge PC window; keep 40 mm non-metal along that edge. The titanium housing makes the window mandatory.
 
 ## 6. Thermal
 

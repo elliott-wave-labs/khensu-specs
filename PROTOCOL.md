@@ -499,6 +499,7 @@ The recipient keeps the per-hop payload keys indexed by `payload_key_ref`, valid
 - **Nodes:** constant node-to-node cover and loop packets around the clock, at a rate set per capacity class in the epoch header, independent of real load.
 - **Bulk packets** travel only inside constant streams: a user's own node, the Wi-Fi-and-charging window on phones, and call trunks. Phones send no bulk packets outside those.
 - Tick length, burst size and node cover rates are consensus parameters in the epoch header.
+- **On khensu hardware** a guard chip enforces these rules below the operating system: fixed frame sizes, frames per tick, guard-generated jitter, entry-node destinations from the epoch header, and parameter changes only with a committee signature threshold, within firmware bounds (tick 1–2 s, no battery or temperature dependence). See `design/guard.md`.
 
 ## 9. Directory lookups (PIR)
 

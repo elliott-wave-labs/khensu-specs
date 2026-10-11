@@ -312,6 +312,8 @@ Estimates are marked as such and are replaced by measurements as spikes finish.
 74. **Satellite options.** Iridium Certus in the large shell and home station, NB-NTN where operators agree, Starlink as backhaul for home nodes and portals (rec); per-country legality. **Open.**
 75. **Push without APNs.** Shell owners get messages through the shell over Bluetooth with no push gateway (rec); everyone else keeps the wake-only gateway. **Open.**
 76. **Industrial design.** Per-model shells around one core module; materials; first models to support (rec: current Pro and standard iPhones). **Open.**
+77. **Hardware guard.** **Decided 10 Oct 2026:** every khensu hardware device has a guard chip that owns all radios and network paths and enforces fixed frame sizes, the 2 s tick, entry-node destinations and committee-signed parameters; radios sit on buses with no access to main memory; keys stay in secure storage. A core feature. Design in `design/guard.md`.
+    - **77a. Physical radio switch** that cuts radio power in hardware, independent of both chips. **Open.**
 
 ## F. Housekeeping
 

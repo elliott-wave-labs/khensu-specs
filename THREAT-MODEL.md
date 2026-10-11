@@ -67,12 +67,13 @@ Each adversary is described by what it can do. "Covered" means the guarantees in
 - **M1.** The outer packet carries no sender. Each hop learns only its previous and next hop.
 - **M2.** Mailbox IDs are derived from the MLS exporter per conversation and rotate every epoch. A mailbox node can't link a conversation across epochs, or link a mailbox to an account.
 - **M3.** Messages, receipts and typing events are fixed-size small packets; attachments are fixed-size bulk packets. Message length is hidden by padding to packet-count buckets of 3, 4, 6 or 8.
-- **M4.** While the app is open, clients send Poisson cover traffic at a fixed rate and real packets replace cover packets. An observer of a single client sees a constant-rate stream.
+- **M4.** While the app is open, phones send one burst of 4 small packets every 2 s on every network and power state, and real packets replace cover packets. An observer of a single phone sees the same pattern idle or busy.
 - **M5.** Path selection spreads the five hops across operators, networks and countries. With at most 20% of each role malicious and independent choice per layer, the chance a single path is fully controlled is at most 0.2^5 ≈ 0.03% (entry, three mix layers, mailbox).
 - **M6.** Directory lookups use PIR against several mirrors, through the mixnet. Mirrors learn nothing about which entry was fetched.
 - **M7.** Channel subscribers fetch posts through the mixnet. Neither the channel owner nor any node learns the subscriber list.
 - **M8.** The push gateway learns only that some device should wake, at a delayed and merged time. It never learns the sender, conversation, mailbox or account.
 - **M9.** The group sequencer sees an opaque group ID and encrypted commits that arrive through the mixnet. It never learns who is in the group.
+- **M10.** On khensu hardware (shell, home node, portal) a separate guard chip owns every radio and network path. Even with the main computer or a radio's firmware compromised, only fixed-size packets on the fixed tick, addressed to current entry nodes, leave the device, and radios can't read main memory (`design/guard.md`).
 
 ### 3.4 Money
 
@@ -109,6 +110,10 @@ The anonymity set is the set of users sending at similar times. In the early net
 ### 4.3 Phones only send cover traffic while the app is open
 
 iOS suspends background apps. A global observer can see when the app is in the foreground. While it is, the phone sends one fixed burst every 2 s on every network and in every power state, so nothing inside an open session reveals activity; queued messages leave in the ticks when it next opens. Large originals and video never leave the constant pattern: they go through the user's own node, the charging window or a trickle (`PLAN.md`, Stealth).
+
+### 4.3a Phones and computers have no hardware guard
+
+iPhones, iPads and Macs can't carry the guard chip, so there the tick and cover rules are enforced by the app and tatenan in software. Malware with full control of the phone could break the pattern; it could also read the screen, so the guard wouldn't save that user anyway. Dedicated khensu hardware gets the stronger guarantee in M10.
 
 ### 4.4 Long-term intersection attacks
 

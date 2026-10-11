@@ -55,14 +55,15 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 
 ## 4. Electrical
 
-**Architecture (decided):** one Linux system-on-module, always on while attached. No separate low-power controller. The 2 s mesh tick never changes with battery level.
+**Architecture (decided):** one Linux system-on-module, always on while attached, and a guard chip that owns both radios (`design/guard.md`). The SoM has no radio or network interface of its own: it talks only to the guard over SPI, and the guard is the radios' host and controls their power. The 2 s tick never changes with battery level.
 
 | Block | Choice (candidates) | Notes |
 | --- | --- | --- |
 | Application processor | Low-power Cortex-A55 class SoM (e.g. NXP i.MX 93) | Runs tatenan in a reduced node profile; secure boot |
 | Memory | 2 GB LPDDR4X, 32 GB eMMC | Encrypted outbox, inbox and content cache |
-| Mesh radio | Wi-Fi HaLow (802.11ah) module (e.g. Morse Micro MM6108 based) | Pre-certified module to simplify regulatory approval |
-| Wi-Fi and Bluetooth | Wi-Fi 6 and Bluetooth LE 5.3 combo (e.g. NXP IW612) | Link to the phone and nearby devices; Bluetooth wakes the app |
+| Guard (Guard-M) | Cortex-M33 with TrustZone, TRNG, AES/SHA acceleration, SPI and SDIO host (e.g. STM32U5 class) | Open Rust firmware; enforces frame sizes, the tick, destinations and signed parameters; ML-DSA-87 secure boot; holds radios in reset until its checks pass |
+| Mesh radio | Wi-Fi HaLow (802.11ah) module (e.g. Morse Micro MM6108 based), hosted by the guard | Pre-certified module; must support a microcontroller host |
+| Wi-Fi and Bluetooth | Wi-Fi 6 and Bluetooth LE 5.3 combo with a microcontroller host driver, hosted by the guard | Link to the phone and nearby devices; Bluetooth wakes the app |
 | Power path | 1S charger with power-path, USB-C PD dual-role controller, fuel gauge | Charges from USB-C or Qi2; powers the board from the phone when cells are empty |
 | Wireless charging | Qi2-certified receiver module, coil under the skin window | The shell charges itself; it does not pass charge wirelessly to the phone |
 | Cells | 1S Li-ion pouch, 3.85 V nominal, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles |
@@ -74,6 +75,7 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | SoM running the node profile | 0.4–0.6 W |
 | HaLow at a 2 s mesh tick plus relaying | 0.15–0.4 W |
 | Wi-Fi and Bluetooth to the phone | 0.05–0.2 W |
+| Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
 At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–4 hours on its own cells, the card about 3.5 hours, the Pro XL about 10 hours and the standard XL about 14 hours. After that, the fill, wrap and XL draw about 1 W from the phone over USB-C (roughly 6–7% of a Pro iPhone's battery per hour), and the card stops.
@@ -122,9 +124,12 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–4 hour
   - battery abuse;
   - HaLow range;
   - battery life against the power budget;
-  - tick conformity: a radio capture shows the same pattern idle and busy.
+  - tick conformity: a radio capture shows the same pattern idle and busy, including with the SoM deliberately trying to send extra, oversized or misaddressed traffic (the guard must block all of it);
+  - guard attestation: firmware hash matches the transparency log, counters match the capture.
 
 ## 9. Firmware
+
+- **Guard firmware:** open Rust (`no_std`), under 20,000 lines, reproducible builds, ML-DSA-87 secure boot, updates need the release key and the owner's approval; debug fused off. Rules in `design/guard.md` section 5.
 
 - tatenan in a reduced node profile: relay, mesh mailbox for the owner, public content cache, committee duty while charged and backhauled.
 - Secure boot; A/B updates delivered over the khensu network, signed with ML-DSA-87; no vendor cloud.
@@ -138,4 +143,6 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 1.7–4 hour
 4. Magnet array: MagSafe-compatible pole pattern and the 53 mm ring in the card; verify hold on target phones.
 5. SAR and HaLow regulatory approval per launch market.
 6. Model-specific button and port features for the silicone case.
-7. Board layout to confirm the 34 × 14 × 1.6 mm envelope fits the SoM, both radios and the power path.
+7. Board layout to confirm the 34 × 14 × 1.6 mm envelope fits the SoM, the guard, both radios and the power path.
+8. Radio parts with microcontroller host drivers for the guard (HaLow and Wi-Fi 6/Bluetooth) and their throughput behind SPI or SDIO.
+9. Physical radio switch (`OPEN-QUESTIONS.md` 77a).

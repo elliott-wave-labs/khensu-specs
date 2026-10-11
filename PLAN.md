@@ -583,7 +583,7 @@ One learned media format for images, video and later 3D, encoded and decoded on 
 
 - **Images:** as in Stealth: 15–40 KB full-screen photos, progressive, fidelity over invented detail, integer networks so every device decodes identically.
 - **Video, hybrid design:**
-  - The base layer uses the phone's hardware video encoder (HEVC Main 10; the iPhone decodes AV1 but has no AV1 encoder) at constant bitrate, so it runs in real time on every iOS 26 device and inside the stealth call profile.
+  - The base layer is AV1 Main 10 at reduced resolution, encoded on the CPU at constant bitrate with low delay; hardware HEVC Main 10 is the low-power fallback. Measured on one clip, the AV1 base at 960 × 540 beats full-resolution hardware HEVC by about 21 VMAF points at 500 kbit/s (`design/nu-media.md` 8.1). Both run inside the stealth call profile.
   - A learned enhancement runs on the Neural Engine at the receiver, outside the coding loop, so it can't drift and doesn't need bit-exact decoding across devices: super-resolution, artefact removal and frame interpolation.
   - A learned residual layer, inside the loop and in integer arithmetic, adds detail on devices that can run it in real time.
 - **Device tiers:** works on every iOS 26 device; tuned for iPhone 18 Pro on iOS 27 as the "portal" tier (highest resolution, frame rate and enhancement, lowest latency). Exact tier numbers come from device measurements.

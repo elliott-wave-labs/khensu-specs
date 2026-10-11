@@ -15,7 +15,7 @@ iPhone 18 Pro and Pro Max (Apple's specifications page):
 | Display | 2622 × 1206 (Pro, 3,162,132 px) or 2868 × 1320 (Pro Max, 3,785,760 px) at 460 ppi; P3; 1,000 nits typical, 1,600 nits HDR peak; ProMotion up to 120 Hz |
 | Cameras | 48 MP Fusion cameras; 4K Dolby Vision up to 120 fps; spatial video 1080p30; ProRes RAW, Apple Log 2, ACES |
 
-The A20 Pro has no "TPU"; Apple's term is the Neural Engine. Because the iPhone has no AV1 encoder, the video base layer is HEVC (H.264 only as a fallback for devices without HEVC Main 10). nu-media works on every iOS 26 device and is tuned for iPhone 18 Pro on iOS 27.
+The A20 Pro has no "TPU"; Apple's term is the Neural Engine. The iPhone has no AV1 encoder, but the measured run in section 8.1 shows real-time software AV1 at 960 × 540 beats the hardware HEVC encoder at full 1080p by about 21 VMAF points at 500 kbit/s, at a quarter of the pixels to encode. So the video base layer is AV1 Main 10 encoded on the CPU at reduced resolution, with hardware HEVC Main 10 as the low-power fallback (Low Power Mode, thermal pressure, or a CPU too slow for the tier). AV1 decodes in hardware on A17 Pro and later and in software (dav1d) on earlier chips. nu-media works on every iOS 26 device and is tuned for iPhone 18 Pro on iOS 27.
 
 ## 2. The wire budget
 
@@ -73,7 +73,7 @@ Video doesn't fit the foreground ticks: one nu-media HDR minute at 1080p (162,00
 
 ### 4.2 Calls at equal bits
 
-Calls run at a fixed bitrate (stealth), so the comparison is what resolution and frame rate each codec delivers for the same bits. nu-media sends an HEVC base layer and the receiver's Neural Engine adds super-resolution, artefact removal and frame interpolation (section 5).
+Calls run at a fixed bitrate (stealth), so the comparison is what resolution and frame rate each codec delivers for the same bits. nu-media sends a reduced-resolution base layer and the receiver's Neural Engine adds super-resolution, artefact removal and frame interpolation (section 5). The table below is the design target; section 8.1 has the first measurements, which replace the HEVC base layer with AV1.
 
 | Tier | Codec | Sent | Shown | bpp sent | bpp shown | Bits per minute |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -93,7 +93,7 @@ Audio adds 1,920,000 bits per minute (Opus at 32,000 bit/s, constant).
 
 - **Images:** a learned transform codec. The analysis and synthesis networks run on the Neural Engine in FP16; the entropy model (hyperprior and context model) runs in integer arithmetic on the CPU, so every device decodes the exact same symbols. Learned codecs that run their entropy model in floating point break when encoder and decoder hardware differ; integer entropy models avoid that. Progressive: the first slot carries a preview, and each later slot refines the whole picture.
 - **Video, three layers:**
-  - **Base:** hardware HEVC at constant bitrate (low-latency rate control for calls). It runs in real time on every iOS 26 device and is always decodable on its own.
+  - **Base:** AV1 Main 10 at reduced resolution, encoded on the CPU at constant bitrate with low-delay prediction (no lookahead), so it can be used live. Hardware HEVC Main 10 at the same resolution is the low-power fallback. The base layer is always decodable on its own. CPU time and energy per frame on each supported chip are open until measured on device.
   - **Enhancement, outside the loop:** super-resolution, artefact removal and frame interpolation on the receiver's Neural Engine. It can't drift and needn't be bit-exact. Target budget on iPhone 18 Pro: 8 ms per frame at 60 fps and 300 mW, to be measured.
   - **Residual, inside the loop:** a learned integer residual layer adds detail on devices that can run it in real time. Stored video only at first.
 - **Metadata:** all EXIF, GPS, device and time data is dropped; only colour and HDR metadata is kept.
@@ -155,4 +155,26 @@ Measured results go here, with the device, OS build and commit of each run.
 
 | Run | Device | OS | Result |
 | --- | --- | --- | --- |
-| (none yet) | | | |
+| 8.1 | Apple M1 Pro (Mac, not iPhone) | macOS 26.4.1 | Video baselines and base layer only; no Neural Engine enhancement |
+
+### 8.1 Desktop baseline run
+
+`bench/codecs.py` with ffmpeg, data in `bench/results.json`. Source: *Tears of Steel* 1080p (Blender Foundation, CC BY 3.0), 6 s from 28 s, 24 fps, 8-bit 4:2:0. Quality is VMAF (libvmaf, default model) against the 1080p source. H.264 and HEVC use VideoToolbox with software fallback disabled, so these are Apple's hardware encoders; VideoToolbox undershoots its target by about 30%, so the table uses actual bitrates. nu-media rows are the base layer only, upscaled with Lanczos: a floor for the enhancement layer to build on.
+
+| Codec | Real time live | ~350 kbit/s | ~700 kbit/s | ~1,400 kbit/s | ~2,800 kbit/s | kbit/s for VMAF 80 |
+| --- | --- | --- | --- | --- | --- | --- |
+| H.264, Apple hardware | Yes | 29.6 | 56.3 | 77.2 | 88.5 | 1,638 |
+| HEVC, Apple hardware | Yes | 37.0 | 62.4 | 82.4 | 90.9 | 1,277 |
+| nu-media base, HEVC hardware at 960 × 540 | Yes | 47.5 | 68.2 | 81.7 | 89.3 | 1,270 |
+| nu-media base, SVT-AV1 real time at 960 × 540 | Yes, CPU | 63.5 (299) | 73.5 (560) | 82.0 (1,056) | 87.6 (2,062) | 912 |
+| AV1, SVT-AV1 real time (CBR, low delay, preset 10) at 1080p | CPU heavy | 65.0 (334) | 75.0 (581) | 83.3 (1,114) | 89.7 (2,133) | 861 |
+| AV1, SVT-AV1 preset 8, lookahead (not usable live) | No | 72.8 (248) | 83.1 (495) | 89.1 (956) | 92.8 (1,899) | 403 |
+
+Bracketed figures are the actual kbit/s where an encoder didn't land near the column. Equal-bitrate check at 500 kbit/s (each encoder steered to within 3%): H.264 42.6, HEVC 50.9, nu-media HEVC base 59.2, nu-media AV1 base 72.0, real-time AV1 at 1080p 72.9.
+
+What this changes and what it doesn't:
+
+- **The base layer becomes AV1** (section 5). At low bitrates, encoding fewer pixels well beats encoding all of them badly; above about VMAF 85 full-resolution AV1 pulls ahead, which is where the enhancement layer has to earn its place.
+- **Offline AV1 is the bar for the enhancement layer:** nu-media's target is that quality (about 400 kbit/s for VMAF 80 on this clip) in real time on iPhone. Unmeasured until the enhancement network exists.
+- **AV2 and learned codecs are not measured here.** Published figures: AV2 about 30% fewer bits than AV1 (AOMedia); DCVC-RT 21% fewer than H.266 VTM and real time at 1080p only on an NVIDIA A100 (Jia et al., CVPR 2025). Neither has a phone encoder. The site plots them as estimates scaled from the offline AV1 curve (0.70 and 0.65).
+- **One clip, one machine, 8-bit SDR.** The section 8 pass criteria still need the iPhone app, the full content set, HDR and energy.

@@ -37,7 +37,7 @@
         "bump_w": 71.9,
         "bump_h": 43.0,
         "bump_r": 10.0,
-        "bump_z": 3.0,
+        "bump_z": 2.0,
         "magsafe_y": -5.0,
         "lens_z": 4.2,
         "sensors": [
@@ -70,7 +70,7 @@
             58.0,
             15.5,
             2.8,
-            3.0,
+            2.0,
             60.0
           ],
           [
@@ -78,7 +78,7 @@
             58.0,
             31.5,
             3.6,
-            3.0,
+            2.0,
             40.0
           ],
           [
@@ -86,7 +86,7 @@
             63.9,
             23.5,
             0.6,
-            3.0,
+            2.0,
             0.0
           ]
         ]
@@ -123,7 +123,7 @@
           "thickness_mm": 4.2,
           "battery_cm3": 11.97,
           "battery_wh": 5.4,
-          "housing_cm3": 7.57,
+          "housing_cm3": 9.35,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -131,8 +131,8 @@
           "above_lenses_mm": 0.0,
           "camera_draft_mm": 0.0,
           "camera": "plate with sensor openings",
-          "mass_g_titanium": 73.0,
-          "mass_g_brass": 105.0
+          "mass_g_titanium": 81.0,
+          "mass_g_brass": 120.0
         },
         {
           "style": "wrap",
@@ -144,7 +144,7 @@
           "thickness_mm": 4.2,
           "battery_cm3": 13.81,
           "battery_wh": 6.2,
-          "housing_cm3": 8.57,
+          "housing_cm3": 10.72,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,
@@ -152,8 +152,8 @@
           "above_lenses_mm": 0.0,
           "camera_draft_mm": 0.0,
           "camera": "plate with sensor openings",
-          "mass_g_titanium": 83.0,
-          "mass_g_brass": 118.0
+          "mass_g_titanium": 93.0,
+          "mass_g_brass": 136.0
         },
         {
           "style": "wrap-xl",
@@ -165,7 +165,7 @@
           "thickness_mm": 7.2,
           "battery_cm3": 29.24,
           "battery_wh": 13.2,
-          "housing_cm3": 6.0,
+          "housing_cm3": 5.94,
           "usb_c_to_phone": true,
           "magnet_ring_od_mm": 56.0,
           "interference_mm3": 0.0,

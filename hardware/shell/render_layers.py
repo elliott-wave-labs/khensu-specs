@@ -32,9 +32,9 @@ PHONE_COLOURS = {
     "black": (46, 47, 51),
 }
 DEFAULT_COLOUR = "burgundy"
-# The titanium shell is matte powder coat matched to each phone, a touch deeper than the phone's
-# aluminium so the seam reads. Brass is bare C26000 with a satin bead-blast.
-SHELL_COLOURS = {c: tuple(int(ch * 0.9) for ch in rgb) for c, rgb in PHONE_COLOURS.items()}
+# The titanium shell's ceramic finish is the phone's exact colour and sheen. Brass is bare C26000 with a satin
+# bead-blast.
+SHELL_COLOURS = dict(PHONE_COLOURS)
 FINISHES = [*PHONE_COLOURS, "brass"]
 
 LAYERS = ["phone", "suction_film", "base", "magnet_ring", "pcb", "battery", "coil", "window_inserts", "housing"]
@@ -90,9 +90,9 @@ def phone_body(p):
         btn = (cq.Workplane("XY").box(1.4, length, 2.3).edges("|X").fillet(1.1)
                .translate((p.width / 2 - 0.25, half - from_top - length / 2, zc)))
         body = body.union(btn)
-    # The plateau rises from the back in a soft slope, not a step.
-    plateau = S.outline_solid(S.plateau_outline(p), -1.0, p.bump_z + 1.0).faces(">Z").edges("<Y").chamfer(3.0, 2.2)
-    plateau = plateau.faces(">Z").edges().fillet(0.6)
+    # The plateau rises from the back in one soft round, not a step.
+    plateau = S.outline_solid(S.plateau_outline(p), -1.0, p.bump_z + 1.0).faces(">Z").edges("<Y").fillet(p.bump_z * 0.95)
+    plateau = plateau.faces(">Z").edges("not <Y").fillet(0.5)
     return body.union(plateau), glass, dark
 
 
@@ -375,7 +375,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
     hole_mat = material("hole", (0.002, 0.002, 0.002, 1), 0.0, 0.9)
     # Ceramic coat over Grade 5 titanium: a hard, satin, colour-matched ceramic layer (micro-arc oxide base,
     # ceramic topcoat), with the fine grain of a sprayed finish.
-    powder_mat = grain(material("ceramic", metallic=0.0, roughness=0.42, **{"Coat Weight": 0.25, "Coat Roughness": 0.3}), 300, 0.1)
+    powder_mat = grain(material("ceramic", metallic=0.8, roughness=0.36, **{"Coat Weight": 0.3, "Coat Roughness": 0.25}), 300, 0.04)
     brass_mat = grain(material("brass", srgb_to_linear((222, 182, 110)), 1.0, 0.34), 320, 0.12)
     windows_mat = material("windows", metallic=0.0, roughness=0.48)
     mats = {
@@ -387,7 +387,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
         "coil": material("coil", srgb_to_linear((184, 115, 58)), 1.0, 0.25),
     }
     chip_mat = material("chip", (0.012, 0.012, 0.013, 1), 0.0, 0.4)
-    glass_back_mat = material("back glass", metallic=0.0, roughness=0.42, **{"Coat Weight": 0.6, "Coat Roughness": 0.35})
+    glass_back_mat = material("back glass", metallic=0.6, roughness=0.42, **{"Coat Weight": 0.3, "Coat Roughness": 0.3})
     dark_mat = material("port", (0.01, 0.01, 0.011, 1), 0.6, 0.45)
 
     groups: dict[str, list] = {}
@@ -461,7 +461,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
     out.mkdir(parents=True, exist_ok=True)
     for colour, rgb in PHONE_COLOURS.items():
         set_colour(phone_mat, rgb)
-        set_colour(glass_back_mat, tuple(int(c * 0.78) for c in rgb))
+        set_colour(glass_back_mat, tuple(int(c * 0.95) for c in rgb))
         render(f"phone_{colour}", groups["phone"])
         render(f"side_phone_{colour}", groups["phone"], side=True)
     housing = groups["housing"][0]
@@ -474,7 +474,7 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
             housing.data.materials[0] = powder_mat
             set_colour(powder_mat, SHELL_COLOURS[finish])
             # Radio windows are PC moulded in a matching colour, so the back reads as one surface.
-            set_colour(windows_mat, tuple(int(c * 0.94) for c in SHELL_COLOURS[finish]))
+            set_colour(windows_mat, SHELL_COLOURS[finish])
         render(f"housing_{finish}", groups["housing"])
         render(f"window_inserts_{finish}", groups["window_inserts"])
         render(f"side_shell_{finish}", groups["housing"] + groups["window_inserts"], side=True)

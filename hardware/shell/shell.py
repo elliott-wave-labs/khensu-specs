@@ -67,14 +67,14 @@ PHONES = [
     # iPhone 18 Pro: an aluminium camera plateau across the full width of the top, as on apple.com.
     # Placeholder geometry until Apple's accessory drawings replace it.
     Phone(
-        "iphone-18-pro", 71.9, 150.0, 8.75, 10.0, 0.0, 0.0, 71.9, 43.0, 10.0, 3.0, -5.0, lens_z=4.2,
+        "iphone-18-pro", 71.9, 150.0, 8.75, 10.0, 0.0, 0.0, 71.9, 43.0, 10.0, 2.0, -5.0, lens_z=4.2,
         sensors=(
             ("wide", 14.7, 14.7, 7.6, 4.2, 42.0),
             ("ultra wide", 14.7, 32.3, 7.6, 4.2, 60.0),
             ("telephoto", 29.9, 23.5, 7.6, 4.2, 20.0),
-            ("flash", 58.0, 15.5, 2.8, 3.0, 60.0),
-            ("lidar", 58.0, 31.5, 3.6, 3.0, 40.0),
-            ("microphone", 63.9, 23.5, 0.6, 3.0, 0.0),
+            ("flash", 58.0, 15.5, 2.8, 2.0, 60.0),
+            ("lidar", 58.0, 31.5, 3.6, 2.0, 40.0),
+            ("microphone", 63.9, 23.5, 0.6, 2.0, 0.0),
         ),
     ),
     # Standard-size phone with a square camera island at the top left.

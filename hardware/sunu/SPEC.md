@@ -69,7 +69,7 @@ Every iPhone back to iPhone X, and comparable Android phones from Google and Sam
 
 **Attachment targets (to validate):** normal pull-off at least 10 N on magnets alone and 25 N with suction; shear at least 15 N; no creep over 24 h at 40 °C; repeated attach/detach 5,000 cycles without film loss.
 
-**USB-C (decided):** the shell has its own USB-C receptacle centred in its bottom wall, directly above the iPhone's. The iPhone's port is never covered or plugged: the shell sits on the back only, so the owner can charge both at once (two cables or one dual-head cable) and keep the iPhone's port for drives, displays, audio and CarPlay. There is no jumper to the phone.
+**USB-C (decided):** the shell has its own USB-C receptacle centred in its bottom wall, directly above the iPhone's. The iPhone's port is never covered or plugged: the shell sits on the back only, so the owner can charge both at once (two cables or one dual-head cable) and keep the iPhone's port for drives, displays, audio and CarPlay. There is no built-in jumper to the phone; a short USB-C to USB-C cable in the box lets the shell draw from an iPhone 15 or later when its own cells are empty (decided 11 Oct 2026, see Power budget).
 
 ### 3a. Drop physics and shock isolation
 
@@ -109,7 +109,9 @@ At setup the app creates a `SecureEnclave.MLDSA87` key (CryptoKit, iOS 26), gate
 | Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
-At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that it stops relaying until it is charged; it never draws from the phone, whose port stays open. The owner's own messages still arrive through the phone.
+At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that it stops relaying until it is charged, unless the owner connects the short cable from the box: an iPhone 15 or later supplies up to 4.5 W to USB-C accessories, and the shell takes at most 1 W from it, about 1 Wh an hour or roughly 5–8% of the iPhone's battery. The TPS25750 negotiates as a sink only, firmware caps the input at 1 W when the source is a phone, and it never charges its own cells from the phone. The owner's own messages still arrive through the phone either way.
+
+**Fast charging (targets, to validate):** 50% in about 15 minutes and full in about 45 minutes from a 20 W or larger USB-C PD charger. That is about 2C constant current (3.2 A into 1,610 mAh, about 13 W at the cell) up to 4.2 V, then a constant-voltage taper; the BQ25895 supports up to 5 A. Needs a cell rated for 2C charging and its cycle life qualified at that rate. Thermal control (section 6) cuts the rate above 41 °C at the skin, so a warm shell charges more slowly.
 
 ## 5. Radios and network
 

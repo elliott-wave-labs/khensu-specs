@@ -8,7 +8,7 @@ Let an extension register a custom scheme from an allowlist and serve every requ
 
 ## Motivation
 
-Decentralised and peer-to-peer webs (webE̊, IPFS, Hypercore, Secure Scuttlebutt) fetch content from networks that aren't HTTP servers. Extensions can already run those clients in WebAssembly over WebTransport, but they have no way to present the result as a real site:
+Decentralised and peer-to-peer webs (webË, IPFS, Hypercore, Secure Scuttlebutt) fetch content from networks that aren't HTTP servers. Extensions can already run those clients in WebAssembly over WebTransport, but they have no way to present the result as a real site:
 
 - Redirecting to an extension page shows the extension's address, gives every site the same origin, and breaks bookmarks, history and storage.
 - Serving through a local proxy needs a separate program and often a local certificate authority, which weakens TLS for everything.
@@ -16,7 +16,7 @@ Decentralised and peer-to-peer webs (webE̊, IPFS, Hypercore, Secure Scuttlebutt
 
 ## Use cases
 
-1. A webE̊ extension shows `webe://name.khensu.nu` as its own site, with storage and service workers isolated per name, and no DNS lookup.
+1. A webË extension shows `webe://name.khensu.nu` as its own site, with storage and service workers isolated per name, and no DNS lookup.
 2. An IPFS extension serves `ipfs://<cid>` with content verified against the CID, without trusting a gateway.
 3. A developer serves a local test scheme from an extension without running a server.
 
@@ -26,7 +26,7 @@ Manifest:
 
 ```json
 "scheme_providers": [
-  { "scheme": "webe", "secure": true, "description": "webE̊ sites" }
+  { "scheme": "webe", "secure": true, "description": "webË sites" }
 ]
 ```
 

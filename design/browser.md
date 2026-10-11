@@ -1,18 +1,18 @@
-# webE̊ in ordinary browsers
+# webË in ordinary browsers
 
 How `name.khensu.nu` sites open in Chrome, Edge, Firefox and Safari with the name in the address bar, full stealth, and no separate router (no local daemon or proxy app). Status: design. Extends `WEBE.md` section 11. Open questions in `OPEN-QUESTIONS.md` 55 and 81.
 
 ## 1. The constraint
 
-Today no browser lets an extension serve a page **as** `https://name.khensu.nu` without that request going over the network. Any page under that address leaves the browser as a DNS lookup and a TLS connection naming the site, so some server learns who read what. That breaks webE̊'s rule that reading leaves no trace (`WEBE.md` 1.3).
+Today no browser lets an extension serve a page **as** `https://name.khensu.nu` without that request going over the network. Any page under that address leaves the browser as a DNS lookup and a TLS connection naming the site, so some server learns who read what. That breaks webË's rule that reading leaves no trace (`WEBE.md` 1.3).
 
 | Approach | Address bar shows the name | Stealth | Separate router | Works today |
 | --- | --- | --- | --- | --- |
 | Gateway or service-worker loader on real `*.khensu.nu` DNS | Yes | **No:** the host sees the reader's IP and the site name | No | Yes |
 | Extension plus local proxy and a local certificate authority | Yes | Yes | **Yes**, and a local CA weakens TLS for everything | Yes |
-| Extension that runs the webE̊ client itself and shows the site in its own viewer page | No: the extension's address | Yes | No | **Yes: stage 1** |
+| Extension that runs the webË client itself and shows the site in its own viewer page | No: the extension's address | Yes | No | **Yes: stage 1** |
 | Browser API for extension-served schemes (`webe://name.khensu.nu`) | Yes | Yes | No | **Needs the proposal: stage 2** |
-| Our own Chromium build with a native webE̊ network service | Yes | Yes | No | **Stage 3**, as in `WEBE.md` 11.2 |
+| Our own Chromium build with a native webË network service | Yes | Yes | No | **Stage 3**, as in `WEBE.md` 11.2 |
 
 We don't ship the first two. Gateways stay governed by `OPEN-QUESTIONS.md` 56 and are never used by the extension.
 
@@ -20,7 +20,7 @@ We don't ship the first two. Gateways stay governed by `OPEN-QUESTIONS.md` 56 an
 
 One WebExtensions codebase in `khensu-browser`, published to the Chrome Web Store (Chrome, Brave, Opera), Microsoft Edge Add-ons, Firefox Add-ons, and inside the khensu.nu app for Safari.
 
-- **The webE̊ client runs in the browser.** `khensu-core` compiles to WebAssembly with the webE̊ client: naming through PIR, two-relay stealth fetch, signature and hash checks, ML-KEM-1024 and ML-DSA-87. Transport is WebTransport over HTTPS to entry relays, falling back to TCP as in `PROTOCOL.md` 7.1. That makes the local daemon `WEBE.md` 11.2 assumed unnecessary.
+- **The webË client runs in the browser.** `khensu-core` compiles to WebAssembly with the webË client: naming through PIR, two-relay stealth fetch, signature and hash checks, ML-KEM-1024 and ML-DSA-87. Transport is WebTransport over HTTPS to entry relays, falling back to TCP as in `PROTOCOL.md` 7.1. That makes the local daemon `WEBE.md` 11.2 assumed unnecessary.
 
 | Browser | Where the client runs | Notes |
 | --- | --- | --- |
@@ -46,7 +46,7 @@ Ask the browsers for one narrow capability: **an extension may register a custom
 
 ```json
 "scheme_providers": [
-  { "scheme": "webe", "secure": true, "description": "webE̊ sites" }
+  { "scheme": "webe", "secure": true, "description": "webË sites" }
 ]
 ```
 
@@ -82,11 +82,11 @@ self.addEventListener("schemefetch", (event) => {
 
 ## 4. Stage 3: our own Chromium build
 
-Until the API lands, the Chromium patch in `WEBE.md` 11.2 ships the same capability natively: a webE̊ network service, `webe://` as a standard secure scheme, and the stealth defences (fixed window sizes, WebRTC off, restricted high-entropy APIs, no third-party requests). Once stage 2 ships in a browser, the extension uses it there and the patched build is only needed for the extra defences.
+Until the API lands, the Chromium patch in `WEBE.md` 11.2 ships the same capability natively: a webË network service, `webe://` as a standard secure scheme, and the stealth defences (fixed window sizes, WebRTC off, restricted high-entropy APIs, no third-party requests). Once stage 2 ships in a browser, the extension uses it there and the patched build is only needed for the extra defences.
 
 ## 5. Work items
 
-1. `khensu-core`: webE̊ client (naming, two-relay fetch, verification) compiled to WebAssembly, with a WebTransport transport.
+1. `khensu-core`: webË client (naming, two-relay fetch, verification) compiled to WebAssembly, with a WebTransport transport.
 2. `khensu-browser`: the extension for Chrome, Edge, Firefox and Safari (stage 1), and the Chromium patch (stage 3).
 3. Patent check on the scheme-provider idea, then publish the WebExtensions Community Group proposal and the WHATWG pull request.
 4. Chromium explainer and prototype; Firefox and WebKit patches.

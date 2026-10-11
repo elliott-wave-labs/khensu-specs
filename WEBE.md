@@ -1,10 +1,10 @@
-# webE̊
+# webË
 
 Draft 0.1, 9 Oct 2026. Status: design; the basis for a family of Internet-Drafts.
 
-webE̊ is an internet run by the people on the khensu.nu node network: names without DNS, content without CDNs, websites, public feeds, forums and live media, all delivered over a post-quantum stealth network with no metered bandwidth. Nodes only relay, cache and count; encoding, encryption, ranking, moderation and rendering happen on devices. The khensu.nu app is the first webE̊ application: primarily a messenger, with a Feed tab, public forums and site hosting from day one.
+webË is an internet run by the people on the khensu.nu node network: names without DNS, content without CDNs, websites, public feeds, forums and live media, all delivered over a post-quantum stealth network with no metered bandwidth. Nodes only relay, cache and count; encoding, encryption, ranking, moderation and rendering happen on devices. The khensu.nu app is the first webË application: primarily a messenger, with a Feed tab, public forums and site hosting from day one.
 
-Wire primitives, encodings and the mixnet are as in `PROTOCOL.md` (sections 1, 3, 8, 9); this document adds the webE̊ layers. Stealth rules are in `PLAN.md` (Stealth) and `design/stealth-relay.md`.
+Wire primitives, encodings and the mixnet are as in `PROTOCOL.md` (sections 1, 3, 8, 9); this document adds the webË layers. Stealth rules are in `PLAN.md` (Stealth) and `design/stealth-relay.md`.
 
 ## 1. Goals
 
@@ -30,11 +30,11 @@ Wire primitives, encodings and the mixnet are as in `PROTOCOL.md` (sections 1, 3
 
 ### 3.1 Form
 
-A webE̊ name is a khensu handle: `name.khensu.nu`, with optional subnames (`blog.name.khensu.nu`) controlled by the same identity. Names are permanent, non-tradeable and resolved only from the log. Content can also be addressed directly by hash (3.4).
+A webË name is a khensu handle: `name.khensu.nu`, with optional subnames (`blog.name.khensu.nu`) controlled by the same identity. Names are permanent, non-tradeable and resolved only from the log. Content can also be addressed directly by hash (3.4).
 
 ### 3.2 Name record
 
-The log (`PROTOCOL.md` 3, entry types) gains a webE̊ record, signed by the identity key:
+The log (`PROTOCOL.md` 3, entry types) gains a webË record, signed by the identity key:
 
 ```
 struct {
@@ -63,11 +63,11 @@ No resolver is trusted: a wrong answer fails the proof.
 
 - `webe://name.khensu.nu/path?query`: a site path, resolved through the name record.
 - `webe://h/<base32 hash>`: an immutable object or manifest.
-- `https://name.khensu.nu/path`: the same resource for links shared outside webE̊. webE̊ clients treat it as `webe://`; ordinary browsers reach an optional gateway (3.5).
+- `https://name.khensu.nu/path`: the same resource for links shared outside webË. webË clients treat it as `webe://`; ordinary browsers reach an optional gateway (3.5).
 
 ### 3.5 Gateways (optional)
 
-Operators may run gateways that serve public webE̊ content to ordinary browsers over the public web, under `*.khensu.nu` DNS. Gateways are not stealthy (they see the reader's IP and request) and show a banner saying so. They are a bridge for reach, not part of webE̊. Whether to run any is `OPEN-QUESTIONS.md` 56.
+Operators may run gateways that serve public webË content to ordinary browsers over the public web, under `*.khensu.nu` DNS. Gateways are not stealthy (they see the reader's IP and request) and show a banner saying so. They are a bridge for reach, not part of webË. Whether to run any is `OPEN-QUESTIONS.md` 56.
 
 ## 4. Objects
 
@@ -211,12 +211,12 @@ Feed tab, forums inside Feed, and a site viewer: a `WKWebView` with a `WKURLSche
 
 ### 11.2 Chromium
 
-- **Extension (first):** one WebExtensions codebase for Chrome, Edge, Firefox and Safari. It runs the webE̊ client itself (`khensu-core` in WebAssembly over WebTransport; in Safari, the khensu.nu app through native messaging), so no local daemon or proxy is needed. It catches `https://*.khensu.nu` and `webe://` before they reach the network and shows sites in its own viewer until browsers let extensions serve `webe://` origins. Design and the upstream proposal in `design/browser.md`.
-- **Patch (second):** a native webE̊ network service, `webe://` as a standard secure scheme, and stealth defences: fixed window sizes, WebRTC off, restricted high-entropy APIs, no third-party requests.
+- **Extension (first):** one WebExtensions codebase for Chrome, Edge, Firefox and Safari. It runs the webË client itself (`khensu-core` in WebAssembly over WebTransport; in Safari, the khensu.nu app through native messaging), so no local daemon or proxy is needed. It catches `https://*.khensu.nu` and `webe://` before they reach the network and shows sites in its own viewer until browsers let extensions serve `webe://` origins. Design and the upstream proposal in `design/browser.md`.
+- **Patch (second):** a native webË network service, `webe://` as a standard secure scheme, and stealth defences: fixed window sizes, WebRTC off, restricted high-entropy APIs, no third-party requests.
 
 ### 11.3 Site policy
 
-The manifest `policy` lists allowed APIs and other names a site may reference. Clients enforce a strict default: no network access outside webE̊, no WebRTC, no persistent cross-site storage.
+The manifest `policy` lists allowed APIs and other names a site may reference. Clients enforce a strict default: no network access outside webË, no WebRTC, no persistent cross-site storage.
 
 ## 12. Standards
 

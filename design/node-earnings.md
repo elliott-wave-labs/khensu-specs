@@ -7,7 +7,7 @@ Internal estimate, 11 Oct 2026. Every number here is an **estimate** built on as
 Operators are paid only from real demand, through burn and mint (`PLAN.md`, Token):
 
 1. **Subscriptions.** Price after Apple's 15%, with half burned for capacity.
-2. **Media and web delivery.** MOQOM Cloud customers, creators' paid content, sites and social hubs on webE̊ pay in dollars for delivery, and that money is burned for capacity.
+2. **Media and web delivery.** MOQOM Cloud customers, creators' paid content, sites and social hubs on webË pay in dollars for delivery, and that money is burned for capacity.
 3. **Network fees** on shielded payments (fractions of a cent; small).
 
 Protocol emission (8% a year, halving every 2 years) also mints tokens to operators, but its dollar value depends on the token price. It is left out of every figure below, because counting it would be an earnings claim about the token.
@@ -52,12 +52,12 @@ Three cases, all after the operator's own electricity (a Pi 5 uses about 5 kWh a
 
 Operators share one pool. Per-node income equals the total pool divided by everyone's work, so more nodes than demand means less each.
 
-- **Example:** paying 1 million operators 5,000 MAD each takes about $540 million a month (about $6.5 billion a year) in burns. Messaging alone at $0.06 per daily user would need about 9 billion daily users to fund that. A level like that needs MOQOM Cloud and webE̊ media delivery at the scale of a large CDN.
+- **Example:** paying 1 million operators 5,000 MAD each takes about $540 million a month (about $6.5 billion a year) in burns. Messaging alone at $0.06 per daily user would need about 9 billion daily users to fund that. A level like that needs MOQOM Cloud and webË media delivery at the scale of a large CDN.
 - **A basic income for everyone who runs a node is therefore not something the design can promise.** What it can honestly say: every node is paid for the work it does at one worldwide rate, there's no cut taken in between, and a dollar earned buys more where living costs are lower.
 
 ## 6. Levers that raise earnings per node
 
-- Media and web delivery volume (MOQOM Cloud, creators, webE̊ sites): the biggest lever.
+- Media and web delivery volume (MOQOM Cloud, creators, webË sites): the biggest lever.
 - Paying share and regional prices.
 - Fewer cover bytes per message (burst size, hops; `OPEN-QUESTIONS.md` 2c and 31), which raises pay per byte for messaging.
 - Node admission: the committee can cap new operators per region when utilization is low, so incomes don't dilute below running costs. This is a governance choice with fairness trade-offs.

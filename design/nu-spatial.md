@@ -1,6 +1,6 @@
 # ñü.spatial: automatic spatial mixing, the nu-audio Neural Engine codec and the ñü.fidelity marker
 
-How khensu.nu turns stereo music into a spatial mix on the listener's or artist's own device, codes music and spatial beds on the Neural Engine at half the size of the best Opus for the same fidelity, and rates audio by what you hear instead of by kbit/s.
+How khensu.nu turns stereo music into a spatial mix on the listener's or artist's own device, and codes music and spatial beds on the Neural Engine. The unmeasured aim is about 90% fewer bytes than a widely shipped music codec, faster encode and decode, and about twice that codec's listening score. The score is ñü.fidelity. kbit/s stays a carriage figure.
 
 Status: design, 11 October 2026. **Nothing here is built or measured.** Every quality, size and efficiency figure for ñü.spatial, `nu_music_v1` and ñü.fidelity is a **design target**; figures for Opus, AAC, APAC, Dolby Atmos, ViSQOL and the neural codecs are **estimates** from public material unless a measurement is cited. Section 9 is the benchmark that replaces them. This extends `design/nu-audio.md` (profiles, rules A1–A6, constant-rate carriage, and 7.4, auto spatial with `nu_upmix_v1`) and `design/nu-media-protocol.md` (container, registries). Section 7.4 of `nu-audio.md` is the base pipeline (separate, keep it whole, place, encode, render); this document adds venue-aware placement on top of it as `nu_upmix_v2`, plus range, the codec and the marker. Open questions are in section 11 and `OPEN-QUESTIONS.md` 101.
 
@@ -96,14 +96,16 @@ These extend `nu-audio.md` A1–A6.
 
 - **What people hear.** Human hearing reaches about 20 Hz–20 kHz at best, and the top falls with age. Content above 20 kHz can't be heard; claims that it changes how music feels (the "hypersonic effect", Oohashi et al. 2000) haven't been reliably reproduced.
 - **What AirPods receive.** AirPods over Bluetooth get 48 kHz audio (bandwidth up to 24 kHz). AirPods Max over USB-C get lossless 24-bit, 48 kHz. Nothing above 24 kHz reaches AirPods, so ñü.spatial never synthesises ultrasonic content: it would cost bytes and nobody could hear it.
-- **What we extend.** Many sources are band-limited by old lossy encoding (the GarageBand demo on the ñü.sounds page is AAC at about 190 kbit/s and cuts off well below 20 kHz). `nu_bwe_music_v1`, a Neural Engine bandwidth extension, restores the band up to 24 kHz on the receiver. Under `nu-audio.md` A3 it's display-only and labelled, never fed back into decoding or exported as if received.
+- **What we extend.** Many sources are band-limited by old lossy encoding (the GarageBand demo on the ñü.ŵævẽš page is AAC at about 190 kbit/s and cuts off well below 20 kHz). `nu_bwe_music_v1`, a Neural Engine bandwidth extension, restores the band up to 24 kHz on the receiver. Under `nu-audio.md` A3 it's display-only and labelled, never fed back into decoding or exported as if received.
 - **What we keep.** When the source has real content above 24 kHz (96 kHz and 192 kHz masters), the lossless tier keeps it bit-exact (`nu-audio.md` 6) for wired playback and archives. `nu_music_v1` codes up to 24 kHz.
 
 ## 4. `nu_music_v1`: the nu-audio Neural Engine codec
 
 ### 4.1 Goal
 
-Same or better ñü.fidelity (section 5) than the best Opus at **half the bytes or fewer**, for stereo, 5.1, 7.1.4 and third-order ambisonics. "Best Opus" means the newest libopus release (1.5 at the time of writing) at the lowest rate that reaches the same ñü.fidelity, found by a rate sweep for each test item and layout. APAC and AAC are measured as well where an encoder is available.
+Unmeasured aim: about 90% fewer bytes than the best widely shipped music codec on the same material, faster encode and decode than that codec, and about twice its listening score. The score is ñü.fidelity (section 5). kbit/s is how the file is packed.
+
+The benchmark gate stays the earlier bar: same or better ñü.fidelity than the best Opus at half the bytes or fewer, for stereo, 5.1, 7.1.4 and third-order ambisonics (section 9.4). The 90% cut, the speed, and the doubled score sit above that gate. They are estimates until section 9 is run. "Best Opus" means the newest libopus release (1.5 at the time of writing) at the lowest rate that reaches the same ñü.fidelity, found by a rate sweep for each test item and layout. AAC-LC at 256 kbit/s is measured too where an encoder is available. The ñü.ŵævẽš page plays Opus inside the format; the sizes on that page are measurements of those files.
 
 ### 4.2 Design
 
@@ -119,9 +121,9 @@ Same or better ñü.fidelity (section 5) than the best Opus at **half the bytes 
 
 ### 4.3 Honest risk
 
-- Neural codecs published so far (SoundStream, EnCodec, Descript Audio Codec) win clearly at low rates but are not reliably transparent for music at any rate, and their GAN-trained decoders break A4. Halving Opus at transparency with a deterministic decoder is an open research target, not an engineering certainty.
+- Neural codecs published so far (SoundStream, EnCodec, Descript Audio Codec) win clearly at low rates but are not reliably transparent for music at any rate, and their GAN-trained decoders break A4. Halving Opus at transparency with a deterministic decoder is an open research target. The 90% size cut and the doubled listening score are a further aim on top of that, and the same uncertainty applies.
 - Separation (2.3) doesn't make coding cheaper: six stems cost more bits than one mix. `nu_music_v1` codes the finished bed, not the stems.
-- If `nu_music_v1` misses the 9.4 gates, ñü.sounds ships Opus (stereo and channel beds) and Opus family 3 (ambisonics), and this section is rewritten with the measured results.
+- If `nu_music_v1` misses the 9.4 gates, ñü.ŵævẽš ships Opus (stereo and channel beds) and Opus family 3 (ambisonics), and this section is rewritten with the measured results.
 
 ## 5. ñü.fidelity: rating sound by what you hear
 
@@ -152,7 +154,7 @@ for stereo, 5.1 and third-order ambisonics separately, with no single test item 
 
 ## 6. Where it appears
 
-- **ñü.sounds page (`khensu-site`).** The spatial player shows the format and size, not kbit/s, and describes auto spatial as an Akashic feature in development.
+- **ñü.ŵævẽš page (`khensu-site`, path `/waves` until `waves.khensu.nu` has a certificate (`/sounds` redirects)).** Gain, reverb, echo duration, echo delay and echo bounces, and the automatic placement, are ñü.ÊQ, an Akashic feature. The orb is spacetime bubble™. The First Attempt track control is nu.aura. First Attempt opens in the concert hall: the parts are orchestral strings, winds and piano, written as a film score. Running text on the page uses `nu.waves` and `nu.eq`; the stylized names stay in the navigation, headings, buttons and labels. The page shows measured file sizes. kbit/s there is storage. ñü.fidelity is the listening score, and the page leaves it off until section 9 measures these files.
 - **khensu.nu app (`khensu-apple`).** A Sounds settings row "Auto spatial (Akashic)" with a venue override; the now-playing screen shows the chosen venue and an "Original" toggle.
 - **Artist upload.** Akashic artists see "Add an auto spatial mix" with a preview on their own device before publishing.
 
@@ -169,13 +171,13 @@ for stereo, 5.1 and third-order ambisonics separately, with no single test item 
 | --- | --- | --- |
 | iPhone 15 Pro and later, iPad and Mac with M1 and later, iOS/iPadOS/macOS 26 | Yes (Neural Engine) | Neural Engine |
 | Older Apple devices on 26 | No (too slow to separate in real time); plays the stereo original | Rust integer decoder on the CPU |
-| Web (ñü.sounds page) | No; the page plays artist and demo mixes as delivered | Opus and AAC fallback until a WebAssembly decoder ships |
+| Web (ñü.ŵævẽš page) | No; the page plays artist and demo mixes as delivered | Opus and AAC fallback until a WebAssembly decoder ships |
 
 ## 9. Benchmark plan
 
 ### 9.1 Test material
 
-- EBU SQAM (free for testing), MUSDB18-HQ (research licence) for separation, licensed multichannel and ambisonic music, and khensu-owned recordings such as the ñü.sounds demo.
+- EBU SQAM (free for testing), MUSDB18-HQ (research licence) for separation, licensed multichannel and ambisonic music, and khensu-owned recordings such as the ñü.ŵævẽš demo.
 - Live-recorded venue references: the same performance recorded in a hall, a club and a small room where possible.
 
 ### 9.2 Measurements

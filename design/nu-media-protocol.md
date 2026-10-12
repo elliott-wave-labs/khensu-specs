@@ -297,7 +297,7 @@ struct {
 - **Refresh.** At every residual refresh point (`random_access` on the residual frame) `R_{t-1}` is replaced by `U(B_t)`, so a lost residual frame affects at most `refresh_period` frames.
 - **Droppable.** The base never references the residual. A decoder that lacks the model named by `model_id`, can't run it in real time, or loses residual data drops the residual track and continues with base plus enhancement.
 - **Scope.** Version 1 uses the residual layer for `stored` tracks only (`nu-media.md` 5). Calls may adopt it once real-time decode on the oldest supported device is measured.
-- **12-bit video.** A residual layer MAY carry 12-bit output (`ColourDescription.bit_depth = 12` on the residual track) over a 10-bit base.
+- **12-bit, 4:4:4 stored video.** On a stored track the residual carries 12-bit 4:4:4 (`ColourDescription.bit_depth = 12`, `chroma_format = 3`) over the 10-bit 4:2:0 base, so the decoded picture has 4,096 steps per channel and a chroma sample on every pixel. That is four times the steps and four times the chroma samples of a Main 10 stream. Calls stay on the 10-bit base until residual decode is measured in real time on the oldest supported device.
 
 ## 6. Images
 

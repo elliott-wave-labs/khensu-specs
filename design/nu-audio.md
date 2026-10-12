@@ -13,7 +13,7 @@ Status: design, 11 October 2026. **Nothing here is built or measured.** Every bi
 | Music | Opus CBR or constrained VBR, stereo, 48 kHz | 128,000–256,000 bit/s design target | Shared songs, live performances in Places, music in video | New |
 | Lossless | FLAC (RFC 9639), integer PCM | Source rate, typically 50–70% of PCM (estimate) | Masters, archives, anything that must be bit-exact | New |
 | Spatial | Opus with ambisonic channel mapping (RFC 8486), first to third order; channel beds up to 7.1.4 | 192,000–448,000 bit/s design target | Spatial video, Places, immersive music, spatial voice in group calls (later) | New |
-| Neural music and spatial | `nu_music_v1` on the Neural Engine, deterministic integer decoder (`design/nu-spatial.md` 4) | Rated by ñü.fidelity, not kbit/s; design target: half the transparent size of the best Opus | Music and spatial beds, once it passes the gates | New, design |
+| Neural music and spatial | `nu_music_v1` on the Neural Engine, deterministic integer decoder (`design/nu-spatial.md` 4) | Rated by ñü.fidelity. Unmeasured aim: about 90% fewer bytes than a streaming Opus or AAC file, faster encode and decode, and about twice the listening score. Gate: half the bytes of the best Opus at the same ñü.fidelity | Music and spatial beds, once it passes the gates | New, design |
 
 Exports to other apps use AAC, ALAC, FLAC, Opus or APAC through the platform encoders (section 9).
 
@@ -164,7 +164,7 @@ Proposed 11 Oct 2026, design only; nothing here is built or measured, and every 
 - A MUSHRA listening test with at least 20 listeners on AirPods Pro and AirPods Max: auto spatial preferred over the original stereo and over "Spatialize Stereo" on most of a 40-track set across genres, with no track rated worse than stereo by most listeners.
 - Real-time factor, latency, power and size measured on the oldest supported iPhone, against the budgets above.
 
-The ñü.sounds demo on khensu.nu currently uses a plain matrix upmix made with FFmpeg's `surround` filter, not `nu_upmix_v1`; it is replaced once `nu_upmix_v1` passes these gates.
+The ñü.ŵævẽš demo on khensu.nu currently uses a plain matrix upmix made with FFmpeg's `surround` filter, not `nu_upmix_v1`; it is replaced once `nu_upmix_v1` passes these gates.
 
 **Venue-aware placement (`nu_upmix_v2`).** `design/nu-spatial.md` adds a venue choice on top of this pipeline (concert hall, small room, rock club, EDM festival), made on the device with SoundAnalysis, a room-acoustics model and the on-device Apple Intelligence Foundation Models framework, with placement per instrument and per frequency band and a venue room. It also covers bandwidth up to 24 kHz, the `nu_music_v1` Neural Engine codec and the ñü.fidelity marker.
 

@@ -161,6 +161,7 @@ isProject: false
 - [On-device biometrics (Face ID, Touch ID)](#on-device-biometrics-face-id-touch-id)
 - [App design](#app-design-decided)
 - [Local search and memory](#local-search-and-memory-a-hindsight-style-engine-on-the-device-ios-26-macos-26)
+- [The bag](#the-bag-decided)
 - [Push notifications](#push-notifications)
 - [Typing indicators and presence](#typing-indicators-and-presence)
 - [Offline use and reliable delivery](#offline-use-and-reliable-delivery-decided)
@@ -478,6 +479,16 @@ flowchart LR
 - **Devices:** keyword and semantic search work on every iOS 26 device. Facts, observations, reflect and "Catch me up" need Apple Intelligence (iPhone 15 Pro and later, M-series Macs and iPads); other devices just don't show those features.
 - **Also in v1:** Hindsight's mental models and knowledge pages, such as a pinned "Lisbon trip" page that updates itself. A small Core ML cross-encoder reranker is added only if recall quality needs it.
 
+## The bag (decided)
+
+ñü.vœîð is where stored objects live. The picture is a bag that opens into another place: the things inside are not files on a server, and the only way back is the owner's memory of how the pieces fit. Decided 11 Oct 2026. Chunks are 64 KiB with a ñü.fêět footer, 12 Oct 2026. Full design: `design/nu-void.md`.
+
+- **Ids, not names.** On the phone and on every node, an object is a random 32-byte id. The name sits in a KhensuMemory record. Search can find the name. The chunk keys are in that record and are not indexed.
+- **64 KiB chunks.** Each piece has its own key. The last piece is padded, and every piece ends with a ñü.fêět footer inside the encryption. On the wire the sealed chunk is 65,536 bytes, so the network never sees the cut. The pieces are scattered at random across nodes.
+- **Eight copies.** Nodes store ñü.vœîð unless the operator runs `~node void off`. Each piece goes to eight of them, different operators. Fewer than eight eligible nodes and the object waits on the device.
+- **A new path per piece.** Upload and download hop the mixnet. The next piece takes a different set of relays. There is no connection to a storage node.
+- **Someone else's map.** Sending to one person re-seals the pieces and seals a new map to their key. View once opens that map a single time, deletes it, and draws on a surface the screenshot buffer does not include. A camera in the room still sees the screen.
+
 ## Push notifications
 
 No message content, sender or conversation ever goes through Apple or our push gateway. Three user-selectable modes:
@@ -670,6 +681,7 @@ Paper: "Justin Elliott Staffer, Elliott Wave LLC". It is written after the imple
 - **Adding offline contacts.** Directory-published one-time KeyPackages plus a last-resort package (the current `PUT/claim` design, moved onto the KT log and nodes), each signed by the device credential.
 - **Attachments.** A random key per file. The file is chunked, padded and stored on mailbox nodes by content hash, and the key and hash travel inside the MLS message.
 - **Local storage.** An SQLite store encrypted with a key wrapped by the Secure Enclave and released only after Face ID or Touch ID app unlock, Data Protection class Complete, excluded from iCloud backup. Incoming packets wait in a `CompleteUnlessOpen` queue until unlock. Optional backups are encrypted with a user-held recovery key.
+- **ñü.vœîð (decided 11 Oct 2026, 64 KiB chunks 12 Oct 2026).** Anything the app keeps is a random id, not a file name. The name and the map of pieces live in KhensuMemory; each piece has its own key, the last piece is padded, and a ñü.fêět footer rides inside every 65,536-byte sealed chunk. Eight nodes that have not opted out (`~node void off`) hold each piece. Uploads and downloads hop the mixnet, one fresh route per piece. A private send writes a new map for that person only; view-once deletes their map after it is opened, and the capture buffer for that view is blank. A wrong key for one chunk fails the tag check, and that file cannot be assembled from it. Full design: `design/nu-void.md`.
 - **Assurance.** A Tamarin or ProVerif model of the add, message and remove flows, Outfox routing and the epoch-header consensus. Fuzzing of every decoder (following the existing `fuzz/` practice). Cross-language vectors for every new wire format. An external audit before public launch.
 
 ## Node software, hardware and schedules

@@ -79,7 +79,7 @@ Assumptions, all estimates:
 | Paid to nodes, all together | $0.02–0.06 | $24–60 | $24,000–60,000 | $24–60 million |
 | Paid to the creator, 1¢ a view | $10 | $10,000 | $10 million | $10 billion |
 
-For comparison (commonly reported, not verified by us): YouTube Shorts pays creators roughly $0.01–0.07 per 1,000 views and TikTok's Creator Rewards roughly $0.40–1.00 per 1,000 for videos over a minute. At $10 per 1,000, khensu.ñü pays 10 to 25 times TikTok's rate and over 100 times Shorts', and no platform takes a cut of tips.
+For comparison (commonly reported, not verified by us): YouTube Shorts pays creators roughly $0.01–0.07 per 1,000 views and TikTok's Creator Rewards roughly $0.40–1.00 per 1,000 for videos over a minute. At $10 per 1,000, khėnsu.ñü pays 10 to 25 times TikTok's rate and over 100 times Shorts', and no platform takes a cut of tips.
 
 What this says: per video, node earnings are small, because nu-media makes delivery cheap; that is the point. A node earns a living only from aggregate demand (section 5). A trillion views is roughly a large platform's total short-video traffic over days to weeks, not one video.
 

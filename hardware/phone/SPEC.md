@@ -1,6 +1,6 @@
 # The khensu.nu phone (name pending): product specification
 
-Proposed 11 Oct 2026. Our own phone for the khensu.nu Android OS (`design/os.md`): a titanium or brass body with the khensu.nu stone inlay on every phone, the best sensors of the current Samsung Galaxy S Ultra, iPhone Pro and Pixel Pro, a privacy display, hardware kill switches and suñůlink built in. Open decisions are in `OPEN-QUESTIONS.md`, section K. Every figure here is a target until it is measured on a prototype.
+Proposed 11 Oct 2026. Our own phone for the khensu.nu Android OS (`design/os.md`): a titanium or brass body with the ñü.isheru on every phone, the best sensors of the current Samsung Galaxy S Ultra, iPhone Pro and Pixel Pro, a privacy display, hardware kill switches and suñůlink built in. Open decisions are in `OPEN-QUESTIONS.md`, section K. Every figure here is a target until it is measured on a prototype.
 
 ## 1. Body and materials
 
@@ -10,7 +10,7 @@ Proposed 11 Oct 2026. Our own phone for the khensu.nu Android OS (`design/os.md`
 | **Titanium, ceramic coat** | Maroon, gold, black | Grade 5 titanium with a hard ceramic coating; the coating hides fingerprints and resists scratches. Not antimicrobial by itself. |
 | **Titanium, antimicrobial coat** (proposed option) | As above | A ceramic coat with an EPA-registered antimicrobial agent bound in, the kind used on public touch surfaces since 2020: silver-ion or copper-infused coatings, or a photocatalytic titanium dioxide layer that works under light. These wear over years, unlike bare brass, and any public health claim needs the coating's own EPA registration (and EU Biocidal Products Regulation approval in Europe), so we only use already-registered coatings and repeat their exact approved wording. Likely cheaper than brass. |
 
-- **Inlay on every phone:** the khensu.nu mark in stone with the platinum line, set flush into the back as on suñůlink.shield (lapis, black and white labradorite, bloodstone, onyx, kyanite, tourmaline; moldavite and Paraíba as a tier).
+- **ñü.isheru on every phone:** the khėnsu.ñü mark as a stone inlay with the platinum line, set flush into the back as on suñůlink.shield (lapis, black and white labradorite, bloodstone, onyx, kyanite, tourmaline; moldavite and Paraíba as a tier).
 - **Durability, not "indestructible":** no phone is indestructible, so we never say it. Targets: IP68 and IP69, MIL-STD-810H drop and shock procedures, a 2 m drop onto concrete without a cracked screen (the best phones today manage about 1–2 m), Corning Gorilla Armor-class or sapphire cover glass, and a titanium frame. The stone inlay is softer than the metal; it is sealed and may show fine wear, as the shield page says.
 
 ## 2. Sensors: the best of Samsung, Apple and Google, then more

@@ -105,10 +105,10 @@ nu-media carries more colour than the iPhone's screen shows, so the same file lo
 
 | Property | nu-media | ImageIO HEIC / JPEG | Hardware H.264 / HEVC on iPhone |
 | --- | --- | --- | --- |
-| Primaries | **BT.2020** (about 76% of CIE 1931 xy; P3 is about 54%, sRGB about 36%) | P3 or sRGB | BT.709, P3, BT.2020 (HEVC Main 10) |
+| Primaries | **BT.2020** (about 76% of the CIE 1931 spectral locus; Display P3 is about 45%, sRGB about 36%) | P3 or sRGB | BT.709, P3, BT.2020 (HEVC Main 10) |
 | Transfer | **PQ (SMPTE ST 2084, up to 10,000 nits) and HLG (BT.2100)**; sRGB and P3 gamma for SDR | sRGB gamma; HDR through a gain map | PQ, HLG (HEVC Main 10); SDR only on H.264 |
-| Bit depth | **12-bit images, 10-bit video** (12-bit via the residual layer) | 8-bit JPEG; 8- or 10-bit HEIC | 8-bit H.264; 10-bit HEVC |
-| Chroma | **4:4:4 images**; 4:2:0 video base with chroma restored by the enhancement layer | 4:2:0 typical | 4:2:0 |
+| Bit depth | **12-bit images. Stored video is 12-bit after the residual; the live base the chip encodes is 10-bit** | 8-bit JPEG; 8- or 10-bit HEIC | 8-bit H.264; 10-bit HEVC |
+| Chroma | **4:4:4 images, and 4:4:4 stored video after the residual.** The live base is 4:2:0 | 4:2:0 typical | 4:2:0 |
 | Working space | Linear-light FP16 in BT.2020, native to the Neural Engine | Display-referred | Display-referred |
 | HDR metadata | Mastering display, MaxCLL/MaxFALL, and our own per-scene tone-mapping curves | ISO 21496-1 gain map | HDR10 static; Dolby Vision 8.4 from the camera |
 
@@ -116,6 +116,19 @@ nu-media carries more colour than the iPhone's screen shows, so the same file lo
 - **Export:** when you save to Photos or share outside khensu.nu, nu-media writes HEIC with an ISO 21496-1 gain map through ImageIO (images), or HEVC Main 10 HLG through VideoToolbox (video), so other apps show it correctly.
 - **Dolby Vision and HDR10+:** received camera clips in Dolby Vision profile 8.4 are carried as their HLG base plus our own tone-mapping metadata. We play Dolby Vision and HDR10+ through Apple's decoders but don't author either; both need licences from their owners.
 - **Cost of HDR:** about 10–25% more bits than SDR at the same quality (estimate), included in the tables above.
+
+### 6.1 Against what phones store and what streams send
+
+These are properties of the format, not a measured quality score. The comparison is 10-bit 4:2:0 delivery in P3 or BT.2020, which is HEIC, HEVC Main 10, AV1 Main and the streams from the large video services. Area figures are the primary triangle inside the CIE 1931 spectral locus.
+
+| | What ships | nu-media | Times |
+| --- | --- | --- | --- |
+| Steps per channel | 10-bit: 1,024 | 12-bit: 4,096 on images, and on stored video once the residual is applied | 4× |
+| Colour samples | 4:2:0, one chroma sample for every four pixels | 4:4:4 on images and on stored video after the residual | 4× |
+| Gamut | Display P3 about 45% of visible colour; BT.2020 about 76%; sRGB about 36% | BT.2020 | about 1.7× P3. Not 2×. Twice P3 would be about 91% of human vision, and twice BT.2020 is larger than human vision, so no format can claim it |
+| Peak white | iPhone 18 Pro, 1,600 nits. Many HDR10 grades stop at 1,000 | PQ, 10,000 nits, the top of SMPTE ST 2084 | about 6× the phone |
+
+The live base stays 10-bit 4:2:0. That is the picture the iPhone's hardware encoder can emit in real time (HEVC Main 10). The residual layer is what makes a stored file 12-bit and 4:4:4 (`nu-media-protocol.md` 5.3). Cinema archives already go further than this file: ACES in 16-bit half float holds every visible colour. nu-media does not claim to beat that. It does hold four times the steps and four times the colour samples of the 10-bit 4:2:0 picture a phone or a stream delivers, in a gamut about 1.7 times P3, at a peak about 6 times the iPhone's.
 
 ## 7. More than the usual formats
 

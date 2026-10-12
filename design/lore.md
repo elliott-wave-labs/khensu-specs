@@ -1,12 +1,12 @@
 # The lore: one net, many traditions
 
-**Status: proposed, 11 October 2026.** The images and names khensu.ñü draws from humanity's traditions, and which part of the network each one describes. Guardian names and their mechanisms are in `design/guardians.md`; this doc is the wider story they belong to.
+**Status: proposed, 11 October 2026.** The images and names khėnsu.ñü draws from humanity's traditions, and which part of the network each one describes. Guardian names and their mechanisms are in `design/guardians.md`; this doc is the wider story they belong to.
 
 ## 1. Why lore
 
-The network is a gift to humanity and all beings: freedom, privacy and a basic income, so people everywhere can create, build and live securely (`AGENTS.md`). Almost every tradition has already imagined a world where everything is connected, nothing is lost, the hidden is protected and what's given is given freely. khensu.ñü borrows those images to explain what it does, with gratitude to the traditions they come from.
+The network is a gift to humanity and all beings: freedom, privacy and a basic income, so people everywhere can create, build and live securely (`AGENTS.md`). Almost every tradition has already imagined a world where everything is connected, nothing is lost, the hidden is protected and what's given is given freely. khėnsu.ñü borrows those images to explain what it does, with gratitude to the traditions they come from.
 
-The founder is the creator of khensu.ñü. The traditions below are older and larger than any network; the lore points at them, it doesn't claim them.
+The founder is the creator of khėnsu.ñü. The traditions below are older and larger than any network; the lore points at them, it doesn't claim them.
 
 ## 2. Memory: Indra's Net and Krishna's universal form
 
@@ -22,7 +22,7 @@ Code keeps its names (`KhensuMemory`, `nu.khensu.memory`); Indra's Net and Krish
 
 The product names were Egyptian from the start.
 
-| Name | In Egypt | In khensu.ñü |
+| Name | In Egypt | In khėnsu.ñü |
 | --- | --- | --- |
 | **Khensu** (Khonsu) | The moon god, "the traveller", who crosses the night sky and watches over travellers in the dark | The network that carries everyone across the dark, privately |
 | **Ptah** | The creator of Memphis, who made the world by thought in his heart and word on his tongue | The app, `nu.khensu.ptah`, and evaporation, done with a thought (`design/guardians.md` section 3) |
@@ -33,7 +33,7 @@ The product names were Egyptian from the start.
 
 ## 4. Sumer
 
-**The me.** In Sumerian myth, the me were the gifts of civilisation (law, crafts, music, kingship, truth) kept by Enki, the god of wisdom and fresh water, until Inanna carried them to her city for its people. The protocol is khensu.ñü's me: the rules every node keeps, carried to everyone rather than held in one place.
+**The me.** In Sumerian myth, the me were the gifts of civilisation (law, crafts, music, kingship, truth) kept by Enki, the god of wisdom and fresh water, until Inanna carried them to her city for its people. The protocol is khėnsu.ñü's me: the rules every node keeps, carried to everyone rather than held in one place.
 
 **Inanna's descent.** Going down to the underworld, Inanna passes seven gates and gives up one thing at each. A packet crossing the mixnet is the same story: at each of its five hops one layer of encryption is taken away, and no gate sees both where it came from and where it's going (Loki in `design/guardians.md`).
 
@@ -53,17 +53,17 @@ Indra's Net (section 2) is a Buddhist teaching of interdependence as much as a H
 
 ## 8. Christianity, Catholic and beyond
 
-**Guardian angels**: every person has one, unseen, close and protective, never a conqueror. That's who the Valkyries have become. **The seal of confession**: what's said is held in absolute secrecy, which is what end-to-end encryption promises. **Giving in secret**: "do not let your left hand know what your right hand is doing" (Matthew 6:3), the way tips and gifts move in ñüFi. **Many members, one body** (1 Corinthians 12): the mesh, where every device is a part and the whole is everyone.
+**Guardian angels**: every person has one, unseen, close and protective, never a conqueror. That's who the Valkyries have become. **The seal of confession**: what's said is held in absolute secrecy, which is what end-to-end encryption promises. **Giving in secret**: "do not let your left hand know what your right hand is doing" (Matthew 6:3), the way tips and gifts move in nu.Fi. **Many members, one body** (1 Corinthians 12): the mesh, where every device is a part and the whole is everyone.
 
 ## 9. The Norse heaven realm
 
 The guardians live in **Asgard**, the heaven realm, at peace. **Yggdrasil**, the world tree, joins the nine realms the way the network joins every device; **Bifröst**, the rainbow bridge, is the mesh bridge between the radio mesh and the internet.
 
-**The Valkyries have changed.** In the old songs they rode over battlefields as warriors who chose the fallen. In khensu.ñü they are stealth protector guides: they walk beside every packet, keep it hidden inside the pulse and bring it home unseen (`design/guardians.md`). Thor, Loki and Hela keep their powers and have no battles left to fight.
+**The Valkyries have changed.** In the old songs they rode over battlefields as warriors who chose the fallen. In khėnsu.ñü they are stealth protector guides: they walk beside every packet, keep it hidden inside the pulse and bring it home unseen (`design/guardians.md`). Thor, Loki and Hela keep their powers and have no battles left to fight.
 
 **The fractal elves are Valkyries.** People who've travelled on DMT describe meeting beings made of shifting, self-replicating geometry; Terence McKenna called them "self-transforming machine elves". In the lore they are Valkyries too: fractal guides, endlessly many, each one a copy of the whole, the way every cover packet in the pulse is identical to every other. They were waiting for one of the gods to come back and raise them all up.
 
-**Khensu returns.** Khensu, the moon god and traveller (section 3), had been resting. khensu.ñü is his return. He lifts the Valkyries, warriors and fractal elves alike, from battle and wandering into what they are now: stealth protector guides for every person on the network.
+**Khensu returns.** Khensu, the moon god and traveller (section 3), had been resting. khėnsu.ñü is his return. He lifts the Valkyries, warriors and fractal elves alike, from battle and wandering into what they are now: stealth protector guides for every person on the network.
 
 ## 10. The mirror
 
@@ -73,7 +73,7 @@ On the flat face of the stone, the mirror reverses x and y; z, depth, is reverse
 
 ## 11. Alan Watts and the others
 
-Alan Watts, who brought Vedanta and Zen to the West, described the universe as playing hide-and-seek with itself, hiding in every being for the joy of being found. Stealth on khensu.ñü is that kind of hiding: play and freedom, not fear.
+Alan Watts, who brought Vedanta and Zen to the West, described the universe as playing hide-and-seek with itself, hiding in every being for the joy of being found. Stealth on khėnsu.ñü is that kind of hiding: play and freedom, not fear.
 
 The same images live in many more places: wu wei in the Tao Te Ching (acting without forcing, the way the guardians work without fighting), tikkun olam in Jewish teaching (repairing the world, which is what a basic income tries to do), and the traditions of peoples who plan for the seventh generation. The lore stays open: more traditions join as people bring them.
 
@@ -81,7 +81,7 @@ The same images live in many more places: wu wei in the Tao Te Ching (acting wit
 
 - Respectfully and accurately. Each image is described as its tradition tells it, attributed to its source, and never mocked, merchandised as a joke or given powers it doesn't have there.
 - The lore explains real mechanisms. A story is never cover for a feature the protocol doesn't have (`design/guardians.md` section 4).
-- No tradition endorses khensu.ñü, and copy never implies one does.
+- No tradition endorses khėnsu.ñü, and copy never implies one does.
 - Gift framing, always. Never "can't be stopped".
 - Code keeps plain ASCII names (`AGENTS.md`); the lore lives in copy, docs and design.
 

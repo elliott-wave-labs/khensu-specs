@@ -1,14 +1,14 @@
-# ñüFi: the khensu.ñü finance platform
+# nu.Fi: the khėnsu.ñü finance platform
 
-**Status: proposed, 11 October 2026.** Design sketch; the full design doc and a patent assessment (`PATENTS.md`) follow once it's built (`AGENTS.md`). Shown as **ñüFi**; code, packages and identifiers use `nufi` (`nu.khensu.nufi`).
+**Status: proposed, 11 October 2026.** Design sketch; the full design doc and a patent assessment (`PATENTS.md`) follow once it's built (`AGENTS.md`). Shown as **nu.Fi**; code, packages and identifiers use `nufi` (`nu.khensu.nufi`). The address is `nu:nufi.khensu.nu`.
 
 ## 1. What it is
 
-ñüFi is all of the money on khensu.ñü: the basic income, what creators and node operators earn, what subscriptions pay for, and the ways people fund each other. Everything moves through the shielded pool (`PLAN.md`, Shielded payments) with no platform cut. In order of priority:
+nu.Fi is all of the money on khėnsu.ñü: the basic income, what creators and node operators earn, what subscriptions pay for, and the ways people fund each other. Everything moves through the shielded pool (`PLAN.md`, Shielded payments) with no platform cut. In order of priority:
 
 ### 1.1 ñü.bi, the ñü basic income
 
-The first thing ñüFi does, and the reason the network exists (`AGENTS.md`). Stage one, at launch: everyone who runs a node is paid in USDC for verified work, at one worldwide rate. Stage two, in research: an equal dividend for every unique person, proven without identity or biometrics. Detail in `design/node-earnings.md` 8 and on khensu.nu/bi.
+The first thing nu.Fi does, and the reason the network exists (`AGENTS.md`). Stage one, at launch: everyone who runs a node is paid in USDC for verified work, at one worldwide rate. Stage two, in research: an equal dividend for every unique person, proven without identity or biometrics. Detail in `design/node-earnings.md` 8 and on khensu.nu/bi.
 
 ### 1.2 Creator economics
 
@@ -28,15 +28,15 @@ Pro, Ultra and Akashic subscriptions pay for everything above. After Apple's 15%
 
 ### 1.5 Payments and tickets
 
-Private payments between people, tap to pay at the till, and private ticketing: tickets for festivals, local and big music shows, retreats and events are anonymous, unlinkable tokens (the `ticket` contract, `WEBE.md` 14), bought with ñüFi and scanned at the door with ñü.code (`design/ring-code.md`).
+Private payments between people, tap to pay at the till, and private ticketing: tickets for festivals, local and big music shows, retreats and events are anonymous, unlinkable tokens (the `ticket` contract, `WEBE.md` 14), bought with nu.Fi and scanned at the door with ñü.code (`design/ring-code.md`).
 
 ### 1.6 Funding each other
 
 | Product | What happens | Closest existing service |
 | --- | --- | --- |
-| **ñüFi Give** (microgiving) | Gifts to people, causes and communities, from cents up | GoFundMe, Kiva's donation side |
-| **ñüFi Back** (crowdfunding) | Back a project for a reward or pre-order, released only if the goal is met by the deadline | Kickstarter |
-| **ñüFi Invest** (investment network) | Buy shares, revenue shares or notes in startups and local businesses | Wefunder, Republic, StartEngine |
+| **nu.Fi Give** (microgiving) | Gifts to people, causes and communities, from cents up | GoFundMe, Kiva's donation side |
+| **nu.Fi Back** (crowdfunding) | Back a project for a reward or pre-order, released only if the goal is met by the deadline | Kickstarter |
+| **nu.Fi Invest** (investment network) | Buy shares, revenue shares or notes in startups and local businesses | Wefunder, Republic, StartEngine |
 
 Each campaign is a webË site (`name.khensu.nu/...`) and a public-square post, and the network fee goes to node operators like any other transfer.
 
@@ -44,7 +44,7 @@ Each campaign is a webË site (`name.khensu.nu/...`) and a public-square post, a
 
 | Product | What happens | Closest existing service |
 | --- | --- | --- |
-| **ñüFi Lend** (microlending) | Small loans between people or to small businesses, repaid in instalments | Kiva, Zidisha |
+| **nu.Fi Lend** (microlending) | Small loans between people or to small businesses, repaid in instalments | Kiva, Zidisha |
 
 Lending comes last: it carries the most regulation and the most risk to the people using it (section 4).
 
@@ -60,7 +60,7 @@ Lending comes last: it carries the most regulation and the most risk to the peop
 
 - **No platform cut** on Give and Back. The only charge is the network fee per transfer (a fraction of a cent, design target), paid to node operators.
 - Lend and Invest carry the licensed partner's fees (identity checks, compliance, filings), shown before anyone commits. khensu.nu takes no spread on loans and no carry on investments.
-- **Operators earn** from ñüFi traffic like any other node work, so the network itself is paid for carrying the money.
+- **Operators earn** from nu.Fi traffic like any other node work, so the network itself is paid for carrying the money.
 
 ## 4. Regulation by product (to confirm with counsel per country)
 
@@ -76,7 +76,7 @@ These products sit in very different legal categories. That's why the rollout be
 
 Outside the US, the equivalents differ: EU ECSP Regulation for crowdfunding (one licence passported across the EU), UK FCA rules, and local microfinance laws (Morocco has its own microcredit regime; *verify*).
 
-**Conflict rule:** a funding portal can't host offerings in which it has a financial interest. The khensu.nu coin sale and any Elliott Wave raise therefore never run on ñüFi Invest (`business/FUNDING.md`).
+**Conflict rule:** a funding portal can't host offerings in which it has a financial interest. The khensu.nu coin sale and any Elliott Wave raise therefore never run on nu.Fi Invest (`business/FUNDING.md`).
 
 ## 5. Rollout
 
@@ -91,7 +91,7 @@ Outside the US, the equivalents differ: EU ECSP Regulation for crowdfunding (one
 - Escrow notes released by the consensus on goal and deadline: can they keep the pool's unlinkability and era expiry, with automatic refunds?
 - How a licensed partner verifies identity for Lend and Invest without khensu.nu ever holding it, and without linking it to the user's messaging identity.
 - Loss handling for Lend (defaults) without a credit bureau: reputation credentials only, or a pooled reserve?
-- Whether ñüFi Back pre-orders for suñůlink.shield should run on ñüFi itself instead of Stripe once Back is live.
+- Whether nu.Fi Back pre-orders for suñůlink.shield should run on nu.Fi itself instead of Stripe once Back is live.
 - Patent assessment: consensus-released all-or-nothing escrow in a shielded pool, and repayments hidden in constant-rate cover traffic, may be new; assess before any public detail (`PATENTS.md`).
 - "No shareholders" (1.4) against `business/FUNDING.md` and the token allocation in `PLAN.md` 7, which mention a company raise and a company token share: confirm they're consistent before either is published.
 - How plays beyond what a subscriber's plan covers are paid for (`OPEN-QUESTIONS.md` 89).

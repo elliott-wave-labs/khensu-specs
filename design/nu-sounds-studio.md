@@ -1,8 +1,8 @@
-# ñü.sounds studio: instruments in space and time, for musicians and listeners
+# ñü.ŵævẽš studio: instruments in space and time, for musicians and listeners
 
 Status: design, 12 October 2026. Code identifier `nusounds` (`nu.khensu.sounds`). Builds on `nu-audio.md` (profiles, rules A1–A6) and `nu-spatial.md` (separation, placement, ñü.fidelity).
 
-ñü.sounds studio takes a finished song, splits it into its instruments, places them in spatial audio automatically, and lets the artist shape and lock how the song sounds. Listeners can then add their own copies of tracks in space and time without touching the artist's mix. Everything runs on the device; no audio, voice or setting is processed on a server.
+ñü.ŵævẽš studio takes a finished song, splits it into its instruments, places them in spatial audio automatically, and lets the artist shape and lock how the song sounds. Listeners can then add their own copies of tracks in space and time without touching the artist's mix. Everything runs on the device; no audio, voice or setting is processed on a server.
 
 ## 1. Who does what
 
@@ -28,7 +28,7 @@ Contents:
 - **Default mode.** Original, ñü.wæve, or stereo.
 - **Lock map.** One flag per parameter: locked (listeners can't change it) or open. "Lock everything" plays the song exactly as the artist set it.
 
-The player starts every song on its profile. With no profile, it starts on "Match original" (`khensu.nu/sounds`): loudness matched to the original file, measured live, with reverb added on top of the clean instruments.
+The player starts every song on its profile. With no profile, it starts on "Match original" (`khensu.nu/waves`): loudness matched to the original file, measured live, with reverb added on top of the clean instruments.
 
 ## 3. Splitting into instruments
 

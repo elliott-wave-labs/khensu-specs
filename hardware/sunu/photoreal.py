@@ -62,8 +62,9 @@ COLOURS = {
                      glow=(1.0, 0.5, 0.56), deep=(0.16, 0.03, 0.045)),
     "black": dict(alu=(0.028, 0.028, 0.031), alu_r=0.30, glass=(0.012, 0.012, 0.014), glass_r=0.5,
                   glow=(0.62, 0.66, 0.75), deep=(0.035, 0.037, 0.045)),
-    "silver": dict(alu=(0.60, 0.60, 0.61), alu_r=0.27, glass=(0.62, 0.62, 0.63), glass_r=0.5,
-                   glow=(0.95, 0.93, 0.9), deep=(0.09, 0.09, 0.095)),
+    # The silver iPhone is a black powder coat, not a reflective metal. It sits under the brass shield.
+    "silver": dict(alu=(0.022, 0.022, 0.024), alu_r=0.58, alu_metal=0.0, glass=(0.012, 0.012, 0.014), glass_r=0.55,
+                   glow=(0.62, 0.66, 0.75), deep=(0.02, 0.02, 0.024)),
     "glacier": dict(alu=(0.44, 0.54, 0.62), alu_r=0.28, glass=(0.46, 0.56, 0.64), glass_r=0.5,
                     glow=(0.5, 0.78, 1.0), deep=(0.03, 0.06, 0.1)),
 }
@@ -255,8 +256,9 @@ def phone_materials(colour: str, web: bool = False) -> dict:
     c = COLOURS[colour]
     alu = c["alu"]
     m = {
-        "alu": material("iPhone", alu, 1.0, c["alu_r"]),
-        "ring": material("iPhone lens ring", tuple(v * 0.8 for v in alu), 1.0, 0.16),
+        "alu": material("iPhone", alu, c.get("alu_metal", 1.0), c["alu_r"]),
+        # Rings stay black on every colour, as on the phone: a dark bezel, not a second copy of the body.
+        "ring": material("iPhone lens ring", (0.012, 0.012, 0.014), 0.08, 0.45),
         "glass": material("iPhone back glass", c["glass"], 0.0, c["glass_r"], **{"Coat Weight": 0.2, "Coat Roughness": 0.35}),
         "antenna": material("iPhone antenna band", tuple(v * 0.55 for v in alu), 0.0, 0.42),
         "port": material("iPhone port", (0.012, 0.012, 0.013), 0.0, 0.45),
@@ -265,14 +267,16 @@ def phone_materials(colour: str, web: bool = False) -> dict:
         "black": material("iPhone black", (0.006, 0.006, 0.007), 0.0, 0.32),
         "bezel": material("iPhone lens bezel", (0.03, 0.03, 0.032), 0.7, 0.3),
         "contacts": material("iPhone contacts", (0.9, 0.62, 0.3), 1.0, 0.2),
-        "flash": material("iPhone flash", (0.78, 0.75, 0.66), 0.0, 0.32, **{"Coat Weight": 1.0, "Coat Roughness": 0.04}),
-        "lidar": material("iPhone lidar", (0.006, 0.005, 0.009), 0.0, 0.05, **{"Coat Weight": 1.0, "Coat Roughness": 0.02}),
+        # A milky LED. No clearcoat and no Fresnel rings: those break the highlight into a crackle.
+        "flash": material("iPhone flash", (0.82, 0.80, 0.76), 0.0, 0.55, **{
+            "Emission Color": (0.55, 0.53, 0.48, 1), "Emission Strength": 0.35}),
+        "lidar": material("iPhone lidar", (0.008, 0.008, 0.01), 0.0, 0.16, **{"Coat Weight": 0.35, "Coat Roughness": 0.28}),
         "control": material("iPhone camera control", (0.01, 0.01, 0.012), 0.0, 0.06, **{"Coat Weight": 1.0, "Coat Roughness": 0.02}),
     }
     if web:
-        m["sapphire"] = material("iPhone lens glass", (0.02, 0.02, 0.025), 0.0, 0.02, Alpha=0.18)
-        m["element"] = material("iPhone lens element", (0.03, 0.02, 0.06), 0.6, 0.12)
-        m["iris"] = material("iPhone iris", (0.05, 0.05, 0.055), 0.8, 0.35)
+        m["sapphire"] = material("iPhone lens glass", (0.01, 0.01, 0.012), 0.0, 0.04, Alpha=0.42)
+        m["element"] = material("iPhone lens element", (0.012, 0.012, 0.014), 0.2, 0.35)
+        m["iris"] = material("iPhone iris", (0.02, 0.02, 0.022), 0.25, 0.4)
     else:
         m["sapphire"] = thin_glass("iPhone lens glass", 1.77, (0.28, 0.3, 0.45))
         m["element"] = material("iPhone lens element", (0.004, 0.004, 0.006), 0.0, 0.02, **{
@@ -280,15 +284,6 @@ def phone_materials(colour: str, web: bool = False) -> dict:
         m["iris"] = material("iPhone iris", (0.03, 0.03, 0.033), 0.9, 0.3)
         m["glint"] = material("iPhone lens glint", (0.01, 0.01, 0.015), 0.0, 0.0, **{
             "IOR": 2.2, "Thin Film Thickness": 380.0, "Thin Film IOR": 1.5})
-        # The flash's Fresnel rings.
-        nt = m["flash"].node_tree
-        tc, wave, bump = nt.nodes.new("ShaderNodeTexCoord"), nt.nodes.new("ShaderNodeTexWave"), nt.nodes.new("ShaderNodeBump")
-        wave.wave_type, wave.rings_direction = "RINGS", "SPHERICAL"
-        wave.inputs["Scale"].default_value = 9.0
-        bump.inputs["Strength"].default_value = 0.25
-        nt.links.new(tc.outputs["Object"], wave.inputs["Vector"])
-        nt.links.new(wave.outputs["Fac"], bump.inputs["Height"])
-        nt.links.new(bump.outputs["Normal"], bsdf_of(m["flash"]).inputs["Normal"])
     if "glint" not in m:
         m["glint"] = m["element"]
     m["screen"] = screen_material(colour, web)
@@ -299,11 +294,14 @@ def recolour(colour: str, web: bool = False):
     """Retint an existing phone's materials in place and swap its wallpaper."""
     c = COLOURS[colour]
     alu = c["alu"]
-    for name, col, rough in (("iPhone", alu, c["alu_r"]), ("iPhone lens ring", tuple(v * 0.8 for v in alu), None),
-                             ("iPhone back glass", c["glass"], c["glass_r"]),
-                             ("iPhone antenna band", tuple(v * 0.55 for v in alu), None)):
+    for name, col, rough, metal in (
+        ("iPhone", alu, c["alu_r"], c.get("alu_metal", 1.0)),
+        ("iPhone back glass", c["glass"], c["glass_r"], 0.0),
+        ("iPhone antenna band", tuple(v * 0.55 for v in alu), None, 0.0),
+    ):
         b = bsdf_of(bpy.data.materials[name])
         b.inputs["Base Color"].default_value = (*col, 1)
+        b.inputs["Metallic"].default_value = metal
         if rough is not None:
             b.inputs["Roughness"].default_value = rough
     scr = bpy.data.materials["iPhone screen"]

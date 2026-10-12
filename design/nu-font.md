@@ -1,6 +1,6 @@
 # ñü.Føňt: the house typeface
 
-**Decided 12 October 2026. First release built and published the same day.** Shown as **ñü.Føňt** (o with stroke U+00F8, n with caron U+0148). Code, files and the page use `nu.font` (`/font` on khensu.nu, `tools/font/` in `khensu-site`); the font family name inside the files is `nu Font`, PostScript names `nuFont-<Style>`. Running text uses nu.font. Elliott typed the name both ways, ñũ.Føñt and ñü.Føňt, and closed with "this style is called ñü.Føňt", so that is the display form; the first form is listed here so the record shows the choice.
+**Decided 12 October 2026. First release built and published the same day; second release the same day with ñü.Føňt Mono, pulse mode, and Vietnamese, Greek and Cyrillic.** Shown as **ñü.Føňt** (o with stroke U+00F8, n with caron U+0148). Code, files and the page use `nu.font` (`/font` on khensu.nu, `tools/font/` in `khensu-site`); the font family name inside the files is `nu Font`, PostScript names `nuFont-<Style>`. Running text uses nu.font. Elliott typed the name both ways, ñũ.Føñt and ñü.Føňt, and closed with "this style is called ñü.Føňt", so that is the display form; the first form is listed here so the record shows the choice.
 
 ñü.Føňt is the typeface for everything people see from khėnsu.ñü: the wordmark, headings, navigation, buttons and labels on every site, the apps when they reach it, and anything anyone else wants to set in it, because it is published free under the SIL Open Font License. It is also the home of the rule that letters can move: a wordmark is written into a page as paths, one per stroke, and any stroke can animate on its own. The dot on the ė, Elliott's E, is the first one that does.
 
@@ -8,13 +8,14 @@
 
 | Item | Value |
 | --- | --- |
-| Glyphs | 160: basic Latin, digits, punctuation, the ligatures and letters the names need (æ œ ð ł ø and capitals), and precomposed letters for every mark the names use: ė ċ ñ ũ ẽ ü ë î ê ŵ š ř ě ů å ț and their relatives |
+| Glyphs | 567 in each family: ASCII, Latin-1, Latin Extended-A, the Vietnamese letters with stacked marks, monotonic Greek, Cyrillic for Russian, Ukrainian and Belarusian, the ligatures and letters the names need (æ œ ð ł ø ħ þ ß ŋ and capitals), currency and typographic symbols, and precomposed letters for every mark the names use: ė ċ ñ ũ ẽ ü ë î ê ŵ š ř ě ů å ț and their relatives |
+| Families | **ñü.Føňt** (`nu Font`) and **ñü.Føňt Mono** (`nu Font Mono`), the same letters fitted to a 600-unit cell: wide skeletons are squeezed (arcs become ellipse arcs, the pen keeps its width), narrow ones centred. `post.isFixedPitch` and PANOSE monospaced are set so editors list it as a code font. Digits are tabular in both |
 | Weights | Ultralight 100, Light 300, Medium 500, Bold 700, Heavy 800, Blackout 900 |
 | Axes | `wght` 100 to 900; `slnt` 0 to −11, the italic |
-| Masters | 12: the six weights, upright and slanted |
-| Files | `nuFont-Variable.ttf` (220 KB) and `.woff2` (70 KB); twelve static TTFs of about 35 KB and WOFF2s of about 8 KB; `nufont.zip` with all of them; `nufont.json` with every measured figure |
+| Masters | 12 per family: the six weights, upright and slanted |
+| Files | `nuFont-Variable.ttf` (854 KB) and `.woff2` (188 KB); `nuFontMono-Variable.ttf` (834 KB) and `.woff2` (186 KB); twelve static TTFs per family of about 133 KB and WOFF2s of about 20 KB; `nufont.zip` (1.4 MB) with all of them; `nufont.json` with every measured figure |
 | Metrics | 1000 units per em; cap height 700; x-height 350; descender −216 (350 ÷ φ); ascender 700 |
-| Where | `khensu-site/tools/font/nufont.py` (the generator), `tools/font/build.sh` (build, copy, zip), `sites/khensu-nu/public/fonts/nufont/` (the files people download), `src/data/nufont-marks.ts` (generated inline wordmarks), `src/components/khensu/NuMark.astro` (the component that inlines them), `sites/khensu-nu/src/pages/font.astro` (the page) |
+| Where | `khensu-site/tools/font/nufont.py` (the generator) and `glyphs_more.py` (symbols, Latin extras, Greek, Cyrillic, the composite tables), `tools/font/build.sh` (build, copy, zip), `sites/khensu-nu/public/fonts/nufont/` (the files people download), `src/data/nufont-marks.ts` (generated inline wordmarks), `src/components/khensu/NuMark.astro` (the component that inlines them), `sites/khensu-nu/src/pages/font.astro` (the page) |
 
 Every figure above comes from the build; the page reads them from `nufont.json`, so nothing on it is typed by hand.
 
@@ -32,6 +33,8 @@ The font is parametric. Each glyph is a skeleton of centreline strokes (lines, c
 | Stems stop at half height | Where a stem is cut, it ends at 50 % of the glyph's height, never lower on one side |
 | Heavy weights widen | From Bold up, bowls and arches grow sideways so counters stay open; Blackout keeps a counter 50 units tall |
 | Capitals look like capitals | I has its top and bottom bars; H is an H; every capital with a stem keeps it in this release |
+| Marks stack | A composite names its base and one or more marks. Each mark sits a gap above the ink below it (the base, or the previous mark); marks below (dot below, cedilla, comma, ogonek) hang from the baseline and don't push the ones above. Side marks (ogonek, horn) attach at the right edge. Greek tonos is the acute; dialytika the dieresis |
+| Other scripts, same hand | Greek and Cyrillic are drawn from the same horseshoes, bowls and capsule ends; Cyrillic capitals take the Latin capital proportions (700 ÷ φ wide), and Greek descenders the Latin descender |
 
 ### 2.1 Glyphs that still have a stem
 
@@ -58,12 +61,38 @@ The rule: **every letter and every mark can join the ñü.aura colour shift, or 
 
 How it works in this release:
 
-1. `nufont.py marks` writes each wordmark as SVG with one `<path>` per stroke. Diacritics carry a class: `mark dot`, `mark dieresis`, `mark tilde`, `mark caron`, `mark circumflex`, `mark ring`, `mark comma`, `mark cedilla`. Every path also carries `data-g` (glyph name) and `data-i` (letter index), so any letter can be addressed.
+1. `nufont.py marks` writes each wordmark as SVG with one `<path>` per stroke. Diacritics carry a class: `mark dot`, `mark dieresis`, `mark tilde`, `mark caron`, `mark circumflex`, `mark ring`, `mark comma`, `mark cedilla`, and the new `macron`, `breve`, `doubleacute`, `hookabove`, `dotbelow`, `ogonek`, `horn`. Every path also carries `data-g` (glyph name) and `data-i` (letter index), so any letter can be addressed.
 2. `NuMark.astro` inlines the SVG, adds the visually hidden text for readers and search, and, when asked, fills the letters with the house gradient (a `<linearGradient>` that repeats and slides over 9 s, the same period as `--aura-flow-dur`).
 3. CSS does the motion. `.nf-word .mark.dot` scales 1 → 1.28 → 1 over 2.8 s with a soft glow, and its fill phases green → blue → purple over 9 s. Nothing else moves: the tilde on ñ and the dieresis on ü keep the fill of the letters. `prefers-reduced-motion` holds the dot still in the accent colour.
 4. The ė is lowercase only. Ė exists in the font but has no animation.
 
-The wordmarks in use: the hero title, the header brand and the footer brand on khensu.nu; the header brand on dev.khensu.nu; the hero on elliottwave.studio/khensu, which is generated from the khensu.nu homepage.
+The wordmarks in use: the hero title, the header brand and the footer brand on khensu.nu; the webË heading on /webe; the header brand on dev.khensu.nu; the hero on elliottwave.studio/khensu, which is generated from the khensu.nu homepage; and `khensu-full` (kħėñšü.ñü), `shield-full` (šûñüłîñk.šħîēłð) and `webe` for the marketing cards.
+
+### 3.1 Pulse mode
+
+Asked for on 12 October: "these Ë diacritics should pulse and use nu.aura … the mode will pulse inside the diacritic too and sort of have a light that circles inside and gets a hard cut off from the internal edge of the character. The pulse light should cross fade out and into another location at the same time, like the pulses do on the spacetime bubble."
+
+**How it is done.** For every stroke tagged `mark`, `svg_runs` emits, right after the mark's `<path>`, a `<clipPath>` holding the same outline and a `<g class="nf-lights" clip-path="url(#…)">` with two `<circle class="nf-light a|b">`. Each circle is centred on the mark, has a radius of 0.42 × the mark's larger dimension, and carries inline CSS variables: `--nf-blur` (0.3 × radius) and four resting places `--lx0..3`, `--ly0..3` at ±0.42 of the mark's width and height, the two lights offset by 180° so they are never in the same place. Everything is in glyph units; CSS transforms on SVG elements use the user coordinate system, so the same numbers work at any rendered size. The id placeholder `@ID@` is replaced by `NuMark.astro` with an id unique to the page, or the whole lights block is stripped when the mark isn't in pulse mode, so ordinary wordmarks carry no extra bytes.
+
+`global.css` then animates:
+
+- `.nf-word.pulse .mark`: fill phases through the aura (`nf-dot-aura`, `--aura-flow-dur`, 9 s);
+- `.nf-word.pulse .nf-light`: `filter: blur(var(--nf-blur))`, opacity 0 → `--nf-light-opacity` → 0 over `--nf-light-dur` (3.6 s, `nf-light-fade`), and a `step-end` move through the four places over 4 × `--nf-light-dur` (`nf-light-move`), so a light only ever jumps while it is dark;
+- `.nf-light.b` runs both animations half a period behind, so one light fades in as the other fades out;
+- the clip gives the hard edge: the glow is soft inside the shape and stops dead at the outline;
+- `prefers-reduced-motion` hides the lights and holds the marks in the accent colour.
+
+**How to set colours and speed** (on the `.nf-word`, or on any ancestor):
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `--nf-light` | `#fff` | the light's colour; any colour, including `var(--aura-blue)` |
+| `--nf-light-opacity` | `0.85` | peak brightness |
+| `--nf-light-dur` | `3.6s` | one fade in and out; the light moves every period, and tours its four places in four |
+| `--aura-flow-dur` | `9s` | one pass through green, blue and purple for the marks' fill |
+| `--aura-green`, `--aura-blue`, `--aura-purple` | the site's | the three aura colours |
+
+Turn it on with `<NuMark name="webe" aura pulse />`. It is on for the webË heading on /webe and the khėnsu.ñü hero title; the header and footer brands stay quiet.
 
 ## 4. Where the font is used
 
@@ -71,7 +100,7 @@ The wordmarks in use: the hero title, the header brand and the footer brand on k
 | --- | --- |
 | Headings h1–h3, the wordmark, header navigation, buttons, pills, chips, the product bar name, StatStrip figures | ñü.Føňt, through `--font-display` |
 | Running text, forms, tables | Inter until ñü.Føňt has kerning and hinting (section 6). One line switches it: set `--font-sans` |
-| Code | JetBrains Mono, unchanged |
+| Code, `~` commands, the node terminal, figures and small labels | ñü.Føňt Mono, through `--font-mono`, with JetBrains Mono as the fallback |
 
 The studio takes the same `global.css` (with its own accent) and the same components through `tools/sync-studio.sh`, which also copies the variable WOFF2 into the studio's `public/fonts/nufont/`.
 
@@ -88,8 +117,10 @@ Published free under the SIL Open Font License 1.1 so it installs anywhere and s
 5. **Emoji and animated emoji** in the same strokes and capsule ends, including Telegram-style animated emoji.
 6. **Capsule renderer.** Glyphs drawn from their strokes at run time with a built-in alpha mask, tuned for the Neural Engine and TPUs, so the rounding "fades away" at any size without outline files.
 7. **Per-letter presets.** Named cues (fade, pulse, drift, burst) chosen in CSS for any letter or mark, with the choreography of a whole wordmark in one data attribute.
-8. **More scripts.** Greek and Cyrillic first; the fallback stack covers the rest meanwhile.
+8. **More scripts.** Arabic, Hebrew, Devanagari and CJK; and the language-specific forms Inter carries (`locl` for Bulgarian, Serbian, Dutch ĳ), which need OpenType features rather than more glyphs.
+9. **Mark attachment in the font.** Marks are precomposed per letter today. GPOS mark-to-base anchors would let any base take any mark and make the composite table unnecessary.
+10. **Mono fit.** Squeezing fits every glyph in the cell, but m, w, M, W and @ get narrow at the heavy weights; a drawn mono master for those would read better.
 
 ## 7. Patent assessment
 
-Row in `PATENTS.md`. Candidates: the stroke-skeleton family that shares point structure across weights and slant and emits per-stroke SVG for addressable animation; the per-letter animation rule as a web and app rendering pipeline; the capsule renderer with built-in alpha mask (not built). Prior art to compare: Metafont and MetaPost (Knuth), parametric type systems (Prototypo, Spiro, Glyphs' smart components, Font Bureau's variable workflows), variable fonts (OpenType 1.8), COLRv1 and animated colour fonts, Lottie and Rive text animation, SVG-in-OpenType. Not filed. The page does not say patent pending.
+Row in `PATENTS.md`. Candidates: the stroke-skeleton family that shares point structure across weights and slant and emits per-stroke SVG for addressable animation; the monospaced twin made by squeezing skeletons rather than redrawing; pulse mode (a mark's own outline clipping lights whose places the font tool emits as CSS variables); the per-letter animation rule as a web and app rendering pipeline; the capsule renderer with built-in alpha mask (not built). Prior art to compare: Metafont and MetaPost (Knuth), parametric type systems (Prototypo, Spiro, Glyphs' smart components, Font Bureau's variable workflows), variable fonts (OpenType 1.8), COLRv1 and animated colour fonts, Lottie and Rive text animation, SVG-in-OpenType. Not filed. The page does not say patent pending.

@@ -166,6 +166,29 @@ Every object is verified against its address before use; manifests are verified 
 - The origin for browser security is the name (`webe://name.khensu.nu`). Sites can't fetch from the ordinary web or from other names unless their policy lists them; this blocks third-party tracking by construction.
 - Sites can embed feeds, forums and live tracks by reference.
 
+### 7.1 Link previews
+
+A link shared into a chat, a feed or another site carries a preview. On the ordinary web a preview is one still image (`og:image`). On webË, and on the khensu.nu sites today, a preview is **media**: anything the receiving client can show, play or open, declared by the page in `nu:preview` meta tags next to the Open Graph ones, which stay as the fallback for every client that doesn't read `nu:preview`.
+
+```html
+<meta property="og:image" content="https://khensu.nu/og/buy.jpg" />
+<meta property="og:image:alt" content="…" />
+<meta property="nu:preview" content="https://khensu.nu/og/buy-square.mp4" />
+<meta property="nu:preview:type" content="video/mp4; codecs=hvc1" />
+<meta property="nu:preview:duration" content="3" />
+<meta property="nu:preview:size" content="1080x1080" />
+<meta property="nu:preview:bytes" content="3279733" />
+<meta property="nu:preview:hash" content="sha-256=…" />
+<meta property="nu:preview:effect" content="ripple" />
+```
+
+- **Kinds.** `nu:preview:type` is a media type. Clients show: still images (`image/*`, including animated GIF and animated AVIF/WebP), video (`video/mp4` with HEVC or H.264, `video/nu-media` once the decoder ships; muted, looping, autoplay, 10 s at most), audio (`audio/*`, with a play control and the still as artwork), documents (`application/pdf`, with the first page as the still), webË contracts (`application/nu-contract+cbor`, 14.3, shown as the contract's interface summary) and archives and installers (`application/zip`, `application/vnd.android.package-archive`, `application/x-apple-diskimage`). Several `nu:preview` tags may be given; a client takes the first one it can show.
+- **Executable and archive warnings.** An `apk`, `dmg`, `pkg`, `exe`, `zip` or any type a client can't inspect is never auto-opened. The preview shows the type, the byte count, the hash and a warning in the client's own words ("This link installs software. Only continue if you trust the sender."), and the file is fetched only after a deliberate tap. A preview can't change the warning or its wording.
+- **Fetch.** Preview media is fetched like any other object: on webË through the two-relay stealth fetch (5.1); on the ordinary web through the app's mixnet exit. Previews are capped at 8 MiB and 10 s unless the person taps to load more. `nu:preview:hash` must match or the preview is dropped and the `og:image` still is shown instead.
+- **Rendering on Apple platforms.** The app renders previews in SwiftUI. Video previews are decoded by VideoToolbox (HEVC with alpha where present) or by the nu.media decoder on the Neural Engine, then drawn through a Metal layer so a page can ask for one of a small set of named effects in `nu:preview:effect`: `ripple` (a touch sends a ring across the video), `tilt` (parallax with the device), `glass` (the Liquid Glass material over the frame) and `none`. The effect is a hint; a client may ignore it, and reduced-motion settings always do.
+- **Privacy.** Fetching a preview must not tell the page who looked: no cookies, no referrer, no per-person URL. Clients fetch previews through the mixnet, prefetch at most the first `nu:preview`, and strip `nu:preview:*` from pages they publish on a person's behalf unless the author set them.
+- **The khensu.nu sites.** Every page on khensu.nu and dev.khensu.nu emits `og:image` (1200 × 630), the square still for Instagram-style link pages, and, where one exists, `nu:preview` with the 3-second HEVC square (`tools/og-anim.sh`): Earth time-lapsed under the phone turning once, the card's words on top.
+
 ## 8. Feeds
 
 The Feed tab in the khensu.nu app and the public square in `PLAN.md`.

@@ -41,9 +41,15 @@ enum Bench {
         let jobs = try JSONDecoder().decode([Job].self, from: Data(contentsOf: docs.appending(path: "jobs.json")))
         var results: [JobResult] = []
         for job in jobs {
-            let r = job.codec == "sr" ? try await superResolve(job, in: docs) : try await encode(job, in: docs)
-            print("\(job.output) \(r.frames) frames \(String(format: "%.1f", r.fps)) fps \(r.bytes) B")
-            results.append(r)
+            do {
+                let r = job.codec == "sr" ? try await superResolve(job, in: docs) : try await encode(job, in: docs)
+                print("\(job.output) \(r.frames) frames \(String(format: "%.1f", r.fps)) fps \(r.bytes) B")
+                results.append(r)
+            } catch {
+                // A failed job is recorded with zero frames so the rest of the batch still runs.
+                print("FAILED \(job.output): \(error)")
+                results.append(JobResult(output: job.output, frames: 0, seconds: 0, fps: 0, bytes: 0))
+            }
         }
         var info = utsname()
         uname(&info)

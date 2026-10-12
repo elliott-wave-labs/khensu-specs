@@ -609,8 +609,9 @@ def _port_interior(root, M, web):
 def shield_port(parent, outline_ymin, thickness, suction=0.5, usb_w=9.2, usb_h=3.4, web=False):
     """The shield's own USB-C receptacle behind the opening in its bottom wall: steel shell, tongue, contacts."""
     zc = suction + (thickness - suction) / 2
-    M = {"steel": material("shield port shell", (0.45, 0.45, 0.46), 1.0, 0.26),
-         "port": material("shield port", (0.012, 0.012, 0.013), 0.0, 0.45),
+    # The cavity is black. A steel lining reads as a bright hole from the side the page shows.
+    M = {"steel": material("shield port shell", (0.012, 0.012, 0.013), 0.0, 0.55),
+         "port": material("shield port", (0.008, 0.008, 0.009), 0.0, 0.6),
          "contacts": material("shield contacts", (0.9, 0.62, 0.3), 1.0, 0.2)}
     y0 = outline_ymin + 0.95
     bm = bmesh.new()

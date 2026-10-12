@@ -2,7 +2,7 @@
 
 Revision B, 10 October 2026. **Preliminary.** Phone interface dimensions are placeholders until they are replaced with Apple's Accessory Design Guidelines drawings for each target model. Electrical figures marked *estimate* are to be measured on the first boards.
 
-suñůlink.shield (formerly the khensu shell) is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **There is one product, named simply suñůlink.shield: the CAD style `wrap-xl`, on iPhone 18 Pro and Pro Max** (iPhone 18 to follow; decided 11 Oct 2026). On iPhone 18 Pro it is a 71.0 × 105.9 mm body below the full-width camera plateau, 7.68 mm thick (3 mm above the lens tops), 14.0 Wh, 121 g titanium / 148 g brass. The other styles stay in the CAD as engineering references only. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
+suñůlink.shield (formerly the khensu shell) is a post-quantum mesh transceiver and node that attaches to the back of an iPhone. **There is one product, named simply suñůlink.shield: the CAD style `wrap`, on iPhone 18 Pro and Pro Max** (iPhone 18 to follow; decided 11 Oct 2026, moved from `wrap-xl` to `wrap` the same day so the shield covers the whole back). On iPhone 18 Pro it is a 71.0 × 149.2 mm body over the whole back, a flat plate over the full-width camera plateau with an opening per lens and sensor, 4.68 mm thick (level with the lens tops, 0 mm above them), 7.5 Wh, 95 g titanium / 136 g brass. The other styles stay in the CAD as engineering references only. It relays sealed khensu packets over Wi-Fi HaLow to nearby shells and home nodes, reaches the internet through the phone or Wi-Fi, wakes the phone over Bluetooth instead of Apple's push service, and earns from token burning like any node. Background in `design/mesh.md` section 6.
 
 ## 1. Deliverables
 
@@ -24,8 +24,8 @@ DXF files are AutoCAD R2018, millimetres, with native DIMENSION and HATCH entiti
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | iPhone 18 Pro | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-IPHONE-18-PRO-CARD-100/101 |
 | Fill | iPhone 18 Pro | 65.8 × 143.0, camera plate | 4.7 (level) | 6.5 Wh | 84 g | Magnets and suction | KS-IPHONE-18-PRO-FILL-100/101 |
-| Wrap | iPhone 18 Pro | 71.0 × 149.2, camera plate over the full-width plateau | 4.7 (level) | 7.5 Wh | 95 g (136 g brass) | Magnets and shock-isolating suction layer | KS-IPHONE-18-PRO-WRAP-100/101 |
-| **Wrap XL (the product)** | iPhone 18 Pro | 71.0 × 105.9, the back below the full-width camera plateau | 4.7 (level, 0 mm above the lenses) | 6.5 Wh | 74 g (93 g brass) | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
+| **Wrap (the product)** | iPhone 18 Pro | 71.0 × 149.2, camera plate over the full-width plateau | 4.7 (level, 0 mm above the lenses) | 7.5 Wh | 95 g (136 g brass) | Magnets and shock-isolating suction layer | KS-IPHONE-18-PRO-WRAP-100/101 |
+| Wrap XL | iPhone 18 Pro | 71.0 × 105.9, the back below the full-width camera plateau | 4.7 (level, 0 mm above the lenses) | 6.5 Wh | 74 g (93 g brass) | Magnets and suction | KS-IPHONE-18-PRO-WRAP-XL-100/101 |
 | Card | Standard | 56 × 86 | 5.2 | 4.1 Wh | 50 g | Magnets (53 mm ring) | KS-ISLAND-CARD-100/101 |
 | Fill | Standard | 65.5 × 140.6, camera plate | 3.6 (level) | 4.6 Wh | 69 g | Magnets and suction | KS-ISLAND-FILL-100/101 |
 | Wrap | Standard | 70.7 × 146.8, camera plate | 3.6 (level) | 5.4 Wh | 79 g | Magnets and suction | KS-ISLAND-WRAP-100/101 |
@@ -94,9 +94,9 @@ At setup the app creates a `SecureEnclave.MLDSA87` key (CryptoKit, iOS 26), gate
 | Guard (Guard-M) | STMicroelectronics STM32U5 (Cortex-M33 with TrustZone, TRNG, AES/SHA acceleration, SPI and SDIO host) | Open Rust firmware; enforces frame sizes, the tick, destinations and signed parameters; ML-DSA-87 secure boot; holds radios in reset until its checks pass |
 | Mesh radio | Wi-Fi HaLow (802.11ah) module based on the Morse Micro MM6108, hosted by the guard | Pre-certified module; must support a microcontroller host |
 | Wi-Fi and Bluetooth | NXP IW612 (Wi-Fi 6, Bluetooth LE, 802.15.4), hosted by the guard | Link to the phone and nearby devices; Bluetooth wakes the app |
-| Power path | TI TPS25750 USB-C PD controller, TI BQ25895 1S charger with power path, TI BQ27427 fuel gauge | Charges over its own USB-C from a wall charger or power bank. When its cells run out it takes at most 1 W from the phone: through the Qi2 coil where the phone offers reverse wireless power (Apple does not document this for iPhone; to verify on iPhone 18 Pro), otherwise over a short USB-C cable. The iPhone's port stays free |
+| Power path | TI TPS25750 USB-C PD controller, TI BQ25895 1S charger with power path, TI BQ27427 fuel gauge | Charges over its own USB-C from a wall charger or power bank. When its cells run out it takes at most 1 W from the phone: over a short USB-C cable (the product's flat metal back has no Qi2 coil). The iPhone's port stays free |
 | Wireless power | Qi2-certified receiver module, coil under the skin window facing the phone's MagSafe coil | The flat-back fill and wrap have no coil, since metal over it would block charging; they charge over USB-C. The phone can't charge wirelessly through any metal shell |
-| Cells | 1S Li-ion pouch, 3.85 V nominal, about 1,690 mAh (6.5 Wh) in the wrap XL, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles; IEC 62133-2 and UN 38.3 |
+| Cells | 1S Li-ion pouch, 3.85 V nominal, about 1,950 mAh (7.5 Wh) in the wrap, custom shape to the cavity | Protection circuit on board; NTC on the pack; 1.7–1.8 mm thick in slim styles; IEC 62133-2 and UN 38.3 |
 | Cells, extended option | 1S silicon-carbon anode pouch (Group14 SCC55 class, as shipping in flagship phones), same envelope: about 7.5 Wh (about 1,950 mAh). Higher cost. Next step: 100% silicon anode (Enovix AI-1 class, 935 Wh/L independently tested, in smartphone qualification as of 2026) | Silicon swells more than graphite: keep the 0.1 mm swell allowance in the cell pocket, qualify cycle life at the node's duty cycle, same protection, NTC and IEC 62133-2 / UN 38.3 certification |
 
 **Power budget (estimate, to be measured):**
@@ -109,7 +109,7 @@ At setup the app creates a `SecureEnclave.MLDSA87` key (CryptoKit, iOS 26), gate
 | Guard | 0.02–0.05 W |
 | **Total** | **about 1 W** |
 
-At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the XL about 11 hours. After that it stops relaying until it is charged, unless the owner connects the short cable from the box: an iPhone 15 or later supplies up to 4.5 W to USB-C accessories, and the shell takes at most 1 W from it, about 1 Wh an hour or roughly 5–8% of the iPhone's battery. The TPS25750 negotiates as a sink only, firmware caps the input at 1 W when the source is a phone, and it never charges its own cells from the phone. The owner's own messages still arrive through the phone either way.
+At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours on its own cells, the card about 3.5 hours and the wrap, the product (7.5 Wh), about 6.4 hours. After that it stops relaying until it is charged, unless the owner connects the short cable from the box: an iPhone 15 or later supplies up to 4.5 W to USB-C accessories, and the shell takes at most 1 W from it, about 1 Wh an hour or roughly 5–8% of the iPhone's battery. The TPS25750 negotiates as a sink only, firmware caps the input at 1 W when the source is a phone, and it never charges its own cells from the phone. The owner's own messages still arrive through the phone either way.
 
 **Fast charging (targets, to validate):** 50% in about 15 minutes and full in about 45 minutes from a 20 W or larger USB-C PD charger. That is about 2C constant current (3.2 A into 1,610 mAh, about 13 W at the cell) up to 4.2 V, then a constant-voltage taper; the BQ25895 supports up to 5 A. Needs a cell rated for 2C charging and its cycle life qualified at that rate. Thermal control (section 6) cuts the rate above 41 °C at the skin, so a warm shell charges more slowly.
 
@@ -148,7 +148,7 @@ At about 1 W and 85% conversion efficiency, a slim shell runs about 4–5 hours 
 - **RF exposure:** the shell is worn against the phone and the head during calls, so SAR evaluation is required in each market.
 - **Battery and safety:** UN38.3 (transport), IEC 62133-2, IEC 62368-1.
 - **RF:** the flat-back styles radiate only through the edge band, with metal over the antennas; measure HaLow, Wi-Fi and Bluetooth efficiency on first articles and widen the band (or add a second on a side wall) if range falls short.
-- **Charging and USB:** Qi2 certification (WPC) for the receiver; USB-IF compliance for the USB-C port.
+- **Charging and USB:** USB-IF compliance for the USB-C port. Qi2 certification (WPC) applies only to the card reference style, which keeps a receiver coil.
 - **Materials:** RoHS, REACH, WEEE, battery directive labelling.
 - **Apple:** marketed as "MagSafe-compatible", not "Made for MagSafe" (an MFi programme term).
 - **Test plan before release:**

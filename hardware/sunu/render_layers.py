@@ -7,7 +7,7 @@ orthographic and its up vector has a positive Z component, so a Z offset is a pu
 
     uv run python render_layers.py <out_dir> [--samples N] [--size PX]
 
-The CAD (sunu.py, the wrap-xl style: suñůlink.shield) is exported to STL here, rendered with Blender's Cycles
+The CAD (sunu.py, the wrap style, the whole back with a plate over the camera: suñůlink.shield) is exported to STL here, rendered with Blender's Cycles
 (this same file runs inside Blender for that step) on the procedural iPhone 18 Pro and Apple-style studio
 lights from photoreal.py, then the colour variants and assemblies are composited with Pillow.
 """
@@ -30,7 +30,7 @@ PHONE_COLOURS = ["burgundy", "glacier", "silver", "black"]
 DEFAULT_COLOUR = "burgundy"
 # The titanium shell's ceramic finish is the phone's colour and sheen. Brass is bare C26000 with a satin bead-blast.
 FINISHES = [*PHONE_COLOURS, "brass"]
-STYLE = "wrap-xl"
+STYLE = "wrap"
 
 LAYERS = ["phone", "suction_film", "base", "magnet_ring", "pcb", "battery", "coil", "window_inserts", "housing"]
 BLENDER = os.environ.get("BLENDER", "/Applications/Blender.app/Contents/MacOS/Blender")
@@ -215,7 +215,19 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
 
     # Ceramic coat over Grade 5 titanium in the phone's own colour and sheen; bare brass with a satin bead-blast.
     powder_mat = material("ceramic", metallic=0.8, roughness=0.36, **{"Coat Weight": 0.12, "Coat Roughness": 0.3})
-    brass_mat = grain(material("brass", srgb_to_linear((222, 182, 110)), 1.0, 0.34), 320, 0.06)
+    brass_mat = material("brass", srgb_to_linear((214, 174, 98)), 1.0, 0.36, Anisotropic=0.65)
+    nt = brass_mat.node_tree
+    tan = nt.nodes.new("ShaderNodeTangent")
+    tan.direction_type, tan.axis = "RADIAL", "Y"
+    nt.links.new(tan.outputs["Tangent"], P.bsdf_of(brass_mat).inputs["Tangent"])
+    tc, mp, noise, bump = (nt.nodes.new(n) for n in ("ShaderNodeTexCoord", "ShaderNodeMapping", "ShaderNodeTexNoise", "ShaderNodeBump"))
+    mp.inputs["Scale"].default_value = (0.6, 90, 90)
+    noise.inputs["Scale"].default_value, noise.inputs["Detail"].default_value = 6, 8
+    bump.inputs["Strength"].default_value, bump.inputs["Distance"].default_value = 0.08, 0.01
+    nt.links.new(tc.outputs["Object"], mp.inputs["Vector"])
+    nt.links.new(mp.outputs["Vector"], noise.inputs["Vector"])
+    nt.links.new(noise.outputs["Fac"], bump.inputs["Height"])
+    nt.links.new(bump.outputs["Normal"], P.bsdf_of(brass_mat).inputs["Normal"])
     windows_mat = material("windows", metallic=0.0, roughness=0.48, **{"Coat Weight": 0.15, "Coat Roughness": 0.3})
     mats = {
         "suction_film": material("film", (0.66, 0.68, 0.72, 1), 0.0, 0.45, Alpha=0.5),
@@ -232,6 +244,37 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
         ob = import_stl(name)
         ob.data.materials.append({"housing": powder_mat, "window_inserts": windows_mat}.get(name) or mats[name])
         groups[name] = [ob]
+    # The ñü.isheru inlay, flush in the back on the MagSafe axis: the site's moldavite textures (khensu-site sits
+    # beside this repo), mapped as in its tools/shield/shield.py.
+    tex = Path(__file__).resolve().parents[3] / "khensu-site/sites/khensu-nu/public/khensu/shell/3d"
+    if (tex / "inlay-moldavite.jpg").exists():
+        me = bpy.data.meshes.new("inlay")
+        bm = bmesh.new()
+        bmesh.ops.create_circle(bm, cap_ends=True, segments=192, radius=10.6)
+        uv = bm.loops.layers.uv.new("UVMap")
+        for f in bm.faces:
+            for loop in f.loops:
+                loop[uv].uv = (0.5 + loop.vert.co.x / 24, 0.5 + loop.vert.co.y / 24)
+        bm.to_mesh(me)
+        bm.free()
+        inlay = bpy.data.objects.new("inlay", me)
+        sc.collection.objects.link(inlay)
+        inlay.location = (0.0, -5.0, info["shell_t"] + 0.04)
+        im = P.material("inlay", (1, 1, 1), 0.0, 0.3, **{"Coat Weight": 1.0, "Coat Roughness": 0.03})
+        nt = im.node_tree
+        b = P.bsdf_of(im)
+        t = nt.nodes.new("ShaderNodeTexImage")
+        t.image = bpy.data.images.load(str(tex / "inlay-moldavite.jpg"))
+        nt.links.new(t.outputs["Color"], b.inputs["Base Color"])
+        o = nt.nodes.new("ShaderNodeTexImage")
+        o.image = bpy.data.images.load(str(tex / "inlay-moldavite-orm.png"))
+        o.image.colorspace_settings.name = "Non-Color"
+        sep = nt.nodes.new("ShaderNodeSeparateColor")
+        nt.links.new(o.outputs["Color"], sep.inputs["Color"])
+        nt.links.new(sep.outputs["Green"], b.inputs["Roughness"])
+        nt.links.new(sep.outputs["Blue"], b.inputs["Metallic"])
+        inlay.data.materials.append(im)
+        groups["housing"].append(inlay)
     # The plug-through sits inside the antenna band, so it renders with the band, which occludes it from above.
     groups["window_inserts"].append(P.shield_port(None, info["outline_ymin"], info["shell_t"], info["suction"]))
 
@@ -287,9 +330,9 @@ def blender_main(work: Path, out: Path, samples: int, size: int):
         wb = P.bsdf_of(windows_mat)
         if finish == "brass":
             housing.data.materials[0] = brass_mat
-            # Against bare brass the windows are gloss black: an accent ring round the inlay and a band at the bottom.
-            set_linear(windows_mat, (0.004, 0.004, 0.0045))
-            wb.inputs["Metallic"].default_value, wb.inputs["Roughness"].default_value = 0.0, 0.18
+            # The antenna band can't be metal, so on brass it carries a metallic-pigment coat in the same tone.
+            set_linear(windows_mat, srgb_to_linear((236, 213, 156)))
+            wb.inputs["Metallic"].default_value, wb.inputs["Roughness"].default_value = 0.55, 0.4
         else:
             housing.data.materials[0] = powder_mat
             set_linear(powder_mat, P.COLOURS[finish]["alu"])

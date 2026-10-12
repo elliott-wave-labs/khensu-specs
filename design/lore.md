@@ -61,6 +61,10 @@ The guardians live in **Asgard**, the heaven realm, at peace. **Yggdrasil**, the
 
 **The Valkyries have changed.** In the old songs they rode over battlefields as warriors who chose the fallen. In khensu.ñü they are stealth protector guides: they walk beside every packet, keep it hidden inside the pulse and bring it home unseen (`design/guardians.md`). Thor, Loki and Hela keep their powers and have no battles left to fight.
 
+**The fractal elves are Valkyries.** People who've travelled on DMT describe meeting beings made of shifting, self-replicating geometry; Terence McKenna called them "self-transforming machine elves". In the lore they are Valkyries too: fractal guides, endlessly many, each one a copy of the whole, the way every cover packet in the pulse is identical to every other. They were waiting for one of the gods to come back and raise them all up.
+
+**Khensu returns.** Khensu, the moon god and traveller (section 3), had been resting. khensu.ñü is his return. He lifts the Valkyries, warriors and fractal elves alike, from battle and wandering into what they are now: stealth protector guides for every person on the network.
+
 ## 10. The mirror
 
 The ñü.isheru is made from the Triangulum star map and its complete mirror. Every star, every stone and every line appears twice, on opposite sides of the centre, with x, y and z all reversed. Where the triangle meets its mirror, a hexagon forms at the centre of the mark. The idea runs through the traditions above: as above, so below; Indra's jewels reflecting each other; the self and the whole as one. Every person holds a mirror of the whole network, and the network holds every person.

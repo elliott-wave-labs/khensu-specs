@@ -1,8 +1,8 @@
 # ñü.Føňt: the house typeface
 
-**Decided 12 October 2026. First release built and published the same day; second release the same day with ñü.Føňt Mono, pulse mode, and Vietnamese, Greek and Cyrillic.** Shown as **ñü.Føňt** (o with stroke U+00F8, n with caron U+0148). Code, files and the page use `nu.font` (`/font` on khensu.nu, `tools/font/` in `khensu-site`); the font family name inside the files is `nu Font`, PostScript names `nuFont-<Style>`. Running text uses nu.font. Elliott typed the name both ways, ñũ.Føñt and ñü.Føňt, and closed with "this style is called ñü.Føňt", so that is the display form; the first form is listed here so the record shows the choice.
+**Decided 12 October 2026. First release built and published the same day; second release the same day with ñü.Føňt Mono, pulse mode, and Vietnamese, Greek and Cyrillic. Taken off the sites' display roles the same evening: Elliott found the first draw handwritten (the d floated; letters did not share a baseline), Dosis was tried for titles and dropped within the hour ("i don't like dosis in the actual site"), and the sites went back to Inter and JetBrains Mono. The redraw is section 6, item 1.** Shown as **ñü.Føňt** (o with stroke U+00F8, n with caron U+0148). Code, files and the page use `nu.font` (`/font` on khensu.nu, `tools/font/` in `khensu-site`); the font family name inside the files is `nu Font`, PostScript names `nuFont-<Style>`. Running text uses nu.font. Elliott typed the name both ways, ñũ.Føñt and ñü.Føňt, and closed with "this style is called ñü.Føňt", so that is the display form; the first form is listed here so the record shows the choice.
 
-ñü.Føňt is the typeface for everything people see from khėnsu.ñü: the wordmark, headings, navigation, buttons and labels on every site, the apps when they reach it, and anything anyone else wants to set in it, because it is published free under the SIL Open Font License. It is also the home of the rule that letters can move: a wordmark is written into a page as paths, one per stroke, and any stroke can animate on its own. The dot on the ė, Elliott's E, is the first one that does.
+ñü.Føňt is meant to be the typeface for everything people see from khėnsu.ñü: the wordmark, headings, navigation, buttons and labels on every site, the apps when they reach it, and anything anyone else wants to set in it, because it is published free under the SIL Open Font License. Today it is on its own page, in the files, and on the link-preview cards; the sites wait for the redraw. It is also the home of the rule that letters can move: a wordmark is written into a page as paths, one per stroke, and any stroke can animate on its own. The dot on the ė, Elliott's E, is the first one that does.
 
 ## 1. What the first release is
 
@@ -96,13 +96,14 @@ Turn it on with `<NuMark name="webe" aura pulse />`. It is on for the webË head
 
 ## 4. Where the font is used
 
-| Role | Font |
-| --- | --- |
-| Headings h1–h3, the wordmark, header navigation, buttons, pills, chips, the product bar name, StatStrip figures | ñü.Føňt, through `--font-display` |
-| Running text, forms, tables | Inter until ñü.Føňt has kerning and hinting (section 6). One line switches it: set `--font-sans` |
-| Code, `~` commands, the node terminal, figures and small labels | ñü.Føňt Mono, through `--font-mono`, with JetBrains Mono as the fallback |
+| Role | Today (since the evening of 12 October 2026) | When the redraw is signed off |
+| --- | --- | --- |
+| Headings h1–h3, the wordmark, header navigation, buttons, pills, chips, the product bar name, StatStrip figures | Inter: `--font-display` is `var(--font-sans)`. The name is text through `Name.astro`, which draws the pulsing dot in CSS over Inter's e (`--edot-top` 0.11em, `--edot-size` 0.125em, from Inter 600's dot accent) | ñü.Føňt, through `--font-display`; the wordmarks back to `NuMark` paths |
+| Running text, forms, tables | Inter | Inter until ñü.Føňt has kerning and hinting. One line switches it: set `--font-sans` |
+| Code, `~` commands, the node terminal, figures and small labels | JetBrains Mono, through `--font-mono` | ñü.Føňt Mono, through `--font-mono`, with JetBrains Mono as the fallback |
+| The nu.font page, the downloadable files, the link-preview cards (`OgCard.astro` pins `nu Font`, so the approved cards do not move with the site type) | ñü.Føňt | ñü.Føňt |
 
-The studio takes the same `global.css` (with its own accent) and the same components through `tools/sync-studio.sh`, which also copies the variable WOFF2 into the studio's `public/fonts/nufont/`.
+Dosis itself was tried for titles for part of that evening (`--font-title`) and removed the same day, files included. The studio takes the same `global.css` (with its own accent) and the same components through `tools/sync-studio.sh`, which also copies the variable WOFF2s into the studio's `public/fonts/nufont/`.
 
 ## 5. Installing it
 
@@ -110,16 +111,17 @@ Published free under the SIL Open Font License 1.1 so it installs anywhere and s
 
 ## 6. Open, in order
 
-1. **Kerning.** No pair spacing yet; the sites use tight letter-spacing on headings. First pairs: every name on the sites, `.ñ`, `ñü`, `kh`, `Fî`, `Bî`, digits.
-2. **Hinting or a size-tuned master.** Then running text can switch.
-3. **Written styles.** A hand-drawn italic and a sharpie style that stays close to the typed forms, as new masters on a `styl` axis or as sibling families.
-4. **Mylar balloons.** Text as floating ñü.3d balloon shells (`design/nu-3d.md`), each glyph inflated from its skeleton with creases and highlights; part of the Templify emulation Elliott is recording.
-5. **Emoji and animated emoji** in the same strokes and capsule ends, including Telegram-style animated emoji.
-6. **Capsule renderer.** Glyphs drawn from their strokes at run time with a built-in alpha mask, tuned for the Neural Engine and TPUs, so the rounding "fades away" at any size without outline files.
-7. **Per-letter presets.** Named cues (fade, pulse, drift, burst) chosen in CSS for any letter or mark, with the choreography of a whole wordmark in one data attribute.
-8. **More scripts.** Arabic, Hebrew, Devanagari and CJK; and the language-specific forms Inter carries (`locl` for Bulgarian, Serbian, Dutch ĳ), which need OpenType features rather than more glyphs.
-9. **Mark attachment in the font.** Marks are precomposed per letter today. GPOS mark-to-base anchors would let any base take any mark and make the composite table unnecessary.
-10. **Mono fit.** Squeezing fits every glyph in the cell, but m, w, M, W and @ get narrow at the heavy weights; a drawn mono master for those would read better.
+1. **The redraw.** Elliott's brief, 12 October: "we don't want this handwritten feel… we want modern and clean"; "the d looks like it's floating. everything should have same baseline like any font"; "good job on h and r"; "use the dosis style but don't actually use that font… a font that is dosis but with our stem rule". So: Dosis-like proportions on the same skeleton engine (measured from Dosis at 1000 UPM: x-height 472, cap 731, ascender 763, descender −232, o ink about 380 wide, H 421, round terminals, stadium bowls, double-storey a, single-storey g, hooked f and j, straight y tail, dotted zero), with every letter on the baseline, no floating b or d, and the stem rule kept where it was approved: h and r, and with them n, m and u as arches. Expected to change beyond h and r: b, d, p, q back onto the baseline with stems; the a double-storey; g, t, f, l and the capitals on the new heights; the mono refitted. Planned metrics CAP 730, XH 470, ASC 760, DESC −230, overshoot 8; weights 26/50/84/120/142/164 for the six masters. Not started; needs Elliott's go-ahead, then the font files first ("i wanna see the font files once you add our styling for stem rule for h").
+2. **Kerning.** No pair spacing yet; the sites used tight letter-spacing on headings. First pairs: every name on the sites, `.ñ`, `ñü`, `kh`, `Fî`, `Bî`, digits.
+3. **Hinting or a size-tuned master.** Then running text can switch.
+4. **Written styles.** A hand-drawn italic and a sharpie style that stays close to the typed forms, as new masters on a `styl` axis or as sibling families.
+5. **Mylar balloons.** Text as floating ñü.3d balloon shells (`design/nu-3d.md`), each glyph inflated from its skeleton with creases and highlights; part of the Templify emulation Elliott is recording.
+6. **Emoji and animated emoji** in the same strokes and capsule ends, including Telegram-style animated emoji.
+7. **Capsule renderer.** Glyphs drawn from their strokes at run time with a built-in alpha mask, tuned for the Neural Engine and TPUs, so the rounding "fades away" at any size without outline files.
+8. **Per-letter presets.** Named cues (fade, pulse, drift, burst) chosen in CSS for any letter or mark, with the choreography of a whole wordmark in one data attribute.
+9. **More scripts.** Arabic, Hebrew, Devanagari and CJK; and the language-specific forms Inter carries (`locl` for Bulgarian, Serbian, Dutch ĳ), which need OpenType features rather than more glyphs.
+10. **Mark attachment in the font.** Marks are precomposed per letter today. GPOS mark-to-base anchors would let any base take any mark and make the composite table unnecessary.
+11. **Mono fit.** Squeezing fits every glyph in the cell, but m, w, M, W and @ get narrow at the heavy weights; a drawn mono master for those would read better.
 
 ## 7. Patent assessment
 

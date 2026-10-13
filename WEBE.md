@@ -175,7 +175,7 @@ A link shared into a chat, a feed or another site carries a preview. On the ordi
 <meta property="og:image:alt" content="…" />
 <meta property="nu:preview" content="https://khensu.nu/og/buy-square.mp4" />
 <meta property="nu:preview:type" content="video/mp4; codecs=hvc1" />
-<meta property="nu:preview:duration" content="3" />
+<meta property="nu:preview:duration" content="4" />
 <meta property="nu:preview:size" content="1080x1080" />
 <meta property="nu:preview:bytes" content="3279733" />
 <meta property="nu:preview:hash" content="sha-256=…" />
@@ -187,7 +187,7 @@ A link shared into a chat, a feed or another site carries a preview. On the ordi
 - **Fetch.** Preview media is fetched like any other object: on webË through the two-relay stealth fetch (5.1); on the ordinary web through the app's mixnet exit. Previews are capped at 8 MiB and 10 s unless the person taps to load more. `nu:preview:hash` must match or the preview is dropped and the `og:image` still is shown instead.
 - **Rendering on Apple platforms.** The app renders previews in SwiftUI. Video previews are decoded by VideoToolbox (HEVC with alpha where present) or by the nu.media decoder on the Neural Engine, then drawn through a Metal layer so a page can ask for one of a small set of named effects in `nu:preview:effect`: `ripple` (a touch sends a ring across the video), `tilt` (parallax with the device), `glass` (the Liquid Glass material over the frame) and `none`. The effect is a hint; a client may ignore it, and reduced-motion settings always do.
 - **Privacy.** Fetching a preview must not tell the page who looked: no cookies, no referrer, no per-person URL. Clients fetch previews through the mixnet, prefetch at most the first `nu:preview`, and strip `nu:preview:*` from pages they publish on a person's behalf unless the author set them.
-- **The khensu.nu sites.** Every page on khensu.nu and dev.khensu.nu emits `og:image` (1200 × 630), the square still for Instagram-style link pages, and, where one exists, `nu:preview` with the 3-second HEVC square (`tools/og-anim.sh`): Earth time-lapsed under the phone turning once, the card's words on top.
+- **The khensu.nu sites.** Every page on khensu.nu and dev.khensu.nu emits `og:image` (1200 × 630), `og:video` pointing at a direct landscape MP4 so Apple Messages autoplays the preview (TN3156; `design/indra.md`), the square still for Instagram-style link pages, and, where one exists, `nu:preview` with the HEVC square (`tools/og-anim.sh`, 4 s default; `MODE=hyper` keeps the earlier 3 s ñü.Føňt cards): Earth time-lapsed under the phone turning once, Indra's lattice over it, the card's words on top.
 
 ## 8. Feeds
 

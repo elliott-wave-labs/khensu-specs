@@ -16,7 +16,7 @@ Memory (KhensuMemory, the on-device index engine in `khensu-core`) is shown thro
 
 **Krishna's universal form.** In the Bhagavad Gītā (chapter 11), Krishna, Arjuna's charioteer and counsel, shows Arjuna his universal form: all worlds, all times and all beings seen at once. Memory's whole-life view is that moment at personal scale: everything you've kept, across years and apps, seen together. Krishna is also the image for the private AI agents (the `~` commands): a guide who drives beside you and counsels, while the choices stay yours.
 
-Code keeps its names (`KhensuMemory`, `nu.khensu.memory`); Indra's Net and Krishna are how memory is shown and explained.
+Code keeps its names (`KhensuMemory`, `nu.khensu.memory`); Indra's Net and Krishna are how memory is shown and explained. The same net is the white lattice on the site heroes and in the animated link-preview cards that play in iMessage (`design/indra.md`).
 
 ## 3. Ancient Egypt: where the names come from
 

@@ -101,7 +101,7 @@ Turn it on with `<NuMark name="webe" aura pulse />`. It is on for the webË head
 | Headings h1–h3, the wordmark, header navigation, buttons, pills, chips, the product bar name, StatStrip figures | Inter: `--font-display` is `var(--font-sans)`. The name is text through `Name.astro`, which draws the pulsing dot in CSS over Inter's e (`--edot-top` 0.11em, `--edot-size` 0.125em, from Inter 600's dot accent) | ñü.Føňt, through `--font-display`; the wordmarks back to `NuMark` paths |
 | Running text, forms, tables | Inter | Inter until ñü.Føňt has kerning and hinting. One line switches it: set `--font-sans` |
 | Code, `~` commands, the node terminal, figures and small labels | JetBrains Mono, through `--font-mono` | ñü.Føňt Mono, through `--font-mono`, with JetBrains Mono as the fallback |
-| The nu.font page, the downloadable files, the link-preview cards (`OgCard.astro` pins `nu Font`, so the approved cards do not move with the site type) | ñü.Føňt | ñü.Føňt |
+| The nu.font page, the downloadable files, and the hyper link-preview mode (`OgCard` `mode="hyper"`, `MODE=hyper` for og tools); shipped cards use Inter | ñü.Føňt | ñü.Føňt |
 
 Dosis itself was tried for titles for part of that evening (`--font-title`) and removed the same day, files included. The studio takes the same `global.css` (with its own accent) and the same components through `tools/sync-studio.sh`, which also copies the variable WOFF2s into the studio's `public/fonts/nufont/`.
 

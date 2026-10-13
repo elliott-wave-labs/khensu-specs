@@ -743,7 +743,7 @@ People fund each other directly over the network, with no platform cut: **nuFi G
 
 Design: `design/nufi.md`.
 
-**Shield orders without a card processor (decided 11 Oct 2026).** No Stripe. khensu.nu/buy takes free reservations by email (no server, no payment data), and payment opens in the khensu.nu app over the shielded pool, reservations first in the order they came in. The cost table shows $0 payment processing; the only charge is the network fee to node operators.
+**Shield orders on the site with Stripe (decided 13 Oct 2026; replaces the 11 Oct “no card processor” decision).** khensu.nu/buy takes card payment today through Stripe so money can come in before the shielded pool ships. Shields sell **at cost** (expected cost to make plus a 5% warranty reserve, tax included) in three editions — Core (no Qi, no neural chips), Titanium, and solid brass — and everyone pays a flat **$42 activation** fee. Overnight shipping is charged at cost (estimate **$42** at contract rates). The cost table uses Stripe’s published US online rate of **2.9% + $0.30** on the full charge (shield at cost + activation + overnight shipping). International cards add about 1.5% (and currency conversion about 1% more) on Stripe’s standard pricing; the table shows the domestic rate. When ñü.wallet is live, in-app shielded pay stays available with only the network fee; site Stripe remains for people who want to pay by card.
 
 ## Compared with existing post-quantum coins
 

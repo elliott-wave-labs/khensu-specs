@@ -17,7 +17,8 @@ Everything khensu.nu, its network or its sites could touch, and what happens to 
 | Push token (APNs) | Encrypted inside your wake capability; decrypted by the push gateway to send a wake | The gateway, in memory, for up to 20 seconds | Not stored |
 | App Attest assertion | Sent once to the credential issuer at enrolment | The issuer, to check the app is genuine | Discarded after the check; only a commitment the issuer can't link to you is kept |
 | Payment amounts and parties | Shielded notes | Only sender and recipient | Era trees and nullifiers are deleted 30 days after each era closes |
-| Email you send us (support, security, suñůlink.shield reservations) | Our mailbox | Elliott Wave LLC | Until your request is handled, or for reservations until your shield ships; deleted sooner on request |
+| Email you send us (support, security, suñůlink.shield orders) | Our mailbox | Elliott Wave LLC | Until your request is handled, or for orders until your shield ships; deleted sooner on request |
+| Card payment for suñůlink.shield on khensu.nu/buy | Stripe (processor); we see name, email, amount, last four digits and billing country in the Stripe Dashboard — not full card numbers | Elliott Wave LLC (controller); Stripe, Inc. (processor) | Stripe’s retention for payments and disputes; order records until the shield ships and warranty ends, then as required for tax and accounting |
 | Website visits | Google Cloud's content delivery network, to serve the page | Google Cloud, as our processor | We keep no logs; no cookies, analytics, trackers or third-party scripts |
 
 There are no accounts with names, phone numbers or email addresses in the app. There is no advertising, no profiling, no data sale or sharing, and no data broker relationship of any kind.
@@ -66,7 +67,7 @@ There are no accounts with names, phone numbers or email addresses in the app. T
 | Forwarding packets (IP address in memory) | 6(1)(b), to provide the service you asked for |
 | Push wakes | 6(1)(b) |
 | App Attest check at enrolment | 6(1)(f), preventing spam and abuse, with the issuer unable to link the check to you |
-| Replying to your email; reservations | 6(1)(b) |
+| Replying to your email; fulfilling a paid suñůlink.shield order | 6(1)(b) |
 | Serving the website | 6(1)(f), delivering the pages you request |
 
 No processing relies on consent that could be withdrawn and no processing involves special category data (Article 9). There is no automated decision-making or profiling (Article 22).

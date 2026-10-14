@@ -40,4 +40,4 @@ The AGPL and Apple's App Store terms conflict for third-party copyright holders.
 
 ## Patents
 
-Apache-2.0 includes a patent licence for khensu-core. Protocol patents are covered by the patent pledge (`PATENT-PLEDGE.md`, draft pending counsel). KhensuMemory patents are licensed with the AGPL code to AGPL users and commercially to everyone else.
+Apache-2.0 includes a patent licence for khensu-core. As of the founder handover on 14 October 2026 (`FOUNDER-HANDOVER.md`), Elliott Wave LLC grants the royalty-free patent licence in that notice for every patent and application needed to implement khėnsu.ñü. Assessments and drafts live in `PATENTS.md` and `patents/`; they are public with the specs repo.

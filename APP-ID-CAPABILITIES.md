@@ -76,7 +76,7 @@ Apple services that remain only see content-free data: APNs (a fixed "New messag
 
 If testing shows a real need (for example, an on-device spam classifier in Core ML), add the one capability that need requires.
 
-**Configured in Xcode, not here:** Background Modes (`remote-notification`, `voip`, `processing`), Keychain Sharing, Hardened Runtime (macOS), CallKit, Foundation Models (no capability needed for the on-device model). The Private Cloud Compute entitlement is **never requested**.
+**Configured in Xcode, not here:** Background Modes (`remote-notification`, `voip`, `processing`, `audio` for call PiP), Keychain Sharing, Hardened Runtime (macOS), CallKit, Live Activities (`NSSupportsLiveActivities` on `nu.khensu.ptah` and the `CallActivity` widget), Foundation Models (no capability needed for the on-device model). The Private Cloud Compute entitlement is **never requested**. Call Picture in Picture uses `AVPictureInPictureVideoCallViewController` so remote and local video stay in the PiP window (`design/calls-pip.md`).
 
 ## Don't enable
 

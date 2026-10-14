@@ -38,6 +38,20 @@ Listener orientation: yaw right-positive; Web Audio forward/up from head pose (`
 - Kept tracks and added files are sealed under a non-extractable AES-GCM device key; AAD binds set and chunk index.
 - Catalogue entries name their licence. Third-party music in the user’s library is never uploaded.
 
-## 5. Patent assessment
+## 5. New listening IP (14 Oct 2026)
 
-See `PATENTS.md` (nu.waves player entry, 14 Oct 2026): mid-listen movable HRTF objects with venue/ñü.ÊQ, clock-pinned live programmes without a playlist server, and sealed on-device library with head-tracked listener — assess before any public patent claim language beyond this design doc.
+These ship in the web player and stay on the device. Code names are ASCII; people see the ñü forms in the UI.
+
+| Shown | Code | What it is |
+| --- | --- | --- |
+| ñü.scene | `scene` | A named snapshot of every sound’s position, optional orbits, venue and ñü.ÊQ for a track. Recall mid-listen without re-encoding. Compact share codes are numbers and letters you copy yourself — nothing is uploaded. |
+| ñü.orbit | `orbit` | A sound walks a horizontal path around a centre at a chosen rate. Only the place numbers move; the samples stay put. |
+| ñü.tide | `tide` | Home surfaces collections, albums and channels that fit the local hour (dawn / day / dusk / night), with no server and no profile. |
+| ñü.ink | `ink` | While you drag and turn, a private path is drawn; you can keep it as a small glyph of how you listened, not of the music. |
+| ñü.dim | `dim` | Sleep’s last 45 seconds collapse positions and reverb toward you, then fade volume, so the room goes quiet before the sound does. |
+
+Also: “made for you” from likes and history on the device, queue reorder, PWA install prompt, wake lock while playing, swipe the mini bar to skip, richer keyboard shortcuts, offline banner.
+
+## 6. Patent assessment
+
+See `PATENTS.md` (nu.waves player entry, 14 Oct 2026, and the ñü.scene / ñü.orbit / ñü.ink / ñü.tide / ñü.dim row): mid-listen movable HRTF objects with venue/ñü.ÊQ, clock-pinned live programmes without a playlist server, sealed on-device library with head-tracked listener, plus saved spatial scenes, path-following objects, listening handwriting glyphs, clock-personalised home and room-collapsing sleep — assess before any public patent claim language beyond this design doc.

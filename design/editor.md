@@ -1,6 +1,6 @@
 # Editor: video and photo editing in khensu.nu
 
-Working name only; the product name is still to be chosen. Code identifier while unnamed: `nu.khensu.editor`, a target inside `khensu-apple` for iPhone, iPad and Mac (iOS, iPadOS and macOS 26), Liquid Glass chrome like the rest of the app.
+**Product name: nu.moments** (shown **ñü.mømëntš**). Code and host: `moments`, `nu.khensu.moments`, `moments.khensu.nu`. Canonical product brief: `design/nu-moments.md`. This file keeps the engineering sections (upscaling, expansion, templates, stabilization, matting, export).
 
 ## 1. Rules
 

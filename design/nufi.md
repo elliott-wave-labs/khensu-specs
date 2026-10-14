@@ -14,6 +14,8 @@ The first thing nu.Fi does, and the reason the network exists (`AGENTS.md`). Sta
 
 Every view (one minute watched) or play pays the creator 1¢, $10 per 1,000, with no platform cut (decided 11 Oct 2026, `OPEN-QUESTIONS.md` 89). Tips, the creator's own subscriptions and their sales of albums, downloads and tickets go to them whole. Apps on webË pay a flat 10% on in-app purchases and subscriptions, never scaled up or down; tips stay 100% to the person (`design/app-commerce.md`).
 
+**nu.media bans (decided 14 Oct 2026).** A stock-app ban defaults to one month and may be extended or made permanent. It locks receiving on that persona's media payment address: new creator pay, tips and sales accumulate as **held** earnings (shown in the wallet, eligible after the ban lifts). Spendable balance already in the wallet stays fully spendable. Nobody freezes notes in the pool. Detail: `design/nu-media-bans.md`.
+
 ### 1.3 Node contributor economics
 
 Anyone can join: a Mac or a Raspberry Pi 5 on an ordinary internet connection is a node, and a suñůlink.shield joins the radio mesh (`design/mesh.md`). Nodes are paid every epoch for verified work (packets mixed, bytes stored and challenged, relay minutes, media delivered), shared by work at one worldwide rate, never by location (`design/node-earnings.md`).
@@ -95,3 +97,4 @@ Outside the US, the equivalents differ: EU ECSP Regulation for crowdfunding (one
 - Patent assessment: consensus-released all-or-nothing escrow in a shielded pool, and repayments hidden in constant-rate cover traffic, may be new; assess before any public detail (`PATENTS.md`).
 - "No shareholders" (1.4) against `business/FUNDING.md` and the token allocation in `PLAN.md` 7, which mention a company raise and a company token share: confirm they're consistent before either is published.
 - How plays beyond what a subscriber's plan covers are paid for (`OPEN-QUESTIONS.md` 89).
+- Whether permanently banned held earnings ever forfeit to the node pay pool, or only release on an explicit lift (`design/nu-media-bans.md` 3.2; `OPEN-QUESTIONS.md`).

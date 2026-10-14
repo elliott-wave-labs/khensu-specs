@@ -1,6 +1,6 @@
 # Open source — khėnsu.ñü
 
-All first-party khėnsu.ñü repositories are **public** as of the founder handover on **14 October 2026**. Full notice: [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md). Licences: [`LICENSING.md`](LICENSING.md).
+All first-party khėnsu.ñü repositories are **public** as of the founder handover on **14 October 2026**. Full notice: [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md). Dead-man's switch: [`DEAD-MANS-SWITCH.md`](DEAD-MANS-SWITCH.md). Licences: [`LICENSING.md`](LICENSING.md).
 
 ## Clone
 

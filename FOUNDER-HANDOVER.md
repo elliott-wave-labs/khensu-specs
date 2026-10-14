@@ -4,7 +4,7 @@
 **UTC:** 2026-10-14T14:27:57Z  
 **Local (PDT):** 2026-10-14 07:27  
 
-Elliott Wave LLC, by Elliott, triggers the founder succession path in `PROTOCOL.md` §12.5–12.7 as a **FounderHandover**: every founder power ends; every khėnsu.ñü repository that was private is public; patented material in those repos is released with the code.
+Elliott Wave LLC, by Elliott, triggers the founder succession path in `PROTOCOL.md` §12.5–12.7 as a **FounderHandover**: every founder power ends; every khėnsu.ñü repository that was private is public; patented material in those repos is released with the code. The dead-man's switch record is [`DEAD-MANS-SWITCH.md`](DEAD-MANS-SWITCH.md).
 
 The on-chain committee escrow and epoch header transition are not yet running. This document is the human-readable handover that those mechanisms will later record. Until the network can countersign, **GitHub public visibility and this notice are the release.**
 

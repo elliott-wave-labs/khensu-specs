@@ -110,7 +110,7 @@ Elliott Wave LLC is established in the United States. Our processing of people i
 | UK Online Safety Act 2023 | Public content as above; private messages stay end-to-end encrypted. We never scan private content |
 | Child sexual abuse material | Known material is blocked from public content by hash list; reports go to NCMEC (US) and the relevant national hotline |
 | Lawful access | We answer valid legal process with what we hold, which is the section 1 inventory. We can't decrypt content, and there is no key, mode or update that could. Every request is counted in the transparency report |
-| Apple App Review Guidelines | Privacy nutrition label: Data Not Collected. Required reason APIs declared in the privacy manifest |
+| Apple App Review Guidelines | Privacy nutrition label: Data Not Collected. Required reason APIs declared in the privacy manifest. Rule 1.2 UGC: filter, report, block, and stock-app BanRecords with receive lock on held earnings (`design/nu-media-bans.md`) |
 
 ## 5. Cryptography and security standards
 

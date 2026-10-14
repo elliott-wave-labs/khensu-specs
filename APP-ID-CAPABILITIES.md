@@ -112,6 +112,7 @@ If testing shows a real need (for example, an on-device spam classifier in Core 
 | `nu.khensu.ptah` | iOS + macOS app (universal purchase) | The "Enable now" list above |
 | `nu.khensu.ptah.notification-service` | Notification Service Extension | App Groups, Data Protection, Enhanced Security |
 | `nu.khensu.ptah.share` | Share Extension | App Groups, Data Protection, Enhanced Security |
-| `group.nu.khensu.ptah` | App Group | Shared by the app and its extensions |
+| `nu.khensu.waves` | iOS + macOS nu.waves companion | App Groups (`group.nu.khensu.ptah`), Data Protection |
+| `group.nu.khensu.ptah` | App Group | Shared by khensu.nu, its extensions, and nu.waves |
 | `nu.khensu.tatenan` | macOS node app (Developer ID, outside the Mac App Store) | None required; Hardened Runtime and notarization are set in Xcode |
 | APNs auth key (.p8) | Key | Used only by the push gateway at `push.khensu.nu`; store it in Secret Manager, never in the app |

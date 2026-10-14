@@ -1,6 +1,6 @@
 # nu.Fi: the khėnsu.ñü finance platform
 
-**Status: proposed, 11 October 2026.** Design sketch; the full design doc and a patent assessment (`PATENTS.md`) follow once it's built (`AGENTS.md`). Shown as **nu.Fi**; code, packages and identifiers use `nufi` (`nu.khensu.nufi`). The address is `nu:nufi.khensu.nu`.
+**Status: proposed, 11 October 2026.** Design sketch; the full design doc and a patent assessment (`PATENTS.md`) follow once it's built (`AGENTS.md`). Shown as **nu.Fi**; code, packages and identifiers use `nufi` (`nu.khensu.nufi`). The address is `nu:fi.khensu.nu` (host `fi.khensu.nu`; code stays `nufi`).
 
 ## 1. What it is
 
@@ -91,7 +91,7 @@ Outside the US, the equivalents differ: EU ECSP Regulation for crowdfunding (one
 - Escrow notes released by the consensus on goal and deadline: can they keep the pool's unlinkability and era expiry, with automatic refunds?
 - How a licensed partner verifies identity for Lend and Invest without khensu.nu ever holding it, and without linking it to the user's messaging identity.
 - Loss handling for Lend (defaults) without a credit bureau: reputation credentials only, or a pooled reserve?
-- Whether nu.Fi Back pre-orders for suñůlink.shield should move from site Stripe checkout onto nu.Fi itself once Back is live (site Stripe is live for card pay today; `PLAN.md`).
+- Whether nu.Fi Back should become the checkout for suñůlink.shield once Back is live (site is email pre-order now, then ñü.wallet when invoiced; no Stripe; `PLAN.md`).
 - Patent assessment: consensus-released all-or-nothing escrow in a shielded pool, and repayments hidden in constant-rate cover traffic, may be new; assess before any public detail (`PATENTS.md`).
 - "No shareholders" (1.4) against `business/FUNDING.md` and the token allocation in `PLAN.md` 7, which mention a company raise and a company token share: confirm they're consistent before either is published.
 - How plays beyond what a subscriber's plan covers are paid for (`OPEN-QUESTIONS.md` 89).

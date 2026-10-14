@@ -48,14 +48,13 @@ Most sites only set `og:image`. Most SEO plugins and checklists never surface `o
 | `/og/<slug>.jpg` | 1200 × 630 | `og:image` still (same composition, frozen) |
 | `/og/<slug>.mp4` | 1200 × 630 HEVC, ~4 s | `og:video` for Messages (landscape so the phone isn't cropped) |
 | `/og/<slug>-square.mp4` | 1080 × 1080 HEVC, ~4 s | `nu:preview` for webË / square clients (`WEBE.md` 7.1) |
-| `/og/hyper/<slug>-square.mp4` | 1080 × 1080 | Earlier ñü.Føňt "hyper" cards, kept for later (`MODE=hyper`) |
 
 Composition (the Indra card):
 
 1. Hero Earth time-lapse as the bed.
 2. Indra's lattice over it (same language as `Net.astro` on the site).
 3. The product (suñůlink.shield) turning once, fully in frame.
-4. Page words as a transparent overlay (Inter by default; hyper mode keeps ñü.Føňt).
+4. Page words as a transparent overlay (Inter).
 5. Two aspect ratios from one story: landscape for Messages' crop, square for Instagram-style and `nu:preview`.
 
 Build:
@@ -64,7 +63,6 @@ Build:
 cd ~/Documents/GitHub/khensu/khensu-site
 sh tools/og.sh            # stills + transparent word overlays
 sh tools/og-anim.sh       # default: 4 s, 30 fps, landscape + square
-# MODE=hyper sh tools/og-anim.sh   # later: the tighter ñü.Føňt cards
 ```
 
 `Base.astro` reads `PREVIEWS` from `src/data/og.ts` (bytes, hash, duration) and emits both `og:video` (wide) and `nu:preview` (square).

@@ -14,7 +14,7 @@ Everything else in this doc (how Messages loads it, how we build the files, what
 
 No special app, no stickers, no `LPLinkMetadata` code on our side. Messages already does this when the page is honest about video.
 
-1. Paste a khėnsu.ñü URL that emits video previews — today `https://khensu.nu/` (home), `/buy`, `/shield`.
+1. Paste a khėnsu.ñü URL that emits video previews — today home, buy, shield, **create** (`create.khensu.nu` / `/creators`), **waves** (`waves.khensu.nu` / `/waves`).
 2. Wait a second. The card should **autoplay muted and loop**.
 3. If you still see a still: Messages caches hard. New thread, or `https://khensu.nu/?v=2`, or remove the old bubble and paste again. The receiver downloads the MP4 on their own connection.
 
@@ -28,7 +28,14 @@ What every such page emits (live today):
 <meta property="og:video:height" content="630" />
 ```
 
-`og:image` is the still fallback for every client that ignores video. `og:video` must be a **direct, downloadable** MP4 (HEVC `hvc1` or H.264), HTTPS — not HLS, not a YouTube/Vimeo page. Apple documents the behaviour in [TN3156](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages) and the [“Ensuring Beautiful Rich Links”](https://developer.apple.com/videos/play/tech-talks/205/) tech talk: Link Presentation downloads the file and plays it inline.
+`og:image` is the still fallback for every client that ignores video. `og:video` must be a **direct, downloadable** MP4, HTTPS — not HLS, not a YouTube/Vimeo page. We ship **H.264 (`avc1`)** for the landscape `og:video` so Apple Messages, Android, and most unfurlers can decode it; the square `nu:preview` stays **HEVC (`hvc1`)** for webË and Apple quality. Apple documents the Messages behaviour in [TN3156](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages) and the [“Ensuring Beautiful Rich Links”](https://developer.apple.com/videos/play/tech-talks/205/) tech talk: Link Presentation downloads the file and plays it inline.
+
+| Client | What you get |
+| --- | --- |
+| Apple Messages | Mute-looping landscape MP4 (`og:video`, H.264) |
+| Android (Messages / RCS that honour `og:video`) | Same H.264 file; HEVC-only cards often fail there |
+| Slack | Classic unfurl shows the still (`og:image`). Slack does not reliably autoplay arbitrary page `og:video` without a Slack app video block |
+| Instagram DMs | Not required; still + square assets exist if useful later |
 
 ## 3. Why it feels impossible (and why that helps)
 
@@ -46,7 +53,8 @@ Most sites only set `og:image`. Most SEO plugins and checklists never surface `o
 | Asset | Size | Role |
 | --- | --- | --- |
 | `/og/<slug>.jpg` | 1200 × 630 | `og:image` still (same composition, frozen) |
-| `/og/<slug>.mp4` | 1200 × 630 HEVC, ~4 s | `og:video` for Messages (landscape so the phone isn't cropped) |
+| `/og/<slug>.mp4` | 1200 × 630 H.264, ~4 s | `og:video` for Messages / Android (landscape so the phone isn't cropped) |
+| `/og/<slug>-hevc.mp4` | 1200 × 630 HEVC, ~4 s | Optional HEVC twin of the landscape card |
 | `/og/<slug>-square.mp4` | 1080 × 1080 HEVC, ~4 s | `nu:preview` for webË / square clients (`WEBE.md` 7.1) |
 
 Composition (the Indra card):

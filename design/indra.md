@@ -30,12 +30,15 @@ What every such page emits (live today):
 
 `og:image` is the still fallback for every client that ignores video. `og:video` must be a **direct, downloadable** MP4, HTTPS — not HLS, not a YouTube/Vimeo page. We ship **H.264 (`avc1`)** for the landscape `og:video` so Apple Messages, Android, and most unfurlers can decode it; the square `nu:preview` stays **HEVC (`hvc1`)** for webË and Apple quality. Apple documents the Messages behaviour in [TN3156](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages) and the [“Ensuring Beautiful Rich Links”](https://developer.apple.com/videos/play/tech-talks/205/) tech talk: Link Presentation downloads the file and plays it inline.
 
-| Client | What you get |
-| --- | --- |
-| Apple Messages | Mute-looping landscape MP4 (`og:video`, H.264) |
-| Android (Messages / RCS that honour `og:video`) | Same H.264 file; HEVC-only cards often fail there |
-| Slack | Classic unfurl shows the still (`og:image`). Slack does not reliably autoplay arbitrary page `og:video` without a Slack app video block |
-| Instagram DMs | Not required; still + square assets exist if useful later |
+| Client | What you get today | Why |
+| --- | --- | --- |
+| Apple Messages | Mute-looping landscape MP4 (`og:video`, H.264), or a “Video” chrome + tap depending on Low Data / Reduce Motion | Documented in [TN3156](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages): **direct downloadable MP4** autoplays. Not a private API. |
+| Google Messages / most Android SMS·RCS | Still (`og:image`) for ordinary sites | Consumer Android does **not** implement Apple’s direct-`og:video` path for arbitrary HTTPS pages. YouTube is special-cased; our H.264 file is ready when they (or another app) adopt the contract. |
+| Slack | Still thumbnail only | Slack unfurls `og:image`. Inline video is allowlisted (YouTube, Vimeo, …). Arbitrary `og:video` is ignored. GIFs in `og:image` are frozen to the first frame. **Hack now:** paste `https://khensu.nu/og/waves.mp4` (Slack plays direct media). Custom unfurl + `/og/embed/?src=waves` needs an LB frame-ancestors exception (sites send `X-Frame-Options: DENY` today). |
+| Discord / some Telegram clients | Often plays direct `og:video` | Closest “it just works” peers to Messages. |
+| Instagram DMs | Still | Not required; square assets exist if useful later |
+
+**You cannot meta-tag Slack or Google Messages into Apple’s behaviour.** Tags are already correct on waves/create/home. The gap is client policy. The fix for everyone else is the IETF draft `proposals/draft-staffer-link-preview-media-00.md` (mute-loop + hash + no allowlist) plus, until they ship it, a Slack unfurl app using `/og/embed.html`.
 
 ## 3. Why it feels impossible (and why that helps)
 
@@ -46,7 +49,13 @@ What every such page emits (live today):
 | `og:video` → HLS (`.m3u8`) | Needs a tap |
 | `og:video` → direct MP4 | **Downloads and loops muted** — Indra |
 
-Most sites only set `og:image`. Most SEO plugins and checklists never surface `og:video`. A few product pages (Amazon discovered by agencies years ago) and a handful of marketing posts have used it; almost no brand treats a **composed, looping, mute-first card of the product-in-the-world** as the default sibling of every still. The scarcity is adoption, not a missing API — which is exactly why Indra reads as magic in a thread.
+### 3.1 Is the iMessage motion preview “new”?
+
+**The capability is not secret or brand-new.** Apple documented direct-MP4 rich previews in TN3156 and Tech Talk 205. Agencies have noted Amazon product pages doing it for years.
+
+**What almost nobody has seen** — and why ~30 people react like it’s new — is a **brand treating a composed mute-loop card as the default sibling of every shareable URL**, not an ad-hoc product clip. Most sites never set `og:video` at all; SEO plugins push stills only. So when khėnsu.ñü pastes into Messages and the bubble *is* Indra over Earth, it reads as magic even though the pipe is public. That scarcity is adoption, not a missing Apple API.
+
+If someone sees a still or a big “Video” tap target instead of autoplay: new thread, cache-bust (`?v=2`), check Low Data Mode / Reduce Motion, and confirm the phone fetched the H.264 `og:video` (not only the JPEG).
 
 ## 4. What we ship
 

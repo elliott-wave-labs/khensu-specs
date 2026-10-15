@@ -46,6 +46,9 @@ Both launched successfully after install.
 | https://create.khensu.nu/#numbers-section | Keep |
 | https://khensu.nu/app | GitHub install hub |
 | https://bi.khensu.nu | Must stay `CN=bi.khensu.nu` during own-cert attach |
+| https://khensu.nu/aura | **ñü.åůřâ** first show — live 15 Oct PM (apex until Hover A + own cert) |
+| https://dev.khensu.nu/specs/nu-aura/ | Fashion + quiet sensing spec |
+| https://sla.khensu.nu · https://network.khensu.nu | 100% uptime pulse verified with aura publish |
 
 ## GitHub install
 

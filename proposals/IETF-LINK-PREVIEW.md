@@ -1,5 +1,10 @@
 # Submitting draft-staffer-link-preview-media-00
 
+> **Hold submit until Elliott has read the draft.** Do not post to
+> [datatracker.ietf.org/submit/](https://datatracker.ietf.org/submit/) until he
+> says go. Spec and product: [nu.indra.og](https://dev.khensu.nu/specs/indra/),
+> Tech Talk 205 dated **21 December 2017**.
+
 Companion to `IETF-SUBMISSION.md` (nu-media). This draft is **informational**: it profiles Open Graph + mute-loop client behaviour. It does **not** claim Apple’s Messages playback path as invention.
 
 ## Before posting

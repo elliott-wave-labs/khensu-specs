@@ -40,6 +40,12 @@ informative:
       - org: Apple Inc.
     target: https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages
     date: 2023
+  TechTalk205:
+    title: "Ensuring Beautiful Rich Links (Tech Talk 205)"
+    author:
+      - org: Apple Inc.
+    target: https://developer.apple.com/videos/play/tech-talks/205/
+    date: 2017-12-21
   WEBE:
     title: "webË: A people-run web on a stealth network"
     author:
@@ -74,17 +80,38 @@ page and builds a rich preview. The Open Graph protocol {{OGP}} defines
   frozen to the first frame.
 * `og:video` pointing at an HTML player page or HLS playlist usually becomes
   tap-to-play or is ignored.
-* A small set of clients, notably Apple Messages when given a direct
-  downloadable MP4 ({{TN3156}}), download the file and autoplay it muted.
-* Major collaboration unfurlers (for example Slack) show the still for arbitrary
-  sites and reserve inline video for allowlisted providers.
+* A small set of clients, notably Apple Messages on iOS, iPadOS, macOS, and
+  visionOS when given a direct downloadable MP4 ({{TN3156}}, {{TechTalk205}} —
+  21 December 2017), download the file and autoplay it muted.
+* Major collaboration unfurlers (for example Slack DMs and channels) show the
+  still for arbitrary sites and reserve inline video for allowlisted providers.
 * Consumer Android SMS/RCS clients typically show website stills; video autoplay
   is often limited to a few allowlisted hosts (for example YouTube).
+* Instagram DMs and TikTok DMs typically show a still thumbnail for ordinary
+  HTTPS pages and do not mute-loop arbitrary `og:video` files today.
 
 The result is a referral experience that works as living motion on one popular
 messenger and as a frozen card everywhere else, even when the publisher shipped
 a correct direct MP4. Publishers cannot fix that with tags alone. A shared
 client contract is required.
+
+# Target unfurlers
+
+This profile is written so the same tags work everywhere the publisher already
+ships a direct H.264 MP4. Clients SHOULD adopt mute-loop playback for
+`preview:policy` containing `mute`, `loop`, and `autoplay` when the file passes
+the hash and size checks in this document:
+
+* Apple Messages (iOS, iPadOS, macOS, visionOS) — already behaves per
+  {{TN3156}} / {{TechTalk205}} for direct MP4 `og:video`.
+* Google Messages and other Android SMS/RCS unfurlers — today still-only for
+  arbitrary sites; this draft is the shared contract.
+* Slack (direct messages and channels) — today still-only / allowlist; this
+  draft removes the need for a host allowlist when `preview:hash` verifies.
+* Instagram DMs, TikTok DMs, and similar consumer chat unfurlers — today
+  still-only for ordinary sites; same contract.
+* Discord, Telegram, and other clients that already play some `og:video` —
+  SHOULD honour `preview:policy` and `preview:hash` when present.
 
 # Goals
 

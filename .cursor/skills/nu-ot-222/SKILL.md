@@ -1,16 +1,18 @@
 ---
 name: nu-ot-222
 description: >-
-  Elliott’s weekly OT cadence for khėnsu.ñü. Thursday 2:00 pm America/Los_Angeles
-  status update; hard ship cutoff 2:22 pm local. Always write a dated public MD,
-  check it in, publish. Private release changelog stays private. Use for every
-  personal ship, site publish, app install, Apple submit, and deadline request.
-  Pair with nu-harness (only skill on skills.agent).
+  Elliott’s weekly Out of Town (OT — rap slang) cadence for khėnsu.ñü. Thursday
+  2:00 pm America/Los_Angeles status update; hard ship cutoff 2:22 pm local.
+  Always write a dated public MD, check it in, publish. Private release changelog
+  stays private. Use for every personal ship, site publish, app install, Apple
+  submit, and deadline request. Pair with nu-harness (only skill on skills.agent).
 ---
 
 # nu.ot.222
 
-Elliott’s personal operating tempo. Apply on **every** khėnsu task for him unless he says otherwise.
+**OT = Out of Town** (rap slang). Not overtime. Not “operating tempo.”
+
+Elliott’s personal ship cadence while he’s OT. Apply on **every** khėnsu task for him unless he says otherwise.
 
 ## Weekly clock (America/Los_Angeles)
 
@@ -18,7 +20,7 @@ Elliott’s personal operating tempo. Apply on **every** khėnsu task for him un
 | --- | --- | --- |
 | **Update** | Thursday **2:00 pm** | Status in chat + dated MD (what shipped, what’s open). |
 | **Cutoff** | Thursday **2:22 pm** local | Hard ship line. Land what’s ready. Keep building after. |
-| **Name** | **nu.ot.222** | Echoes the 2:22 dead-man’s switch activation. |
+| **Name** | **nu.ot.222** | Out of Town + 2:22 (same beat as the dead-man’s switch activation). |
 
 ## Always: dated MD → commit → public
 
@@ -49,7 +51,7 @@ Filename examples: `nu.ot/2026-10-15.md`, pointer `nu.ot.222.md`.
 ## Always
 
 - Commands: `~`, never `/`. Flags: `-`.
-- **skills.agent** publishes **nu-harness only**. This skill is for Elliott’s cadence; public OT MDs live in khensu-specs.
+- **skills.agent** publishes **nu-harness only**. This skill is Elliott’s OT cadence; public OT MDs live in khensu-specs.
 - Display names: people see the marks; code/hosts stay ASCII.
 
 ## Do not
@@ -58,6 +60,7 @@ Filename examples: `nu.ot/2026-10-15.md`, pointer `nu.ot.222.md`.
 - Put private release changelog text on skills.agent or in public release notes wholesale.
 - Block the cutoff waiting on perfect parity — ship the slice, note the rest in the MD.
 - Add NXDOMAIN hosts to the shared products SSL pack.
+- Call OT “overtime” or “operating tempo.”
 
 ## Companion
 

@@ -1,5 +1,7 @@
 # nu.ot.222 — week of 2026-10-15
 
+**OT = Out of Town** (rap slang). Not overtime.
+
 **2:00 pm** Thursday update · **2:22 pm** local hard cutoff · America/Los_Angeles
 
 Dated file (canonical for this day): [`nu.ot/2026-10-15.md`](nu.ot/2026-10-15.md)

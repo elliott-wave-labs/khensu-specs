@@ -11,7 +11,7 @@ Rules:
 1. Before adding any host to shared `product_hosts`, `dig +short HOST A` must return `34.107.228.246` (not NXDOMAIN).
 2. New subdomains use `own_certificate = true` so they cannot recreate the shared pack.
 3. Never leave an apply that replaced `moqom-products-*` until `managed.status` is `ACTIVE` and `openssl s_client -servername bi.khensu.nu` is not `elliottwave.dev`.
-4. The sites module waits for ACTIVE before pointing the proxy at a new products cert (`null_resource.products_cert_active`). Do not bypass it.
+4. **Never leave a PROVISIONING / FAILED_NOT_VISIBLE cert on the https proxy** — Google ignores SNI and serves `elliottwave.dev` for every host (bi/waves unstyled). Drop NXDOMAIN hosts from terraform; the module waits for every attached cert to be ACTIVE (`null_resource.proxy_certs_active`).
 
 SLA page: [https://khensu.nu/sla](https://khensu.nu/sla) (`sla.khensu.nu` only after DNS + own cert ACTIVE). Full public notice: [`PUBLIC.md`](PUBLIC.md).
 

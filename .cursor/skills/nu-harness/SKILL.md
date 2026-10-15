@@ -18,6 +18,7 @@ Product hosts (`bi`, `waves`, `create`, `fi`, `webe`, …) share one Google-mana
 
 ### Never do this
 
+0. **Never** leave a `PROVISIONING` or `FAILED_NOT_VISIBLE` certificate attached to `moqom-sites` target HTTPS proxy. Google then **ignores SNI** and serves the first cert (`CN=elliottwave.dev`) for every host — bi/waves look like unstyled HTML even when the products cert itself is ACTIVE. Remove dead certs (NXDOMAIN hosts, unfinished API hosts) from `apis` / `project_hosts` / `product_hosts` immediately.
 1. **Never** add a hostname to `product_hosts` in `moqom-pq/deploy/envs/web/main.tf` until:
    ```bash
    dig +short HOST A   # must print 34.107.228.246 — not empty, not NXDOMAIN

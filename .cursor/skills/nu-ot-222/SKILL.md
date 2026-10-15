@@ -2,68 +2,61 @@
 name: nu-ot-222
 description: >-
   Elliott’s weekly Out of Town (OT — rap slang) cadence for khėnsu.ñü. Thursday
-  2:00 pm America/Los_Angeles status update; hard ship cutoff 2:22 pm local.
-  Always write a dated public MD, check it in, publish. Private release changelog
-  stays private. Use for every personal ship, site publish, app install, Apple
-  submit, and deadline request. Pair with nu-harness (only skill on skills.agent).
+  2:00 pm America/Los_Angeles: write/check in the dated MD and status update.
+  Thursday 2:22 pm local: hard cutoff — known fixes in, web pushed, apps fixed,
+  code + PRs reviewed and auto-merged by the agent, TestFlight, App Store submit
+  (or human instructions), beta + GitHub release, sideload install packages
+  updated. Use for every personal ship. Pair with nu-harness on skills.agent.
 ---
 
 # nu.ot.222
 
-**OT = Out of Town** (rap slang). Not overtime. Not “operating tempo.”
-
-Elliott’s personal ship cadence while he’s OT. Apply on **every** khėnsu task for him unless he says otherwise.
+**OT = Out of Town** (rap slang). Not overtime.
 
 ## Weekly clock (America/Los_Angeles)
 
 | Beat | Time | What |
 | --- | --- | --- |
-| **Update** | Thursday **2:00 pm** | Status in chat + dated MD (what shipped, what’s open). |
-| **Cutoff** | Thursday **2:22 pm** local | Hard ship line. Land what’s ready. Keep building after. |
-| **Name** | **nu.ot.222** | Out of Town + 2:22 (same beat as the dead-man’s switch activation). |
+| **Update** | Thursday **2:00 pm** | Chat status + dated MD check-in (`nu.ot/YYYY-MM-DD.md` + `nu.ot.222.md`) → commit → push public. |
+| **Cutoff** | Thursday **2:22 pm** local | Hard ship line. Everything below that can land by 2:22 lands. Keep building after. |
+| **Name** | **nu.ot.222** | Out of Town + **2:22**. |
+
+## By 2:22 — ship checklist (do in order)
+
+1. **Known fixes** — every open fix Elliott called this week is corrected or listed with a blocker in the MD.
+2. **Web pushed** — sites built and published (`publishing-khensu-sites` + `nu-harness`). Verify live with curl.
+3. **App fixed** — code changes in `khensu-apple` (and core if needed) compile; device install when possible.
+4. **Coded + PR done** — work on a branch; open PR(s) with summary + test plan.
+5. **PR reviewed + auto-merged by the agent** — agent runs review (Bugbot/security if asked), addresses clear issues, then merges when green (no waiting on Elliott for routine OT PRs unless he said hold).
+6. **TestFlight** — archive → upload to App Store Connect → TestFlight (internal at minimum).
+7. **Submit to Apple** — if ASC credentials / notary / transporter work, upload for review. If only a human can click Submit for Review, put **exact click-path instructions** in the MD and in chat — do not fake a submit.
+8. **Release to beta** — TestFlight external or named beta group when builds are ready.
+9. **Release to GitHub** — `gh release` with IPAs / notes for sideload.
+10. **Install packages around the stores** — update get.apps / INSTALL.md / PWA / Sideloadly paths so people can install without App Store / Play.
+
+Private ASC narrative stays in gitignored `docs/CHANGELOG.private.md`. Public OT MDs stay high-level.
 
 ## Always: dated MD → commit → public
 
-Every Thursday (and any OT ship Elliott calls):
+1. Write **`nu.ot/YYYY-MM-DD.md`** in `khensu-specs`.
+2. Refresh **`nu.ot.222.md`** as the week pointer.
+3. Mirror bullets in chat at **2:00 pm**.
+4. Commit + push. Keep building past **2:22**.
 
-1. Write **`nu.ot/YYYY-MM-DD.md`** in `khensu-specs` (ISO date in his local timezone).
-2. Also keep / refresh **`nu.ot.222.md`** as the rolling “this week” pointer (same content or a short link to the dated file).
-3. Mirror the bullets in the agent chat at **2:00 pm**.
-4. **`git add` + commit** those MDs in `khensu-specs` and **push** so they stay public.
-5. Keep building past **2:22 pm** — the MD is a checkpoint, not a stop.
+## skills.agent
 
-Filename examples: `nu.ot/2026-10-15.md`, pointer `nu.ot.222.md`.
-
-## Private release changelog
-
-- Maintain **`CHANGELOG.private.md`** only in places that stay **private** (gitignored under `khensu-apple/docs/` and/or Elliott’s personal store).
-- App Store / TestFlight release notes, review replies, and unreleased version notes go there — **never** on the public skills.agent site and **never** in public commit messages that dump the full private log.
-- Public `nu.ot/*.md` may say “ASC submit attempted / build N” without private reviewer narrative.
-
-## Priority when the clock is short
-
-1. **Sites live** — publish what is built (`publishing-khensu-sites` + `nu-harness`).
-2. **Apps on device** — Wi‑Fi install before App Store.
-3. **Apple submit** — upload archive-ready builds by **2:22**; incomplete stay GitHub IPA / TestFlight.
-4. **Code** — public repos stay public post-handover; do not privatize.
-5. **New hosts** — dig A → `34.107.228.246`, then `own_certificate = true`.
+Public skills: **nu-harness** and **nu-ot-222** — https://khensu.nu/skills-agent  
+Skill repo: https://github.com/elliott-wave-labs/nu-ot-222
 
 ## Always
 
 - Commands: `~`, never `/`. Flags: `-`.
-- **skills.agent** publishes **nu-harness** and **nu-ot-222**. Public OT MDs also live in khensu-specs (`nu.ot/`).
-- Display names: people see the marks; code/hosts stay ASCII.
+- Dig before new product hosts; `own_certificate = true`.
+- Tips 100% to the person; app commerce flat 10%.
 
 ## Do not
 
-- Miss the Thursday **2:00 pm** update or the **2:22 pm** dated MD + commit.
-- Put private release changelog text on skills.agent or in public release notes wholesale.
-- Block the cutoff waiting on perfect parity — ship the slice, note the rest in the MD.
-- Add NXDOMAIN hosts to the shared products SSL pack.
-- Call OT “overtime” or “operating tempo.”
-
-## Companion
-
-- skills.agent: https://khensu.nu/skills-agent
-- Skill repo (public): https://github.com/elliott-wave-labs/nu-ot-222
-- Harness: `nu-harness` · `nu.harness.md`
+- Miss the **2:00** MD check-in or the **2:22** cutoff landing.
+- Say OT means overtime.
+- Dump private ASC changelog into public MDs.
+- Leave PRs unmerged at cutoff when CI is green and review is clear.

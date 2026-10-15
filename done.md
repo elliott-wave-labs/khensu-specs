@@ -12,5 +12,7 @@
 | nu-ot-222 GitHub skill | yes | [nu-ot-222](https://github.com/elliott-wave-labs/nu-ot-222) |
 | Cloud DNS A for skill + glass + kronos hosts | yes | public dig still needs Hover |
 | Pair: both skills required | yes | skills + kronos page |
+| ñü.åůřâ fashion house first show | yes | `/aura` — $444 / $44k / $4.4m / $44m·3; legacy reel; quiet sensing |
+| SLA + network uptime check | yes | sla + network HTTP 200 · products cert ACTIVE |
 
-_Last Kronos pass: 15 Oct 2026 ~14:20 PT_
+_Last Kronos pass: 15 Oct 2026 ~16:25 PT_

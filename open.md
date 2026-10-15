@@ -2,7 +2,7 @@
 
 | # | Question | Status |
 | --- | --- | --- |
-| 1 | Hover A for `kronos`, `design.quantumglass`, `skills.agent.*`, `get.apps`, `moments` → `34.107.228.246` | **Elliott** — then own_certificate |
+| 1 | Hover A for `kronos`, `design.quantumglass`, `skills.agent.*`, `get.apps`, `moments`, **`aura`** → `34.107.228.246` | **Elliott** — then own_certificate |
 | 2 | IETF datatracker submit of `draft-staffer-nu-media-00` + link-preview | Blocked on provisional receipt + counsel (see `proposals/IETF-SUBMISSION.md`). Kronos will not fake a post. |
 | 3 | IPR disclosure same day as I-D post (BCP 79) | After #2 |
 | 4 | Run hindsight-code-brain / nu.brain on new machine | **Hold** — no disk space; do not download or run yet |

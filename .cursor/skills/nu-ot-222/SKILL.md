@@ -51,7 +51,7 @@ Filename examples: `nu.ot/2026-10-15.md`, pointer `nu.ot.222.md`.
 ## Always
 
 - Commands: `~`, never `/`. Flags: `-`.
-- **skills.agent** publishes **nu-harness only**. This skill is Elliott’s OT cadence; public OT MDs live in khensu-specs.
+- **skills.agent** publishes **nu-harness** and **nu-ot-222**. Public OT MDs also live in khensu-specs (`nu.ot/`).
 - Display names: people see the marks; code/hosts stay ASCII.
 
 ## Do not
@@ -64,6 +64,6 @@ Filename examples: `nu.ot/2026-10-15.md`, pointer `nu.ot.222.md`.
 
 ## Companion
 
-- skills.agent (nu-harness only): https://khensu.nu/skills-agent
+- skills.agent: https://khensu.nu/skills-agent
 - Skill repo (public): https://github.com/elliott-wave-labs/nu-ot-222
 - Harness: `nu-harness` · `nu.harness.md`

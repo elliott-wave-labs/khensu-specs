@@ -1,6 +1,6 @@
 # Public network — khėnsu.ñü
 
-**Live:** [https://khensu.nu/sla](https://khensu.nu/sla) · `sla.khensu.nu` when Hover has A → `34.107.228.246`  
+**Live:** [https://sla.khensu.nu](https://sla.khensu.nu) · [https://khensu.nu/sla](https://khensu.nu/sla)  
 **Org:** [https://github.com/elliott-wave-labs](https://github.com/elliott-wave-labs)  
 **Status:** Founder handover fired 14 October 2026. Dead-man's switch **ACTIVE** from Venice, CA at 2:22 pm PDT. Every first-party repo is **public**.
 
@@ -99,7 +99,7 @@ No Play listing is required to use the open web. Use [waves.khensu.nu](https://w
 | --- | --- |
 | [khensu.nu](https://khensu.nu) | Home |
 | [waves.khensu.nu](https://waves.khensu.nu) | nu.waves |
-| [khensu.nu/sla](https://khensu.nu/sla) | SLA + this public notice (`sla.khensu.nu` when DNS is live) |
+| [sla.khensu.nu](https://sla.khensu.nu) | SLA + this public notice |
 | [dev.khensu.nu](https://dev.khensu.nu) | Specs and repositories |
 | [webe.khensu.nu](https://webe.khensu.nu) | webË |
 | [create.khensu.nu](https://create.khensu.nu) | nu.create |

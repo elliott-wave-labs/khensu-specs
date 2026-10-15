@@ -30,6 +30,8 @@ Keep them side by side under one directory (see [`AGENTS.md`](AGENTS.md)).
 
 ## Install the apps from GitHub (App Store optional)
 
+Walkthroughs (PWA, sideload, Xcode) live on [khensu.nu/sla](https://khensu.nu/sla) and in [`PUBLIC.md`](PUBLIC.md). Agent harness: [`nu.harness.md`](nu.harness.md).
+
 Apple’s store is one path. The code stays public either way.
 
 | App | Bundle ID | Source | Install without the App Store |

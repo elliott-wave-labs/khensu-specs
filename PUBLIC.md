@@ -104,6 +104,8 @@ No Play listing is required to use the open web. Use [waves.khensu.nu](https://w
 | [webe.khensu.nu](https://webe.khensu.nu) | webË |
 | [create.khensu.nu](https://create.khensu.nu) | nu.create |
 | [fi.khensu.nu](https://fi.khensu.nu) / [bi.khensu.nu](https://bi.khensu.nu) | nu.Fi / nu.bi |
+| [avatars.khensu.nu](https://avatars.khensu.nu) | ñü.ævätåřş (nu.avatars) |
+| [indra.og.khensu.nu](https://indra.og.khensu.nu) | îňðřæ.ōġ (nu.indra.og) |
 
 Address form: `nu:` plus the host, e.g. `nu:waves.khensu.nu`, `nu:sla.khensu.nu`.
 

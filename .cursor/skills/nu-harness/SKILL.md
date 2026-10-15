@@ -14,45 +14,48 @@ Companion: `~/Documents/GitHub/khensu/khensu-specs/nu.harness.md` · `PUBLIC.md`
 
 ## ALWAYS LIVE (hard — never break product HTTPS)
 
-Product hosts (`bi`, `waves`, `create`, `fi`, `webe`, …) share one Google-managed cert (`moqom-products-*`) on the sites HTTPS proxy. **If that cert is PROVISIONING, every product host serves the wrong certificate (e.g. `CN=elliottwave.dev`). Browsers block CSS/JS → bare unstyled HTML. This is a full outage.**
+Product hosts (`bi`, `waves`, `create`, `fi`, `webe`, …) share one Google-managed cert (`moqom-products-*`) on the sites HTTPS proxy. **If that cert is PROVISIONING, or any NXDOMAIN / wrong-A cert sits on the proxy, every product host can serve `CN=elliottwave.dev`.** Browsers block CSS/JS → bare unstyled HTML. Full outage.
 
 ### Never do this
 
-0. **Never** leave a `PROVISIONING` or `FAILED_NOT_VISIBLE` certificate attached to `moqom-sites` target HTTPS proxy. Google then **ignores SNI** and serves the first cert (`CN=elliottwave.dev`) for every host — bi/waves look like unstyled HTML even when the products cert itself is ACTIVE. Remove dead certs (NXDOMAIN hosts, unfinished API hosts) from `apis` / `project_hosts` / `product_hosts` immediately.
-1. **Never** add a hostname to `product_hosts` in `moqom-pq/deploy/envs/web/main.tf` until:
+0. **Never** leave an **NXDOMAIN / wrong-A** certificate on `moqom-sites`. That is what makes Google ignore SNI and serve `elliottwave.dev` for bi/waves. Remove those hosts from terraform immediately.
+1. **Never** add a hostname to shared `product_hosts` until:
    ```bash
-   dig +short HOST A   # must print 34.107.228.246 — not empty, not NXDOMAIN
-   dig +short HOST AAAA  # must be empty (or also correct); NXDOMAIN fails the pack
+   dig +short HOST A   # must print 34.107.228.246
+   dig +short HOST AAAA  # must be empty (or also correct)
    host HOST             # must not say "not found"
    ```
-2. **Never** `terraform apply` a `product_hosts` change that recreates `moqom-products-*` and walk away while status is `PROVISIONING`. Stay until:
+2. **Never** put a brand-new subdomain on the **shared** products pack. Use `own_certificate = true`.
+3. **Never** claim product-host HTTPS done from apex alone (`khensu.nu/avatars` ≠ `avatars.khensu.nu`).
+4. **Never** wait for an own-cert to be `ACTIVE` *before* attaching it — Google requires attachment + DNS → LB. Waiting first = `FAILED_NOT_VISIBLE` deadlock.
+5. **Never** walk away from a products-pack recreate while `PROVISIONING`.
+
+### own_certificate bootstrap (correct order)
+
+Project SSL cert quota is **10 global**. Delete stuck unused certs before creating new ones.
+
+1. Dig preflight (above). Multi-label hosts (`indra.og.khensu.nu`) need an **explicit** A — `*.khensu.nu` does not cover them. Mirror on Hover and Cloud DNS zone `khensu-nu`.
+2. Create the own managed cert; attach it to `moqom-sites` **keeping every existing ACTIVE cert**.
+3. Stay until own cert `ACTIVE`. Every 30s: bi must stay `CN=bi.khensu.nu` + HTTP 200. If bi breaks, detach the new certs immediately.
+4. Ship only when:
    ```bash
-   gcloud compute ssl-certificates describe CERT --global --project=moqom-503700 \
-     --format='value(managed.status)'   # must be ACTIVE
-   curl -sI --max-time 10 https://bi.khensu.nu/ | head -1   # HTTP/2 200
-   echo | openssl s_client -connect bi.khensu.nu:443 -servername bi.khensu.nu 2>/dev/null \
-     | openssl x509 -noout -subject   # must NOT be CN=elliottwave.dev
+   echo | openssl s_client -connect HOST:443 -servername HOST 2>/dev/null \
+     | openssl x509 -noout -subject   # must contain HOST
+   curl -sI --max-time 10 https://HOST/ | head -1   # HTTP/2 200
    ```
-3. **Never** put a brand-new subdomain on the **shared** products pack. Add it with `own_certificate = true` so a DNS mistake cannot take down bi/waves/create:
-   ```hcl
-   "sla.khensu.nu" = { site = "khensu-nu", page = "sla", own_certificate = true }
-   ```
-   Only fold it into the shared pack later, after it has been ACTIVE alone.
-4. **Never** destroy or replace the products cert to “clean up” while any product host is live without the module’s wait-until-ACTIVE gate (see `modules/sites` `null_resource.products_cert_active`).
 
 ### If product HTTPS is already wrong
 
-1. Check: `gcloud compute ssl-certificates list --global --project=moqom-503700 --filter='name~moqom-products'`
-2. If PROVISIONING because of a bad host: **remove that host from `product_hosts` immediately**, apply, wait for ACTIVE.
-3. Confirm apex still works (`https://khensu.nu/…`) — content is fine; only the product cert SNI is wrong.
-4. Do not publish more site builds as a “fix” for SSL — GCS is not the problem.
+1. `gcloud compute ssl-certificates list --global --project=moqom-503700`
+2. Remove NXDOMAIN / wrong-A hosts from the proxy and from terraform; wait for products cert ACTIVE.
+3. Confirm bi/waves CN + 200. Apex content is separate from product-host SNI.
 
-### Preflight before any sites terraform apply that touches hosts or certs
+### Preflight before sites terraform that touches hosts or certs
 
 ```bash
-dig +short sla.khensu.nu A; host sla.khensu.nu   # example for any new name
+dig +short HOST A; dig +short HOST AAAA; host HOST
 gcloud compute ssl-certificates list --global --project=moqom-503700 \
-  --filter='name~moqom-products' --format='table(name,managed.status)'
+  --format='table(name,managed.status)'
 for h in bi.khensu.nu waves.khensu.nu create.khensu.nu; do
   echo | openssl s_client -connect "$h:443" -servername "$h" 2>/dev/null \
     | openssl x509 -noout -subject
@@ -79,4 +82,5 @@ done
 - Change desktop when only mobile was requested
 - Phrase the network as unstoppable
 - Add NXDOMAIN / wrong-A hosts to the shared products certificate
-- Leave product hosts on a PROVISIONING cert
+- Claim product HTTPS shipped without matching openssl CN
+- Deadlock own certs (wait ACTIVE before attach)

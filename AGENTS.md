@@ -19,7 +19,7 @@ Post-quantum private messenger on a decentralized operator network. `PLAN.md` is
 
 - MLS suite `MLS_256_MLKEM1024_AES256GCM_SHA512_MLDSA87` (pure post-quantum, same as MOQOM Cloud); ML-DSA-87 for every signature.
 - Message signatures live inside the ciphertext only; every message gets its own key; signature and device keys rotate at least every 5 minutes or 1,000 messages and are revealed to the group after 7 days.
-- All messages go through the mixnet; only calls use two relays run by different operators.
+- All messages go through the mixnet; only calls use at least 5 relays run by different operators.
 - Nothing is processed on servers: no Siri, no Private Cloud Compute, no Writing Tools in the composer, no iCloud.
 - Minimum iOS, iPadOS and macOS 26. Stock Liquid Glass chrome only (see the App design section of `PLAN.md`).
 - The hardware transceiver is shown as suñůlink.shield; code, commands, packages and identifiers use `sunu` (`hardware/sunu`, `nu.khensu.sunu`).

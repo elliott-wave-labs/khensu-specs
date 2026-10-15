@@ -4,14 +4,26 @@ Agent harness for khėnsu.ñü work across Cursor and other open agents. Skill: 
 
 ## ALWAYS LIVE — product HTTPS
 
-Product hosts share `moqom-products-*` on the sites HTTPS proxy. A **PROVISIONING** products cert makes every product host (bi, waves, create, …) present the wrong certificate (`CN=elliottwave.dev`). Browsers then block CSS/JS and the site looks like unstyled HTML. **Treat that as a full outage.**
+Product hosts share `moqom-products-*` on the sites HTTPS proxy. A **PROVISIONING** products cert (or any **NXDOMAIN / wrong-A** cert left on the proxy) makes every product host present the wrong certificate (`CN=elliottwave.dev`). Browsers then block CSS/JS and the site looks like unstyled HTML. **Treat that as a full outage.**
 
-Rules:
+### Rules
 
-1. Before adding any host to shared `product_hosts`, `dig +short HOST A` must return `34.107.228.246` (not NXDOMAIN).
+1. Before adding any host to shared `product_hosts`, `dig +short HOST A` must return `34.107.228.246` (not NXDOMAIN). `dig +short HOST AAAA` must be empty (or also that IP).
 2. New subdomains use `own_certificate = true` so they cannot recreate the shared pack.
 3. Never leave an apply that replaced `moqom-products-*` until `managed.status` is `ACTIVE` and `openssl s_client -servername bi.khensu.nu` is not `elliottwave.dev`.
-4. **Never leave a PROVISIONING / FAILED_NOT_VISIBLE cert on the https proxy** — Google ignores SNI and serves `elliottwave.dev` for every host (bi/waves unstyled). Drop NXDOMAIN hosts from terraform; the module waits for every attached cert to be ACTIVE (`null_resource.proxy_certs_active`).
+4. **NXDOMAIN / wrong-A certs never stay on the https proxy.** Remove them immediately. That is what breaks SNI for bi/waves (seen with dead API hosts).
+5. **own_certificate bootstrap (Google requirement):** a Google-managed cert becomes `ACTIVE` only after it is **attached** to the target HTTPS proxy **and** DNS A → `34.107.228.246`. Waiting for ACTIVE *before* attach is a deadlock (`FAILED_NOT_VISIBLE` forever). Procedure:
+   1. `dig` / `host` preflight (rule 1) — abort if wrong.
+   2. Create the own cert; attach it to `moqom-sites` **with all existing ACTIVE certs kept**.
+   3. Stay on the apply: poll until own cert `ACTIVE`, and every 30s confirm `bi.khensu.nu` still `CN=bi.khensu.nu` + HTTP 200. If bi breaks, detach the new certs immediately.
+   4. Only then call the host shipped.
+6. **Done means matching CN.** Apex (`https://khensu.nu/avatars`) is not product-host HTTPS. Do not mark `avatars.khensu.nu` / `indra.og.khensu.nu` done until:
+   ```bash
+   echo | openssl s_client -connect HOST:443 -servername HOST 2>/dev/null \
+     | openssl x509 -noout -subject   # must contain HOST, not elliottwave.dev
+   curl -sI --max-time 10 https://HOST/ | head -1   # HTTP/2 200
+   ```
+7. Multi-label hosts (`indra.og.khensu.nu`) are **not** covered by `*.khensu.nu`. Add an explicit A (Hover + Cloud DNS zone `khensu-nu`).
 
 SLA page: [https://khensu.nu/sla](https://khensu.nu/sla) (`sla.khensu.nu` only after DNS + own cert ACTIVE). Full public notice: [`PUBLIC.md`](PUBLIC.md).
 
@@ -47,4 +59,6 @@ khensu.nu sites, product hosts, GitHub repos under elliott-wave-labs, App Store 
 - Change desktop when only mobile was requested
 - Phrase the network as unstoppable
 - Add NXDOMAIN hosts to the shared products certificate
-- Leave product hosts on a PROVISIONING cert
+- Claim product-host HTTPS done from apex alone
+- Leave NXDOMAIN / wrong-A certs on the proxy
+- Wait for own-cert ACTIVE before attaching (deadlock)

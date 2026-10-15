@@ -8,7 +8,7 @@ Every loudness and battery figure below is the product spec. Measured figures re
 
 - In-ear, with a case. No camera, no outward microphone used as a camera, no indicator light that can be seen across a room.
 - Voice access on the device. A spoken command is recognised in the bud or the phone. It is not sent to a server to be understood.
-- Calls follow the khėnsu.ñü rule: two relays, run by different operators. The relays carry voice and audio. They do not see who is talking.
+- Calls follow the khėnsu.ñü rule: at least 5 relays, run by different operators. The relays carry voice and audio. They do not see who is talking.
 - Playback is a nu.waves object in each ear. Height, distance and a scheduled path are rendered in the ear. The sound is not folded into a stereo mix and then played.
 - The person can stay still while a sound moves. The artist schedules that path, or the listener does. The samples do not change when the path changes.
 

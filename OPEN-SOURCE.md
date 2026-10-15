@@ -25,3 +25,18 @@ Keep them side by side under one directory (see [`AGENTS.md`](AGENTS.md)).
 
 - [https://khensu.nu/](https://khensu.nu/)
 - [https://waves.khensu.nu/](https://waves.khensu.nu/)
+- [https://dev.khensu.nu/](https://dev.khensu.nu/) — developers, specs, repositories
+- Public SLA + dead-man's switch: [https://khensu.nu/sla](https://khensu.nu/sla)
+
+## Install the apps from GitHub (App Store optional)
+
+Apple’s store is one path. The code stays public either way.
+
+| App | Bundle ID | Source | Install without the App Store |
+| --- | --- | --- | --- |
+| khėnsu.ñü | `nu.khensu.ptah` | [khensu-apple](https://github.com/elliott-wave-labs/khensu-apple) | Build in Xcode, or sideload a Release `.ipa` ([INSTALL.md](https://github.com/elliott-wave-labs/khensu-apple/blob/main/docs/INSTALL.md)) |
+| nu.waves | `nu.khensu.waves` | same repo, **Waves** scheme | Same, plus the PWA at [waves.khensu.nu](https://waves.khensu.nu/) (Safari → Add to Home Screen) |
+
+Release IPAs (when attached): [github.com/elliott-wave-labs/khensu-apple/releases](https://github.com/elliott-wave-labs/khensu-apple/releases). Sideload with Sideloadly or AltStore on your Mac; signing stays on your machine.
+
+Archive nu.waves for App Store Connect: `scripts/archive-waves.sh` in `khensu-apple` (writes `~/Desktop/khensu-waves-submit/`).

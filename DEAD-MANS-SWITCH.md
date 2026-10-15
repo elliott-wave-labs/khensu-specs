@@ -3,7 +3,7 @@
 **Status: ACTIVE — live keep-alive.**  
 **Activated:** 14 October 2026, **2:22 pm PDT**, in **Venice, California**, on vacation.  
 **UTC:** `2026-10-14T21:22:00Z`  
-**Live:** [https://sla.khensu.nu](https://sla.khensu.nu) (SLA: 100% uptime + this switch)  
+**Live:** [https://khensu.nu/sla](https://khensu.nu/sla) (SLA: 100% uptime + this switch)  
 **Spec:** `PROTOCOL.md` §12.5–12.7.  
 **Companions:** [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md) · [`OPEN-SOURCE.md`](OPEN-SOURCE.md)
 
@@ -35,7 +35,7 @@ mailto:e@khensu.nu?subject=FounderCheckIn&body=khensu%20dead-man%20check-in%20al
 
 Subject **`FounderCheckIn`**, body includes **`alive`**.
 
-Buttons: [https://sla.khensu.nu/#check-in](https://sla.khensu.nu/#check-in)
+Buttons: [https://khensu.nu/sla/#check-in](https://khensu.nu/sla/#check-in)
 
 ### SMS → 310-351-4089
 
@@ -56,7 +56,7 @@ On **2026-10-14T14:27:57Z** a FounderHandover made every `khensu-*` repository *
 | Founder role ends | Yes |
 | Repositories public | Yes — [elliott-wave-labs](https://github.com/elliott-wave-labs) |
 | Patent grant | Yes — `FOUNDER-HANDOVER.md` §3 |
-| Public SLA (100% uptime) | Yes — [sla.khensu.nu](https://sla.khensu.nu) |
+| Public SLA (100% uptime) | Yes — [sla.khensu.nu](https://khensu.nu/sla) |
 | On-chain `FounderHandover` | Cite **2026-10-14T14:27:57Z** and Venice activation **2026-10-14T21:22:00Z** when the committee path ships |
 
 ---

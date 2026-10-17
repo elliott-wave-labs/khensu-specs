@@ -11,7 +11,7 @@ People / App Store product names: **`nu.<product>`**.
 | khensu.nu (messenger + feed) | today `nu.khensu.ptah` | `group.nu.khensu.ptah` | Chats, calls, feed, Ask khensu |
 | nu.waves | `nu.khensu.waves` | same App Group | Spatial music |
 | nu.create | register `nu.khensu.create` | **same App Group** | Creators / pay / rights |
-| nu.moments | register `nu.khensu.moments` | **same App Group** | Templify-class editor |
+| nu.moments | `nu.khensu.moments` (target in khensu-apple) | **same App Group** | Templify-class editor |
 | ñü.ævätåřş | **not** a separate App Store app | — | Styles inside calls + moments/create |
 
 ## Submit checklist (this AM, before 7am PDT)
@@ -37,7 +37,7 @@ People / App Store product names: **`nu.<product>`**.
 | --- | --- | --- |
 | ñü.ævätåřş on-device styles + stealth packing | `design/nu-avatars.md`, `PATENTS.md` | Browser + call path shipped |
 | nu.indra.og mute-loop cards | `design/indra.md` | Trade dress / copyright |
-| nu.moments editor / templates | `design/nu-moments.md` | Design; assess before claim language |
+| nu.moments editor / templates | `design/nu-moments.md` | Native Moments target builds; assess before claim language |
 | Captions / translate on device | apple commit 702bc5f | Shipped |
 
 ## Blockers
@@ -45,7 +45,9 @@ People / App Store product names: **`nu.<product>`**.
 | Blocker | Action |
 | --- | --- |
 | No Elliott Wave ASC Issuer ID | Create key in App Store Connect → Users and Access → Keys; or Distribute from Organizer |
-| moments / create IPAs | Build after push hold lifted |
+| moments / create IPAs | Moments scheme builds (simulator). Archive: `scripts/archive-moments.sh`. Device + ASC still need Organizer / Issuer ID |
+| Site publish ADC | Stored `elliott@moqom.cloud` token resolves to `iam.elliott.io@gmail.com`, which can list but not `storage.objects.create` on `moqom-sites`. Need interactive re-login with an account that has objectAdmin, then `publish-sites.sh khensu-nu`. Dist already has the Templify-beating rewrite. |
+| moments.khensu.nu DNS | NXDOMAIN at Hover — keep PRODUCT link on `https://khensu.nu/moments` until A → `34.107.228.246` + own cert. |
 | ~~Product host certs~~ | Cleared — avatars + indra.og ACTIVE |
 | No Apple Distribution identity in keychain (only Development) | Organizer Distribute uses Apple’s cloud signing when signed into Xcode with team `LHS49D8RYY` |
 

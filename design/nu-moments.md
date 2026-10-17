@@ -2,7 +2,7 @@
 
 Product name: **ñü.mømëntš** (shown); code, host and identifiers: `moments`, `nu.moments`, `nu.khensu.moments`, host `moments.khensu.nu` (path `/moments` on the apex). Formerly the working name “editor” in `design/editor.md`.
 
-Status: design. The marketing page on khensu.nu states the product in launch tone; this doc is the engineering truth. Patent assessment once built (`PATENTS.md`).
+Status: native app scaffold in `khensu-apple` (Moments target, `nu.khensu.moments`); marketing live on moments.khensu.nu and `/moments`. This doc is the engineering truth. Patent assessment once the editor is in wider use (`PATENTS.md`).
 
 ## 1. Rules
 

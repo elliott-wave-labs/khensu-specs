@@ -44,7 +44,7 @@ These ship in the web player and stay on the device. Code names are ASCII; peopl
 
 | Shown | Code | What it is |
 | --- | --- | --- |
-| ñü.scene | `scene` | A named snapshot of every sound’s position, optional orbits, venue and ñü.ÊQ for a track. Recall mid-listen without re-encoding. Compact share codes are numbers and letters you copy yourself — nothing is uploaded. |
+| ñü.scene | `scene` | A named snapshot of every sound’s position, optional orbits, venue and ñü.ÊQ for a track. Recall mid-listen without re-encoding. Share a listen link (`#/t/{track}?scene=`) that opens the catalogue song already cued, with those settings applied — nothing is uploaded. |
 | ñü.orbit | `orbit` | A sound walks a horizontal path around a centre at a chosen rate. Only the place numbers move; the samples stay put. |
 | ñü.tide | `tide` | Home surfaces collections, albums and channels that fit the local hour (dawn / day / dusk / night), with no server and no profile. |
 | ñü.ink | `ink` | While you drag and turn, a private path is drawn; you can keep it as a small glyph of how you listened, not of the music. |

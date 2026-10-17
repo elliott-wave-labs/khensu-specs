@@ -17,7 +17,7 @@ Product apps people know as **`nu.*`**:
 | --- | --- | --- |
 | nu.waves | waves.khensu.nu | Standalone `nu.khensu.waves`, App Group `group.nu.khensu.ptah` |
 | nu.create | create.khensu.nu | Site (+ Indra cards, **#numbers-section**); no separate IPA yet |
-| nu.moments | moments.khensu.nu | Design + site; IPA not built — Templify-class editor |
+| nu.moments | moments.khensu.nu · /moments | Native Moments target (`nu.khensu.moments`) builds; Templify-beating site in dist (publish blocked on GCS IAM) |
 | ñü.ævätåřş | avatars.khensu.nu | Site studio + **in-call styles** inside messenger; not a separate store app |
 | nu.indra.og | indra.og.khensu.nu | Site product (îňðřæ.ōġ); mute-loop OG cards |
 | Messenger / feed | khensu.nu | Ptah / `nu.khensu.ptah` — chats, calls, feed |

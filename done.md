@@ -6,9 +6,10 @@
 | --- | --- | --- |
 | Punch-out waves covers + ≥5 relays copy | yes | waves live |
 | Ptah + Waves on 15 Pro (dev IPA) | yes | Wi‑Fi install |
-| nu.glass spec + apex page | yes | `/design-quantumglass` — clear aura bubbles |
-| Waves clear-bubble mini player + Menu room | yes | nu.aura fashion, not solid sheet |
-| Kronos voice in nu-harness + nu-ot-222 | yes | pair lock text |
+| nu.glass spec + apex page | yes | https://khensu.nu/design-quantumglass — clear aura bubbles |
+| Waves clear-bubble mini player + Menu room | yes | `wv-room-menu` + `wv-bar-card` live on https://waves.khensu.nu |
+| Kronos desk (harness + OT + IETF + pair lock) | yes | https://khensu.nu/kronos live |
+| Kronos voice in nu-harness + nu-ot-222 | yes | pair lock + model routing |
 | nu-ot-222 GitHub skill | yes | [nu-ot-222](https://github.com/elliott-wave-labs/nu-ot-222) |
 | Cloud DNS A for skill + glass + kronos hosts | yes | public dig still needs Hover |
 | Pair: both skills required | yes | skills + kronos page |

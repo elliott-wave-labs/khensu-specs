@@ -9,8 +9,8 @@ Post-quantum private messenger on a decentralized operator network. `PLAN.md` is
 | `khensu-specs` | Plan, threat model, protocol specs, App ID guide, design canvas, this file, the multi-root workspace |
 | `khensu-core` | Apache-2.0. Rust: OpenMLS fork with the ML-KEM-1024 + ML-DSA-87 suite, credentials, Outfox mixnet packets, consensus wire format, shielded-note formats, KhensuMemory index engine, vectors. Exposed to Swift with UniFFI as an XCFramework |
 | `khensu-apple` | SwiftUI app `nu.khensu.ptah` for iPhone, iPad and Mac, Notification Service Extension, Share Extension |
-| `khensu-tatenan` | Node `nu.khensu.tatenan` for Mac and Raspberry Pi 5: mixnet, mailbox, call relay, work receipts |
-| `khensu-chain` | Post-quantum chain, token, shielded pool |
+| `khensu-tatenan` | Node `nu.khensu.tatenan` for Mac and Raspberry Pi 5: mixnet, mailbox, call relay, work receipts (private since 17 Oct 2026) |
+| `khensu-chain` | Post-quantum chain, token, shielded pool (private since 17 Oct 2026) |
 | `khensu-services` | Go: key transparency log, credential issuer, push gateway, MOTOM integration |
 | `khensu-devnet` | Runs node, mixnet, chain and push gateway on one machine for development |
 | `khensu-site` | `khensu.nu` and `tatenan.khensu.nu` |

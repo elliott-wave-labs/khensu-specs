@@ -1,6 +1,6 @@
 # Launch: Hacker News and Product Hunt
 
-**14 October 2026.** Founder handover fired the same day (`FOUNDER-HANDOVER.md`); every `khensu-*` repo is public open source. Site: [khensu.nu](https://khensu.nu). Basic income path: [bi.khensu.nu](https://bi.khensu.nu).
+**14 October 2026.** Founder handover fired the same day (`FOUNDER-HANDOVER.md`); every `khensu-*` repo went public (the node and chain are private again since 17 October, `FOUNDER-HANDOVER.md` §9). Site: [khensu.nu](https://khensu.nu). Basic income path: [bi.khensu.nu](https://bi.khensu.nu).
 
 Tone: witty and exciting. Mission out loud — UBI, world peace as something we build toward, so everyone can create, have fun, and be rich. Abundance on Earth, and beyond. Never “can't be stopped” (`AGENTS.md`). Avoid dollar promises and token earnings claims in public posts (`OPEN-QUESTIONS.md` 84); keep creator pay and node pay factual.
 

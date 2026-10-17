@@ -31,8 +31,6 @@ The network is a gift to humanity and all beings: freedom, privacy and a basic i
 | [khensu-specs](https://github.com/elliott-wave-labs/khensu-specs) | CC BY 4.0 | Plan, protocol, threat model, this file |
 | [khensu-core](https://github.com/elliott-wave-labs/khensu-core) | Apache-2.0 | MLS, Outfox, UniFFI |
 | [khensu-apple](https://github.com/elliott-wave-labs/khensu-apple) | AGPL-3.0 | `nu.khensu.ptah`, `nu.khensu.waves` |
-| [khensu-tatenan](https://github.com/elliott-wave-labs/khensu-tatenan) | AGPL-3.0 | Node (Mac / Pi 5) |
-| [khensu-chain](https://github.com/elliott-wave-labs/khensu-chain) | AGPL-3.0 | Chain, token, shielded pool |
 | [khensu-services](https://github.com/elliott-wave-labs/khensu-services) | AGPL-3.0 | KT log, credentials, push |
 | [khensu-devnet](https://github.com/elliott-wave-labs/khensu-devnet) | AGPL-3.0 | One-machine network |
 | [khensu-site](https://github.com/elliott-wave-labs/khensu-site) | AGPL-3.0 | Sites including sla.khensu.nu |
@@ -43,12 +41,12 @@ Clone (side by side):
 git clone https://github.com/elliott-wave-labs/khensu-specs.git
 git clone https://github.com/elliott-wave-labs/khensu-core.git
 git clone https://github.com/elliott-wave-labs/khensu-apple.git
-git clone https://github.com/elliott-wave-labs/khensu-tatenan.git
-git clone https://github.com/elliott-wave-labs/khensu-chain.git
 git clone https://github.com/elliott-wave-labs/khensu-services.git
 git clone https://github.com/elliott-wave-labs/khensu-devnet.git
 git clone https://github.com/elliott-wave-labs/khensu-site.git
 ```
+
+The node (`khensu-tatenan`) and the chain (`khensu-chain`) are private since 17 October 2026 and ship as signed binaries (`FOUNDER-HANDOVER.md` §9); `khensu-devnet` needs them next to it.
 
 ---
 

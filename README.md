@@ -3,7 +3,7 @@
 Plan, threat model, protocol, design and patent assessments for [khėnsu.ñü](https://khensu.nu/).
 
 **Licence:** [CC BY 4.0](LICENSE)  
-**Open source:** every `khensu-*` repo is public — see [`OPEN-SOURCE.md`](OPEN-SOURCE.md)  
+**Open source:** every `khensu-*` repo is public except the node and the chain — see [`OPEN-SOURCE.md`](OPEN-SOURCE.md)  
 **Founder handover (14 Oct 2026):** [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md) (`PROTOCOL.md` §12.5–12.7)
 
 | Doc | What |

@@ -96,7 +96,7 @@ done
 
 1. **Publish sites immediately.** Never hold for a patent filing. Pair with `publishing-khensu-sites`.
 2. **By Thursday 2:22 — fix without review.** If the agent can land a clear fix, publish, PR merge, or install path by **2:22 pm** America/Los_Angeles, **do it without waiting for Elliott’s review.** Pair with `nu-ot-222`. Only hold when he said hold, credentials are missing, or the change is destructive / irreversible.
-3. **Keep code public.** elliott-wave-labs `khensu-*` repos stay public.
+3. **Keep code public.** elliott-wave-labs `khensu-*` repos stay public, except `khensu-tatenan` and `khensu-chain` (private since 17 Oct 2026, `FOUNDER-HANDOVER.md` §9).
 4. **Install without stores.** PWA, GitHub IPA, `xcodegen` / Xcode. Team `LHS49D8RYY`. Hub: https://khensu.nu/app
 5. **Desktop vs mobile.** Desktop perfect → change only `@media` mobile rules.
 6. **Display names.** People see khėnsu.ñü / ñü.ŵævẽš / …; code/URLs stay ASCII.

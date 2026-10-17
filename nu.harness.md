@@ -34,7 +34,7 @@ khensu.nu sites, product hosts, GitHub repos under elliott-wave-labs, App Store 
 ## Fixed rules
 
 1. **Publish sites immediately.** Never hold for a patent filing.
-2. **Keep code public.** First-party `khensu-*` repos stay public.
+2. **Keep code public.** First-party `khensu-*` repos stay public, except `khensu-tatenan` and `khensu-chain` (private since 17 Oct 2026, `FOUNDER-HANDOVER.md` §9).
 3. **Install without stores.** Safari PWA, GitHub IPA sideload, `xcodegen` / Xcode. Team ID `LHS49D8RYY`.
 4. **Desktop vs mobile.** Desktop perfect → only `@media` mobile rules.
 5. **Display names.** People see khėnsu.ñü, ñü.ŵævẽš, …; code/URLs stay ASCII.

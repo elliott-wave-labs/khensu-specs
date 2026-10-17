@@ -8,8 +8,8 @@ This is the authoritative licence map for every khensu.nu repository. Copyright 
 | `khensu-core` | Apache-2.0 | Primitives, MLS profile and wire formats. Other clients and operators link this; the patent grant in Apache-2.0 covers them. |
 | `khensu-memory` | AGPL-3.0-only | On-device memory engine. Commercial licences available (see PATENTS.md). |
 | `khensu-apple` | AGPL-3.0-only, plus the App Store permission below | The app. Anyone can audit and rebuild it. |
-| `khensu-tatenan` | AGPL-3.0-only | Node software. Operators who modify it and run it for others must publish their changes. |
-| `khensu-chain` | AGPL-3.0-only | Consensus, token and shielded pool. |
+| `khensu-tatenan` | AGPL-3.0-only | Node software. Operators who modify it and run it for others must publish their changes. Private since 17 Oct 2026; see below. |
+| `khensu-chain` | AGPL-3.0-only | Consensus, token and shielded pool. Private since 17 Oct 2026; see below. |
 | `khensu-devnet` | AGPL-3.0-only | Local testnet tooling. |
 | `khensu-site` | AGPL-3.0-only (code); content CC BY 4.0 | Website. |
 | `khensu-services` | AGPL-3.0-only | Push gateway, PIR mirror, credential issuer. |
@@ -41,3 +41,7 @@ The AGPL and Apple's App Store terms conflict for third-party copyright holders.
 ## Patents
 
 Apache-2.0 includes a patent licence for khensu-core. As of the founder handover on 14 October 2026 (`FOUNDER-HANDOVER.md`), Elliott Wave LLC grants the royalty-free patent licence in that notice for every patent and application needed to implement khėnsu.ñü. Assessments and drafts live in `PATENTS.md` and `patents/`; they are public with the specs repo.
+
+## Private repositories
+
+Since 17 October 2026 `khensu-tatenan` and `khensu-chain` are private (`FOUNDER-HANDOVER.md` §9). Versions published before then remain under AGPL-3.0-only for anyone who received them. Elliott Wave LLC holds the copyright in both (outside contributions came in under the CLA), so later private versions and the signed binaries can be licensed on other terms; until that licence is written, the binaries carry the AGPL notice of the code they were built from.

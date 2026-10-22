@@ -268,6 +268,9 @@ Per `PATENTS.md` practice — assess, publish anyway, never hold the sites:
 | Map-tile (HiPS) galaxy with per-band layers and emitted/observed/predicted time labelling | ESA Sky, Aladin Lite, SkyView, Google Sky | Combination with cosmic-timeline prediction flagging; likely defensive publication |
 | Kolmogorov scintillation + intrinsic variability + shot noise as separable, labelled layers | Scintillation simulators, planetarium software | Publish as spec |
 | Mantis midband-scan rendering of astronomical fields | Stomatopod vision models | Publish as spec |
+| Turn-by-turn directions through real space: milestones found by log-sampling the straight path against shells (planet orbits, belts, heliopause, Oort cloud, Local Bubble), the Milky Way's disc and galaxy extents, with times per travel mode | Google Maps directions, Celestia/SpaceEngine "go to", NASA Eyes | The milestone method is simple; the novelty, if any, is the Maps grammar applied to a real-distance universe. Defensive publication |
+| Rabbitholes: a wormhole graph whose gates open by the real sky over the user (galaxy above the horizon now), by places the user has visited, or always; routing by least bubble distance through open gates, with reasons for closed ones | Game fast-travel unlocked by discovery, location-gated AR games | Gating teleports on the live sky at the user's location, computed on the device, may be narrow but novel; search first |
+| Social presence without a feed: people met only by being at the same place in the same map at the same time, over the mixnet | Spatial chat, MMO zones, Snap Map | Combination with the no-scroll rule and mixnet presence; assess when built |
 
 ## 14. Open questions
 
@@ -277,7 +280,89 @@ Per `PATENTS.md` practice — assess, publish anyway, never hold the sites:
 4. Fermi/Chandra layer depth at M33: how sparse is too sparse to draw honestly? v1 draws upper-limit layers with explicit "no detection" tiling.
 5. Whether the mantis opponent matrix should be fitted to stomatopod photoreceptor sensitivities (Marshall & Oberwinkler-class data) in v1.1 — v1 uses published peak sensitivities.
 
+## 15. Directions and rabbitholes — Google Maps grammar for space
+
+Built 22 Oct 2026 on the web (`khensu-site` `src/scripts/universes/route.ts`, `directions.ts`) and in the app (`Waves/Universes/Flight/Directions.swift`, `DirectionsView.swift`), with the same rules in both.
+
+### 15.1 Layout
+
+Like a Maps directions panel, top to bottom:
+
+1. **From**: where you are. That is the last place you arrived at (this visit, then any earlier visit), else Earth.
+2. **To**: a search over every place, grouped. The Solar System comes first in order from the Sun, with each planet's major moons under it, Ceres and the big asteroids under the asteroid belt, Pluto (with Charon) and the other dwarf planets under the Kuiper belt, then near-Earth asteroids and comets. Stars follow, then the Milky Way and beyond, with NGC 604 and NGC 595 under M33.
+3. **How you travel**, with a time on each:
+   - Rabbitholes (instant jumps, with the spacetime bubble between them).
+   - Bubble.
+   - Light (299,792 km/s, the fastest real trip).
+   - Spacecraft (Parker Solar Probe's record, 191.7 km/s on 24 December 2024, held the whole way).
+4. **Duration**: one big number, with the distance and how the trip is made under it.
+5. **Steps**: a numbered timeline. Cyan is travel, pink is a rabbithole jump and red is the destination. Each step shows distance from the start, the time to get there in the chosen mode, and a one-line fact. Tap a step to fly there; **Start** flies the whole route, step by step. Jumps are instant, with a flash. The route is drawn on the map.
+6. **Fine print**, folded:
+   - What each mode means.
+   - The bubble speed, 1× to 1 trillion× light speed (default 1 billion×). Warp bubbles are allowed by general relativity on paper and have not been built.
+   - Which rabbitholes are open to you and why, and your latitude and longitude.
+   - Data sources.
+
+### 15.2 Milestones
+
+The straight path from A to B is sampled in log distance from both ends (about 1,200 samples), so a shell 1 AU across is still found on a megaparsec trip. A step is added wherever the path crosses one of these:
+
+| Kind | Where |
+| --- | --- |
+| Planet orbits | Mercury to Neptune at their semi-major axes |
+| Asteroid belt | Enter at 2.2 AU, leave at 3.3 AU |
+| Kuiper belt | Enter crossing Neptune's orbit (30 AU), leave at 50 AU |
+| Heliopause | 120 AU |
+| Oort cloud | Enter at about 2,000 AU, leave at about 100,000 AU |
+| Local Bubble | About 150 pc |
+| Milky Way's disc | Radius 15 kpc, half-thickness 1 kpc, galactocentric with the Sun 8,178 pc out and 20.8 pc up |
+| Galaxies | Entering or leaving any galaxy's catalogue radius; passing within three radii of one |
+
+A shell is skipped when either end of the trip sits within 5% of it, so Earth to Mars doesn't announce that you are crossing Earth's orbit. The first step gives the heading in right ascension and declination and in galactic longitude and latitude.
+
+### 15.3 Rabbitholes
+
+Rabbitholes form a graph of gates at places, and a jump runs along a link. A gate opens in one of three ways:
+
+- **Always:** Sol, Alpha Centauri and Sagittarius A\*.
+- **Sky:** the galaxy is above your real horizon now (LMC, SMC, Andromeda, Triangulum). Altitude comes from your latitude and longitude, the time and the place's right ascension and declination, using Greenwich mean sidereal time. A closed sky gate says when it next rises.
+- **Visited:** you have been to a given place, for example NGC 604 once you have reached M33, and the Centaurus A, M81, M101 and M51 groups once you have reached them.
+
+The route minimises the distance travelled by bubble (from the start to the first gate, then from the last gate to the destination). Ties go to the fewest jumps. Closed gates on the ideal route are listed with the reason and when they open.
+
+Your location and the places you have visited stay on the device:
+- **Web:** `localStorage`. The site's Permissions-Policy blocks geolocation, so you type your latitude and longitude.
+- **App:** UserDefaults, with an optional single Core Location fix rounded to about 1 km. The usage string says it never leaves the device.
+
+Nothing is sent anywhere.
+
+### 15.4 Bodies added for directions
+
+- **Moons:** 22 major moons, at their measured orbit radius and period. Where each is along its orbit today is approximate, and the place card says so.
+- **Named bodies:** 32 dwarf planets, asteroids and comets, from NASA/JPL's Small-Body Database (full-precision osculating elements, propagated with two-body mean motion). Each draws its orbit.
+- **Belt sample:** a real sample of 4,000 main-belt asteroids, 800 Jupiter Trojans and 1,500 Kuiper-belt objects, drawn as faint points.
+
+`design/nu-universes/small_bodies.py` writes `bodies.json` and `belt.bin`.
+
+### 15.5 Social: no feed (spec, not built)
+
+nu.universes becomes a place you share with people, not a feed:
+
+- **No feed, no scroll.** No timeline and no endless list. You meet people by being in the same place at the same time: at NGC 604, at the Moon, at a rabbithole.
+- **Moving and jumping.** You move through the space, or jump. Where you can jump depends on where you are, the time (the real sky) and where you have been, as in §15.3, just like real life.
+- **AR, VR and flat.** The same presence works in AR (on your table or over the real sky), in VR or immersive space, and on a flat phone or Mac screen.
+- **Presence over the mixnet.** Being somewhere is announced only to your contacts, through the mixnet, like messages. Nothing is processed on servers, and the place you are at is never published.
+
+The UI shows no people until this exists; there are no placeholder avatars.
+
 ## Changelog
+
+- 22 Oct 2026: Directions and rabbitholes (§15) on the web and in the app.
+  - **Panel:** laid out like Google Maps. From is your last place, else Earth. To searches every place, grouped. Then four travel modes with times, the duration, the steps as a timeline, and fine print.
+  - **Spacecraft mode:** Parker Solar Probe's record speed.
+  - **New bodies:** 22 moons, 32 named small bodies from the JPL Small-Body Database, the asteroid belt and Kuiper belt as places, and a sample of 6,300 real belt, Trojan and Kuiper-belt objects (`small_bodies.py`).
+  - **Milestones:** planet orbits, both belts and the inner Oort cloud.
+  - **Title:** the page title is nu.i.verse.
 
 - 21 Oct 2026 (later): The map is a 3D flight with real distances, on the web and in the app, replacing the picture viewer below. One map in parsecs: planets from NASA JPL's Keplerian elements; 42,246 HYG v4.1 stars (magnitude 8 or within 25 pc) coloured by B−V; 869 UNGC galaxies with measured distances (Karachentsev 2013); 43,415 2MRS galaxies placed by redshift (H0 = 70), which show the cosmic web; a labelled Milky Way model (Sun 8,178 pc from the centre, bar, four arms); particle discs for the bright galaxies at their catalogue size, inclination and position angle; and the M33 mosaic as a plane 14,000 ly wide at its real tilt, with NGC 604 and NGC 595 as places on it. `design/nu-universes/catalog.py` builds the four data files from VizieR and HYG. Each point is a sprite whose brightness is m = M + 5 log₁₀(d / 10 pc) against a limiting magnitude that rises as you zoom out, so the Sun washes out up close and galaxies appear from far away. Flying between places zooms out and back in like Google Earth, and lands at each galaxy's best angle (mostly face-on, tipped 35° toward the Sun). The app draws this with RealityKit `CustomMaterial` sprites (`Flight/`) and puts the current view 30 cm across on a table in AR. Web label and focus-card styles are global, because Astro's scoped styles never reached the script-made tags. `m33_stars.py` and the mosaic-star twinkle are removed.
 - 21 Oct 2026: The map is the real mosaic in both surfaces. App: the heic1901a mosaic (4000 × 2251, bundled as `m33-hubble.jpg`) is the disc texture; an orbit camera (drag to pan, pinch to zoom, twist to rotate, double-tap to tilt) replaces RealityKit's default camera, which sat in the disc plane and saw it edge-on; landmark chips fly the camera to NGC 604, NGC 595 and the centre; fullscreen hides the deck, the navigation bar, the tab bar and the status bar; the AR button switches the camera to world tracking and puts the galaxy 30 cm across on a table. Twinkle stars are the mosaic's 320 brightest point sources at their real positions, found by `design/nu-universes/m33_stars.py`, with temperature estimated from colour (labelled an estimate); the demo spiral is no longer drawn. Web: images are served from `khensu.nu` (the CSP allows only same-origin images), and the map is a near-full-window pan and zoom viewer with fly-to chips and fullscreen. Per-band HiPS tiles and the deep zoom pyramid of the 665-megapixel original are still to come; other bands are labelled false-colour tints until then.

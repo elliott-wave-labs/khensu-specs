@@ -1,3 +1,27 @@
+# Work completed — 22 October 2026 (nu.universes flight)
+
+## Commits pushed
+
+| Repo | Commit |
+| --- | --- |
+| khensu-specs | https://github.com/elliott-wave-labs/khensu-specs/commit/eade591a0b94e4ebaa8d7c6c64f87e9b68b1d9be |
+| khensu-apple | https://github.com/elliott-wave-labs/khensu-apple/commit/d3f86107f8abbdbbc797f681f702ce068b937fd8 |
+| khensu-site | https://github.com/elliott-wave-labs/khensu-site/commit/de93f5f4255839508e10e89edc02979271f991e1 |
+
+## Live
+
+| Surface | URL | Status |
+| --- | --- | --- |
+| nu.universes (i.verse) | https://iverse.khensu.nu | HTTP 200, CN on `moqom-aura-iverse-khensu-nu` (SAN: aura, iverse, universes, rabbithole, portal) |
+| aliases | https://universes.khensu.nu · https://rabbithole.khensu.nu · https://portal.khensu.nu · https://khensu.nu/universes | HTTP 200, same page |
+| nu.eyes | https://khensu.nu/eyes | HTTP 200, try-on |
+| moments | https://moments.khensu.nu | HTTP 200, studio + templates |
+| bi (always-live check) | https://bi.khensu.nu | HTTP 200, `CN=bi.khensu.nu` |
+
+- **Spec:** `design/nu-universes.md` — iverse hosts, flight map, directions/rabbitholes. Patent rows in `PATENTS.md`. pycache ignored.
+- **App:** Waves Universes is a 3D flight (RealityKit `CustomMaterial` sprites, bundled HYG/UNGC/2MRS + Hubble M33, AR table, directions). `xcodebuild` Waves iOS Release **BUILD SUCCEEDED**.
+- **Site:** 3D flight in three.js, MediaPipe eyes try-on, moments studio frames. Published 22 Oct with `gcloud storage` from a frozen dist (live `dist/` was being rebuilt mid-rsync).
+
 # Work completed — 18 October 2026 (nu.moments build 4)
 
 ## nu.moments full editor 0.1.0 (6) + moments site — 19 Oct
@@ -142,6 +166,6 @@ See prior `work-completed` rows; AM republish of khensu-nu + khensu-dev after sy
 
 - Spec + model: `design/nu-universes.md` + `design/nu-universes/blender_m33.py` (M33 constants from ESA/Hubble heic1901, NASA M33, ESO, EarthSky; 19-channel spectral cube; FLRW cosmic timeline; three-twinkle physics; mantis observer).
 - App: `khensu-apple/Waves/Universes/` (5 Swift files) inside `nu.khensu.waves`; Waves is now Listen + Universes tabs. RealityKit + AR toggle, wavelength bands gamma→radio + mantis + sonify, Big Bang timeline. **BUILD SUCCEEDED** macOS + iOS (generic) via xcodegen + xcodebuild, Xcode 26.2.
-- Site: `khensu.nu/universes` page built in `khensu-site` dist (`/universes/index.html`, build Complete). Publish attempted 18 Oct — **blocked** on the known GCS IAM issue (`iam.elliott.io@gmail.com` lacks `storage.objects.create` on `moqom-sites`); needs interactive re-login with an objectAdmin account, then `publish-sites.sh khensu-nu`. Live URL currently 404 until that lands.
+- Site: live at https://iverse.khensu.nu and https://khensu.nu/universes (published 22 Oct).
 - Blender: MCP was offline (addon not running); procedural M33 script ships as source of truth, syntax-validated, exports USD/glTF for RealityKit/web.
 - Elliott reviews + commits (specs, apple, site) — not pushed here.

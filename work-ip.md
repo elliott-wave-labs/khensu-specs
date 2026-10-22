@@ -48,7 +48,7 @@ People / App Store product names: **`nu.<product>`**.
 | Device locked / Air offline (18 Oct) | Unlock 15 Pro + Air, keep awake on same Wi-Fi or cable; re-run devicectl installs for Ptah/Waves/Moments build 4 |
 | No Elliott Wave ASC Issuer ID | Create key in App Store Connect → Users and Access → Keys; or Distribute from Organizer |
 | moments IPA | **Sideload IPA shipped** in 0.1.0-build4 (wildcard profile + `Moments-Sideload.entitlements`). App Store archive still needs: Xcode signed in (team LHS49D8RYY) + register App ID `nu.khensu.moments` with App Group `group.nu.khensu.ptah`, then `scripts/archive-moments.sh` → Organizer |
-| Site publish ADC | Re-login as `elliott@moqom.cloud` (22 Oct). Prefer `gcloud storage` if `gsutil` still uses `iam.elliott.io@gmail.com`. |
+| ~~Site publish ADC~~ | Cleared 22 Oct — `elliott@moqom.cloud` + `gcloud storage` wrote khensu-nu (iverse, eyes, moments). `gsutil rsync` still races if another build wipes `dist/` mid-upload; snapshot first. |
 | ~~moments.khensu.nu DNS~~ | Cleared — A → `34.107.228.246`, own cert `moqom-moments-khensu-nu` ACTIVE, HTTP 200 |
 | ~~Product host certs~~ | Cleared — avatars + indra.og ACTIVE; iverse/aura/universes/rabbithole/portal on `moqom-aura-iverse-khensu-nu` ACTIVE |
 | No Apple Distribution identity in keychain (only Development) | Organizer Distribute uses Apple’s cloud signing when signed into Xcode with team `LHS49D8RYY` |

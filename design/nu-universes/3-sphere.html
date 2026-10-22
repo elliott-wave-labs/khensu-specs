@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 3-Sphere S³ — Interactive 4D Animation</title>
+<style>
+  :root{color-scheme:dark;--glass:rgba(12,14,24,.72);--line:rgba(255,255,255,.14);--txt:#eef1ff;--dim:#9aa3c0;--acc:#7dd7ff}
+  *{box-sizing:border-box} html,body{margin:0;height:100%;overflow:hidden;background:#03040a;color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+  #scene{position:fixed;inset:0}
+  .panel{position:fixed;z-index:10;background:var(--glass);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  #head{top:18px;left:18px;padding:16px 18px;max-width:430px}
+  #head h1{margin:0 0 6px;font-size:26px;letter-spacing:-.02em;font-weight:700}
+  #head h1 i{color:var(--acc);font-style:normal}
+  #head p{margin:0;color:var(--dim);font-size:13.5px;line-height:1.55}
+  #head code{color:#cfe9ff;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+  #controls{right:18px;top:18px;width:292px;padding:16px;max-height:calc(100vh - 36px);overflow:auto}
+  #controls h2{margin:0 0 10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+  button{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--txt);border-radius:11px;padding:9px 8px;font:600 13px Inter,system-ui;cursor:pointer}
+  button:hover{background:rgba(255,255,255,.12)} button.on{background:#e8f6ff;color:#071018;border-color:#fff}
+  button.wide{width:100%;margin-top:7px}
+  label{display:block;font-size:12.5px;color:var(--dim);margin:11px 0 5px}
+  label b{float:right;color:var(--txt);font-family:ui-monospace,Menlo,monospace;font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  .row{display:flex;gap:7px}.row button{flex:1}
+  #info{left:18px;bottom:18px;padding:13px 16px;max-width:520px;font-size:12.8px;line-height:1.6;color:var(--dim)}
+  #info b{color:var(--txt)} #info .eq{color:#cfe9ff;font-family:ui-monospace,Menlo,monospace}
+  #badge{right:18px;bottom:18px;padding:9px 12px;font-size:12px;color:var(--dim)}
+  #badge b{color:var(--txt)}
+  #err{display:none;left:50%;top:50%;transform:translate(-50%,-50%);padding:20px;max-width:420px;text-align:center;line-height:1.6}
+  @media(max-width:760px){#head{max-width:calc(100vw - 36px)}#info,#badge{display:none}#controls{top:auto;bottom:14px;right:14px;left:14px;width:auto;max-height:44vh}}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<div class="panel" id="head">
+  <h1>The 3-sphere <i>S³</i></h1>
+  <p>The surface of a 4D ball: <code>x² + y² + z² + w² = 1</code> in ℝ⁴.
+  You are seeing it <b>stereographically projected</b> into 3D — the same way a globe
+  is flattened to a map, one dimension up — while it rotates through the hidden <code>w</code> axis.</p>
+</div>
+
+<div class="panel" id="controls">
+  <h2>What to show</h2>
+  <div class="modes">
+    <button data-mode="hopf" class="on">Hopf fibres</button>
+    <button data-mode="tori">Clifford tori</button>
+    <button data-mode="points">Point cloud</button>
+    <button data-mode="all">Everything</button>
+  </div>
+  <h2>4D rotation</h2>
+  <label>XW rotation speed <b id="v-xw">1.00×</b></label>
+  <input id="xw" type="range" min="0" max="2.5" step="0.01" value="1">
+  <label>YW rotation speed <b id="v-yw">0.60×</b></label>
+  <input id="yw" type="range" min="0" max="2.5" step="0.01" value="0.6">
+  <label>ZW rotation speed <b id="v-zw">0.35×</b></label>
+  <input id="zw" type="range" min="0" max="2.5" step="0.01" value="0.35">
+  <h2 style="margin-top:16px">Projection</h2>
+  <label>Stereographic distance <b id="v-proj">2.4</b></label>
+  <input id="proj" type="range" min="1.25" max="5" step="0.05" value="2.4">
+  <label>Hopf fibres <b id="v-fib">48</b></label>
+  <input id="fib" type="range" min="8" max="96" step="4" value="48">
+  <label>W-slice <b id="v-slice">off</b></label>
+  <input id="slice" type="range" min="-0.95" max="0.95" step="0.01" value="0">
+  <div class="row" style="margin-top:12px">
+    <button id="play">⏸ Pause</button>
+    <button id="sliceBtn">Slice: off</button>
+  </div>
+  <button class="wide" id="shot">⬇ Save PNG rendering</button>
+  <button class="wide" id="reset">Reset camera</button>
+  <p style="color:var(--dim);font-size:12px;line-height:1.55;margin:12px 0 0">
+    Drag to orbit · scroll to zoom · right-drag to pan.<br>
+    Colour = position on the base 2-sphere of the Hopf map <span style="font-family:ui-monospace">S³ → S²</span>.
+  </p>
+</div>
+
+<div class="panel" id="info">
+  <b>How to read it.</b> In <b>Hopf</b> mode every circle is one fibre — a perfect circle in 4D that
+  never touches any other, yet every pair is linked exactly once in 3D. Sets of fibres at one
+  latitude sweep a <b>torus</b>; those tori nest from a central circle out to a straight line.
+  <span class="eq">(x,y,z,w) ↦ (x,y,z)/(d − w)</span> is the projection; turn a 4D plane above and
+  watch circles pass “through infinity”.
+</div>
+
+<div class="panel" id="badge"><b>Drag</b> to look around — it is live 4D, not a video.</div>
+<div class="panel" id="err"><b>WebGL / Three.js could not load.</b><br>Check your connection and reload — the scene loads Three.js from a CDN.</div>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({canvas: document.getElementById('scene'), antialias:true, preserveDrawingBuffer:true});
+} catch(e){ document.getElementById('err').style.display='block'; throw e; }
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.setClearColor(0x03040a, 1);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x03040a, 0.028);
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.05, 200);
+camera.position.set(3.4, 2.1, 4.6);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+const key = new THREE.PointLight(0x9fd8ff, 60); key.position.set(6,8,6); scene.add(key);
+
+// faint reference sphere + axes of the projection space
+const ref = new THREE.Mesh(new THREE.SphereGeometry(1.55, 48, 32),
+  new THREE.MeshBasicMaterial({color:0x33507a, wireframe:true, transparent:true, opacity:0.10}));
+scene.add(ref);
+
+// ---------- 4D maths ----------
+// Hopf fibre: eta in [0,pi/2], delta fixed, phase t runs the circle.
+// z1 = cos(eta) e^{it},  z2 = sin(eta) e^{i(delta+t)}   (complex pairs (x,y),(z,w))
+function fibrePoint(eta, delta, t, out){
+  const c = Math.cos(eta), s = Math.sin(eta);
+  out[0] = c*Math.cos(t);       // x
+  out[1] = c*Math.sin(t);       // y
+  out[2] = s*Math.cos(delta+t); // z
+  out[3] = s*Math.sin(delta+t); // w
+  return out;
+}
+function torusPoint(eta, a, b, out){ // Clifford torus: phases vary independently
+  const c = Math.cos(eta), s = Math.sin(eta);
+  out[0]=c*Math.cos(a); out[1]=c*Math.sin(a); out[2]=s*Math.cos(b); out[3]=s*Math.sin(b); return out;
+}
+function gauss(){ let u=0,v=0; while(!u) u=Math.random(); while(!v) v=Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+
+const state = { mode:'hopf', playing:true, xw:1, yw:.6, zw:.35, proj:2.4, fibres:48,
+                sliceOn:false, slice:0, axw:0, ayw:0, azw:0 };
+const tmp = [0,0,0,0];
+
+function rotateProject(p, out3){
+  // rotate in the three planes that involve the hidden w axis
+  let [x,y,z,w] = p, c,s;
+  c=Math.cos(state.axw); s=Math.sin(state.axw); [x,w]=[x*c-w*s, x*s+w*c];
+  c=Math.cos(state.ayw); s=Math.sin(state.ayw); [y,w]=[y*c-w*s, y*s+w*c];
+  c=Math.cos(state.azw); s=Math.sin(state.azw); [z,w]=[z*c-w*s, z*s+w*c];
+  const d = state.proj, k = d/Math.max(0.18, d-w); // stereographic from (0,0,0,d)
+  out3.set(x*k*1.35, y*k*1.35, z*k*1.35);
+  return Math.abs(w - state.slice) < 0.06; // near the w-slice?
+}
+
+// ---------- builders ----------
+const groups = { hopf:new THREE.Group(), tori:new THREE.Group(), points:new THREE.Group() };
+Object.values(groups).forEach(g=>scene.add(g));
+const v3 = new THREE.Vector3(), col = new THREE.Color();
+
+function line(pts, color, opacity=0.9){
+  const g = new THREE.BufferGeometry().setFromPoints(pts);
+  const m = new THREE.LineBasicMaterial({color, transparent:true, opacity});
+  const l = new THREE.Line(g, m); l.userData.base = pts.map(p=>p.clone()); return l;
+}
+function buildHopf(){
+  groups.hopf.clear();
+  const N = state.fibres, SEG = 110;
+  for(let i=0;i<N;i++){
+    // Fibonacci-ish spread over (eta, delta): eta bands x delta spokes
+    const eta = 0.18 + (Math.PI/2-0.36) * ((i*0.6180339887)%1);
+    const delta = i * 2.399963; // golden angle
+    const pts=[]; for(let j=0;j<=SEG;j++){ fibrePoint(eta, delta, j/SEG*2*Math.PI, tmp); pts.push(new THREE.Vector4(...tmp)); }
+    col.setHSL(((eta/(Math.PI/2))*0.75 + delta/6.28*0.2)%1, 0.85, 0.62);
+    const l = line(pts.map(()=>new THREE.Vector3()), col.getHex(), 0.82);
+    l.userData.p4 = pts; groups.hopf.add(l);
+  }
+}
+function buildTori(){
+  groups.tori.clear();
+  [0.45, 0.785, 1.12].forEach((eta,ei)=>{ // eta = pi/4 is the flat Clifford torus
+    col.setHSL(0.55+ei*0.13, 0.8, 0.6);
+    for(let k=0;k<12;k++){
+      const a = k/12*2*Math.PI, b = k/12*2*Math.PI, pA=[], pB=[];
+      for(let j=0;j<=80;j++){ torusPoint(eta, a, j/80*2*Math.PI, tmp); pA.push(new THREE.Vector4(...tmp)); }
+      for(let j=0;j<=80;j++){ torusPoint(eta, j/80*2*Math.PI, b, tmp); pB.push(new THREE.Vector4(...tmp)); }
+      [pA,pB].forEach(p=>{ const l=line(p.map(()=>new THREE.Vector3()), col.getHex(), ei===1?0.55:0.30);
+        l.userData.p4=p; groups.tori.add(l); });
+    }
+  });
+}
+function buildPoints(){
+  groups.points.clear();
+  const N=2600, pos=new Float32Array(N*3), p4=[];
+  for(let i=0;i<N;i++){ let q=[gauss(),gauss(),gauss(),gauss()];
+    const n=Math.hypot(...q); p4.push(q.map(v=>v/n)); }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const m=new THREE.PointsMaterial({color:0x9fdcff, size:0.022, transparent:true, opacity:0.75, sizeAttenuation:true});
+  const pts=new THREE.Points(g,m); pts.userData.p4=p4; groups.points.add(pts);
+}
+function rebuild(){ buildHopf(); buildTori(); buildPoints(); }
+rebuild();
+
+// ---------- per-frame update ----------
+function updateGroup(g){
+  g.children.forEach(obj=>{
+    const p4 = obj.userData.p4; if(!p4) return;
+    if(obj.isPoints){
+      const a = obj.geometry.attributes.position;
+      for(let i=0;i<p4.length;i++){ rotateProject(p4[i], v3); a.setXYZ(i, v3.x, v3.y, v3.z); }
+      a.needsUpdate = true;
+    } else {
+      const a = obj.geometry.attributes.position; let cut=false;
+      for(let i=0;i<p4.length;i++){
+        const near = rotateProject(p4[i], v3);
+        if(state.sliceOn && !near) cut=true;
+        a.setXYZ(i, v3.x, v3.y, v3.z);
+      }
+      a.needsUpdate = true;
+      obj.material.opacity = state.sliceOn ? (cut?0.12:0.95) : (obj.userData.baseOpacity ?? obj.material.opacity);
+    }
+  });
+}
+
+function setMode(m){
+  state.mode=m;
+  groups.hopf.visible  = (m==='hopf'||m==='all');
+  groups.tori.visible  = (m==='tori'||m==='all');
+  groups.points.visible= (m==='points'||m==='all');
+  document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on', b.dataset.mode===m));
+}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+
+const $=id=>document.getElementById(id);
+function bind(id, vid, key, fmt, after){
+  $(id).oninput=e=>{ state[key]=+e.target.value; $(vid).textContent=fmt(state[key]); after&&after(); };
+}
+bind('xw','v-xw','xw',v=>v.toFixed(2)+'×'); bind('yw','v-yw','yw',v=>v.toFixed(2)+'×');
+bind('zw','v-zw','zw',v=>v.toFixed(2)+'×'); bind('proj','v-proj','proj',v=>v.toFixed(2));
+bind('fib','v-fib','fibres',v=>v|0, buildHopf);
+bind('slice','v-slice','slice',v=> state.sliceOn? v.toFixed(2):'off');
+$('play').onclick=()=>{ state.playing=!state.playing; $('play').textContent=state.playing?'⏸ Pause':'▶ Play'; };
+$('sliceBtn').onclick=()=>{ state.sliceOn=!state.sliceOn; $('sliceBtn').textContent='Slice: '+(state.sliceOn?'on':'off');
+  $('v-slice').textContent=state.sliceOn? state.slice.toFixed(2):'off'; };
+$('reset').onclick=()=>{ camera.position.set(3.4,2.1,4.6); controls.target.set(0,0,0); };
+$('shot').onclick=()=>{ renderer.render(scene,camera);
+  const a=document.createElement('a'); a.download='3-sphere.png'; a.href=renderer.domElement.toDataURL('image/png'); a.click(); };
+
+addEventListener('resize',()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight); });
+
+const clock = new THREE.Clock();
+(function tick(){
+  requestAnimationFrame(tick);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if(state.playing){ state.axw+=dt*0.45*state.xw; state.ayw+=dt*0.45*state.yw; state.azw+=dt*0.45*state.zw; }
+  if(groups.hopf.visible) updateGroup(groups.hopf);
+  if(groups.tori.visible) updateGroup(groups.tori);
+  if(groups.points.visible) updateGroup(groups.points);
+  ref.rotation.y += dt*0.02;
+  controls.update(); renderer.render(scene,camera);
+})();
+</script>
+</body>
+</html>

@@ -5,5 +5,5 @@ patents/filing/
 
 # Bench media and bytecode: generated locally, too large to commit
 bench/out/
-bench/__pycache__/
+**/__pycache__/
 bench/mac/nuenhance

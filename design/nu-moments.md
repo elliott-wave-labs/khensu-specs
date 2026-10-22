@@ -2,7 +2,7 @@
 
 Product name: **ñü.mømëntš** (shown); code, host and identifiers: `moments`, `nu.moments`, `nu.khensu.moments`, host `moments.khensu.nu` (path `/moments` on the apex). Formerly the working name “editor” in `design/editor.md`.
 
-Status: native app scaffold in `khensu-apple` (Moments target, `nu.khensu.moments`); marketing live on moments.khensu.nu and `/moments`. This doc is the engineering truth. Patent assessment once the editor is in wider use (`PATENTS.md`).
+Status: native app shipped in `khensu-apple` 0.1.0 build 6 (Moments target, `nu.khensu.moments`) — six templates whose looks, transitions and caption styles render in preview and export; formats 9:16/1:1/4:5/16:9; split/duplicate/trim/speed/mute; beat sync with your track or a generated beat; Auto-fit frame scoring; auto captions from on-device speech; subject lift for photos (Vision); carousel slides; save to Photos; projects + media persisted in Application Support. GitHub sideload IPA in release `0.1.0-build6`; App Store archive pending App ID registration (see `work-ip.md`). Moments site rebuilt (browser studio, real frames) on moments.khensu.nu and `/moments`. This doc is the engineering truth. Patent assessment once the editor is in wider use (`PATENTS.md`).
 
 ## 1. Rules
 

@@ -192,14 +192,18 @@ To carry the contract Open Graph leaves implicit, publishers SHOULD also emit:
 <meta property="preview:size" content="1200x630" />
 <meta property="preview:bytes" content="3677893" />
 <meta property="preview:hash" content="sha-256=3a646c50…" />
-<meta property="preview:policy" content="mute loop autoplay" />
+<meta property="preview:policy" content="mute loop autoplay inline no-fullscreen no-download pointer-events-none tap-opens-link" />
+<meta property="preview:interactive" content="false" />
+<meta property="preview:hit-test" content="false" />
+<meta property="preview:action" content="https://example.example/" />
 ~~~~
 
 Property names under the `preview:` prefix are defined by this document.
 Implementations that already ship the webË tags in {{WEBE}} MAY emit the same
 values under `nu:preview`, `nu:preview:type`, `nu:preview:duration`,
-`nu:preview:size`, `nu:preview:bytes`, and `nu:preview:hash`. Clients that
-understand this document MUST treat `nu:preview*` as synonyms of `preview*`
+`nu:preview:size`, `nu:preview:bytes`, `nu:preview:hash`, `nu:preview:policy`,
+`nu:preview:interactive`, `nu:preview:hit-test`, and `nu:preview:href`. Clients
+that understand this document MUST treat `nu:preview*` as synonyms of `preview*`
 when the `preview*` forms are absent.
 
 * `preview:url` — absolute HTTPS URL of the motion file. When absent, clients
@@ -211,7 +215,11 @@ when the `preview*` forms are absent.
 * `preview:hash` — `sha-256=` followed by the lowercase hex SHA-256 of the file
   bytes ({{RFC6234}}).
 * `preview:policy` — space-separated tokens. For Link Preview Media the
-  RECOMMENDED value is `mute loop autoplay`.
+  RECOMMENDED value is `mute loop autoplay inline no-fullscreen no-download pointer-events-none tap-opens-link`.
+* `preview:interactive` / `preview:hit-test` — when `"false"`, the motion layer
+  MUST NOT capture pointer or touch events (`allowsHitTesting(false)` /
+  `pointer-events: none`), MUST NOT expand fullscreen, and MUST NOT offer a
+  direct video download; tapping the preview opens the canonical page URL.
 
 Several `preview:url` (or `nu:preview`) tags MAY appear; a client uses the first
 entry it can decode and that passes the hash check.
@@ -238,9 +246,13 @@ An unfurler that claims Link Preview Media support MUST:
    size limits in this document.
 6. Honour the platform reduced-motion or data-saver setting by showing the still
    instead of autoplaying.
-7. On user tap of the motion surface, either pause/play or open the canonical
-   page URL — the product MUST keep a clear affordance to open the link itself
-   (title/domain row), not only the video.
+7. On user tap of the motion surface, open the canonical page URL directly.
+   When `preview:policy` includes `no-fullscreen`, `no-download`,
+   `pointer-events-none`, or `tap-opens-link` (or `preview:hit-test="false"`),
+   the motion surface MUST disable hit-testing (`allowsHitTesting(false)` /
+   `pointer-events: none`), MUST NOT expand into a fullscreen media player, and
+   MUST NOT expose a video download action; the video plays strictly at preview
+   card size and tapping anywhere on the preview opens the link.
 
 Clients MUST NOT require a site-specific partnership, oEmbed allowlist, or app
 install for HTTPS origins that meet {{codec}} and the publisher rules above.

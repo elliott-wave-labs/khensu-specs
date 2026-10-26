@@ -2,6 +2,8 @@
 
 **Status: built, 14 October 2026; stem adding and ñü.mobility added 19 October 2026.** The player on [waves.khensu.nu](https://waves.khensu.nu) and in the nu.waves iOS app (`nu.khensu.waves`). Music, live channels, your files on this device, healing sounds generated here, spacetime bubble mid-listen, stems added from other songs and other bubbles, and Immersive Mobility — nothing processed on servers.
 
+nu.media audio is 4D audio. The spacetime bubble™ is the three dimensions of space, and time is the fourth: the song's position, a stem's offset, and its path through the bubble (`design/nu-audio.md`).
+
 Related: `design/nu-audio.md`, `design/nu-spatial.md`, `design/nu-sounds-studio.md`, `PLAN.md` (Sounds tab).
 
 ## 1. What it is

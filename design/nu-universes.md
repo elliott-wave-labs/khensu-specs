@@ -9,7 +9,7 @@ Related: `design/nu-waves-player.md`, `design/nu-audio.md`, `design/nu-spatial.m
 | Shown | nu.universes in headings, buttons and labels; **nu.u** as the short name; part of ñü.ŵævẽš |
 | Running text | `nu.universes`, `nu.u`, `nu.waves` (ASCII, per `AGENTS.md`) |
 | Code | `nu.universes`, `Universes/` in the Waves target, `nu-u` in file names |
-| Host | `iverse.khensu.nu` (header i.verse; `nu:iverse.khensu.nu`) with `universes.khensu.nu`, `rabbithole.khensu.nu` and `portal.khensu.nu` opening the same page. One own cert `moqom-aura-iverse-khensu-nu` shared with aura (never the shared products pack). Apex `https://khensu.nu/universes` also opens it |
+| Host | `iverse.khensu.nu` (header i.verse; `nu:iverse.khensu.nu`) with `universes.khensu.nu`, `rabbithole.khensu.nu` and `portal.khensu.nu` opening the same page. `inverse.khensu.nu` 301s to iverse (the easy autocorrect typo). One own cert `moqom-aura-iverse-khensu-nu-2` shared with aura (never the shared products pack). Apex `https://khensu.nu/universes` also opens it |
 | App | Inside `nu.khensu.waves` (iPhone, iPad, Mac, iOS/iPadOS/macOS 26). No new bundle ID, no new App Store app. Native RealityKit + AR; the web page is the catalogue and the fallback viewer |
 | Licence | Specs CC BY 4.0 (`khensu-specs`); app AGPL-3.0 (`khensu-apple`); core Apache-2.0 if a decoder lands in `khensu-core` |
 
@@ -231,6 +231,7 @@ Camera usage: the Waves `Info.plist` camera string gains AR/sky wording ("…and
 | Visible light only | Gamma→radio + mantis + sonified (§6) |
 | Sky chart AR overlay | Registered sky AR *and* tabletop galaxy AR, one scene graph |
 | Closed catalogue | Cited, versioned, archived open data (NASA/ESA/ESO/Gaia) with per-object provenance |
+| Object view: a textured Moon with names | 25 photoreal globes turned to their real orientation and lit from the Sun's real direction at the map's time (phase, day and night, ring shadows); 943 IAU names, each with the story of the name; the same globe in the map and close up (§16.7) |
 
 ## 9. Blender pipeline (3D models)
 
@@ -241,7 +242,7 @@ Galaxy hero models (the tabletop M33 mesh/splat set, the L6 shell, marketing ren
 
 ## 10. Web surface (published with v1)
 
-`https://iverse.khensu.nu` (header button i.verse), with `universes`, `rabbithole` and `portal.khensu.nu` and the apex `khensu.nu/universes` opening the same page; the five hosts share one own certificate with aura. Its link preview is the flight itself, recorded from the page by `khensu-site` `tools/og-flight.sh` (Earth's orbit to M33, the card's words on top). The hero is the M33 Hubble mosaic, and `#map` is the same 3D flight as the app in three.js (`khensu-site` `src/scripts/universes/flight.ts`), drawn from the same files (`/universes/data/`, built by `design/nu-universes/catalog.py`) with a logarithmic depth buffer from 10⁻⁹ to 10⁹ pc. Search, chips and labels fly the camera; `?place=NAME` opens a place; fullscreen fills the window. The page also carries the wavelength bands, the cosmic timeline and the catalogue facts with their NASA/ESA/ESO/EarthSky credits. It is the catalogue entry for nu.universes inside nu.waves and the link target for `nu:universes.khensu.nu`. Present tense, as shipped, per the publishing skill; unmeasured figures are labelled estimates.
+`https://iverse.khensu.nu` (header button i.verse), with `universes`, `rabbithole` and `portal.khensu.nu` and the apex `khensu.nu/universes` opening the same page; `inverse.khensu.nu` 301s to iverse. The five hosts plus the typo redirect share one own certificate with aura. Its link preview is the flight itself, recorded from the page by `khensu-site` `tools/og-flight.sh` (Earth's orbit to M33, the card's words on top). The hero is the M33 Hubble mosaic, and `#map` is the same 3D flight as the app in three.js (`khensu-site` `src/scripts/universes/flight.ts`), drawn from the same files (`/universes/data/`, built by `design/nu-universes/catalog.py`) with a logarithmic depth buffer from 10⁻⁹ to 10⁹ pc. Search, chips and labels fly the camera; `?place=NAME` opens a place; fullscreen fills the window. A control + eye.slash button hides the search, directions, fullscreen, clock, chips and readout. Those same controls fade out while the camera is flying, including the rabbithole flash, and come back when the move ends. The place chips stay one line and scroll, so a changing distance readout cannot reflow them. The page also carries the wavelength bands, the cosmic timeline and the catalogue facts with their NASA/ESA/ESO/EarthSky credits. It is the catalogue entry for nu.universes inside nu.waves and the link target for `nu:universes.khensu.nu`. Present tense, as shipped, per the publishing skill; unmeasured figures are labelled estimates.
 
 ## 11. Benchmarks and gates (to be measured, replaces estimates)
 
@@ -271,6 +272,9 @@ Per `PATENTS.md` practice — assess, publish anyway, never hold the sites:
 | Turn-by-turn directions through real space: milestones found by log-sampling the straight path against shells (planet orbits, belts, heliopause, Oort cloud, Local Bubble), the Milky Way's disc and galaxy extents, with times per travel mode | Google Maps directions, Celestia/SpaceEngine "go to", NASA Eyes | The milestone method is simple; the novelty, if any, is the Maps grammar applied to a real-distance universe. Defensive publication |
 | Rabbitholes: a wormhole graph whose gates open by the real sky over the user (galaxy above the horizon now), by places the user has visited, or always; routing by least bubble distance through open gates, with reasons for closed ones | Game fast-travel unlocked by discovery, location-gated AR games | Gating teleports on the live sky at the user's location, computed on the device, may be narrow but novel; search first |
 | Social presence without a feed: people met only by being at the same place in the same map at the same time, over the mixnet | Spatial chat, MMO zones, Snap Map | Combination with the no-scroll rule and mixnet presence; assess when built |
+| Close-up globes that share the map's clock: IAU rotation elements and the Sun's real direction give the phase seen from Earth, a "Sunlit side" swing, and ring shadows computed both ways in the shader | Night Sky, SkySafari, NASA Eyes, Celestia | Each part is known; the combination with tappable name origins and one globe for map and close-up is likely defensive publication |
+| Time travel by animating the map clock to a chosen moment (smoothstep over a duration that grows with log of the gap), with everything moving there visibly and pausing on arrival | Planetarium time controls, Stellarium | Defensive publication |
+| Tap picking in screen space: labelled bodies within 16 px, else the nearest orbit segment within 10 px, with orbit and body lit together | GIS feature picking | Publish as spec |
 
 ## 14. Open questions
 
@@ -355,7 +359,62 @@ nu.universes becomes a place you share with people, not a feed:
 
 The UI shows no people until this exists; there are no placeholder avatars.
 
+## 16. The live map (web)
+
+Built 23 to 25 Oct 2026 in `khensu-site` `src/scripts/universes/` (`flight.ts`, `solar.ts`, `deep.ts`, `places.ts`, `trip.ts`, `earth.ts`, `body.ts`, `closeup.ts`). The app has not caught up yet: it still has the 22 Oct map.
+
+### 16.1 Data
+
+| Script (`design/nu-universes/`) | Writes | From |
+| --- | --- | --- |
+| `solar_system.py` | `moons.json`/`.bin` (osculating elements every 10 days), `craft.json`/`.bin` (daily positions), `bodies.json`, `belt.bin` | NASA JPL Horizons, Small-Body Database, Close-Approach Data |
+| `deep_sky.py` | nebulae, star systems, pulsars, black holes, quasars, M33's catalogued contents | SIMBAD, ATNF, VizieR (Pellerin & Macri 2011, Sarajedini & Mancone 2007, Relaño et al. 2013, Long et al. 2010, Massey et al. 2006) |
+| `constellations.py` | `constellations.json`: the 88 figures (Serpens merged) | d3-celestial (BSD-3, Olaf Frohn) |
+| `surfaces.py` | `/universes/surfaces/`: 4K and 1K WebP maps and `surfaces.json` | See §16.7 |
+
+### 16.2 Live time and time travel
+
+The map's clock runs live by default; the time bar runs it from an hour to a year a second, forwards or back, between 1800 and 2050 (the range of JPL's planet elements). Tapping the date, or **Now** while live, opens a picker: a date and time, or a moment (Apollo 11, Voyager 1 at Jupiter, Halley, Hale–Bopp, New Horizons at Pluto, ʻOumuamua, Apophis). The clock then runs to that moment with a smoothstep over 1.4 s plus up to 2.6 s more for big gaps (0.7 × log₁₀ of the days), so everything visibly moves there, and pauses on arrival. **Now** goes back to live. Pulsing stars hold still during the trip, so nothing flashes faster than once a second.
+
+### 16.3 Turning, tapping and searching
+
+- **Turning:** one finger (or the left button) turns the view like a trackball. The camera's up turns with it, so there is no pole to get stuck at. It coasts after a flick, except with reduced motion.
+- **Tapping:** in screen space. A photoreal globe under the finger, or a labelled body within 16 px, wins; a body with a map opens close up (§16.7). Otherwise the nearest orbit within 10 px is lit with its body: orbit at full opacity and whitened, a ring around the body that breathes every 2.4 s, and its label lit.
+- **Go to:** search reaches every place, labelled or not: moons such as Io and Europa, about 1,600 objects in M33, and the constellations. Matches rank exact, then prefix, then word start, then anywhere.
+
+### 16.4 Deep sky and M33
+
+Nebulae, binaries, pulsars, black holes and quasars sit at their measured places. M33's Hubble mosaic has its sky level subtracted and fades out on an ellipse, so only the galaxy's light is added to space; the modelled M33 stars are thinned with the same mask, so the photo and the model never double up. M33's catalogued objects (Cepheids, clusters, H II regions, supernova remnants and the 400 brightest stars) are searchable by J2000 designation.
+
+### 16.5 Constellations
+
+The 88 figures are snapped to HYG stars brighter than magnitude 6.5 within 0.3° and drawn in 3D between the stars' real positions. They fade out beyond 60 to 400 pc from the Sun, since only from near the Sun do they look like their figures, and going to one puts the camera at the Sun facing it.
+
+### 16.6 Earth directions and privacy
+
+When a trip starts or ends on Earth, the "On Earth" box plans the ground part to the nearest spaceport (or a chosen one, or any address), by car, bike or foot, and a launch step. The card is drawn like the Per-Ankh sailing itinerary: a dot globe, a violet-to-teal route, white stops and a vehicle riding the route. Your location stays on the device. Road routes and address search use OpenStreetMap's open servers (`routing.openstreetmap.de`, `photon.komoot.io`) only after you turn them on, with a disclosure that they see the points sent; otherwise distances are as the crow flies.
+
+### 16.7 Close-up globes
+
+Tapping a planet, a big moon, the Sun, Ceres or Vesta (on the map, its name tag, or **Look closer** on its card) opens it big, while the map flies there underneath.
+
+- **Bodies:** the Sun, the eight planets, the Moon, Io, Europa, Ganymede, Callisto, Titan, Enceladus, Tethys, Dione, Rhea, Iapetus, Triton, Pluto, Charon, Ceres and Vesta.
+- **Orientation:** IAU WGCCRE rotation elements (pole and prime meridian, without the small periodic terms) on the map's clock, so Earth's day side, the Moon's face and Saturn's ring tilt are right for the moment shown. Jupiter, Saturn, Uranus, Neptune and Earth are flattened by their measured oblateness.
+- **Light:** from the Sun's real direction. **From Earth** puts the eye on the line from Earth, so the phase is the one you would see (the Moon shows its phase name). **Sunlit side** swings round to the day side, turned 30° so the terminator shows. Airless ground uses Lommel–Seeliger blended with Lambert, so a full Moon looks flat as the real one does; cloud tops use a soft terminator and darker limbs; the Sun is limb-darkened. Earth has city lights on its night side and a cloud shell (a typical day, labelled not live). Saturn's rings shade the planet and the planet shades the rings, computed per pixel. Earth, Venus, Mars, Titan, the giants, Pluto and Triton have a thin sky at the limb.
+- **Names:** the largest IAU features on the near side, more as you zoom in, never overlapping, plus famous small ones (Tycho, Olympus Mons, the Gale and Jezero rover craters, Pwyll, Pele, Kraken Mare, the tiger stripes, Occator, the Moon's landing sites). Tapping a name shows its type, size, place and the origin of the name. On Venus the names show with the Radar layer.
+- **Facts:** diameter, length of day, distance from Earth with the light time, distance from the Sun, and the phase from Earth, refreshed as the clock runs. **Directions** sets the body as the destination.
+- **Controls:** drag turns, pinch or scroll zooms, arrow keys and +/− work, Escape closes. On a phone the globe centres in the space above the facts sheet.
+- **In the map:** the same globe is drawn at its real size once it is more than a pixel or so across, with the 1K maps, and switches to 4K when it fills the view. The Moon is no longer a dot.
+- **Maps:** Solar System Scope (CC BY 4.0, from NASA data) for the Sun, planets, Moon and rings; USGS Astrogeology (public domain) for the Galilean moons; NASA/JPL via Wikimedia Commons (public domain) for the rest. Ceres uses Dawn's enhanced-colour mosaic shown in grey, since it fills the poles in false colour. Map centres were checked against IAU features (Xanadu and Menrva on Titan, Iapetus's dark side, Dione's wispy terrain, Tirawa on Rhea, Sputnik Planitia on Pluto, Occator on Ceres, Pele on Io). About 25 MB of maps, fetched only when a globe is shown.
+
 ## Changelog
+
+- 25 Oct 2026: Close-up globes (§16.7). Tap a planet, moon, the Sun, Ceres or Vesta to open it as a big photoreal globe, turned and lit as it is at the map's time, with IAU names and their stories; the same globes now draw in the map. `surfaces.py` builds the maps and names. The breathing highlight ring now stays on its body (its scale animation was scaling its offset too). §16 records the live map built 23 to 25 Oct.
+- 24 Oct 2026 (later): Time travel from **Now** and the date (§16.2); tapping an orbit lights it and its body; the trackball fixes the stuck one-finger turn; "Go to" searches every body, M33's catalogued objects and the 88 constellations; the M33 mosaic blends into space instead of showing its rectangle.
+
+- 24 Oct 2026: On the web map, controls hide while the camera flies. A control + eye.slash button hides them the rest of the time. Place chips no longer wrap or jump when the distance line changes.
+
+- 23 Oct 2026: `inverse.khensu.nu` 301s to `iverse.khensu.nu` (autocorrect typo). Same own cert as aura / iverse.
 
 - 22 Oct 2026: Directions and rabbitholes (§15) on the web and in the app.
   - **Panel:** laid out like Google Maps. From is your last place, else Earth. To searches every place, grouped. Then four travel modes with times, the duration, the steps as a timeline, and fine print.

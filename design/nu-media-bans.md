@@ -98,7 +98,30 @@ Appeals: a lift is a BanRecord version with `ends_at` in the past (or a `lifted`
 - Not client-side scanning of private messages.
 - Not a platform cut: held value is still the creator's when released; khensu.nu takes nothing extra for the lock.
 
-## 6. Cross-links
+## 6. Public forum offenses (decided 25 Oct 2026)
+
+The public name is the violet flame, the transmuting fire of Lumeria. Nudity, gore, and an attack on a person or a group for who they are (race, colour, ethnic or national origin, sex, gender, sexual orientation, religion, disability, age), including racism, misogyny, bullying, and drama, ban the persona from the public forum. The page is `khensu.nu/safety`.
+
+The picture check stays on the device. The BanRecord carries a reason code, not the frame.
+
+| Offense count for that persona | Ban |
+| --- | --- |
+| 1st offense | 1-month ban |
+| 2nd strike | 3-month ban |
+| 3rd offense | 1-year ban on public discourse and interaction |
+| 4th strike | Permanent ban on public discourse for that person, that wallet, and that device |
+
+The count never resets, even years later. The 4th strike is `kind = permanent` and names the device as well as the persona and the media payment wallet. It bars those three from public discourse. They keep the wallet and can send and receive money, including on the media payment address: this strike does not apply the receive lock in §3. They are isolated from the community after multiple infractions.
+
+While a ban is active:
+
+- Stock apps block the persona from the public forum (discovery, feed, forums, live rooms). From the 3rd offense, that block is public discourse and community interaction.
+- nu.waves playback is refused except the sound healing tones, First Attempt, and the classical composers (`artist` kind `composer`).
+- Private messages are unchanged.
+- Existing posts stay content-addressed. Stock clients do not show that persona in public discourse until `ends_at`. A permanent ban does not end.
+- The 1st, 2nd, and 3rd bans still use the §3 receive lock on the media payment address. The 4th does not.
+
+## 7. Cross-links
 
 - `PAYMENTS.md` — non-custodial notes; held envelope to be specified in the spend AIR when built
 - `design/nufi.md` — creator economics

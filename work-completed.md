@@ -1,3 +1,27 @@
+# Work completed — 24–25 October 2026 (nu.universes live map + close-up globes)
+
+## Commits
+
+None yet: khensu-specs, khensu-site and khensu-apple changes are uncommitted for Elliott to review and commit.
+
+## Live
+
+| Surface | URL | Status |
+| --- | --- | --- |
+| nu.universes (nu.i.verse) | https://iverse.khensu.nu | HTTP 200, close-up build live 25 Oct ~08:15 UTC (Moon and Saturn close-ups checked live) |
+| same page | https://khensu.nu/universes · https://universes.khensu.nu · https://rabbithole.khensu.nu · https://portal.khensu.nu | HTTP 200, same build |
+| surface maps | https://khensu.nu/universes/surfaces/surfaces.json | HTTP 200, 25 bodies, 943 IAU features |
+
+- **Close-up globes (new):** tapping a planet, moon or dwarf planet (or "Look closer" on its card, or `?place=Moon&look`) opens a large photoreal globe in a glass overlay. It is turned to the body's true orientation for the chosen time (IAU rotation elements), lit from the real Sun direction ("From Earth" or "Sunlit side"), and shows the Moon's phase, Saturn's ring tilt and shadows, Earth's night lights and clouds, Venus radar, and gas-giant flattening. You can drag with inertia, pinch, scroll and use the keys. Tappable IAU feature names give type, size, position and name origin. Facts: diameter, day length, distance and light time from Earth, distance from the Sun, % lit. It also has a Directions button. Phone layout uses a bottom sheet.
+- **Map globes:** the same textured globes replace the dots in the map once a body is more than 1.5 px across, switching to 4K maps above 220 px.
+- **Data:** `design/nu-universes/surfaces.py` downloads Solar System Scope (CC BY 4.0), USGS and NASA/Commons maps plus the IAU nomenclature, and writes WebP maps and `surfaces.json` for the site and `Waves/Universes/Surfaces` in the app. Credits are shown in the overlay.
+- **Fixes:** the breathing `scale` animation was also scaling the map ring's `translate` offset, so the ring drifted off its body. Rings and markers now use the `translate` property.
+- **Spec:** `design/nu-universes.md` §16 (live map, time travel, picking, deep sky/M33, constellations, Earth directions and privacy, close-up globes), 3 new §13 patent rows; `PATENTS.md` row.
+
+## Open
+
+- App parity in `khensu-apple` (close-up globes, live clock, deep sky, constellations, Earth directions); the 1K maps and `surfaces.json` are already in the bundle folder.
+
 # Work completed — 22 October 2026 (nu.universes flight)
 
 ## Commits pushed
@@ -12,8 +36,9 @@
 
 | Surface | URL | Status |
 | --- | --- | --- |
-| nu.universes (i.verse) | https://iverse.khensu.nu | HTTP 200, CN on `moqom-aura-iverse-khensu-nu` (SAN: aura, iverse, universes, rabbithole, portal) |
+| nu.universes (i.verse) | https://iverse.khensu.nu | HTTP 200, CN on `moqom-aura-iverse-khensu-nu-2` (SAN: aura, iverse, universes, rabbithole, portal, inverse) |
 | aliases | https://universes.khensu.nu · https://rabbithole.khensu.nu · https://portal.khensu.nu · https://khensu.nu/universes | HTTP 200, same page |
+| typo | https://inverse.khensu.nu | HTTP 301 → iverse.khensu.nu |
 | nu.eyes | https://khensu.nu/eyes | HTTP 200, try-on |
 | moments | https://moments.khensu.nu | HTTP 200, studio + templates |
 | bi (always-live check) | https://bi.khensu.nu | HTTP 200, `CN=bi.khensu.nu` |

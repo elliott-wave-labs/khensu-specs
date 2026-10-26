@@ -71,6 +71,8 @@ The ñü.isheru is made from the Triangulum star map and its complete mirror. Ev
 
 On the flat face of the stone, the mirror reverses x and y; z, depth, is reversed by laser-etching the mirrored map into the titanium on the inside of the plate, facing the phone.
 
+**mîřrørå (Elliott’s Mirror).** Indra’s net is jewels reflecting jewels — copies of copies (`design/indra.md`). mirrora is the other move: one generic object, many pointers. Each pointer is an atman, and they are the same atman. Dimensions that look separate are aliases of one instance, the way `x`, `y` and `z` are one line type used three times, and time can be too. The isheru’s literal mirror (this section) is a stone. mirrora is the type system under the net. Essay 18–19 October 2026; host `https://mirrora.khensu.nu` (`nu:mirrora.khensu.nu`), apex `https://khensu.nu/mirrora` (`design/nu-mirrora.md`). Hidden from header nav and the footer until the essay is cleaned up.
+
 ## 11. Alan Watts and the others
 
 Alan Watts, who brought Vedanta and Zen to the West, described the universe as playing hide-and-seek with itself, hiding in every being for the joy of being found. Stealth on khėnsu.ñü is that kind of hiding: play and freedom, not fear.

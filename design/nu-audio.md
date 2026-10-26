@@ -1,6 +1,8 @@
 # nu-audio: speech, music, lossless and spatial sound
 
-How khensu.nu carries sound beyond the 32 kbit/s Opus of calls: very low-bitrate speech for poor links and voice notes, music at streaming-service quality, bit-exact lossless masters up to 192 kHz, and spatial audio with head tracking, all inside the same nu-media container (`design/nu-media-protocol.md`) and all at constant rate wherever audio travels live.
+How khensu.nu carries sound beyond the 32 kbit/s Opus of calls: very low-bitrate speech for poor links and voice notes, music at streaming-service quality, bit-exact lossless masters up to 192 kHz, and 4D audio with head tracking, all inside the same nu-media container (`design/nu-media-protocol.md`) and all at constant rate wherever audio travels live.
+
+**4D audio (decided 25 October 2026).** nu.media audio is 4D audio. The three dimensions of space are the spacetime bubble™: every sound is an object you can place. Time is the fourth dimension: where the song is, a stem's offset, and its path through the bubble. Pages say 4D audio. Ambisonic beds, channel beds and Apple's renderer stay the carriage and the headphones.
 
 Status: design, 11 October 2026. **Nothing here is built or measured.** Every bitrate, size and quality figure for nu-audio is a **design target**; every figure for AAC, Opus, FLAC, ALAC, Dolby Atmos, APAC and the neural codecs is an **estimate** from public material unless a measurement is cited. Section 11 is the benchmark that replaces them. Registry values proposed here are listed in `nu-media-protocol.md` 16.10. Open questions are in section 12 and `OPEN-QUESTIONS.md` section H (97–101). Per-frame provenance for audio is in `design/nu-provenance.md`.
 

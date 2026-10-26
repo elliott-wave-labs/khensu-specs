@@ -2,7 +2,7 @@
 
 Status: design, 12 October 2026. Code identifier `nusounds` (`nu.khensu.sounds`). Builds on `nu-audio.md` (profiles, rules A1–A6) and `nu-spatial.md` (separation, placement, ñü.fidelity).
 
-ñü.ŵævẽš studio takes a finished song, splits it into its instruments, places them in spatial audio automatically, and lets the artist shape and lock how the song sounds. Listeners can then add their own copies of tracks in space and time without touching the artist's mix. Everything runs on the device; no audio, voice or setting is processed on a server.
+ñü.ŵævẽš studio takes a finished song, splits it into its instruments, and places them in 4D audio: a 3D spacetime bubble™, with time as the fourth dimension. The artist shapes and locks how the song sounds. Listeners can then add their own copies of tracks in space and time without touching the artist's mix. Everything runs on the device; no audio, voice or setting is processed on a server.
 
 ## 1. Who does what
 

@@ -63,6 +63,10 @@ A photo is painted into a new JPEG; a clip is painted frame by frame into a new 
 
 `Moments/Services/Datamosh.swift`. Vision optical flow at quarter resolution, averaged into 16-pixel macroblocks like codec motion vectors, drags old pixels with no fresh picture until the mosh ends. Three modes: from the clip before, bloom (one moment of motion repeated) and melt (the clip's own motion, with Leak). Amount multiplies the vectors. Baked into a new file, with `moshSourceName` kept for Undo. Measured on iPhone 15 Pro: 4.2 s for 3 s of 1080×1920.
 
+### 3.4 Picture pulse (first template)
+
+The first template is **Picture pulse**. Selected photos or a folder share one underlying colour for most of the screen; that wash shifts only as the pictures morph into each other. Three modes ship: the default path green → purple → blue → yellow → green, full spectrum, and monochrome. Not a beat-sync zoom. The site studio, the template cards and the moments Indra preview all show this wash, not a phone or a spinning node ring.
+
 ## 4. App identity
 
 - Bundle / target: `nu.khensu.moments` inside `khensu-apple` (iPhone, iPad and Mac; iOS, iPadOS and macOS 26).

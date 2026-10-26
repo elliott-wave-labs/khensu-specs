@@ -36,7 +36,9 @@ Product hosts (`bi.khensu.nu`, `waves.khensu.nu`, …) share one managed cert. *
 2. New hosts use `own_certificate = true` (never join the shared pack on day one)
 3. After apply, wait until the products cert is `ACTIVE` and `https://bi.khensu.nu` returns HTTP 200 with the right cert
 
-**Product-host HTTPS is not done until openssl CN matches that host.** Apex (`https://khensu.nu/avatars`) is a fallback, not a ship. Pair with `nu-harness` own_certificate bootstrap: dig → create → **attach** → wait ACTIVE (never wait before attach). Multi-label hosts need an explicit A (`indra.og` ≠ `*.khensu.nu`). Project SSL cert quota is 10 — delete stuck unused certs first.
+**Nav hosts.** Header nav, footer product links and canonicals use the product subdomain (`https://safety.khensu.nu`), never `https://khensu.nu/<page>` and never a path href. A host with no DNS is a Hover record to give Elliott: type A, hostname `safety` (or whichever product), value `34.107.228.246`, no AAAA, no CNAME. Do not point the nav at the apex while waiting. Do not add that name to the shared products cert. After `dig +short HOST A` returns the load balancer, attach `own_certificate = true`. Flame and violet are names, not hosts. The violet flame host is `safety.khensu.nu`.
+
+**Product-host HTTPS is not done until openssl CN matches that host.** Apex (`https://khensu.nu/avatars`) is a redirect fallback, not a nav href and not a ship. Pair with `nu-harness` own_certificate bootstrap: dig → create → **attach** → wait ACTIVE (never wait before attach). Multi-label hosts need an explicit A (`indra.og` ≠ `*.khensu.nu`). Project SSL cert quota is 10 — delete stuck unused certs first.
 
 If waves/bi look unstyled (no CSS), check SSL first — not the publish. Cause: products cert PROVISIONING, or an **NXDOMAIN / wrong-A** cert left on the https proxy.
 

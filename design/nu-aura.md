@@ -1,12 +1,28 @@
-# ñü.åůřâ (nu.aura) — fashion house + quiet sensing
+# ŒĄ.ÑÜ (OEA) — fashion lifestyle house
 
-**Product name:** ñü.åůřâ (code / host / nav: `nu.aura`, `aura`, `aura.khensu.nu`, page `/aura`).
-**Status: first show live 15 October 2026** — apex `khensu.nu/aura` until Hover A for `aura.khensu.nu` + own certificate.
-**Designer:** Elliott. First show.
+**Product name:** ŒĄ.ÑÜ. Code `oea`. Header nav `ŒA/aura`. Main host `oea.khensu.nu` (`nu:oea.khensu.nu`). `aura.khensu.nu` and apex `/aura` open the same page.
+**Status: live.** Aura as a name is retired (25 October 2026).
+**Designer:** Elliott.
 
-Shown as **ñü.åůřâ** / **ÑÜ.ÅŮŘÂ** in headings, titles, labels and the footer; header nav and running text keep `nu.aura`. Addresses: `nu:aura.khensu.nu` once the host is live.
+Shown as **ŒĄ.ÑÜ** in headings, titles, labels and the footer. Header nav is **ŒA/aura**. Running text is **OEA**. Code, files and the host stay `oea`.
 
-Legacy **Aura** (Instagram / Ibiza Swim Week, Venice Beach) is the root. This is **nu.aura** — the age of N/U fashion and design styles on khėnsu.ñü.
+The name Aura is retired because the memes took it and every store already has it. The old reel stays on the page as the beach root. The First Attempt control on nu.waves is still named nu.aura. That is a fader, not this house.
+
+## The mark
+
+| Mark | Meaning |
+| --- | --- |
+| ŒÅ | Purely elevated. The ring sits above the letter. |
+| Œ : mirror : Æ | The ligature turns over. Œ becomes Æ. |
+| ŒĄ | Ego below. The tail sits under the letter. This is the house. |
+
+The cloth reads **ŒĄ.ÑÜ**. ñü is the same ñü as the network.
+
+## What the house makes
+
+Vegan (no leather, no fur, no animal fibre). Resort. Beach wear. Street wear. Stones and gems (the ñü.isheru). Smart device wearables. Wearable digital clothing.
+
+The room the cut sits with: Stella McCartney, Alexander Wang, All Saints, Off-White, Dior Homme, Dior, Prada, Kawasaki, Snoop, Ye, Drake, MF Doom, Lily Fangz. Taste, not a licence.
 
 ## 1. What it is
 
@@ -29,7 +45,7 @@ Nothing looks like medical gear. Dim-shift sunglasses, a ring, a bracelet, a nec
 | $4.4m diamond | Clear diamond ñü.isheru |
 | $44m moldavite | Moldavite ñü.isheru — three only |
 
-Shown on [khensu.nu/aura#isheru](https://khensu.nu/aura#isheru). Hardware story: [buy#isheru](https://khensu.nu/buy#isheru).
+Shown on [oea.khensu.nu#isheru](https://oea.khensu.nu#isheru). Hardware story: [buy#isheru](https://khensu.nu/buy#isheru).
 
 ## 2. First show — pricing
 
@@ -55,8 +71,10 @@ Lasers / optical paths stay **non-invasive** (skin-surface / near-IR reflectance
 
 | Surface | Role |
 | --- | --- |
-| [khensu.nu/aura](https://khensu.nu/aura) | Product page (apex until host SSL) |
-| Header nav | `nu.aura` (chrome: ñü.åůřâ) |
+| [oea.khensu.nu](https://oea.khensu.nu) | Product page. Main link. |
+| [aura.khensu.nu](https://aura.khensu.nu) | Same page. 301 to oea once `moqom-oea-aura-iverse-khensu-nu` is ACTIVE. |
+| Header nav | `ŒA/aura` |
+| Footer | `ŒĄ.ÑÜ` |
 | Spec | This file on [dev.khensu.nu/specs/nu-aura](https://dev.khensu.nu/specs/nu-aura/) once synced |
 | Related | `design/nu-glass.md` (clear bubble material) · nu.waves First Attempt control still named nu.aura |
 

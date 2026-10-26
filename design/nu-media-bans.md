@@ -100,7 +100,7 @@ Appeals: a lift is a BanRecord version with `ends_at` in the past (or a `lifted`
 
 ## 6. Public forum offenses (decided 25 Oct 2026)
 
-The public name is the violet flame, the transmuting fire of Lumeria. Nudity, gore, and an attack on a person or a group for who they are (race, colour, ethnic or national origin, sex, gender, sexual orientation, religion, disability, age), including racism, misogyny, bullying, and drama, ban the persona from the public forum. The page is `khensu.nu/safety`.
+The public name is the violet flame, the transmuting fire of Lumeria. Nudity, gore, and an attack on a person or a group for who they are (race, colour, ethnic or national origin, sex, gender, sexual orientation, religion, disability, age), including racism, misogyny, bullying, and drama, ban the persona from the public forum. The page is `safety.khensu.nu`. `khensu.nu/safety` redirects there. flame and violet are names, not hosts.
 
 The picture check stays on the device. The BanRecord carries a reason code, not the frame.
 

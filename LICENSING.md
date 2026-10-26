@@ -32,6 +32,8 @@ khensu-tatenan and khensu-core may depend on these MOQOM crates, all Apache-2.0:
 | `moqom-client` | moqom-engine-pq (its dev-dependency on `moqom-relay` must be dropped in the extracted copy) |
 | `moqom-mls`, `moqom-sframe`, `moqom-token`, `moqom-proof` | moqom-security |
 
+The [moqom-cloud](https://github.com/moqom-cloud) org is public (26 October 2026), including [moqom-swift](https://github.com/moqom-cloud/moqom-swift). Public visibility does not relicense the proprietary half.
+
 `moqom-relay` and `moqom-recorder` are proprietary (`LicenseRef-MOQOM-Proprietary`). No khensu repository may copy, vendor, depend on, or port code from them. The tatenan relay role is written from the MOQT draft and `moqom-proto`'s public API. CI in khensu-tatenan fails if `moqom-relay`, `moqom-recorder` or `LicenseRef-MOQOM-Proprietary` appears in `Cargo.lock` or any source file.
 
 ## App Store permission

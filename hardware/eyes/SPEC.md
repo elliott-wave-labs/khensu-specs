@@ -53,7 +53,7 @@ Silhouette: Dior Club M1U class panoramic mask; **ÑÜ** mark. Optional Prada-cl
 | Not | Luxury 10× |
 | Repair | Not recommended at this margin |
 | Recycle | Yes — return nu.devices; compost organics in life generally :-) |
-| Aura fashion fixed prices | $444 / $44k / $4.4m / $44m×3 still apply to show jewelry lines |
+| OEA fashion fixed prices | $444 healing stones / $44k emerald, ruby, blue sapphire / $4.4m diamond encrusted / $44m moldavite encrusted |
 | Tips | 100% to the person; app IAP flat 10% |
 
 ## 5. Buy-now BOM (bench)

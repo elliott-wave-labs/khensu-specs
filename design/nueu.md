@@ -43,6 +43,7 @@ Birth data stays in `localStorage` under `nueu.v1`. Nothing is posted. A city is
 
 - **Light motes** in the stage, the same quiet dust as the memory page: a few dozen points, additive, in the aura colours.
 - **The wheel**, ascendant at the left. It opens on nu.skies: thirteen unequal constellations, with the Ophiuchus symbol between Scorpius and Sagittarius. The twelve equal signs are the other setting. House cusps stay twelve, at their longitudes. A second chart sits on the outer ring for transits and bonds. Rest, click or tap a body, an aspect line, a house number or a sign. A second point reads the relation between them. The tight aspects pulse. A selected point pulses faster. The same readings are written out on nu.natal, the last tab, after the planetary hours.
+- **The sample**, `#nube-compare`. nube, 20 April 1969, 8:08 in the evening, Toronto, whole sign, drawn four times from the same cast: twelve tropical signs at rest, that wheel with the tight aspects pulsing, then nu.skies the same way. Ophiuchus is on the nu.skies ring at its real width. The link preview is that comparison: `/og/nueu.jpg` is the still, `/og/nueu.mp4` is the landscape H.264, `/og/nueu-square.mp4` is the square HEVC.
 - **The sky**, a spacetime bubble. The ecliptic is a ring. Bodies are lights on it. Drag to turn, arrow keys to turn, a moment control to move the sky the way nu.universes moves time.
 
 The relay network still sits behind the hero, like every other page.
@@ -67,7 +68,9 @@ Planetary hours follow the Chaldean order from the weekday of sunrise. The twelv
 
 Do not put these names on the shared products certificate.
 
-`nueu.khensu.nu`, `u.khensu.nu`, `neue.khensu.nu`, `new.khensu.nu` and `nu.khensu.nu` each need `dig A` → `34.107.228.246` before a certificate is created. One own cert can cover all five. `nueu.khensu.nu` serves the page. The other four 301 to it. Until that cert is active, the nav points at `https://khensu.nu/nueu`.
+The header, the footer and the canonical are `https://nueu.khensu.nu`. The apex `https://khensu.nu/nueu` still opens the same page. It is not the nav href.
+
+`nueu.khensu.nu`, `u.khensu.nu`, `neue.khensu.nu`, `new.khensu.nu` and `nu.khensu.nu` each need `dig A` → `34.107.228.246` before a certificate is created. One own cert can cover all five. `nueu.khensu.nu` serves the page. The other four 301 to it. A missing A record is a Hover record. It is not a reason to point the nav at `https://khensu.nu/nueu`.
 
 The project SSL certificate quota was 100 on 25 October 2026, with 10 in use. A new cert still waits on DNS. An unanswered name must not be attached to the proxy.
 

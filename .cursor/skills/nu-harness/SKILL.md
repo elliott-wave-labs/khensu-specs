@@ -56,7 +56,7 @@ Product hosts (`bi`, `waves`, `create`, `fi`, `webe`, …) share one Google-mana
    host HOST             # must not say "not found"
    ```
 2. **Never** put a brand-new subdomain on the **shared** products pack. Use `own_certificate = true`.
-3. **Never** claim product-host HTTPS done from apex alone (`khensu.nu/avatars` ≠ `avatars.khensu.nu`). **Never** put a product in the nav as `https://khensu.nu/<page>` or a path href. Nav, footer product links and canonicals are the subdomain. Missing DNS is a Hover A (`34.107.228.246`, no AAAA) to tell Elliott, then `own_certificate = true` after dig matches. The violet flame host is `safety.khensu.nu`. Flame and violet are names, not hosts.
+3. **Never** claim product-host HTTPS done from apex alone (`khensu.nu/avatars` ≠ `avatars.khensu.nu`). **Never** put a main-nav item on `https://khensu.nu/<product>` or a path href, including while DNS or the cert is missing. The href is `https://<product>.khensu.nu`. Header label → host: e.u → `nueu.khensu.nu`, devices → `devices.khensu.nu`, eyes → `eyes.khensu.nu`, feed → `feed.khensu.nu`, vegan → `vegan.khensu.nu`, kronos → `kronos.khensu.nu`, glass → `design.quantumglass.khensu.nu`, skills.music.theory → `skills.music.theory.khensu.nu`. The apex page may stay up as a fallback. It is not the link. A missing name is a Hover A (`34.107.228.246`, no AAAA) to tell Elliott, then `own_certificate = true` after dig matches. Do not add that name to the shared products cert. The violet flame host is `safety.khensu.nu`. Flame and violet are names, not hosts.
 4. **Never** wait for an own-cert to be `ACTIVE` *before* attaching it — Google requires attachment + DNS → LB. Waiting first = `FAILED_NOT_VISIBLE` deadlock.
 5. **Never** walk away from a products-pack recreate while `PROVISIONING`.
 
@@ -96,13 +96,13 @@ done
 
 1. **Publish sites immediately.** Never hold for a patent filing. Pair with `publishing-khensu-sites`.
 2. **By Thursday 2:22 — fix without review.** If the agent can land a clear fix, publish, PR merge, or install path by **2:22 pm** America/Los_Angeles, **do it without waiting for Elliott’s review.** Pair with `nu-ot-222`. Only hold when he said hold, credentials are missing, or the change is destructive / irreversible.
-3. **Keep code public.** elliott-wave-labs `khensu-*` repos stay public, except `khensu-tatenan` and `khensu-chain` (private since 17 Oct 2026, `FOUNDER-HANDOVER.md` §9).
+3. **Keep code public.** `moqom-cloud` and elliott-wave-labs `khensu-*` repos stay public. The only private code repos are `khensu-tatenan` and `khensu-chain` (dead-man's switch, private since 17 Oct 2026, `FOUNDER-HANDOVER.md` §9). moqom-cloud went public 26 Oct 2026, including https://github.com/moqom-cloud/moqom-swift.
 4. **Install without stores.** PWA, GitHub IPA, `xcodegen` / Xcode. Team `LHS49D8RYY`. Hub: https://khensu.nu/app
 5. **Desktop vs mobile.** Desktop perfect → change only `@media` mobile rules.
 6. **Display names.** People see khėnsu.ñü / ñü.ŵævẽš / …; code/URLs stay ASCII.
 7. **Commands** start with `~`, never `/`.
 8. **Wording.** Gift of freedom, privacy, basic income — never “can't be stopped”.
-9. **SLA** at `khensu.nu/sla` until `sla.khensu.nu` has dig A → LB **and** its own cert is ACTIVE.
+9. **SLA** nav is `https://sla.khensu.nu`. `https://khensu.nu/sla` is a fallback page, not the nav href.
 10. **Multi-root** under `~/Documents/GitHub/khensu/`.
 11. **Licences.** core Apache-2.0, specs CC BY 4.0, others AGPL-3.0.
 

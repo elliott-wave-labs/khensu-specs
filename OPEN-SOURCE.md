@@ -1,6 +1,8 @@
 # Open source — khėnsu.ñü
 
-First-party khėnsu.ñü repositories became **public** with the founder handover on **14 October 2026**. Since **17 October 2026** the node (`khensu-tatenan`) and the chain (`khensu-chain`) are private and ship as signed binaries; every other repository below is public. Full notice: [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md) §9. Dead-man's switch: [`DEAD-MANS-SWITCH.md`](DEAD-MANS-SWITCH.md). Licences: [`LICENSING.md`](LICENSING.md).
+First-party khėnsu.ñü repositories became **public** with the founder handover on **14 October 2026**. Since **17 October 2026** the node (`khensu-tatenan`) and the chain (`khensu-chain`) are private and ship as signed binaries; every other repository below is public. Those two are the only code repositories the dead-man's switch still holds. Full notice: [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md) §9. Dead-man's switch: [`DEAD-MANS-SWITCH.md`](DEAD-MANS-SWITCH.md). Licences: [`LICENSING.md`](LICENSING.md).
+
+MOQOM is public too, as of **26 October 2026**: [github.com/moqom-cloud](https://github.com/moqom-cloud), including [moqom-swift](https://github.com/moqom-cloud/moqom-swift). The licence split is unchanged. Apache-2.0 covers the SDKs, the protocol crates and [moqom-security](https://github.com/moqom-cloud/moqom-security). `moqom-relay`, `moqom-recorder`, the control plane and MOTOM stay proprietary (`LICENSING.md`); the repositories are public, and that does not relicense them.
 
 ## Clone
 

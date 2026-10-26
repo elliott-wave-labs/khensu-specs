@@ -2,7 +2,7 @@
 
 **Live:** [https://sla.khensu.nu](https://sla.khensu.nu) · [https://khensu.nu/sla](https://khensu.nu/sla)  
 **Org:** [https://github.com/elliott-wave-labs](https://github.com/elliott-wave-labs)  
-**Status:** Founder handover fired 14 October 2026. Dead-man's switch **ACTIVE** from Venice, CA at 2:22 pm PDT. Every first-party repo is **public**.
+**Status:** Founder handover fired 14 October 2026. Dead-man's switch **ACTIVE** from Venice, CA at 2:22 pm PDT. First-party code is **public**, except `khensu-tatenan` and `khensu-chain`. MOQOM ([moqom-cloud](https://github.com/moqom-cloud)) is public as of 26 October 2026.
 
 Companions: [`DEAD-MANS-SWITCH.md`](DEAD-MANS-SWITCH.md) · [`FOUNDER-HANDOVER.md`](FOUNDER-HANDOVER.md) · [`OPEN-SOURCE.md`](OPEN-SOURCE.md) · [`LICENSING.md`](LICENSING.md)
 
@@ -16,7 +16,7 @@ The network is a gift to humanity and all beings: freedom, privacy and a basic i
 | --- | --- |
 | **100% uptime** | Public site, product hosts and the open archive on the edge |
 | **Dead-man's switch** | Weekly keep-alive; 42 days of silence escalates the archive |
-| **Code public** | All `khensu-*` repos under elliott-wave-labs |
+| **Code public** | [moqom-cloud](https://github.com/moqom-cloud) and `khensu-*` under elliott-wave-labs, except `khensu-tatenan` and `khensu-chain` |
 | **No founder off-switch** | Founder powers ended at handover; nothing restores them |
 
 **Activated:** 14 October 2026 · 2:22 pm PDT · Venice, California · `2026-10-14T21:22:00Z`  

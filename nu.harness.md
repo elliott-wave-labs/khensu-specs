@@ -25,7 +25,7 @@ Product hosts share `moqom-products-*` on the sites HTTPS proxy. A **PROVISIONIN
    ```
 7. Multi-label hosts (`indra.og.khensu.nu`) are **not** covered by `*.khensu.nu`. Add an explicit A (Hover + Cloud DNS zone `khensu-nu`).
 
-SLA page: [https://khensu.nu/sla](https://khensu.nu/sla) (`sla.khensu.nu` only after DNS + own cert ACTIVE). Full public notice: [`PUBLIC.md`](PUBLIC.md).
+SLA nav: [https://sla.khensu.nu](https://sla.khensu.nu). [https://khensu.nu/sla](https://khensu.nu/sla) stays as a fallback page, not the nav href. Full public notice: [`PUBLIC.md`](PUBLIC.md).
 
 ## When to use
 
@@ -34,7 +34,7 @@ khensu.nu sites, product hosts, GitHub repos under elliott-wave-labs, App Store 
 ## Fixed rules
 
 1. **Publish sites immediately.** Never hold for a patent filing.
-2. **Keep code public.** First-party `khensu-*` repos stay public, except `khensu-tatenan` and `khensu-chain` (private since 17 Oct 2026, `FOUNDER-HANDOVER.md` §9).
+2. **Keep code public.** `moqom-cloud` and first-party `khensu-*` repos stay public. The only private code repos are `khensu-tatenan` and `khensu-chain` (dead-man's switch, private since 17 Oct 2026, `FOUNDER-HANDOVER.md` §9). moqom-cloud went public 26 Oct 2026, including [moqom-swift](https://github.com/moqom-cloud/moqom-swift).
 3. **Install without stores.** Safari PWA, GitHub IPA sideload, `xcodegen` / Xcode. Team ID `LHS49D8RYY`.
 4. **Desktop vs mobile.** Desktop perfect → only `@media` mobile rules.
 5. **Display names.** People see khėnsu.ñü, ñü.ŵævẽš, …; code/URLs stay ASCII.

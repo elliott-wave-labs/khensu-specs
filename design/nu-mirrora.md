@@ -51,9 +51,13 @@ The interactive 3-sphere is the Hopf fibration, stereographically projected — 
 
 ## 4. Life on the page
 
-The page opens on **tardigrades** (water bears): not comic-book immortals, animals that *pause*. Cryptobiosis (the tun) stops the clock; rehydration starts it. They have been taken through space vacuum, UV and cosmic radiation (FOTON-M3, 2007) and woken as the same animal — the same pointer.
+The page opens on **Elliott’s Mirror**: one quon, many pointers, the 3-sphere, the tesseract and the three time axes. That is the hero and the body of the page.
 
-Then:
+Water bears, sulfur life, jelly boxes and other chemistries are **one section at the bottom** (`#life-section`). They are related pictures of the same claim.
+
+Tardigrades (water bears) are animals that *pause*. Cryptobiosis (the tun) stops the clock; rehydration starts it. They have been taken through space vacuum, UV and cosmic radiation (FOTON-M3, 2007) and woken as the same animal — the same pointer.
+
+In that same section:
 
 - **Sulfur and heat.** Chemolithoautotrophs at hydrothermal vents oxidise hydrogen sulfide. Tube worms live on that chemistry. *Geogemma barossii* (strain 121) grows at 121 °C.
 - **Cold.** Psychrophiles in Antarctic brine keep membranes fluid below 0 °C. Tardigrades have been recorded near −273 °C in the tun.

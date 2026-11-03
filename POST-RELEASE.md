@@ -61,7 +61,7 @@ Tone everywhere: present tense, factual, warm. The network is a gift to humanity
 
 1. Elliott adds the Hover record: type **A**, hostname **help**, value **34.107.228.246**, no AAAA.
 2. Wait until `dig +short help.khensu.nu A` returns `34.107.228.246`.
-3. Add the host to the URL map with a path matcher that rewrites `/` to `/khensu-nu/help`, and give it its own certificate (`own_certificate = true`, or add it to an existing hand-made SAN cert; the project's certificate quota is 10). Never the shared products pack.
+3. The URL map already routes the host (path matcher `p-help-khensu-nu`, added 3 Nov 2026, rewrites `/` to `/khensu-nu/help`). Give it its own certificate (`own_certificate = true`, or add it to an existing hand-made SAN cert; the project's certificate quota is 10). Never the shared products pack.
 4. Wait for the certificate to be ACTIVE and for `openssl s_client -servername help.khensu.nu` to show it covers the host. Until then `khensu.nu/help` serves the same page.
 
 ## 7. Publishing during release
